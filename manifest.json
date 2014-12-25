@@ -1,0 +1,29 @@
+{
+    "manifest_version": 2,
+    "name": "Easy Extensions",
+    "version": "1.1",
+    "description": "Easy Extensions",
+    "background": {
+        "page": "bg.html"
+    },
+    "browser_action": {
+        "default_icon": "img/icon.png",
+        "default_title": "Easy Extensions",
+        "default_popup": "popup.html"
+    },
+    
+    "icons": {
+        "16": "img/icon16.png"
+    },
+    "web_accessible_resources": [
+        "img/*"
+    ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "options_page": "options.html",
+    "permissions": [
+        "contextMenus",
+        "management",
+        "notifications",
+        "<all_urls>"
+    ]
+}

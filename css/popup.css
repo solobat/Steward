@@ -1,0 +1,83 @@
+body {
+    width: 300px;
+    margin: 0;
+    padding: 0;
+
+    -webkit-user-select: none;
+}
+img {
+    vertical-align: top;
+}
+a {
+    text-decoration: none;
+}
+
+.cmdbox {
+    width: 250px;
+    height: 20px;
+    margin: 5px;
+}
+
+.ec-itemList {
+    overflow-y: scroll;
+
+    height: 400px;
+
+    background: #fff;
+}
+
+.ec-itemList .ec-item {
+    padding: 5px;
+}
+
+.ec-itemList .ec-item:hover {
+    background: #ddd;
+}
+
+.ec-item .ec-item-icon {
+    width: 16px;
+    margin: 0 5px;
+}
+
+.ec-item .ec-item-name {
+    display: inline-block;
+    overflow: hidden;
+
+    width: 255px;
+
+    line-height: 15px;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.ec-itemList .ec-item-select {
+    background: #ccc;
+}
+
+/* scrollbar styles */
+::-webkit-scrollbar {width: 8px; 
+    height: 8px; 
+}
+
+::-webkit-scrollbar-button:start, 
+::-webkit-scrollbar-button:end { 
+    display: none; 
+}
+
+::-webkit-scrollbar-track-piece {
+    -webkit-border-radius: 0;  
+    background-color: #ffffff;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 50px;
+
+    -webkit-border-radius: 8px;
+    outline: 1px solid #ffffff;
+    background-color: #CCCCCC;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #999999;
+}
