@@ -1,0 +1,4 @@
+easy-extensions
+===============
+
+extensions manager
