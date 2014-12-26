@@ -21,3 +21,4 @@ extensions manager
 + `close` 命令关闭指定`tab` 
 + `del` 命令删除相应插件 
 + 执行后去掉此次的text
++ api抽象，使用plugin的形式支持更多cmd
