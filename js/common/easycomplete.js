@@ -1,4 +1,6 @@
-define(['jquery'], function($) {
+define(function(require, exports, module) {
+    // var $ = require('jquery');
+
     function EasyComplete(opt) {
         this.opt = opt;
         this.ipt = $('#' + opt.id);
@@ -165,5 +167,5 @@ define(['jquery'], function($) {
         }
     };
 
-    return EasyComplete;
+    module.exports = EasyComplete;
 });

@@ -1,4 +1,8 @@
-define(['lib/dict-zi-web', 'lib/phonetic-symbol'], function(dict_zi_web, PHONETIC_SYMBOL) {
+define(function(require, exports, module) {
+
+  var isNode = typeof process === "object" &&
+    process.toString() === "[object process]";
+
   // 分词模块
   var Segment;
   var PHRASES_DICT;
@@ -27,8 +31,6 @@ define(['lib/dict-zi-web', 'lib/phonetic-symbol'], function(dict_zi_web, PHONETI
     return uncomboed;
   }
 
-  // TODO: 切换到node版
-  var isNode = false;
   if (isNode) {
     Segment = module["require"]("segment").Segment;
     var segment = new Segment();
@@ -42,7 +44,7 @@ define(['lib/dict-zi-web', 'lib/phonetic-symbol'], function(dict_zi_web, PHONETI
     // 拼音词库，node 版无需使用压缩合并的拼音库。
     PINYIN_DICT = module["require"]("./dict-zi");
   } else {
-    PINYIN_DICT = buildPinyinCache(dict_zi_web);
+    PINYIN_DICT = buildPinyinCache(require("./dict-zi-web"));
   }
 
 
@@ -58,6 +60,7 @@ define(['lib/dict-zi-web', 'lib/phonetic-symbol'], function(dict_zi_web, PHONETI
     FIRST_LETTER: 4 // 仅保留首字母。
   };
   // 带音标字符。
+  var PHONETIC_SYMBOL = require("./phonetic-symbol.js");
   var re_phonetic_symbol_source = "";
   for (var k in PHONETIC_SYMBOL) {
     re_phonetic_symbol_source += k;
@@ -253,5 +256,5 @@ define(['lib/dict-zi-web', 'lib/phonetic-symbol'], function(dict_zi_web, PHONETI
   pinyin.STYLE_INITIALS = PINYIN_STYLE.INITIALS;
   pinyin.STYLE_FIRST_LETTER = PINYIN_STYLE.FIRST_LETTER;
 
-  return pinyin;
+  module.exports = pinyin;
 });
