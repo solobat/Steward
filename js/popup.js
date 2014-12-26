@@ -6,7 +6,8 @@ define(function(require, exports, module) {
     var plugins = {
         tab: require('./plugins/tab'),
         on: require('./plugins/on'),
-        off: require('./plugins/off')
+        off: require('./plugins/off'),
+        his: require('./plugins/his')
     };
 
 
@@ -25,7 +26,7 @@ define(function(require, exports, module) {
 
                 // WHY: why /g can not capture (.+)
                 // TODO: 改成配置的形式
-                var reg = /^((?:on|off|pb|tab))\s(.*)$/i;
+                var reg = /^((?:on|off|pb|tab|his))\s(.*)$/i;
                 var mArr = str.match(reg) || [];
                 var cmd = mArr[1];
                 var key = mArr[2];
@@ -37,13 +38,13 @@ define(function(require, exports, module) {
 
                 nowCmd = cmd;
 
-                plugins[cmd].onInput(cmdbox, key);
+                plugins[nowCmd].onInput(cmdbox, key);
 
                 return;
             },
 
             onEnter: function() {
-                plugins[nowCmd].onEnter(cmdbox, $(this).data('id'));
+                plugins[nowCmd].onEnter.call(this, cmdbox, $(this).data('id'));
             },
 
             createItem: function(index, item) {
