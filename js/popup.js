@@ -25,7 +25,7 @@ define(function(require, exports, module) {
 
                 // WHY: why /g can not capture (.+)
                 // TODO: 改成配置的形式
-                var reg = /^((?:on|off|find|tab))\s(.*)$/i;
+                var reg = /^((?:on|off|pb|tab))\s(.*)$/i;
                 var mArr = str.match(reg) || [];
                 var cmd = mArr[1];
                 var key = mArr[2];

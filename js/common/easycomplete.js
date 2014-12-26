@@ -138,6 +138,7 @@ define(function(require, exports, module) {
         showItemList: function(dataList) {
             this.clearList();
 
+            // TODO: 没有此需求的时候怎么办呢
             var createItemFn = this.opt.createItem;
             var html = ['<div class="ec-itemList">'];
 
