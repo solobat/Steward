@@ -21,7 +21,7 @@ define(['jquery'], function($) {
             var that = this;
 
             // TODO: 事件处理有点不对劲
-            this.ipt.bind('keyup', function(event) {
+            this.ipt.bind('input', function(event) {
                 var elem = this;
                 var keyCode = event.keyCode;
                 if (keyCode === 38 || keyCode === 40) {
@@ -69,7 +69,7 @@ define(['jquery'], function($) {
 
         refresh: function() {
             // 返回数据处理，或让用户自己处理
-            var dataList = this.opt.onkeyup(this.getTerm());
+            var dataList = this.opt.oninput(this.getTerm());
 
             if (dataList) {
                 this.showItemList(dataList);

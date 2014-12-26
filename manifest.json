@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Easy Extensions",
-    "version": "1.1",
+    "version": "1.2",
     "description": "Easy Extensions",
     "background": {
         "page": "bg.html"
@@ -21,6 +21,7 @@
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "options_page": "options.html",
     "permissions": [
+        "tabs",
         "contextMenus",
         "management",
         "notifications",
