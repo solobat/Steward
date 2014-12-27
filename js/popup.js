@@ -18,7 +18,8 @@ define(function(require, exports, module) {
         cmdbox = new EasyComplete({
             id: 'cmdbox',
             oninput: function(str) {
-                nowCmd = '';
+                cmdbox.cmd = nowCmd = '';
+                cmdbox.query = '';
 
                 if (!str.indexOf(' ')) {
                     return;
@@ -36,7 +37,8 @@ define(function(require, exports, module) {
                     return;
                 }
 
-                nowCmd = cmd;
+                cmdbox.cmd = nowCmd = cmd;
+                cmdbox.query = key;
 
                 plugins[nowCmd].onInput(cmdbox, key);
 

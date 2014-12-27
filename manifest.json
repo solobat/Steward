@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Easy Extensions",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "description": "Easy Extensions",
     "background": {
         "page": "bg.html"
@@ -23,6 +23,7 @@
     "permissions": [
         "history",
         "tabs",
+        "storage",
         "contextMenus",
         "management",
         "notifications",

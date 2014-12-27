@@ -5,8 +5,8 @@ extensions manager
 
 ---
 ## Update
-### 1.2.2
-+ `his` 命令查找历史记录并新标签打开
+### 1.2.3
++ `on` / `off` 匹配结果排序
 
 ---
 ## Useage
@@ -19,10 +19,8 @@ extensions manager
 
 ---
 ## TODOS
-+ 给 on/off 匹配出来的插件排序，按上次操作的时间
 + `del` 命令删除相应插件 
 + 命令执行后去掉此次的 text
-+ `pb` 命令调用 pushbullet
-+ `kp` 保存一条消息到 google keep
 + 输入 trigger 后给出相应的提示
++ `cls` 清除历史记录
 
