@@ -6,11 +6,11 @@ define(function(require, exports, module) {
 		return '';
 	}
 
-	function onInput(cmdbox, key) {
+	function onInput(key) {
 		
 	}
 
-	function onEnter(cmdbox, id) {
+	function onEnter(id) {
 		
 	}
 

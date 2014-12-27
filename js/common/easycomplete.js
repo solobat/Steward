@@ -17,6 +17,17 @@ define(function(require, exports, module) {
             var that = this;
 
             this.bindEvent();
+
+            this.empty();
+        },
+
+        empty: function() {
+            this.ipt.val('');
+            this.setTerm('');
+
+            if (this.opt.onEmpty) {
+                this.opt.onEmpty.call(this);
+            }
         },
 
         bindEvent: function() {
@@ -24,13 +35,15 @@ define(function(require, exports, module) {
 
             // TODO: 事件处理有点不对劲
             this.ipt.bind('input', function(event) {
+                clearTimeout(this.searchTimer);
+                
                 var elem = this;
                 var keyCode = event.keyCode;
                 if (keyCode === 38 || keyCode === 40) {
                     return;
                 }
 
-                setTimeout(function() {
+                this.searchTimer = setTimeout(function() {
                     that.setTerm($(elem).val());
                     that.refresh();
                 }, that.delay);
@@ -71,7 +84,7 @@ define(function(require, exports, module) {
 
         refresh: function() {
             // 返回数据处理，或让用户自己处理
-            var dataList = this.opt.oninput(this.getTerm());
+            var dataList = this.opt.onInput.call(this, this.getTerm());
 
             if (dataList) {
                 this.showItemList(dataList);
@@ -79,7 +92,7 @@ define(function(require, exports, module) {
         },
 
         exec: function() {
-            this.opt.onEnter.call($('.ec-item-select').get(0));
+            this.opt.onEnter.call(this, $('.ec-item-select').get(0));
         },
 
         move: function(direction) {
@@ -137,6 +150,9 @@ define(function(require, exports, module) {
 
         showItemList: function(dataList) {
             this.clearList();
+            if (!dataList || !dataList.length) {
+                return;
+            }
 
             // TODO: 没有此需求的时候怎么办呢
             var createItemFn = this.opt.createItem;
@@ -144,7 +160,7 @@ define(function(require, exports, module) {
 
             for (var i = 0, len = dataList.length; i < len; i++) {
                 if (createItemFn) {
-                    html.push(createItemFn(i, dataList[i]));
+                    html.push(createItemFn.call(this, i, dataList[i]));
                     continue;
                 }
             }

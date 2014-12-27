@@ -17,18 +17,19 @@ define(function(require, exports, module) {
 		});
 	}
 
-	function onInput(cmdbox, key) {
+	function onInput(key) {
+		var that = this;
 		getExtensions(key.toLowerCase(), false, function(matchExts) {
 			sortExtensions(matchExts, key, function(matchExts) {
-				cmdbox.showItemList(matchExts, cmdbox);
+				that.showItemList(matchExts);
 			});
 		});
 	}
 
-	function onEnter(cmdbox, id) {
+	function onEnter(id) {
 		setEnabled(id, true);
-		cmdbox.refresh();
-		addRecord('ext', cmdbox.query, id);
+		this.refresh();
+		addRecord('ext', this.query, id);
 	}
 
 	function sortExtFn(a, b) {

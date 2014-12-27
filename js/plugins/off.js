@@ -17,18 +17,19 @@ define(function(require, exports, module) {
 		});
 	}
 
-	function onInput(cmdbox, key) {
+	function onInput(key) {
+		var that = this;
 		getExtensions(key.toLowerCase(), true, function(matchExts) {
 			sortExtensions(matchExts, key, function(matchExts) {
-				cmdbox.showItemList(matchExts, cmdbox);
+				that.showItemList(matchExts);
 			});
 		});
 	}
 
-	function onEnter(cmdbox, id) {
+	function onEnter(id) {
 		setEnabled(id, false);
-		cmdbox.refresh();
-		addRecord('ext', cmdbox.query, id);
+		this.refresh();
+		addRecord('ext', this.query, id);
 	}
 
 	function sortExtFn(a, b) {
@@ -42,7 +43,7 @@ define(function(require, exports, module) {
 			if (!sExts) {
 				callback(matchExts);
 			}
-			
+
 			// sExts: {id: {id: '', querys: {'key': {num: 0, update: ''}}}}
 			matchExts = matchExts.map(function(extObj) {
 				var id = extObj.id;

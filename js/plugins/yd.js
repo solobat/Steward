@@ -12,15 +12,15 @@ define(function(require, exports, module) {
 		].join('');
 	}
 
-	function onInput(cmdbox, key) {
+	function onInput(key) {
 		if (emptyReg.test(key)) {
 			return;
 		}
 
-		getTranslation(cmdbox, key);
+		getTranslation(this, key);
 	}
 
-	function onEnter(cmdbox, id) {
+	function onEnter(id) {
 
 	}
 
@@ -53,7 +53,7 @@ define(function(require, exports, module) {
 
 			retData = retData.concat(explains).concat(webs);
 
-			cmdbox.showItemList(retData, cmdbox);
+			cmdbox.showItemList(retData);
 		});
 	}
 

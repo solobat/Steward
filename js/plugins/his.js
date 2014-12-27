@@ -20,14 +20,15 @@ define(function(require, exports, module) {
 		});
 	}
 
-	function onInput(cmdbox, key) {
-		searchHistory(cmdbox, key, function(matchUrls) {
-			cmdbox.showItemList(matchUrls);
+	function onInput(key) {
+		var that = this;
+		searchHistory(that, key, function(matchUrls) {
+			that.showItemList(matchUrls);
 		});
 	}
 
-	function onEnter(cmdbox, id) {
-		window.open($(this).data('url'));	
+	function onEnter(elem) {
+		window.open($(elem).data('url'));
 	}
 
 

@@ -36,14 +36,15 @@ define(function(require, exports, module) {
 		].join('');
 	}
 
-	function onInput(cmdbox, key) {
+	function onInput(key) {
+		var that = this;
 		getAllTabs(key, function(matchTabs) {
 			console.log(matchTabs);
-			cmdbox.showItemList(matchTabs);
+			that.showItemList(matchTabs);
 		});
 	}
 
-	function onEnter(cmdbox, id) {
+	function onEnter(id) {
 		chrome.tabs.update(id, {
 			active: true
 		});

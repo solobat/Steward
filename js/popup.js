@@ -8,19 +8,24 @@ define(function(require, exports, module) {
         on: require('./plugins/on'),
         off: require('./plugins/off'),
         his: require('./plugins/his'),
-        yd: require('./plugins/yd')
+        yd: require('./plugins/yd'),
+        todo: require('./plugins/todo')
     };
-
 
     function init() {
         $('.cmdbox').focus();
-        var nowCmd = '';
 
         cmdbox = new EasyComplete({
             id: 'cmdbox',
-            oninput: function(str) {
-                cmdbox.cmd = nowCmd = '';
-                cmdbox.query = '';
+            onInput: function(str) {
+                if (!str) {
+                    this.empty();
+                    
+                    return;
+                }
+
+                this.cmd = '';
+                this.query = '';
 
                 if (!str.indexOf(' ')) {
                     return;
@@ -28,30 +33,39 @@ define(function(require, exports, module) {
 
                 // WHY: why /g can not capture (.+)
                 // TODO: 改成配置的形式
-                var reg = /^((?:on|off|pb|tab|his|yd))\s(.*)$/i;
+                var reg = /^((?:on|off|pb|tab|his|yd|todo))\s(.*)$/i;
                 var mArr = str.match(reg) || [];
                 var cmd = mArr[1];
                 var key = mArr[2];
 
                 if (!cmd) {
-                    cmdbox.clearList();
+                    this.clearList();
                     return;
                 }
 
-                cmdbox.cmd = nowCmd = cmd;
-                cmdbox.query = key;
+                this.cmd = cmd;
+                this.query = key;
 
-                plugins[nowCmd].onInput(cmdbox, key);
+                plugins[this.cmd].onInput.call(this, key);
 
                 return;
             },
 
-            onEnter: function() {
-                plugins[nowCmd].onEnter.call(this, cmdbox, $(this).data('id'));
+            onEnter: function(elem) {
+                plugins[this.cmd].onEnter.call(this, $(elem).data('id'));
             },
 
             createItem: function(index, item) {
-                return plugins[nowCmd].createItem(index, item);
+                return plugins[this.cmd].createItem.call(this, index, item);
+            },
+
+            onEmpty: function() {
+                var that = this;
+
+                that.cmd = 'todo';
+                that.searchTimer = setTimeout(function() {
+                    plugins.todo.showTodos.call(that);
+                }, that.delay);
             }
         });
     }
