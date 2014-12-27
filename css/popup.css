@@ -23,7 +23,7 @@ a {
 
     height: 400px;
 
-    background: #fff;
+    background: rgb(235, 235, 235);
 }
 
 .ec-itemList .ec-item {
@@ -31,7 +31,7 @@ a {
 }
 
 .ec-itemList .ec-item:hover {
-    background: #ddd;
+    background: rgb(209, 209, 209);
 }
 
 .ec-item .ec-item-icon {
@@ -51,8 +51,13 @@ a {
     text-overflow: ellipsis;
 }
 
+.ec-item .ec-item-note{
+    display: block;
+    color: rgb(166, 166, 166);
+}
+
 .ec-itemList .ec-item-select {
-    background: #ccc;
+    background: rgb(209, 209, 209);
 }
 
 /* scrollbar styles */

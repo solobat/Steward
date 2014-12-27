@@ -1,12 +1,12 @@
-easy-extensions
+Ikkyu
 ===============
 
-extensions manager
+Easy Extensions / Tabs / History / Translation
 
 ---
 ## Update
-### 1.2.3
-+ `on` / `off` 匹配结果排序
+### 1.2.4
++ 添加有道词典翻译，trigger为 `yd`
 
 ---
 ## Useage
@@ -15,6 +15,7 @@ extensions manager
 + `enter` 回车执行操作
 + `tab` 命令查找并定位到打开的标签页
 + `his` 命令查找历史记录并新标签打开
++ `yd` 有道词典
 + 支持简写匹配，比如：`kzcx` 可以匹配 `扩展程序`
 
 ---
