@@ -1,5 +1,5 @@
 body {
-    width: 300px;
+    width: 500px;
     margin: 0;
     padding: 0;
 
@@ -13,7 +13,7 @@ a {
 }
 
 .cmdbox {
-    width: 250px;
+    width: 450px;
     height: 20px;
     margin: 5px;
 }
@@ -27,7 +27,7 @@ a {
 }
 
 .ec-itemList .ec-item {
-    padding: 5px;
+    padding: 8px 5px;
 }
 
 .ec-itemList .ec-item:hover {
@@ -43,7 +43,7 @@ a {
     display: inline-block;
     overflow: hidden;
 
-    width: 255px;
+    width: 455px;
 
     line-height: 15px;
 

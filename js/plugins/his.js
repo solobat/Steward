@@ -11,8 +11,7 @@ define(function(require, exports, module) {
 
 	function searchHistory(cmdbox, key, callback) {
 		chrome.history.search({
-			text: key,
-			maxResults: 50
+			text: key
 		}, function(hisList) {
 			if (hisList.length) {
 				callback(hisList);

@@ -1,12 +1,12 @@
 Ikkyu
 ===============
 
-Easy Extensions / Tabs / History / Translation
+Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 1.2.7
-+ `run` 命令启动App
+### 1.2.8
++ `po` 命令查找pocket
 
 ---
 ## Useage
@@ -18,6 +18,7 @@ Easy Extensions / Tabs / History / Translation
 + `his` 命令查找历史记录并新标签打开
 + `yd` 有道词典
 + `todo` cmd
++ `po` 命令查找pocket
 + 支持简写匹配，比如：`kzcx` 可以匹配 `扩展程序`
 
 ---
