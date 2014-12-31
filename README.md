@@ -5,8 +5,8 @@ Easy Extensions / Tabs / History / Translation
 
 ---
 ## Update
-### 1.2.5
-+ 添加 `todo` cmd
+### 1.2.6
++ fix bugs
 
 ---
 ## Useage
@@ -21,9 +21,10 @@ Easy Extensions / Tabs / History / Translation
 
 ---
 ## TODOS
++ `run` 命令启动指定的 app / extension
 + 考虑有条件的保留上一次的命令
 + `his` 改进：增加中文匹配，添加url显示
-+ `del` 命令删除相应插件 
++ `del` 命令删除相应插件
 + 命令执行后去掉此次的 text
 + 输入 trigger 后给出相应的提示
 + `cls` 清除历史记录

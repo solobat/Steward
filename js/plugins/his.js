@@ -27,7 +27,7 @@ define(function(require, exports, module) {
 		});
 	}
 
-	function onEnter(elem) {
+	function onEnter(id, elem) {
 		window.open($(elem).data('url'));
 	}
 

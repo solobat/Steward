@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Ikkyu",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "description": "Easy Extensions / Tabs / History / Translation",
     "background": {
         "page": "bg.html"
@@ -11,7 +11,7 @@
         "default_title": "Ikkyu",
         "default_popup": "popup.html"
     },
-    
+
     "icons": {
         "16": "img/icon16.png"
     },

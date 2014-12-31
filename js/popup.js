@@ -20,7 +20,7 @@ define(function(require, exports, module) {
             onInput: function(str) {
                 if (!str) {
                     this.empty();
-                    
+
                     return;
                 }
 
@@ -52,7 +52,7 @@ define(function(require, exports, module) {
             },
 
             onEnter: function(elem) {
-                plugins[this.cmd].onEnter.call(this, $(elem).data('id'));
+                plugins[this.cmd].onEnter.call(this, $(elem).data('id'), elem);
             },
 
             createItem: function(index, item) {
