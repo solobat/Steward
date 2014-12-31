@@ -5,13 +5,14 @@ Easy Extensions / Tabs / History / Translation
 
 ---
 ## Update
-### 1.2.6
-+ fix bugs
+### 1.2.7
++ `run` 命令启动App
 
 ---
 ## Useage
 + `on`/`off` + `space` 显示所有**未启用** / **启用中**的扩展
 + `on`/`off` + text 查找匹配相应的扩展
++ `run` 命令启动App
 + `enter` 回车执行操作
 + `tab` 命令查找并定位到打开的标签页
 + `his` 命令查找历史记录并新标签打开
@@ -21,7 +22,6 @@ Easy Extensions / Tabs / History / Translation
 
 ---
 ## TODOS
-+ `run` 命令启动指定的 app / extension
 + 考虑有条件的保留上一次的命令
 + `his` 改进：增加中文匹配，添加url显示
 + `del` 命令删除相应插件
