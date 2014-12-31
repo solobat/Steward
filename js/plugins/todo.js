@@ -8,7 +8,7 @@ define(function(require, exports, module) {
 			'<span class="ec-item-text">' + item.text + '</span>',
 			'<span class="ec-item-note">TODO</span>',
 			'</div>'
-		].join('');
+		];
 	}
 
 	function onInput(key) {

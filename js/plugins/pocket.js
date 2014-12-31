@@ -11,7 +11,7 @@ define(function(require, exports, module) {
             '<img class="ec-item-icon" src="' + pocketIcon + '" alt="" />',
             '<span class="ec-item-name">' + title + '</span>',
             '</div>'
-        ].join('');
+        ];
     }
 
     function onInput(key) {

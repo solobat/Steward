@@ -1,5 +1,6 @@
 define(function(require, exports, module) {
     var EasyComplete = require('./common/easycomplete');
+    var util = require('./common/util');
 
     var cmdbox;
     // TODO: 改成配置的形式
@@ -58,7 +59,15 @@ define(function(require, exports, module) {
             },
 
             createItem: function(index, item) {
-                return plugins[this.cmd].createItem.call(this, index, item);
+                var html = plugins[this.cmd].createItem.call(this, index, item);
+
+                if (index <= 8) {
+                    var tipHtml = '<div class="ec-item-tip">' + (util.isMac ? 'CMD' : 'ALT') +
+                    ' + ' + (index + 1) + '</div>';
+                    html.splice(html.length - 2, 0, tipHtml);
+                }
+
+                return html.join('');
             },
 
             onEmpty: function() {

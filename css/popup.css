@@ -28,6 +28,7 @@ a {
 
 .ec-itemList .ec-item {
     padding: 8px 5px;
+    position: relative;
 }
 
 .ec-itemList .ec-item:hover {
@@ -43,7 +44,7 @@ a {
     display: inline-block;
     overflow: hidden;
 
-    width: 455px;
+    width: 400px;
 
     line-height: 15px;
 
@@ -58,6 +59,14 @@ a {
 
 .ec-itemList .ec-item-select {
     background: rgb(209, 209, 209);
+}
+
+.ec-item .ec-item-tip{
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-right: 10px;
+    line-height: 34px;
 }
 
 /* scrollbar styles */

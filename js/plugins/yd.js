@@ -9,7 +9,7 @@ define(function(require, exports, module) {
 			'<span class="ec-item-text">' + item.text + '</span>',
 			'<span class="ec-item-note">' + item.note + '</span>',
 			'</div>'
-		].join('');
+		];
 	}
 
 	function onInput(key) {

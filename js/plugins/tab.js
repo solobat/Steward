@@ -33,7 +33,7 @@ define(function(require, exports, module) {
 			'<img class="ec-item-icon" src="' + item.favIconUrl + '" alt="" />',
 			'<span class="ec-item-name">' + item.title + '</span>',
 			'</div>'
-		].join('');
+		];
 	}
 
 	function onInput(key) {

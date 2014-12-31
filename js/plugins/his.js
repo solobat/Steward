@@ -6,7 +6,7 @@ define(function(require, exports, module) {
 			'<div data-type="his" data-url="' + item.url + '" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
 			'<span class="ec-item-name">' + item.title + '</span>',
 			'</div>'
-		].join('');
+		];
 	}
 
 	function searchHistory(cmdbox, key, callback) {

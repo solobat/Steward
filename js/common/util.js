@@ -24,7 +24,10 @@ define(function(require, exports, module) {
 		return reg.test(text);
 	}
 
+	var isMac = navigator.platform === 'MacIntel';
+
 	module.exports = {
-		matchText: matchText
+		matchText: matchText,
+		isMac: isMac
 	};
 });

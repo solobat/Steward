@@ -65,13 +65,30 @@ define(function(require, exports, module) {
                     that.exec();
                     return;
                 }
+
+                if ((event.altKey || event.metaKey) && 49 <= keyCode && keyCode <= 57) {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    that.select(keyCode - 49);
+
+                    return;
+                }
             });
 
             $(document).on('click', '.ec-item', function() {
-                that.selectItemByIndex($(this).data('index'));
-                that.exec();
-                that.refresh();
+                that.select($(this).data('index'));
             });
+        },
+
+        select: function(index) {
+            var itemNum = $('.ec-item').length;
+
+            if (index >= 0 && index <= itemNum - 1) {
+                this.selectItemByIndex(index);
+                this.exec();
+                this.refresh();
+            }
         },
 
         setTerm: function(term) {

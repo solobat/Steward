@@ -121,7 +121,7 @@ define(function(require, exports, module) {
 			'<img class="ec-item-icon" src="' + url + '" alt="" />',
 			'<span class="ec-item-name">' + item.name + '</span>',
 			'</div>'
-		].join('');
+		];
 	}
 
 	module.exports = {
