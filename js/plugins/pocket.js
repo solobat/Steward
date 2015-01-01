@@ -1,5 +1,15 @@
 define(function(require, exports, module) {
-    var auth = require('../common/auth');
+    var Auth = require('../common/auth');
+    var conf = require('../conf/pocket_conf');
+    var auth = new Auth(conf);
+
+    function handler(results) {
+        var ret = {};
+
+        ret.request_token = results.split('=')[1];
+        return ret;
+    }
+
     var ajax;
     var pocketIcon = 'http://getpocket.com/i/apple-touch-icon/Pocket_AppIcon_57.png';
 
@@ -16,7 +26,7 @@ define(function(require, exports, module) {
 
     function onInput(key) {
         if (!key && !auth.isAuthenticated()) {
-            auth.authenticate();
+            auth.authenticate(handler);
 
             return;
         }
@@ -33,8 +43,8 @@ define(function(require, exports, module) {
             ajax.abort();
         }
         var params = {
-            consumer_key: auth.CONSUMER_KEY,
-            access_token: localStorage['access_token']
+            consumer_key: auth.consumer_key,
+            access_token: auth.get(auth.accessTokenName)
         };
 
         if (key) {

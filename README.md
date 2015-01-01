@@ -5,8 +5,8 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 1.2.9
-+ 添加 ALT / CMD + number 提示
+### 1.3.0
++ 优化Auth
 
 ---
 ## Useage
@@ -21,6 +21,7 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## TODOS
++ auth通用类抽象
 + 考虑有条件的保留上一次的命令
 + `his` 改进：增加中文匹配，添加url显示
 + `del` 命令删除相应插件

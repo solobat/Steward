@@ -1,59 +1,80 @@
 define(function(require, exports, module) {
-    // TODO: use conf
-    var CONSUMER_KEY = '36254-48fd5cd99b53d0e9cfabbee0';
-    var url = {
-        authenticate: 'https://getpocket.com/v3/oauth/request',
-    };
+    
+    function Auth(opt) {
+        this.consumer_key = opt.consumer_key;
+        this.requestUrl = opt.requestUrl;
+        this.authenticateUrl = opt.authenticateUrl;
+        this.accessTokenUrl = opt.accessTokenUrl;
+        this.redirect_uri = opt.redirect_uri;
+        this.appName = opt.appName;
 
-    function isAuthenticated() {
-        return localStorage['access_token'] && localStorage['access_token'] != null;
+        this.requestTokenName = this.appName + '_request_token';
+        this.accessTokenName = this.appName + '_access_token';
+        this.userName = this.appName + '_username';
     }
 
-    function authenticate() {
-        var redirect_uri = window.location.href;
+    Auth.prototype.set = function(key, value) {
+        if (value) {
+            localStorage[key] = value;
+        }
+    };
+
+    Auth.prototype.get = function(key) {
+        return localStorage[key];
+    };
+
+    Auth.prototype.isAuthenticated = function() {
+        var accessToken = this.get(this.accessTokenName);
+
+        return !!accessToken;
+    };
+
+    Auth.prototype.authenticate = function (handler) {
+        var that = this;
         var data = {
-            consumer_key: CONSUMER_KEY,
-            redirect_uri: redirect_uri
+            consumer_key: this.consumer_key,
+            redirect_uri: window.location.href
         };
 
-        $.post(url.authenticate, data).done(function(data) {
-            var code = data.split('=')[1];
-            var request_token = localStorage['request_token'] = code;
+        $.post(this.requestUrl, data).done(function(results) {
+            var params = handler(results);
 
-            var redirect_uri = chrome.extension.getURL('login.html');
+            params.redirect_uri = that.redirect_uri;
+            that.set(that.requestTokenName, params.request_token);
 
             chrome.tabs.create({
-                'url': 'https://getpocket.com/auth/authorize?request_token=' +
-                    encodeURIComponent(request_token) + '&redirect_uri=' + encodeURIComponent(redirect_uri)
+                'url': that.authenticateUrl + '?' + $.param(params)
             }, function(tab) {
 
             });
         });
-    }
+    };
 
-    function getAccessToken(callback) {
-        var url = 'https://getpocket.com/v3/oauth/authorize';
+    Auth.prototype.getAccessToken = function(handler, callback) {
+        var that = this;
         var data = {
-            "consumer_key": CONSUMER_KEY,
-            "code": localStorage['request_token']
+            'consumer_key': this.consumer_key,
+            'code': this.get(this.requestTokenName)
         };
 
-        // WHY: cannot use post
         $.ajax({
-            url: url,
+            url: this.accessTokenUrl,
             data: JSON.stringify(data),
             headers: {
                 'Content-Type': 'application/json; charset=UTF8',
                 'X-Accept': 'application/json'
             },
-            type: "POST",
-            dataType: "json",
-            success: function(data) {
-                localStorage['access_token'] = data.access_token;
-                localStorage['username'] = data.username;
-                callback();
+            type: 'POST',
+            dataType: 'json',
+            success: function(results) {
+                var params = handler(results);
+
+                that.set(that.accessTokenName, params.access_token);
+                that.set(that.userName, params.username);
+
+                callback(results);
             },
-            error: function(xhr, status, errorThrown) {
+            error: function (xhr, status, errorThrown) {
                 var error = xhr.getResponseHeader('X-Error');
 
                 if (!error || error === null) {
@@ -61,17 +82,9 @@ define(function(require, exports, module) {
                 } else {
                     console.log(error + '[in getAccessToken].');
                 }
-            },
-
-            // code to run regardless of success or failure
-            complete: function(xhr, status) {}
+            }
         });
-    }
-
-    module.exports = {
-        CONSUMER_KEY: CONSUMER_KEY,
-        isAuthenticated: isAuthenticated,
-        authenticate: authenticate,
-        getAccessToken: getAccessToken
     };
+
+    module.exports = Auth;
 });
