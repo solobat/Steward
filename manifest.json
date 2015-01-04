@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
-    "name": "Ikkyu: 插件/APP管理 标签页/历史记录/有道翻译等搜索",
+    "name": "Ikkyu: 扩展(插件)/APP管理 标签页/历史记录/有道翻译等搜索",
     "short_name": "Ikkyu",
-    "version": "1.3.1",
+    "version": "1.3.2",
     "description": "Easy Extensions / Tabs / History / Translation / Pocket",
     "background": {
         "page": "bg.html"
