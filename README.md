@@ -5,8 +5,8 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 1.3.0
-+ 优化Auth
+### 1.3.1
++ update `manifest.json`
 
 ---
 ## Useage
