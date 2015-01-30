@@ -6,7 +6,11 @@ Easy Extensions / Tabs / History / Translation etc.
 ---
 ## Update
 ### 1.3.1
+<<<<<<< HEAD
 标签页显示TODO待办事项
+=======
++ update `manifest.json`
+>>>>>>> FETCH_HEAD
 
 ---
 ## Useage
