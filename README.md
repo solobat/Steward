@@ -5,8 +5,8 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 1.3.0
-+ 优化Auth
+### 1.3.1
+标签页显示TODO待办事项
 
 ---
 ## Useage
@@ -16,12 +16,11 @@ Easy Extensions / Tabs / History / Translation etc.
 + `tab` 命令查找并定位到打开的标签页
 + `his` 命令查找历史记录并新标签打开
 + `yd` 有道词典
-+ `todo` 待办事项
++ `todo` 待办事项，标签页显示
 + `po` 命令查找pocket
 
 ---
 ## TODOS
-+ auth通用类抽象
 + 考虑有条件的保留上一次的命令
 + `his` 改进：增加中文匹配，添加url显示
 + `del` 命令删除相应插件

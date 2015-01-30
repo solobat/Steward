@@ -4,6 +4,8 @@ define(function(require, exports, module) {
 
     var cmdbox;
     // TODO: 改成配置的形式
+    // cannot use forEach
+    // TODO: use for
     var plugins = {
         tab: require('./plugins/tab'),
         on: require('./plugins/on'),
