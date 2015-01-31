@@ -5,7 +5,7 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 1.3.2.1
+### 1.3.2.2
 标签页显示TODO待办事项
 
 ---
