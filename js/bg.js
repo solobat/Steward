@@ -14,9 +14,9 @@ function getAllTabs(callback) {
         var matchTabs = [];
         for (var i = 0, len = wins.length; i < len; i++) {
 
+            // 闭包
             (function(index) {
                 chrome.tabs.getAllInWindow(wins[index].id, function(tabs) {
-                    matchTabs = matchTabs.concat(tabList);
                     if (index === len - 1) {
                         callback(tabs);
                     }
@@ -49,23 +49,23 @@ function refresh() {
 }
 
 function addEvents() {
+    chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
+        refresh();
+    });
 
-    // windows events
     chrome.windows.onCreated.addListener(function(win) {
         refresh();
     });
 
-    // tabs events
     chrome.tabs.onCreated.addListener(function(tab) {
         refresh();
     });
-    chrome.tabs.onUpdated.addListener(function(tabId, removeInfo) {
+
+    chrome.tabs.onUpdated.addListener(function(tab) {
         refresh();
     });
-    chrome.tabs.onMoved.addListener(function(tabId, removeInfo) {
-        refresh();
-    });
-    chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
+
+    chrome.tabs.onRemoved.addListener(function(tab) {
         refresh();
     });
 
