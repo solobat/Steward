@@ -6,7 +6,7 @@ Easy Extensions / Tabs / History / Translation etc.
 ---
 ## Update
 ### 1.3.3
-`del` 命令删除插件
++ 重新打开时保留上一次的cmd
 
 ---
 ## Useage
@@ -20,7 +20,6 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## TODOS
-+ 考虑有条件的保留上一次的命令
 + `his` 改进：增加中文匹配，添加url显示
 + 命令执行后去掉此次的 text
 + 输入 trigger 后给出相应的提示
