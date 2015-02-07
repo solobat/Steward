@@ -46,7 +46,7 @@ define(function(require, exports, module) {
                 this.searchTimer = setTimeout(function() {
                     that.setTerm($(elem).val());
                     that.refresh();
-                }, that.delay);
+                }, 0);
             });
 
             // keydown才能连续移动选中

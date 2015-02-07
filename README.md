@@ -5,13 +5,12 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 1.3.2.2
-标签页显示TODO待办事项
+### 1.3.3
+`del` 命令删除插件
 
 ---
 ## Useage
-+ `on`/`off` + `space` 显示所有**未启用** / **启用中**的扩展
-+ `on`/`off` + text 查找匹配相应的扩展
++ `on`/`off`/`del` 启动/禁用/删除相应的扩展
 + `run` 命令启动App
 + `tab` 命令查找并定位到打开的标签页
 + `his` 命令查找历史记录并新标签打开
@@ -23,7 +22,6 @@ Easy Extensions / Tabs / History / Translation etc.
 ## TODOS
 + 考虑有条件的保留上一次的命令
 + `his` 改进：增加中文匹配，添加url显示
-+ `del` 命令删除相应插件
 + 命令执行后去掉此次的 text
 + 输入 trigger 后给出相应的提示
 + `cls` 清除历史记录
