@@ -1,4 +1,11 @@
-define(function(require, exports, module) {
+/**
+ * @file po command plugin script
+ * @description pocket文档查找
+ * @author tomasy
+ * @email solopea@gmail.com
+ */
+
+define(function (require, exports, module) {
     var Auth = require('../common/auth');
     var conf = require('../conf/pocket_conf');
     var auth = new Auth(conf);
@@ -33,7 +40,7 @@ define(function(require, exports, module) {
 
         var cmdbox = this;
 
-        query(key, function(data) {
+        query(key, function (data) {
             cmdbox.showItemList(data);
         });
     }
@@ -45,16 +52,18 @@ define(function(require, exports, module) {
         var params = {
             consumer_key: auth.consumer_key,
             access_token: auth.get(auth.accessTokenName)
+
         };
 
         if (key) {
             $.extend(params, {
                 search: key,
                 state: 'all'
+
             });
         }
 
-        ajax = $.post('https://getpocket.com/v3/get', params, function(data) {
+        ajax = $.post('https://getpocket.com/v3/get', params, function (data) {
             if (data.list) {
                 var list = [];
                 for (var i in data.list) {
@@ -76,5 +85,6 @@ define(function(require, exports, module) {
         onInput: onInput,
         onEnter: onEnter,
         createItem: createItem
+
     };
 });

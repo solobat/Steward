@@ -1,9 +1,16 @@
-define(function(require, exports, module) {
+/**
+ * @file run command plugin script
+ * @description 启动指定应用
+ * @author tomasy
+ * @email solopea@gmail.com
+ */
+
+define(function (require, exports, module) {
     var util = require('../common/util');
 
     function getExtensions(key, callback) {
-        chrome.management.getAll(function(extList) {
-            var matchExts = extList.filter(function(ext) {
+        chrome.management.getAll(function (extList) {
+            var matchExts = extList.filter(function (ext) {
                 return util.matchText(key, ext.name) && ext.isApp;
             });
 
@@ -13,16 +20,14 @@ define(function(require, exports, module) {
 
     function onInput(key) {
         var that = this;
-        getExtensions(key.toLowerCase(), function(matchExts) {
+        getExtensions(key.toLowerCase(), function (matchExts) {
             that.showItemList(matchExts);
         });
     }
 
     function launch(id) {
-        chrome.management.setEnabled(id, true, function() {
-            chrome.management.launchApp(id, function() {
-                
-            });
+        chrome.management.setEnabled(id, true, function () {
+            chrome.management.launchApp(id, function () {});
         });
     }
 
@@ -46,5 +51,6 @@ define(function(require, exports, module) {
         onInput: onInput,
         onEnter: onEnter,
         createItem: createItem
+
     };
 });

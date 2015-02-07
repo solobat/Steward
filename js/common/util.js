@@ -1,33 +1,41 @@
-define(function(require, exports, module) {
-	var pinyin = require('pinyin');
-	
-	function getPinyin(name) {
-		return pinyin(name, {
-			style: pinyin['STYLE_NORMAL']
-		}).join('');
-	}
+/**
+ * @file util
+ * @author tomasy
+ * @email solopea@gmail.com
+ */
 
-	function matchText(key, text) {
-		text = getPinyin(text.toLowerCase());
+define(function (require, exports, module) {
+    var pinyin = require('pinyin');
 
-		if (!key) {
-			return true;
-		}
+    function getPinyin(name) {
+        return pinyin(name, {
+            style: pinyin['STYLE_NORMAL']
 
-		if (text.indexOf(key) > -1) {
-			return true;
-		}
+        }).join('');
+    }
 
-		var plainKey = key.replace(/\s/g, '');
-		var reg = new RegExp('.*' + plainKey.split('').join('.*') + '.*');
+    function matchText(key, text) {
+        text = getPinyin(text.toLowerCase());
 
-		return reg.test(text);
-	}
+        if (!key) {
+            return true;
+        }
 
-	var isMac = navigator.platform === 'MacIntel';
+        if (text.indexOf(key) > -1) {
+            return true;
+        }
 
-	module.exports = {
-		matchText: matchText,
-		isMac: isMac
-	};
+        var plainKey = key.replace(/\s/g, '');
+        var reg = new RegExp('.*' + plainKey.split('').join('.*') + '.*');
+
+        return reg.test(text);
+    }
+
+    var isMac = navigator.platform === 'MacIntel';
+
+    module.exports = {
+        matchText: matchText,
+        isMac: isMac
+
+    };
 });

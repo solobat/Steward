@@ -1,132 +1,143 @@
-define(function(require, exports, module) {
-	var util = require('../common/util');
+/**
+ * @file on command plugin script
+ * @description 启用扩展/应用
+ * @author tomasy
+ * @email solopea@gmail.com
+ */
 
-	function setEnabled(id, enabled) {
-		chrome.management.setEnabled(id, enabled, function() {
+define(function (require, exports, module) {
+    var util = require('../common/util');
 
-		});
-	}
+    function setEnabled(id, enabled) {
+        chrome.management.setEnabled(id, enabled, function () {});
+    }
 
-	function getExtensions(key, enabled, callback) {
-		chrome.management.getAll(function(extList) {
-			var matchExts = extList.filter(function(ext) {
-				return util.matchText(key, ext.name) && ext.enabled === enabled;
-			});
+    function getExtensions(key, enabled, callback) {
+        chrome.management.getAll(function (extList) {
+            var matchExts = extList.filter(function (ext) {
+                return util.matchText(key, ext.name) && ext.enabled === enabled;
+            });
 
-			callback(matchExts);
-		});
-	}
+            callback(matchExts);
+        });
+    }
 
-	function onInput(key) {
-		var that = this;
-		getExtensions(key.toLowerCase(), false, function(matchExts) {
-			sortExtensions(matchExts, key, function(matchExts) {
-				that.showItemList(matchExts);
-			});
-		});
-	}
+    function onInput(key) {
+        var that = this;
+        getExtensions(key.toLowerCase(), false, function (matchExts) {
+            sortExtensions(matchExts, key, function (matchExts) {
+                that.showItemList(matchExts);
+            });
+        });
+    }
 
-	function onEnter(id) {
-		setEnabled(id, true);
-		this.refresh();
-		addRecord('ext', this.query, id);
-	}
+    function onEnter(id) {
+        setEnabled(id, true);
+        this.refresh();
+        addRecord('ext', this.query, id);
+    }
 
-	function sortExtFn(a, b) {
-		return a.num == b.num ? b.update - a.upate : b.num - a.num;
-	}
+    function sortExtFn(a, b) {
+        return a.num == b.num ? b.update - a.upate : b.num - a.num;
+    }
 
-	function sortExtensions(matchExts, key, callback) {
-		chrome.storage.sync.get('ext', function(data) {
-			var sExts = data.ext;
+    function sortExtensions(matchExts, key, callback) {
+        chrome.storage.sync.get('ext', function (data) {
+            var sExts = data.ext;
 
-			if (!sExts) {
-				callback(matchExts);
-			}
+            if (!sExts) {
+                callback(matchExts);
+            }
 
-			// sExts: {id: {id: '', querys: {'key': {num: 0, update: ''}}}}
-			matchExts = matchExts.map(function(extObj) {
-				var id = extObj.id;
+            // sExts: {id: {id: '', querys: {'key': {num: 0, update: ''}}}}
+            matchExts = matchExts.map(function (extObj) {
+                var id = extObj.id;
 
-				if (!sExts[id] || !sExts[id].querys[key]) {
-					extObj.num = 0;
-					extObj.upate = 0;
+                if (!sExts[id] || !sExts[id].querys[key]) {
+                    extObj.num = 0;
+                    extObj.upate = 0;
 
-					return extObj;
-				}
+                    return extObj;
+                }
 
-				extObj.num = sExts[id].querys[key].num;
-				extObj.update = sExts[id].querys[key].update;
+                extObj.num = sExts[id].querys[key].num;
+                extObj.update = sExts[id].querys[key].update;
 
-				return extObj;
-			});
+                return extObj;
+            });
 
-			matchExts.sort(sortExtFn);
+            matchExts.sort(sortExtFn);
 
-			callback(matchExts);
-		});
-	}
+            callback(matchExts);
+        });
+    }
 
-	function addRecord(type, query, id) {
-		chrome.storage.sync.get(type, function(data) {
-			// data = {ext: {}}
-			var extObj = data;
-			// info = {id: {}};
-			var info = extObj[type];
+    function addRecord(type, query, id) {
+        chrome.storage.sync.get(type, function (data) {
+            // data = {ext: {}}
+            var extObj = data;
+            // info = {id: {}};
+            var info = extObj[type];
 
-			if ($.isEmptyObject(extObj)) {
-				info = extObj[type] = {};
-			}
+            if ($.isEmptyObject(extObj)) {
+                info = extObj[type] = {};
+            }
 
-			var obj;
+            var obj;
 
-			if (!info[id]) {
-				obj = info[id] = createObj4Storage(id, query);
-			} else {
-				obj = info[id];
+            if (!info[id]) {
+                obj = info[id] = createObj4Storage(id, query);
+            }
+            else {
+                obj = info[id];
 
-				if (obj.querys[query]) {
-					obj.querys[query].num += 1;
-				} else {
-					obj.querys[query] = {
-						num: 1,
-						update: +new Date()
-					};
-				}
-			}
+                if (obj.querys[query]) {
+                    obj.querys[query].num += 1;
+                }
+                else {
+                    obj.querys[query] = {
+                        num: 1,
+                        update: +new Date()
 
-			chrome.storage.sync.set(extObj, function() {});
-		});
-	}
+                    };
+                }
+            }
 
-	function createObj4Storage(id, query) {
-		var obj = {
-			id: id,
-			querys: {}
-		};
+            chrome.storage.sync.set(extObj, function () {});
+        });
+    }
 
-		obj.querys[query] = {
-			num: 1,
-			update: +new Date()
-		};
+    function createObj4Storage(id, query) {
+        var obj = {
+            id: id,
+            querys: {}
 
-		return obj;
-	}
+        };
 
-	function createItem(index, item) {
-		var url = item.icons instanceof Array ? item.icons[0].url : '';
+        obj.querys[query] = {
+            num: 1,
+            update: +new Date()
 
-		return [
-			'<div data-type="ext" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
-			'<img class="ec-item-icon" src="' + url + '" alt="" />',
-			'<span class="ec-item-name">' + item.name + '</span>',
-			'</div>'
-		];
-	}
+        };
 
-	module.exports = {
-		onInput: onInput,
-		onEnter: onEnter,
-		createItem: createItem
-	};
+        return obj;
+    }
+
+    function createItem(index, item) {
+        var url = item.icons instanceof Array ? item.icons[0].url : '';
+
+        return [
+            '<div data-type="ext" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
+            '<img class="ec-item-icon" src="' + url + '" alt="" />',
+            '<span class="ec-item-name">' + item.name + '</span>',
+            '</div>'
+        ];
+    }
+
+    module.exports = {
+        onInput: onInput,
+        onEnter: onEnter,
+        createItem: createItem
+
+    };
 });

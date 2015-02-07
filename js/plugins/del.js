@@ -5,19 +5,19 @@
  * @mail solopea@gmail.com
  */
 
-define(function(require, exports, module) {
+define(function (require, exports, module) {
     var util = require('../common/util');
 
     function uninstall(id, cb) {
-        chrome.management.uninstall(id, function() {
+        chrome.management.uninstall(id, function () {
             cb.apply(null, arguments);
         });
     }
 
     // get all
     function getExtensions(key, enabled, callback) {
-        chrome.management.getAll(function(extList) {
-            var matchExts = extList.filter(function(ext) {
+        chrome.management.getAll(function (extList) {
+            var matchExts = extList.filter(function (ext) {
                 return util.matchText(key, ext.name);
             });
 
@@ -27,8 +27,8 @@ define(function(require, exports, module) {
 
     function onInput(key) {
         var that = this;
-        getExtensions(key.toLowerCase(), false, function(matchExts) {
-            sortExtensions(matchExts, key, function(matchExts) {
+        getExtensions(key.toLowerCase(), false, function (matchExts) {
+            sortExtensions(matchExts, key, function (matchExts) {
                 that.showItemList(matchExts);
             });
         });
@@ -46,7 +46,7 @@ define(function(require, exports, module) {
     }
 
     function sortExtensions(matchExts, key, callback) {
-        chrome.storage.sync.get('ext', function(data) {
+        chrome.storage.sync.get('ext', function (data) {
             var sExts = data.ext;
 
             if (!sExts) {
@@ -54,7 +54,7 @@ define(function(require, exports, module) {
             }
 
             // sExts: {id: {id: '', querys: {'key': {num: 0, update: ''}}}}
-            matchExts = matchExts.map(function(extObj) {
+            matchExts = matchExts.map(function (extObj) {
                 var id = extObj.id;
 
                 if (!sExts[id] || !sExts[id].querys[key]) {
@@ -91,5 +91,6 @@ define(function(require, exports, module) {
         onInput: onInput,
         onEnter: onEnter,
         createItem: createItem
+
     };
 });

@@ -1,5 +1,10 @@
-define(function(require, exports, module) {
-    
+/**
+ * @file auth
+ * @author tomasy
+ * @email solopea@gmail.com
+ */
+
+define(function (require, exports, module) {
     function Auth(opt) {
         this.consumer_key = opt.consumer_key;
         this.requestUrl = opt.requestUrl;
@@ -13,17 +18,17 @@ define(function(require, exports, module) {
         this.userName = this.appName + '_username';
     }
 
-    Auth.prototype.set = function(key, value) {
+    Auth.prototype.set = function (key, value) {
         if (value) {
             localStorage[key] = value;
         }
     };
 
-    Auth.prototype.get = function(key) {
+    Auth.prototype.get = function (key) {
         return localStorage[key];
     };
 
-    Auth.prototype.isAuthenticated = function() {
+    Auth.prototype.isAuthenticated = function () {
         var accessToken = this.get(this.accessTokenName);
 
         return !!accessToken;
@@ -34,9 +39,10 @@ define(function(require, exports, module) {
         var data = {
             consumer_key: this.consumer_key,
             redirect_uri: window.location.href
+
         };
 
-        $.post(this.requestUrl, data).done(function(results) {
+        $.post(this.requestUrl, data).done(function (results) {
             var params = handler(results);
 
             params.redirect_uri = that.redirect_uri;
@@ -44,17 +50,17 @@ define(function(require, exports, module) {
 
             chrome.tabs.create({
                 'url': that.authenticateUrl + '?' + $.param(params)
-            }, function(tab) {
 
-            });
+            }, function (tab) {});
         });
     };
 
-    Auth.prototype.getAccessToken = function(handler, callback) {
+    Auth.prototype.getAccessToken = function (handler, callback) {
         var that = this;
         var data = {
             'consumer_key': this.consumer_key,
             'code': this.get(this.requestTokenName)
+
         };
 
         $.ajax({
@@ -63,10 +69,11 @@ define(function(require, exports, module) {
             headers: {
                 'Content-Type': 'application/json; charset=UTF8',
                 'X-Accept': 'application/json'
+
             },
             type: 'POST',
             dataType: 'json',
-            success: function(results) {
+            success: function (results) {
                 var params = handler(results);
 
                 that.set(that.accessTokenName, params.access_token);
@@ -79,10 +86,12 @@ define(function(require, exports, module) {
 
                 if (!error || error === null) {
                     console.log('Unknown error 1 [in getAccessToken].');
-                } else {
+                }
+                else {
                     console.log(error + '[in getAccessToken].');
                 }
             }
+
         });
     };
 

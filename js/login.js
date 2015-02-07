@@ -1,20 +1,27 @@
-define(function(require, exports, module) {
-	console.log('hello login.js....');
-	var Auth = require('./common/auth');
-	var conf = require('./conf/pocket_conf');
+/**
+ * @file login for auth callback
+ * @description auth验证回调页
+ * @author tomasy
+ * @email solopea@gmail.com
+ */
 
-	var auth = new Auth(conf);
+define(function (require, exports, module) {
+    console.log('hello login.js....');
+    var Auth = require('./common/auth');
+    var conf = require('./conf/pocket_conf');
 
-	function handler(results) {
-		var ret = results || {};
+    var auth = new Auth(conf);
 
-		return ret;
-	}
+    function handler(results) {
+        var ret = results || {};
 
-	auth.getAccessToken(handler, function() {
-		console.log('login success!....');
-		window.close();
-	});
+        return ret;
+    }
+
+    auth.getAccessToken(handler, function () {
+        console.log('login success!....');
+        window.close();
+    });
 });
 
 seajs.use('./js/login');

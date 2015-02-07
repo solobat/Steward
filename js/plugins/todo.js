@@ -1,7 +1,13 @@
-define(function(require, exports, module) {
+/**
+ * @file todo command plugin script
+ * @description 待办事项管理，并在标签页显示
+ * @author tomasy
+ * @email solopea@gmail.com
+ */
+
+define(function (require, exports, module) {
     var util = require('../common/util');
     var request = require('../common/request');
-
 
     function createItem(index, item) {
         return [
@@ -13,37 +19,37 @@ define(function(require, exports, module) {
     }
 
     function onInput(key) {
-
     }
 
     function onEnter(elem) {
         if (!elem) {
             addTodo.call(this, this.query);
-        } else {
+        }
+        else {
             removeTodo.call(this, elem);
         }
     }
 
     function removeTodo(id) {
         var cmdbox = this;
-        getTodos(function(todos) {
-            todos = todos.filter(function(todo) {
+        getTodos(function (todos) {
+            todos = todos.filter(function (todo) {
                 return todo.id != id;
             });
 
             chrome.storage.sync.set({
                 todo: todos
-            }, function() {
-                cmdbox.empty();
-            });
+
+            }, function () {
+                    cmdbox.empty();
+                });
         });
     }
-
 
     function addTodo(todo) {
         var cmdbox = this;
 
-        getTodos(function(todos) {
+        getTodos(function (todos) {
             if (!todos || !todos.length) {
                 todos = [];
             }
@@ -51,25 +57,28 @@ define(function(require, exports, module) {
             todos.push({
                 id: +new Date(),
                 text: todo
+
             });
 
             chrome.storage.sync.set({
                 todo: todos
-            }, function() {
-                cmdbox.empty();
-                noticeBg2refresh();
-            });
+
+            }, function () {
+                    cmdbox.empty();
+                    noticeBg2refresh();
+                });
         });
     }
 
     function noticeBg2refresh() {
         request.send({
             action: 'addTodo'
+
         });
     }
 
     function getTodos(callback) {
-        chrome.storage.sync.get('todo', function(results) {
+        chrome.storage.sync.get('todo', function (results) {
             var todos = results.todo;
 
             callback(todos);
@@ -79,7 +88,7 @@ define(function(require, exports, module) {
     function showTodos() {
         var cmdbox = this;
 
-        getTodos(function(todos) {
+        getTodos(function (todos) {
             cmdbox.showItemList(todos);
         });
     }
@@ -89,5 +98,6 @@ define(function(require, exports, module) {
         onInput: onInput,
         onEnter: onEnter,
         createItem: createItem
+
     };
 });

@@ -1,56 +1,63 @@
-define(function(require, exports, module) {
+define(function (require, exports, module) {
     // var $ = require('jquery');
-
     function EasyComplete(opt) {
         this.opt = opt;
         this.ipt = $('#' + opt.id);
+        this.ipt.val(opt.text);
         this.delay = opt.delay || 200;
         this.term = '';
-        this.init();
     }
 
     EasyComplete.prototype = {
-        searchTimer: null,
         constructor: EasyComplete,
+        o: $({}),
+        searchTimer: null,
 
-        init: function() {
-            var that = this;
-
-            this.bindEvent();
-
-            this.empty();
+        bind: function (event, handle) {
+            this.o.bind.apply(this.o, [
+                event,
+                $.proxy(handle, this)
+            ]);
+            return this;
         },
 
-        empty: function() {
+        trigger: function () {
+            this.o.trigger.apply(this.o, arguments);
+            return this;
+        },
+
+        init: function () {
+            this.bindEvent();
+
+            this.trigger('init');
+        },
+
+        empty: function () {
             this.ipt.val('');
             this.setTerm('');
 
-            if (this.opt.onEmpty) {
-                this.opt.onEmpty.call(this);
-            }
+            this.trigger('empty');
         },
 
-        bindEvent: function() {
+        bindEvent: function () {
             var that = this;
 
-            // TODO: 事件处理有点不对劲
-            this.ipt.bind('input', function(event) {
+            this.ipt.bind('input', function (event) {
                 clearTimeout(this.searchTimer);
-                
+
                 var elem = this;
                 var keyCode = event.keyCode;
                 if (keyCode === 38 || keyCode === 40) {
                     return;
                 }
 
-                this.searchTimer = setTimeout(function() {
-                    that.setTerm($(elem).val());
-                    that.refresh();
+                this.searchTimer = setTimeout(function () {
+                    that.open($(elem).val());
                 }, 0);
             });
 
             // keydown才能连续移动选中
-            $(document).bind('keydown', function(event) {
+            $(document).bind('keydown', function (event) {
                 var keyCode = event.keyCode;
 
                 // up or down
@@ -76,12 +83,18 @@ define(function(require, exports, module) {
                 }
             });
 
-            $(document).on('click', '.ec-item', function() {
+            $(document).on('click', '.ec-item', function () {
                 that.select($(this).data('index'));
             });
         },
 
-        select: function(index) {
+        open: function (str) {
+            this.ipt.val(str);
+            this.setTerm(str);
+            this.refresh();
+        },
+
+        select: function (index) {
             var itemNum = $('.ec-item').length;
 
             if (index >= 0 && index <= itemNum - 1) {
@@ -91,15 +104,15 @@ define(function(require, exports, module) {
             }
         },
 
-        setTerm: function(term) {
+        setTerm: function (term) {
             this.term = term;
         },
 
-        getTerm: function() {
+        getTerm: function () {
             return this.term;
         },
 
-        refresh: function() {
+        refresh: function () {
             // 返回数据处理，或让用户自己处理
             var dataList = this.opt.onInput.call(this, this.getTerm());
 
@@ -108,11 +121,11 @@ define(function(require, exports, module) {
             }
         },
 
-        exec: function() {
-            this.opt.onEnter.call(this, $('.ec-item-select').get(0));
+        exec: function () {
+            this.trigger('enter', $('.ec-item-select').get(0));
         },
 
-        move: function(direction) {
+        move: function (direction) {
             var $itemList = $('.ec-itemList');
             var maxIndex = $('.ec-item').length - 1;
             var selectIndex = $('.ec-item-select').data('index');
@@ -120,27 +133,29 @@ define(function(require, exports, module) {
 
             if (direction === 'up') {
                 selectIndex--;
-            } else {
+            }
+            else {
                 selectIndex++;
             }
 
             if (selectIndex < 0) {
                 selectIndex = maxIndex;
-            } else if (selectIndex > maxIndex) {
+            }
+            else if (selectIndex > maxIndex) {
                 selectIndex = 0;
             }
 
             this.selectItemByIndex(selectIndex);
         },
 
-        selectItemByIndex: function(index) {
+        selectItemByIndex: function (index) {
             $('.ec-item-select').removeClass('ec-item-select');
             $('.ec-item:eq(' + index + ')').addClass('ec-item-select');
 
             this.refreshScrollbar();
         },
 
-        refreshScrollbar: function() {
+        refreshScrollbar: function () {
             var $item = $('.ec-item-select');
             var $itemList = $item.parent();
 
@@ -154,18 +169,19 @@ define(function(require, exports, module) {
 
             if (cTop < 0) {
                 $itemList.scrollTop(pTop + cTop);
-            } else if (cTop + cH > pH) {
+            }
+            else if (cTop + cH > pH) {
                 $itemList.scrollTop(pTop + cTop + cH - pH);
             }
         },
 
-        clearList: function() {
+        clearList: function () {
             if ($('.ec-itemList').length) {
                 $('.ec-itemList').remove();
             }
         },
 
-        showItemList: function(dataList) {
+        showItemList: function (dataList) {
             this.clearList();
             if (!dataList || !dataList.length) {
                 return;
@@ -173,7 +189,9 @@ define(function(require, exports, module) {
 
             // TODO: 没有此需求的时候怎么办呢
             var createItemFn = this.opt.createItem;
-            var html = ['<div class="ec-itemList">'];
+            var html = [
+                '<div class="ec-itemList">'
+            ];
 
             for (var i = 0, len = dataList.length; i < len; i++) {
                 if (createItemFn) {
@@ -194,11 +212,13 @@ define(function(require, exports, module) {
             $itemList.css({
                 left: left,
                 top: top
+
             });
             $itemList.find('.ec-item').first().addClass('ec-item-select');
 
             $('body').append($itemList);
         }
+
     };
 
     module.exports = EasyComplete;
