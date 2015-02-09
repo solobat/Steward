@@ -1,15 +1,18 @@
 {
     "manifest_version": 2,
-    "name": "Ikkyu: 扩展(插件)/APP管理 标签页/历史记录/有道翻译等搜索",
-    "short_name": "Ikkyu",
-    "version": "1.3.4",
+    "name": "Steward: 扩展/APP管理/标签页/历史记录/有道翻译/alfred",
+    "short_name": "Steward",
+    "version": "2.0.0",
     "description": "Easy Extensions / Tabs / History / Translation / Pocket",
+    "chrome_url_overrides" : {
+        "newtab": "newtab.html"
+    },
     "background": {
         "page": "bg.html"
     },
     "browser_action": {
         "default_icon": "img/icon.png",
-        "default_title": "Ikkyu",
+        "default_title": "Steward",
         "default_popup": "popup.html"
     },
 

@@ -179,6 +179,7 @@ define(function (require, exports, module) {
             if ($('.ec-itemList').length) {
                 $('.ec-itemList').remove();
             }
+            this.trigger('clear');
         },
 
         showItemList: function (dataList) {
@@ -217,6 +218,7 @@ define(function (require, exports, module) {
             $itemList.find('.ec-item').first().addClass('ec-item-select');
 
             $('body').append($itemList);
+            this.trigger('show');
         }
 
     };
