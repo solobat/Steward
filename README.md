@@ -2,6 +2,7 @@ Steward
 ===============
 
 Alfred for chrome
+
 Easy Extensions / Tabs / History / Translation etc.
 
 ---
