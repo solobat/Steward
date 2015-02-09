@@ -9,6 +9,8 @@ define(function (require, exports, module) {
     var util = require('../common/util');
     var url = "https://fanyi.youdao.com/openapi.do?" + "keyfrom=mineword&key=1362458147&type=data&doctype=json&version=1.1&q=";
     var emptyReg = /^\s+$/g;
+    var title = '有道翻译';
+    var subtitle = '使用有道翻译你想知道的单词或短语...';
 
     function createItem(index, item) {
         return [
@@ -71,6 +73,8 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        title: title,
+        subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter,
         createItem: createItem

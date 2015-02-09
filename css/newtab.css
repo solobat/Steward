@@ -83,6 +83,17 @@ a {
     color: rgb(166, 166, 166);
 }
 
+.ec-item .ec-plugin-name {
+    display: inline-block;
+    width: 20px;
+    margin: 0 5px;
+    font-weight: bold;
+}
+.ec-item .ec-plugin-subtitle {
+    display: block;
+    margin-left: 30px;
+    color: #8F8F8F;
+}
 .ec-itemList .ec-item-select {
     background: rgb(209, 209, 209);
 }

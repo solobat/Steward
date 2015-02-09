@@ -7,6 +7,8 @@
 
 define(function (require, exports, module) {
     var util = require('../common/util');
+    var title = '查找历史记录';
+    var subtitle = '查找历史记录并打开';
 
     function createItem(index, item) {
         return [
@@ -39,6 +41,8 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        title: title,
+        subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter,
         createItem: createItem

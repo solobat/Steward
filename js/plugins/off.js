@@ -7,6 +7,8 @@
 
 define(function (require, exports, module) {
     var util = require('../common/util');
+    var title = '禁用扩展/App';
+    var subtitle = '查找并禁用扩展/App';
 
     function setEnabled(id, enabled) {
         chrome.management.setEnabled(id, enabled, function () {});
@@ -135,6 +137,8 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        title: title,
+        subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter,
         createItem: createItem

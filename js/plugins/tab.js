@@ -7,6 +7,8 @@
 
 define(function (require, exports, module) {
     var util = require('../common/util');
+    var title = '跳转到标签页';
+    var subtitle = '查找并跳转至标签页';
 
     function getAllTabs(key, callback) {
         chrome.windows.getAll(function (wins) {
@@ -57,6 +59,8 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        title: title,
+        subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter,
         createItem: createItem

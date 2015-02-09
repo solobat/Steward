@@ -1,12 +1,13 @@
 Steward
 ===============
 
+Alfred for chrome
 Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 2.0.0
-在new tab中使用
+### 2.0.1
+输入 trigger 后给出相应的提示
 
 ---
 ## Useage
@@ -22,6 +23,5 @@ Easy Extensions / Tabs / History / Translation etc.
 ## TODOS
 + `his` 改进：增加中文匹配，添加url显示
 + 命令执行后去掉此次的 text
-+ 输入 trigger 后给出相应的提示
 + `cls` 清除历史记录
 + [set schema](https://developer.chrome.com/apps/manifest/storage) 了解并运用，以替换on /off 中的sync

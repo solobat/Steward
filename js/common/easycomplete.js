@@ -182,14 +182,14 @@ define(function (require, exports, module) {
             this.trigger('clear');
         },
 
-        showItemList: function (dataList) {
+        showItemList: function (dataList, fn) {
             this.clearList();
             if (!dataList || !dataList.length) {
                 return;
             }
 
             // TODO: 没有此需求的时候怎么办呢
-            var createItemFn = this.opt.createItem;
+            var createItemFn = fn || this.opt.createItem;
             var html = [
                 '<div class="ec-itemList">'
             ];

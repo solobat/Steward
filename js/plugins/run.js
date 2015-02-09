@@ -7,6 +7,8 @@
 
 define(function (require, exports, module) {
     var util = require('../common/util');
+    var title = '运行应用(app)';
+    var subtitle = '查找并运行应用(app)';
 
     function getExtensions(key, callback) {
         chrome.management.getAll(function (extList) {
@@ -48,6 +50,8 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        title: title,
+        subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter,
         createItem: createItem

@@ -10,7 +10,6 @@ define(function (require, exports, module) {
     var storage = require('./common/storage');
     var CONST = require('./common/const');
 
-    // TODO: 改成配置的形式, but cannot use forEach
     var plugins = {
         tab: require('./plugins/tab'),
         on: require('./plugins/on'),
@@ -23,8 +22,47 @@ define(function (require, exports, module) {
         po: require('./plugins/pocket')
 
     };
+    // TODO: optionson
+    // delete plugins[xx, xx, xx]
 
     var cmdbox;
+
+    function findMatchPlugins(query) {
+        var items = [];
+        for (var key in plugins) {
+            if (key.indexOf(query) !== -1) {
+                items.push({
+                    key: key,
+                    title: plugins[key].title || '',
+                    subtitle: plugins[key].subtitle || ''
+                });
+            }
+        }
+
+        return items;
+    }
+
+    function matchPlugins(query) {
+        var items = findMatchPlugins(query);
+
+        this.showItemList(items, function (index, item) {
+            var html = [
+                '<div data-type="plugins" data-index="' + index + '" data-id="' + item.key + '" class="ec-item">',
+                '<span class="ec-plugin-name">' + item.key + '</span>',
+                '<span class="ec-plugin-title">' + item.title + '</span>',
+                '<span class="ec-plugin-subtitle">' + item.subtitle + '</span>',
+                '</div>'
+            ];
+
+            if (index <= 8) {
+                var tipHtml = '<div class="ec-item-tip">'
+                + (util.isMac ? 'CMD' : 'ALT') + ' + ' + (index + 1) + '</div>';
+                html.splice(html.length - 2, 0, tipHtml);
+            }
+
+            return html.join('');
+        });
+    }
 
     function init() {
         $('.cmdbox').focus();
@@ -41,7 +79,8 @@ define(function (require, exports, module) {
                 this.cmd = '';
                 this.query = '';
 
-                if (!str.indexOf(' ')) {
+                if (str.indexOf(' ') === -1) {
+                    matchPlugins.call(this, str);
                     return;
                 }
 
@@ -88,6 +127,13 @@ define(function (require, exports, module) {
         });
 
         cmdbox.bind('enter', function (event, elem) {
+            if (!this.cmd) {
+                var key = $(elem).data('id');
+                this.open(key + ' ');
+
+                return;
+            }
+
             plugins[this.cmd].onEnter.call(this, $(elem).data('id'), elem);
         });
 

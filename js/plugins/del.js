@@ -7,6 +7,8 @@
 
 define(function (require, exports, module) {
     var util = require('../common/util');
+    var title = '删除扩展';
+    var subtitle = '查找并删除扩展';
 
     function uninstall(id, cb) {
         chrome.management.uninstall(id, function () {
@@ -88,6 +90,8 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        title: title,
+        subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter,
         createItem: createItem

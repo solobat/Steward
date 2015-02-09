@@ -9,6 +9,8 @@ define(function (require, exports, module) {
     var Auth = require('../common/auth');
     var conf = require('../conf/pocket_conf');
     var auth = new Auth(conf);
+    var title = '查找pocket';
+    var subtitle = '查找我的pocket文档并打开';
 
     function handler(results) {
         var ret = {};
@@ -82,6 +84,8 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        title: title,
+        subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter,
         createItem: createItem

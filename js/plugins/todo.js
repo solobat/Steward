@@ -8,6 +8,8 @@
 define(function (require, exports, module) {
     var util = require('../common/util');
     var request = require('../common/request');
+    var title = '添加todo';
+    var subtitle = '添加todo，单击todo选项消除';
 
     function createItem(index, item) {
         return [
@@ -22,7 +24,7 @@ define(function (require, exports, module) {
     }
 
     function onEnter(elem) {
-        if (!elem) {
+        if (!elem || $(elem).data('type') === 'plugins') {
             addTodo.call(this, this.query);
         }
         else {
@@ -94,6 +96,8 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        title: title,
+        subtitle: subtitle,
         showTodos: showTodos,
         onInput: onInput,
         onEnter: onEnter,
