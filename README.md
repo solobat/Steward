@@ -1,12 +1,12 @@
-Ikkyu
+Steward
 ===============
 
 Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 1.3.3
-+ 重新打开时保留上一次的cmd
+### 2.0.0
+在new tab中使用
 
 ---
 ## Useage
