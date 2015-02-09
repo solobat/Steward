@@ -7,7 +7,7 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 2.0.1
+### 2.0.1.1
 输入 trigger 后给出相应的提示
 
 ---

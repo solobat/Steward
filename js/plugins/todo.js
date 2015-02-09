@@ -23,12 +23,12 @@ define(function (require, exports, module) {
     function onInput(key) {
     }
 
-    function onEnter(elem) {
+    function onEnter(key, elem) {
         if (!elem || $(elem).data('type') === 'plugins') {
             addTodo.call(this, this.query);
         }
         else {
-            removeTodo.call(this, elem);
+            removeTodo.call(this, key);
         }
     }
 
