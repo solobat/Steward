@@ -81,6 +81,10 @@ a {
 .ec-item .ec-item-note{
     display: block;
     color: rgb(166, 166, 166);
+    overflow: hidden;
+    width: 80%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .ec-item .ec-plugin-name {

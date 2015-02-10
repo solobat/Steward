@@ -7,8 +7,8 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 2.0.1.3
-开发版扩展标红
+### 2.0.3
+计算器
 
 ---
 ## Useage

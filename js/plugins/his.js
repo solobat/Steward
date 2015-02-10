@@ -14,6 +14,7 @@ define(function (require, exports, module) {
         return [
             '<div data-type="his" data-url="' + item.url + '" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
             '<span class="ec-item-name">' + item.title + '</span>',
+            '<span class="ec-item-note">' + item.url + '</span>',
             '</div>'
         ];
     }
@@ -23,9 +24,12 @@ define(function (require, exports, module) {
             text: key
 
         }, function (hisList) {
-                if (hisList.length) {
-                    callback(hisList);
-                }
+                hisList = hisList || [];
+                hisList = hisList.filter(function (his) {
+                    return !!his.title;
+                });
+
+                callback(hisList);
             });
     }
 
