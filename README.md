@@ -8,7 +8,7 @@ Easy Extensions / Tabs / History / Translation etc.
 ---
 ## Update
 ### 2.0.1.2
-修改mac下选中item键绑定cmd --> ctrl
+开发版扩展标红
 
 ---
 ## Useage

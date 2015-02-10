@@ -20,6 +20,7 @@ define(function (require, exports, module) {
                 return util.matchText(key, ext.name) && ext.enabled === enabled;
             });
 
+            console.log(matchExts);
             callback(matchExts);
         });
     }
@@ -131,7 +132,7 @@ define(function (require, exports, module) {
         return [
             '<div data-type="ext" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
             '<img class="ec-item-icon" src="' + url + '" alt="" />',
-            '<span class="ec-item-name">' + item.name + '</span>',
+            '<span class="ec-item-name ' + (item.installType === 'development' ? 'ec-item-warn' : '') + '">' + item.name + '</span>',
             '</div>'
         ];
     }

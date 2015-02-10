@@ -98,6 +98,10 @@ a {
     background: rgb(209, 209, 209);
 }
 
+.ec-item .ec-item-warn {
+    color: red;
+}
+
 .ec-item .ec-item-tip{
     position: absolute;
     right: 0;
