@@ -55,6 +55,7 @@ a {
 .ec-itemList .ec-item {
     padding: 8px 5px;
     position: relative;
+    border-bottom: 1px solid rgb(209, 209, 209);
 }
 
 .ec-itemList .ec-item:hover {
