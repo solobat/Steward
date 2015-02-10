@@ -41,6 +41,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        key: 'his',
         title: title,
         subtitle: subtitle,
         onInput: onInput,

@@ -84,6 +84,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        key: 'po',
         title: title,
         subtitle: subtitle,
         onInput: onInput,

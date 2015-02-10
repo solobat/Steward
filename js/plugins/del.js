@@ -90,6 +90,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        key: 'del',
         title: title,
         subtitle: subtitle,
         onInput: onInput,

@@ -137,6 +137,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        key: 'on',
         title: title,
         subtitle: subtitle,
         onInput: onInput,

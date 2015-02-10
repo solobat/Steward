@@ -23,6 +23,5 @@ Easy Extensions / Tabs / History / Translation etc.
 ---
 ## TODOS
 + `his` 改进：增加中文匹配，添加url显示
-+ 命令执行后去掉此次的 text
 + `cls` 清除历史记录
 + [set schema](https://developer.chrome.com/apps/manifest/storage) 了解并运用，以替换on /off 中的sync

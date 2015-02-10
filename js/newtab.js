@@ -4,11 +4,12 @@
  * @email solopea@gmail.com
  */
 
-define(function (require, exports, module) {
+define(function(require, exports, module) {
     var EasyComplete = require('./common/easycomplete');
     var util = require('./common/util');
     var storage = require('./common/storage');
     var CONST = require('./common/const');
+    var regValidExpress = /^(==|~=|&&|\|\||[0-9]|[\+\-\*\/\^\.%, ""]|[\(\)\|\!\[\]])+$/;
 
     var plugins = {
         tab: require('./plugins/tab'),
@@ -19,7 +20,8 @@ define(function (require, exports, module) {
         his: require('./plugins/his'),
         yd: require('./plugins/yd'),
         todo: require('./plugins/todo'),
-        po: require('./plugins/pocket')
+        po: require('./plugins/pocket'),
+        calc: require('./plugins/calculate')
 
     };
     // TODO: optionson
@@ -45,7 +47,7 @@ define(function (require, exports, module) {
     function matchPlugins(query) {
         var items = findMatchPlugins(query);
 
-        this.showItemList(items, function (index, item) {
+        this.showItemList(items, function(index, item) {
             var html = [
                 '<div data-type="plugins" data-index="' + index + '" data-id="' + item.key + '" class="ec-item">',
                 '<span class="ec-plugin-name">' + item.key + '</span>',
@@ -55,8 +57,7 @@ define(function (require, exports, module) {
             ];
 
             if (index <= 8) {
-                var tipHtml = '<div class="ec-item-tip">'
-                + (util.isMac ? 'CTRL' : 'ALT') + ' + ' + (index + 1) + '</div>';
+                var tipHtml = '<div class="ec-item-tip">' + (util.isMac ? 'CTRL' : 'ALT') + ' + ' + (index + 1) + '</div>';
                 html.splice(html.length - 2, 0, tipHtml);
             }
 
@@ -69,19 +70,26 @@ define(function (require, exports, module) {
 
         cmdbox = new EasyComplete({
             id: 'cmdbox',
-            onInput: function (str) {
+            onInput: function(str) {
                 if (!str) {
                     this.empty();
 
                     return;
                 }
 
+                this.str = str;
                 this.cmd = '';
                 this.query = '';
 
+                if (regValidExpress.test(str)) {
+                    this.cmd = 'calc';
+                    storage.h5.set(CONST.LAST_CMD, str);
+
+                    return plugins.calc.onInput.call(this, str);
+                }
+
                 if (str.indexOf(' ') === -1) {
-                    matchPlugins.call(this, str);
-                    return;
+                    return matchPlugins.call(this, str);
                 }
 
                 // WHY: why /g can not capture (.+)
@@ -99,18 +107,16 @@ define(function (require, exports, module) {
                 this.cmd = cmd;
                 this.query = key;
 
-                plugins[this.cmd].onInput.call(this, key);
 
                 storage.h5.set(CONST.LAST_CMD, str);
-                return;
+                return plugins[this.cmd].onInput.call(this, key);
             },
 
-            createItem: function (index, item) {
+            createItem: function(index, item) {
                 var html = plugins[this.cmd].createItem.call(this, index, item);
 
                 if (index <= 8) {
-                    var tipHtml = '<div class="ec-item-tip">'
-                    + (util.isMac ? 'CTRL' : 'ALT') + ' + ' + (index + 1) + '</div>';
+                    var tipHtml = '<div class="ec-item-tip">' + (util.isMac ? 'CTRL' : 'ALT') + ' + ' + (index + 1) + '</div>';
                     html.splice(html.length - 2, 0, tipHtml);
                 }
 
@@ -119,17 +125,17 @@ define(function (require, exports, module) {
 
         });
 
-        cmdbox.bind('init', function () {
+        cmdbox.bind('init', function() {
             var cmd = storage.h5.get(CONST.LAST_CMD) || 'todo ';
 
             this.ipt.val(cmd);
-            this.open(cmd);
+            this.render(cmd);
         });
 
-        cmdbox.bind('enter', function (event, elem) {
+        cmdbox.bind('enter', function(event, elem) {
             if (!this.cmd) {
                 var key = $(elem).data('id');
-                this.open(key + ' ');
+                this.render(key + ' ');
 
                 return;
             }
@@ -137,20 +143,20 @@ define(function (require, exports, module) {
             plugins[this.cmd].onEnter.call(this, $(elem).data('id'), elem);
         });
 
-        cmdbox.bind('empty', function () {
+        cmdbox.bind('empty', function() {
             var that = this;
 
             that.cmd = 'todo';
-            that.searchTimer = setTimeout(function () {
+            that.searchTimer = setTimeout(function() {
                 plugins.todo.showTodos.call(that);
             }, that.delay);
         });
 
-        cmdbox.bind('show', function () {
+        cmdbox.bind('show', function() {
             this.ipt.addClass('cmdbox-drop');
         });
 
-        cmdbox.bind('clear', function () {
+        cmdbox.bind('clear', function() {
             this.ipt.removeClass('cmdbox-drop');
         });
 

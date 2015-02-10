@@ -52,7 +52,8 @@ define(function (require, exports, module) {
                 }
 
                 this.searchTimer = setTimeout(function () {
-                    that.open($(elem).val());
+                    that.setTerm($(elem).val());
+                    that.refresh();
                 }, 0);
             });
 
@@ -89,7 +90,7 @@ define(function (require, exports, module) {
             });
         },
 
-        open: function (str) {
+        render: function (str) {
             this.ipt.val(str);
             this.setTerm(str);
             this.refresh();

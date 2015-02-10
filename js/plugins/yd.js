@@ -73,6 +73,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        key: 'yd',
         title: title,
         subtitle: subtitle,
         onInput: onInput,

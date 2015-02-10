@@ -96,6 +96,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        key: 'todo',
         title: title,
         subtitle: subtitle,
         showTodos: showTodos,

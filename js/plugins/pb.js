@@ -20,6 +20,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        key: 'pb',
         onInput: onInput,
         onEnter: onEnter,
         createItem: createItem

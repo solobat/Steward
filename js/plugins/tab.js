@@ -59,6 +59,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        key: 'tab',
         title: title,
         subtitle: subtitle,
         onInput: onInput,

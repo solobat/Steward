@@ -50,6 +50,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        key: 'run',
         title: title,
         subtitle: subtitle,
         onInput: onInput,
