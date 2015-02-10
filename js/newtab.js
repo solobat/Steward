@@ -56,7 +56,7 @@ define(function (require, exports, module) {
 
             if (index <= 8) {
                 var tipHtml = '<div class="ec-item-tip">'
-                + (util.isMac ? 'CMD' : 'ALT') + ' + ' + (index + 1) + '</div>';
+                + (util.isMac ? 'CTRL' : 'ALT') + ' + ' + (index + 1) + '</div>';
                 html.splice(html.length - 2, 0, tipHtml);
             }
 
@@ -110,7 +110,7 @@ define(function (require, exports, module) {
 
                 if (index <= 8) {
                     var tipHtml = '<div class="ec-item-tip">'
-                    + (util.isMac ? 'CMD' : 'ALT') + ' + ' + (index + 1) + '</div>';
+                    + (util.isMac ? 'CTRL' : 'ALT') + ' + ' + (index + 1) + '</div>';
                     html.splice(html.length - 2, 0, tipHtml);
                 }
 

@@ -7,8 +7,8 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 2.0.1.1
-输入 trigger 后给出相应的提示
+### 2.0.1.2
+修改mac下选中item键绑定cmd --> ctrl
 
 ---
 ## Useage

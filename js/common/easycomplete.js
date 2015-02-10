@@ -1,5 +1,5 @@
 define(function (require, exports, module) {
-    // var $ = require('jquery');
+    var util = require('./util');
     function EasyComplete(opt) {
         this.opt = opt;
         this.ipt = $('#' + opt.id);
@@ -73,7 +73,8 @@ define(function (require, exports, module) {
                     return;
                 }
 
-                if ((event.altKey || event.metaKey) && 49 <= keyCode && keyCode <= 57) {
+                var keyType = util.isMac ? 'ctrlKey' : 'altKey';
+                if (event[keyType] && 49 <= keyCode && keyCode <= 57) {
                     event.preventDefault();
                     event.stopPropagation();
 
