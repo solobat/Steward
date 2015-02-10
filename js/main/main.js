@@ -5,23 +5,23 @@
  */
 
 define(function(require, exports, module) {
-    var EasyComplete = require('./common/easycomplete');
-    var util = require('./common/util');
-    var storage = require('./common/storage');
-    var CONST = require('./common/const');
+    var EasyComplete = require('/js/common/easycomplete');
+    var util = require('/js/common/util');
+    var storage = require('/js/common/storage');
+    var CONST = require('/js/common/const');
     var regValidExpress = /^(==|~=|&&|\|\||[0-9]|[\+\-\*\/\^\.%, ""]|[\(\)\|\!\[\]])+$/;
 
     var plugins = {
-        tab: require('./plugins/tab'),
-        on: require('./plugins/on'),
-        off: require('./plugins/off'),
-        del: require('./plugins/del'),
-        run: require('./plugins/run'),
-        his: require('./plugins/his'),
-        yd: require('./plugins/yd'),
-        todo: require('./plugins/todo'),
-        po: require('./plugins/pocket'),
-        calc: require('./plugins/calculate')
+        tab: require('/js/plugins/tab'),
+        on: require('/js/plugins/on'),
+        off: require('/js/plugins/off'),
+        del: require('/js/plugins/del'),
+        run: require('/js/plugins/run'),
+        his: require('/js/plugins/his'),
+        yd: require('/js/plugins/yd'),
+        todo: require('/js/plugins/todo'),
+        po: require('/js/plugins/pocket'),
+        calc: require('/js/plugins/calculate')
 
     };
     // TODO: optionson

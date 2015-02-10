@@ -13,4 +13,4 @@ seajs.config({
 
 });
 
-seajs.use('./js/popup');
+seajs.use('/js/main/main');
