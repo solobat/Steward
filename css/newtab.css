@@ -106,7 +106,7 @@ a {
 .ec-item .ec-item-tip .icon {
     font-size: 16px;
     position: relative;
-    top: 1px;
+    top: 3px;
 }
 /* scrollbar styles */
 ::-webkit-scrollbar {

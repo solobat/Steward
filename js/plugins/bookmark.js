@@ -5,36 +5,26 @@
  * @email solopea@gmail.com
  */
 
-define(function(require, exports, module) {
-    var util = require('../common/util');
-
+define(function (require, exports, module) {
     var key = 'bm';
     var icon = chrome.extension.getURL('img/bookmark.png');
     var title = '查找书签';
     var subtitle = '查找书签记录并打开';
 
-    function createItem(index, item) {
-        return [
-            '<div data-type="bm" data-url="' + item.url + '" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
-            '<span class="ec-item-name">' + item.title + '</span>',
-            '<span class="ec-item-note">' + item.url + '</span>',
-            '</div>'
-        ];
-    }
 
     function searchBookmark(cmdbox, key, callback) {
         if (!key) {
-            chrome.bookmarks.getRecent(10, function(bookMarkList) {
+            chrome.bookmarks.getRecent(10, function (bookMarkList) {
                 callback(bookMarkList || []);
             });
 
             return;
         }
 
-        chrome.bookmarks.search(key, function(bookMarkList) {
+        chrome.bookmarks.search(key, function (bookMarkList) {
             bookMarkList = bookMarkList || [];
 
-            bookMarkList = bookMarkList.filter(function(bookmark) {
+            bookMarkList = bookMarkList.filter(function (bookmark) {
                 return bookmark.url !== undefined;
             });
 
@@ -44,7 +34,7 @@ define(function(require, exports, module) {
 
     function onInput(key) {
         var that = this;
-        searchBookmark(that, key, function(bookMarkList) {
+        searchBookmark(that, key, function (bookMarkList) {
             var arr = [];
             for (var i in bookMarkList) {
                 var item = bookMarkList[i];
@@ -56,6 +46,7 @@ define(function(require, exports, module) {
                     title: item.title,
                     desc: item.url,
                     isWarn: false
+
                 });
             }
             that.showItemList(arr);
@@ -73,5 +64,6 @@ define(function(require, exports, module) {
         subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter
+
     };
 });

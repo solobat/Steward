@@ -33,6 +33,7 @@ define(function (require, exports, module) {
                 icon: icon,
                 title: title,
                 desc: subtitle
+
             };
         });
     }
@@ -94,5 +95,6 @@ define(function (require, exports, module) {
         subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter
+
     };
 });

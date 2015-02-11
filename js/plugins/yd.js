@@ -7,7 +7,8 @@
 
 define(function (require, exports, module) {
     var util = require('../common/util');
-    var url = "https://fanyi.youdao.com/openapi.do?" + "keyfrom=mineword&key=1362458147&type=data&doctype=json&version=1.1&q=";
+    var url = 'https://fanyi.youdao.com/openapi.do?' +
+    'keyfrom=mineword&key=1362458147&type=data&doctype=json&version=1.1&q=';
     var emptyReg = /^\s+$/g;
 
     var key = 'yd';
@@ -34,10 +35,11 @@ define(function (require, exports, module) {
                 icon: icon,
                 title: item.text,
                 desc: item.note
+
             };
         });
     }
-    
+
     function getTranslation(cmdbox, key) {
         $.get(url + key, function (data) {
             if (!data.basic) {
@@ -85,5 +87,6 @@ define(function (require, exports, module) {
         subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter
+
     };
 });

@@ -5,7 +5,7 @@
  * @mail solopea@gmail.com
  */
 
-define(function(require, exports, module) {
+define(function (require, exports, module) {
     var util = require('../common/util');
 
     var key = 'del';
@@ -14,15 +14,15 @@ define(function(require, exports, module) {
     var subtitle = '查找并删除扩展';
 
     function uninstall(id, cb) {
-        chrome.management.uninstall(id, function() {
+        chrome.management.uninstall(id, function () {
             cb.apply(null, arguments);
         });
     }
 
     // get all
     function getExtensions(key, enabled, callback) {
-        chrome.management.getAll(function(extList) {
-            var matchExts = extList.filter(function(ext) {
+        chrome.management.getAll(function (extList) {
+            var matchExts = extList.filter(function (ext) {
                 return util.matchText(key, ext.name);
             });
 
@@ -41,31 +41,32 @@ define(function(require, exports, module) {
                 title: item.name,
                 desc: item.description,
                 isWarn: isWarn
+
             };
         });
     }
     function onInput(key) {
         var that = this;
-        getExtensions(key.toLowerCase(), false, function(matchExts) {
-            sortExtensions(matchExts, key, function(matchExts) {
+        getExtensions(key.toLowerCase(), false, function (matchExts) {
+            sortExtensions(matchExts, key, function (matchExts) {
                 that.showItemList(dataFormat(matchExts));
             });
         });
     }
 
     function onEnter(id) {
-        uninstall(id, function() {
+        uninstall(id, function () {
             // cb
         });
         this.refresh();
     }
 
     function sortExtFn(a, b) {
-        return a.num == b.num ? b.update - a.upate : b.num - a.num;
+        return a.num === b.num ? b.update - a.upate : b.num - a.num;
     }
 
     function sortExtensions(matchExts, key, callback) {
-        chrome.storage.sync.get('ext', function(data) {
+        chrome.storage.sync.get('ext', function (data) {
             var sExts = data.ext;
 
             if (!sExts) {
@@ -73,7 +74,7 @@ define(function(require, exports, module) {
             }
 
             // sExts: {id: {id: '', querys: {'key': {num: 0, update: ''}}}}
-            matchExts = matchExts.map(function(extObj) {
+            matchExts = matchExts.map(function (extObj) {
                 var id = extObj.id;
 
                 if (!sExts[id] || !sExts[id].querys[key]) {
@@ -102,5 +103,6 @@ define(function(require, exports, module) {
         subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter
+
     };
 });

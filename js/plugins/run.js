@@ -34,6 +34,7 @@ define(function (require, exports, module) {
                 title: item.name,
                 desc: item.description,
                 isWarn: isWarn
+
             };
         });
     }
@@ -63,5 +64,6 @@ define(function (require, exports, module) {
         subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter
+
     };
 });

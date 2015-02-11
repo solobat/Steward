@@ -5,34 +5,32 @@
  * @mail solopea@gmail.com
  */
 
-define(function(require, exports, module) {
-    var util = require('../common/util');
-
+define(function (require, exports, module) {
     var key = 'calc';
     var icon = chrome.extension.getURL('img/calc.png');
     var title = '运算';
     var subtitle = '支持各种四则运算';
 
-
     function onInput() {
         var data = [];
         try {
             result = eval(this.str);
-            data = [{
-                key: title,
-                icon: icon,
-                title: result,
-                desc: subtitle
-            }];
+            data = [
+                {
+                    key: title,
+                    icon: icon,
+                    title: result,
+                    desc: subtitle
+
+                }
+            ];
         }
-        catch (e) {
-        }
+        catch (e) {}
 
         return data;
     }
 
     function onEnter(id) {
-
     }
 
     module.exports = {

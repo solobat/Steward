@@ -4,7 +4,7 @@
  * @email solopea@gmail.com
  */
 
-define(function(require, exports, module) {
+define(function (require, exports, module) {
     var EasyComplete = require('/js/common/easycomplete');
     var util = require('/js/common/util');
     var storage = require('/js/common/storage');
@@ -25,9 +25,8 @@ define(function(require, exports, module) {
         calc: require('/js/plugins/calculate')
 
     };
-    // TODO: optionson
+    // TODO: options
     // delete plugins[xx, xx, xx]
-
     var cmdbox;
 
     function findMatchPlugins(query) {
@@ -41,6 +40,7 @@ define(function(require, exports, module) {
                     icon: plugins[key].icon,
                     title: plugins[key].title || '',
                     desc: plugins[key].subtitle || ''
+
                 });
             }
         }
@@ -59,7 +59,7 @@ define(function(require, exports, module) {
 
         cmdbox = new EasyComplete({
             id: 'cmdbox',
-            onInput: function(str) {
+            onInput: function (str) {
                 if (!str) {
                     this.empty();
 
@@ -96,12 +96,11 @@ define(function(require, exports, module) {
                 this.cmd = cmd;
                 this.query = key;
 
-
                 storage.h5.set(CONST.LAST_CMD, str);
                 return plugins[this.cmd].onInput.call(this, key);
             },
 
-            createItem: function(index, item) {
+            createItem: function (index, item) {
                 var html = [
                     '<div data-type="' + item.key + '" data-url="' + item.url + '" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
                     '<img class="ec-item-icon" src="' + item.icon + '"/>',
@@ -111,7 +110,7 @@ define(function(require, exports, module) {
                 ];
 
                 if (index <= 8) {
-                    var tipHtml = '<div class="ec-item-tip">' + (util.isMac ? '<span class="icon">⌘</span>' : 'ALT') + (index + 1) + '</div>';
+                    var tipHtml = '<div class="ec-item-tip">' + (util.isMac ? '<span class="icon">⌃</span>' : 'ALT') + (index + 1) + '</div>';
                     html.splice(html.length - 2, 0, tipHtml);
                 }
 
@@ -120,14 +119,14 @@ define(function(require, exports, module) {
 
         });
 
-        cmdbox.bind('init', function() {
+        cmdbox.bind('init', function () {
             var cmd = storage.h5.get(CONST.LAST_CMD) || 'todo ';
 
             this.ipt.val(cmd);
             this.render(cmd);
         });
 
-        cmdbox.bind('enter', function(event, elem) {
+        cmdbox.bind('enter', function (event, elem) {
             if (!this.cmd) {
                 var key = $(elem).data('id');
                 this.render(key + ' ');
@@ -138,20 +137,20 @@ define(function(require, exports, module) {
             plugins[this.cmd].onEnter.call(this, $(elem).data('id'), elem);
         });
 
-        cmdbox.bind('empty', function() {
+        cmdbox.bind('empty', function () {
             var that = this;
 
             that.cmd = 'todo';
-            that.searchTimer = setTimeout(function() {
+            that.searchTimer = setTimeout(function () {
                 plugins.todo.showTodos.call(that);
             }, that.delay);
         });
 
-        cmdbox.bind('show', function() {
+        cmdbox.bind('show', function () {
             this.ipt.addClass('cmdbox-drop');
         });
 
-        cmdbox.bind('clear', function() {
+        cmdbox.bind('clear', function () {
             this.ipt.removeClass('cmdbox-drop');
         });
 

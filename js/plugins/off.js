@@ -5,7 +5,7 @@
  * @email solopea@gmail.com
  */
 
-define(function(require, exports, module) {
+define(function (require, exports, module) {
     var util = require('../common/util');
     var key = 'off';
     var icon = chrome.extension.getURL('img/off.png');
@@ -13,12 +13,12 @@ define(function(require, exports, module) {
     var subtitle = '查找并禁用扩展/App';
 
     function setEnabled(id, enabled) {
-        chrome.management.setEnabled(id, enabled, function() {});
+        chrome.management.setEnabled(id, enabled, function () {});
     }
 
     function getExtensions(key, enabled, callback) {
-        chrome.management.getAll(function(extList) {
-            var matchExts = extList.filter(function(ext) {
+        chrome.management.getAll(function (extList) {
+            var matchExts = extList.filter(function (ext) {
                 return util.matchText(key, ext.name) && ext.enabled === enabled;
             });
 
@@ -37,14 +37,15 @@ define(function(require, exports, module) {
                 title: item.name,
                 desc: item.description,
                 isWarn: isWarn
+
             };
         });
     }
 
     function onInput(key) {
         var that = this;
-        getExtensions(key.toLowerCase(), true, function(matchExts) {
-            sortExtensions(matchExts, key, function(matchExts) {
+        getExtensions(key.toLowerCase(), true, function (matchExts) {
+            sortExtensions(matchExts, key, function (matchExts) {
                 that.showItemList(dataFormat(matchExts));
             });
         });
@@ -57,11 +58,11 @@ define(function(require, exports, module) {
     }
 
     function sortExtFn(a, b) {
-        return a.num == b.num ? b.update - a.upate : b.num - a.num;
+        return a.num === b.num ? b.update - a.upate : b.num - a.num;
     }
 
     function sortExtensions(matchExts, key, callback) {
-        chrome.storage.sync.get('ext', function(data) {
+        chrome.storage.sync.get('ext', function (data) {
             var sExts = data.ext;
 
             if (!sExts) {
@@ -69,7 +70,7 @@ define(function(require, exports, module) {
             }
 
             // sExts: {id: {id: '', querys: {'key': {num: 0, update: ''}}}}
-            matchExts = matchExts.map(function(extObj) {
+            matchExts = matchExts.map(function (extObj) {
                 var id = extObj.id;
 
                 if (!sExts[id] || !sExts[id].querys[key]) {
@@ -92,7 +93,7 @@ define(function(require, exports, module) {
     }
 
     function addRecord(type, query, id) {
-        chrome.storage.sync.get(type, function(data) {
+        chrome.storage.sync.get(type, function (data) {
             // data = {ext: {}}
             var extObj = data;
             // info = {id: {}};
@@ -106,12 +107,14 @@ define(function(require, exports, module) {
 
             if (!info[id]) {
                 obj = info[id] = createObj4Storage(id, query);
-            } else {
+            }
+            else {
                 obj = info[id];
 
                 if (obj.querys[query]) {
                     obj.querys[query].num += 1;
-                } else {
+                }
+                else {
                     obj.querys[query] = {
                         num: 1,
                         update: +new Date()
@@ -120,7 +123,7 @@ define(function(require, exports, module) {
                 }
             }
 
-            chrome.storage.sync.set(extObj, function() {});
+            chrome.storage.sync.set(extObj, function () {});
         });
     }
 
@@ -140,7 +143,6 @@ define(function(require, exports, module) {
         return obj;
     }
 
-
     module.exports = {
         key: key,
         icon: icon,
@@ -148,5 +150,6 @@ define(function(require, exports, module) {
         subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter
+
     };
 });

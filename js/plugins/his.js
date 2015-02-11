@@ -6,7 +6,6 @@
  */
 
 define(function (require, exports, module) {
-    var util = require('../common/util');
     var key = 'his';
     var icon = chrome.extension.getURL('img/history.png');
     var title = '查找历史记录';
@@ -35,6 +34,7 @@ define(function (require, exports, module) {
                 title: item.title,
                 desc: item.url,
                 url: item.url
+
             };
         });
     }
@@ -57,5 +57,6 @@ define(function (require, exports, module) {
         subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter
+
     };
 });

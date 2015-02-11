@@ -46,6 +46,7 @@ define(function (require, exports, module) {
                 icon: item.favIconUrl,
                 title: item.title,
                 desc: subtitle
+
             };
         });
     }
@@ -71,5 +72,6 @@ define(function (require, exports, module) {
         subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter
+
     };
 });

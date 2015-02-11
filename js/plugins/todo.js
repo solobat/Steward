@@ -6,7 +6,6 @@
  */
 
 define(function (require, exports, module) {
-    var util = require('../common/util');
     var request = require('../common/request');
 
     var key = 'todo';
@@ -89,6 +88,7 @@ define(function (require, exports, module) {
                 icon: icon,
                 title: item.title,
                 desc: subtitle
+
             };
         });
     }

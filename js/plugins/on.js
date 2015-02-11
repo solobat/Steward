@@ -37,6 +37,7 @@ define(function (require, exports, module) {
                 title: item.name,
                 desc: item.description,
                 isWarn: isWarn
+
             };
         });
     }
@@ -57,7 +58,7 @@ define(function (require, exports, module) {
     }
 
     function sortExtFn(a, b) {
-        return a.num == b.num ? b.update - a.upate : b.num - a.num;
+        return a.num === b.num ? b.update - a.upate : b.num - a.num;
     }
 
     function sortExtensions(matchExts, key, callback) {
@@ -149,5 +150,6 @@ define(function (require, exports, module) {
         subtitle: subtitle,
         onInput: onInput,
         onEnter: onEnter
+
     };
 });
