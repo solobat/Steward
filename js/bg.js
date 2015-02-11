@@ -46,7 +46,7 @@ function refresh() {
                 }
 
                 chrome.tabs.executeScript(tab.id, {
-                    code: 'document.title = "' + todo.text + '"'
+                    code: 'document.title = "' + todo.title + '"'
 
                 });
             }

@@ -7,6 +7,9 @@
 
 define(function (require, exports, module) {
     var util = require('../common/util');
+
+    var key = 'tab';
+    var icon = chrome.extension.getURL('img/tab.png');
     var title = '跳转到标签页';
     var subtitle = '查找并跳转至标签页';
 
@@ -15,7 +18,7 @@ define(function (require, exports, module) {
             if (!wins.length) {
                 return;
             }
-            var matchTabs = [];
+            var data = [];
             for (var i = 0, len = wins.length; i < len; i++) {
                 // 闭包
                 (function (index) {
@@ -24,10 +27,10 @@ define(function (require, exports, module) {
                             return util.matchText(key, tab.title);
                         });
 
-                        matchTabs = matchTabs.concat(tabList);
+                        data = data.concat(tabList);
 
                         if (index === len - 1) {
-                            callback(matchTabs);
+                            callback(data);
                         }
                     });
                 })(i);
@@ -35,19 +38,22 @@ define(function (require, exports, module) {
         });
     }
 
-    function createItem(index, item) {
-        return [
-            '<div data-type="tab" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
-            '<img class="ec-item-icon" src="' + item.favIconUrl + '" alt="" />',
-            '<span class="ec-item-name">' + item.title + '</span>',
-            '</div>'
-        ];
+    function dataFormat(rawList) {
+        return rawList.map(function (item) {
+            return {
+                key: key,
+                id: item.id,
+                icon: item.favIconUrl,
+                title: item.title,
+                desc: subtitle
+            };
+        });
     }
 
     function onInput(key) {
         var that = this;
-        getAllTabs(key, function (matchTabs) {
-            that.showItemList(matchTabs);
+        getAllTabs(key, function (data) {
+            that.showItemList(dataFormat(data));
         });
     }
 
@@ -59,12 +65,11 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
-        key: 'tab',
+        key: key,
+        icon: icon,
         title: title,
         subtitle: subtitle,
         onInput: onInput,
-        onEnter: onEnter,
-        createItem: createItem
-
+        onEnter: onEnter
     };
 });

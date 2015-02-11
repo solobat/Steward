@@ -1,4 +1,5 @@
-## bookmark
-+ `bm` 作为trigger
-+ 主要用来添加书签
-+ `bm `后显示所有文件夹
+## 整理
++ 图标-item icon/plugin icon
++ 主标题-title
++ 说明-desc
++ 转入中-desc

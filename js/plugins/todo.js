@@ -8,17 +8,11 @@
 define(function (require, exports, module) {
     var util = require('../common/util');
     var request = require('../common/request');
+
+    var key = 'todo';
+    var icon = chrome.extension.getURL('img/todo.png');
     var title = '添加todo';
     var subtitle = '添加todo，单击todo选项消除';
-
-    function createItem(index, item) {
-        return [
-            '<div data-type="todo" data-id="' + item.id + '" data-index="' + index + '" class="ec-item">',
-            '<span class="ec-item-text">' + item.text + '</span>',
-            '<span class="ec-item-note">TODO</span>',
-            '</div>'
-        ];
-    }
 
     function onInput(key) {
     }
@@ -36,7 +30,7 @@ define(function (require, exports, module) {
         var cmdbox = this;
         getTodos(function (todos) {
             todos = todos.filter(function (todo) {
-                return todo.id != id;
+                return todo.id !== id;
             });
 
             chrome.storage.sync.set({
@@ -58,7 +52,7 @@ define(function (require, exports, module) {
 
             todos.push({
                 id: +new Date(),
-                text: todo
+                title: todo
 
             });
 
@@ -87,22 +81,33 @@ define(function (require, exports, module) {
         });
     }
 
+    function dataFormat(rawList) {
+        return rawList.map(function (item) {
+            return {
+                key: key,
+                id: item.id,
+                icon: icon,
+                title: item.title,
+                desc: subtitle
+            };
+        });
+    }
     function showTodos() {
         var cmdbox = this;
 
         getTodos(function (todos) {
-            cmdbox.showItemList(todos);
+            cmdbox.showItemList(dataFormat(todos));
         });
     }
 
     module.exports = {
-        key: 'todo',
+        key: key,
+        icon: icon,
         title: title,
         subtitle: subtitle,
         showTodos: showTodos,
         onInput: onInput,
-        onEnter: onEnter,
-        createItem: createItem
+        onEnter: onEnter
 
     };
 });

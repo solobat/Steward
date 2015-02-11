@@ -9,17 +9,11 @@ define(function (require, exports, module) {
     var util = require('../common/util');
     var url = "https://fanyi.youdao.com/openapi.do?" + "keyfrom=mineword&key=1362458147&type=data&doctype=json&version=1.1&q=";
     var emptyReg = /^\s+$/g;
+
+    var key = 'yd';
+    var icon = chrome.extension.getURL('img/youdao.png');
     var title = '有道翻译';
     var subtitle = '使用有道翻译你想知道的单词或短语...';
-
-    function createItem(index, item) {
-        return [
-            '<div data-type="yd" data-index="' + index + '" class="ec-item">',
-            '<span class="ec-item-text">' + item.text + '</span>',
-            '<span class="ec-item-note">' + item.note + '</span>',
-            '</div>'
-        ];
-    }
 
     function onInput(key) {
         if (emptyReg.test(key)) {
@@ -32,6 +26,18 @@ define(function (require, exports, module) {
     function onEnter(id) {
     }
 
+    function dataFormat(rawList) {
+        return rawList.map(function (item) {
+            return {
+                key: key,
+                id: item.id,
+                icon: icon,
+                title: item.text,
+                desc: item.note
+            };
+        });
+    }
+    
     function getTranslation(cmdbox, key) {
         $.get(url + key, function (data) {
             if (!data.basic) {
@@ -68,17 +74,16 @@ define(function (require, exports, module) {
 
             retData = retData.concat(explains).concat(webs);
 
-            cmdbox.showItemList(retData);
+            cmdbox.showItemList(dataFormat(retData));
         });
     }
 
     module.exports = {
-        key: 'yd',
+        key: key,
+        icon: icon,
         title: title,
         subtitle: subtitle,
         onInput: onInput,
-        onEnter: onEnter,
-        createItem: createItem
-
+        onEnter: onEnter
     };
 });

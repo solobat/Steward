@@ -7,17 +7,10 @@
 
 define(function (require, exports, module) {
     var util = require('../common/util');
+    var key = 'his';
+    var icon = chrome.extension.getURL('img/history.png');
     var title = '查找历史记录';
     var subtitle = '查找历史记录并打开';
-
-    function createItem(index, item) {
-        return [
-            '<div data-type="his" data-url="' + item.url + '" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
-            '<span class="ec-item-name">' + item.title + '</span>',
-            '<span class="ec-item-note">' + item.url + '</span>',
-            '</div>'
-        ];
-    }
 
     function searchHistory(cmdbox, key, callback) {
         chrome.history.search({
@@ -33,10 +26,23 @@ define(function (require, exports, module) {
             });
     }
 
+    function dataFormat(rawList) {
+        return rawList.map(function (item) {
+            return {
+                key: key,
+                id: item.id,
+                icon: icon,
+                title: item.title,
+                desc: item.url,
+                url: item.url
+            };
+        });
+    }
+
     function onInput(key) {
         var that = this;
         searchHistory(that, key, function (matchUrls) {
-            that.showItemList(matchUrls);
+            that.showItemList(dataFormat(matchUrls));
         });
     }
 
@@ -46,11 +52,10 @@ define(function (require, exports, module) {
 
     module.exports = {
         key: 'his',
+        icon: icon,
         title: title,
         subtitle: subtitle,
         onInput: onInput,
-        onEnter: onEnter,
-        createItem: createItem
-
+        onEnter: onEnter
     };
 });

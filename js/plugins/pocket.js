@@ -9,6 +9,9 @@ define(function (require, exports, module) {
     var Auth = require('../common/auth');
     var conf = require('../conf/pocket_conf');
     var auth = new Auth(conf);
+
+    var key = 'po';
+    var icon = 'http://getpocket.com/i/apple-touch-icon/Pocket_AppIcon_57.png';
     var title = '查找pocket';
     var subtitle = '查找我的pocket文档并打开';
 
@@ -20,17 +23,18 @@ define(function (require, exports, module) {
     }
 
     var ajax;
-    var pocketIcon = 'http://getpocket.com/i/apple-touch-icon/Pocket_AppIcon_57.png';
 
-    function createItem(index, item) {
-        var title = item.given_title || item.resolved_title || item.excerpt;
-
-        return [
-            '<div data-type="pocket" data-id="' + item.id + '" data-index="' + index + '" class="ec-item">',
-            '<img class="ec-item-icon" src="' + pocketIcon + '" alt="" />',
-            '<span class="ec-item-name">' + title + '</span>',
-            '</div>'
-        ];
+    function dataFormat(rawList) {
+        return rawList.map(function (item) {
+            var title = item.given_title || item.resolved_title || item.excerpt;
+            return {
+                key: key,
+                id: item.id,
+                icon: icon,
+                title: title,
+                desc: subtitle
+            };
+        });
     }
 
     function onInput(key) {
@@ -43,7 +47,7 @@ define(function (require, exports, module) {
         var cmdbox = this;
 
         query(key, function (data) {
-            cmdbox.showItemList(data);
+            cmdbox.showItemList(dataFormat(data));
         });
     }
 
@@ -84,12 +88,11 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
-        key: 'po',
+        key: key,
+        icon: icon,
         title: title,
         subtitle: subtitle,
         onInput: onInput,
-        onEnter: onEnter,
-        createItem: createItem
-
+        onEnter: onEnter
     };
 });

@@ -7,6 +7,9 @@
 
 define(function(require, exports, module) {
     var util = require('../common/util');
+
+    var key = 'calc';
+    var icon = chrome.extension.getURL('img/calc.png');
     var title = '运算';
     var subtitle = '支持各种四则运算';
 
@@ -17,8 +20,9 @@ define(function(require, exports, module) {
             result = eval(this.str);
             data = [{
                 key: title,
-                text: result,
-                note: subtitle
+                icon: icon,
+                title: result,
+                desc: subtitle
             }];
         }
         catch (e) {
@@ -31,21 +35,13 @@ define(function(require, exports, module) {
 
     }
 
-    function createItem(index, item) {
-        var html = [
-            '<div data-type="plugins" data-index="' + index + '" data-id="' + item.key + '" class="ec-item">',
-            '<span class="ec-item-text">' + item.text + '</span>',
-            '<span class="ec-item-note">' + item.note + '</span>',
-            '</div>'
-        ];
-
-        return html;
-    }
-
     module.exports = {
+        key: key,
+        icon: icon,
+        title: title,
+        subtitle: subtitle,
         onInput: onInput,
-        onEnter: onEnter,
-        createItem: createItem
+        onEnter: onEnter
 
     };
 });

@@ -5,21 +5,24 @@
  * @mail solopea@gmail.com
  */
 
-define(function (require, exports, module) {
+define(function(require, exports, module) {
     var util = require('../common/util');
+
+    var key = 'del';
+    var icon = chrome.extension.getURL('img/del.png');
     var title = '删除扩展';
     var subtitle = '查找并删除扩展';
 
     function uninstall(id, cb) {
-        chrome.management.uninstall(id, function () {
+        chrome.management.uninstall(id, function() {
             cb.apply(null, arguments);
         });
     }
 
     // get all
     function getExtensions(key, enabled, callback) {
-        chrome.management.getAll(function (extList) {
-            var matchExts = extList.filter(function (ext) {
+        chrome.management.getAll(function(extList) {
+            var matchExts = extList.filter(function(ext) {
                 return util.matchText(key, ext.name);
             });
 
@@ -27,17 +30,31 @@ define(function (require, exports, module) {
         });
     }
 
+    function dataFormat(rawList) {
+        return rawList.map(function (item) {
+            var url = item.icons instanceof Array ? item.icons[item.icons.length - 1].url : '';
+            var isWarn = item.installType === 'development';
+            return {
+                key: key,
+                id: item.id,
+                icon: url,
+                title: item.name,
+                desc: item.description,
+                isWarn: isWarn
+            };
+        });
+    }
     function onInput(key) {
         var that = this;
-        getExtensions(key.toLowerCase(), false, function (matchExts) {
-            sortExtensions(matchExts, key, function (matchExts) {
-                that.showItemList(matchExts);
+        getExtensions(key.toLowerCase(), false, function(matchExts) {
+            sortExtensions(matchExts, key, function(matchExts) {
+                that.showItemList(dataFormat(matchExts));
             });
         });
     }
 
     function onEnter(id) {
-        uninstall(id, function () {
+        uninstall(id, function() {
             // cb
         });
         this.refresh();
@@ -48,7 +65,7 @@ define(function (require, exports, module) {
     }
 
     function sortExtensions(matchExts, key, callback) {
-        chrome.storage.sync.get('ext', function (data) {
+        chrome.storage.sync.get('ext', function(data) {
             var sExts = data.ext;
 
             if (!sExts) {
@@ -56,7 +73,7 @@ define(function (require, exports, module) {
             }
 
             // sExts: {id: {id: '', querys: {'key': {num: 0, update: ''}}}}
-            matchExts = matchExts.map(function (extObj) {
+            matchExts = matchExts.map(function(extObj) {
                 var id = extObj.id;
 
                 if (!sExts[id] || !sExts[id].querys[key]) {
@@ -78,24 +95,12 @@ define(function (require, exports, module) {
         });
     }
 
-    function createItem(index, item) {
-        var url = item.icons instanceof Array ? item.icons[0].url : '';
-
-        return [
-            '<div data-type="ext" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
-            '<img class="ec-item-icon" src="' + url + '" alt="" />',
-            '<span class="ec-item-name ' + (item.installType === 'development' ? 'ec-item-warn' : '') + '">' + item.name + '</span>',
-            '</div>'
-        ];
-    }
-
     module.exports = {
         key: 'del',
+        icon: icon,
         title: title,
         subtitle: subtitle,
         onInput: onInput,
-        onEnter: onEnter,
-        createItem: createItem
-
+        onEnter: onEnter
     };
 });

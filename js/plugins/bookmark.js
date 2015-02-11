@@ -7,6 +7,9 @@
 
 define(function(require, exports, module) {
     var util = require('../common/util');
+
+    var key = 'bm';
+    var icon = chrome.extension.getURL('img/bookmark.png');
     var title = '查找书签';
     var subtitle = '查找书签记录并打开';
 
@@ -21,7 +24,7 @@ define(function(require, exports, module) {
 
     function searchBookmark(cmdbox, key, callback) {
         if (!key) {
-            chrome.bookmarks.getRecent(10, function (bookMarkList) {
+            chrome.bookmarks.getRecent(10, function(bookMarkList) {
                 callback(bookMarkList || []);
             });
 
@@ -42,7 +45,20 @@ define(function(require, exports, module) {
     function onInput(key) {
         var that = this;
         searchBookmark(that, key, function(bookMarkList) {
-            that.showItemList(bookMarkList);
+            var arr = [];
+            for (var i in bookMarkList) {
+                var item = bookMarkList[i];
+                arr.push({
+                    key: key,
+                    id: item.id,
+                    icon: icon,
+                    url: item.url,
+                    title: item.title,
+                    desc: item.url,
+                    isWarn: false
+                });
+            }
+            that.showItemList(arr);
         });
     }
 
@@ -51,12 +67,11 @@ define(function(require, exports, module) {
     }
 
     module.exports = {
-        key: 'bm',
+        key: key,
+        icon: icon,
         title: title,
         subtitle: subtitle,
         onInput: onInput,
-        onEnter: onEnter,
-        createItem: createItem
-
+        onEnter: onEnter
     };
 });

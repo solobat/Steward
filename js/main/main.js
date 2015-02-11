@@ -32,12 +32,15 @@ define(function(require, exports, module) {
 
     function findMatchPlugins(query) {
         var items = [];
+
         for (var key in plugins) {
             if (key.indexOf(query) !== -1) {
                 items.push({
-                    key: key,
+                    key: 'plugins',
+                    id: key,
+                    icon: plugins[key].icon,
                     title: plugins[key].title || '',
-                    subtitle: plugins[key].subtitle || ''
+                    desc: plugins[key].subtitle || ''
                 });
             }
         }
@@ -48,22 +51,7 @@ define(function(require, exports, module) {
     function matchPlugins(query) {
         var items = findMatchPlugins(query);
 
-        this.showItemList(items, function(index, item) {
-            var html = [
-                '<div data-type="plugins" data-index="' + index + '" data-id="' + item.key + '" class="ec-item">',
-                '<span class="ec-plugin-name">' + item.key + '</span>',
-                '<span class="ec-plugin-title">' + item.title + '</span>',
-                '<span class="ec-plugin-subtitle">' + item.subtitle + '</span>',
-                '</div>'
-            ];
-
-            if (index <= 8) {
-                var tipHtml = '<div class="ec-item-tip">' + (util.isMac ? 'CTRL' : 'ALT') + ' + ' + (index + 1) + '</div>';
-                html.splice(html.length - 2, 0, tipHtml);
-            }
-
-            return html.join('');
-        });
+        this.showItemList(items);
     }
 
     function init() {
@@ -114,10 +102,16 @@ define(function(require, exports, module) {
             },
 
             createItem: function(index, item) {
-                var html = plugins[this.cmd].createItem.call(this, index, item);
+                var html = [
+                    '<div data-type="' + item.key + '" data-url="' + item.url + '" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
+                    '<img class="ec-item-icon" src="' + item.icon + '"/>',
+                    '<span class="ec-item-title ' + (item.isWarn ? 'ec-item-warn' : '') + '">' + item.title + '</span>',
+                    '<span class="ec-item-desc">' + item.desc + '</span>',
+                    '</div>'
+                ];
 
                 if (index <= 8) {
-                    var tipHtml = '<div class="ec-item-tip">' + (util.isMac ? 'CTRL' : 'ALT') + ' + ' + (index + 1) + '</div>';
+                    var tipHtml = '<div class="ec-item-tip">' + (util.isMac ? '<span class="icon">⌘</span>' : 'ALT') + (index + 1) + '</div>';
                     html.splice(html.length - 2, 0, tipHtml);
                 }
 

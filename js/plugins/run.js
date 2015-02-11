@@ -7,23 +7,41 @@
 
 define(function (require, exports, module) {
     var util = require('../common/util');
+
+    var key = 'run';
+    var icon = chrome.extension.getURL('img/app.png');
     var title = '运行应用(app)';
     var subtitle = '查找并运行应用(app)';
 
     function getExtensions(key, callback) {
         chrome.management.getAll(function (extList) {
-            var matchExts = extList.filter(function (ext) {
+            var data = extList.filter(function (ext) {
                 return util.matchText(key, ext.name) && ext.isApp;
             });
 
-            callback(matchExts);
+            callback(data);
+        });
+    }
+
+    function dataFormat(rawList) {
+        return rawList.map(function (item) {
+            var url = item.icons instanceof Array ? item.icons[0].url : '';
+            var isWarn = item.installType === 'development';
+            return {
+                key: key,
+                id: item.id,
+                icon: url,
+                title: item.name,
+                desc: item.description,
+                isWarn: isWarn
+            };
         });
     }
 
     function onInput(key) {
         var that = this;
-        getExtensions(key.toLowerCase(), function (matchExts) {
-            that.showItemList(matchExts);
+        getExtensions(key.toLowerCase(), function (data) {
+            that.showItemList(dataFormat(data));
         });
     }
 
@@ -38,24 +56,12 @@ define(function (require, exports, module) {
         this.refresh();
     }
 
-    function createItem(index, item) {
-        var url = item.icons instanceof Array ? item.icons[0].url : '';
-
-        return [
-            '<div data-type="ext" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
-            '<img class="ec-item-icon" src="' + url + '" alt="" />',
-            '<span class="ec-item-name">' + item.name + '</span>',
-            '</div>'
-        ];
-    }
-
     module.exports = {
-        key: 'run',
+        key: key,
+        icon: icon,
         title: title,
         subtitle: subtitle,
         onInput: onInput,
-        onEnter: onEnter,
-        createItem: createItem
-
+        onEnter: onEnter
     };
 });

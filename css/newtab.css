@@ -53,7 +53,8 @@ a {
 }
 
 .ec-itemList .ec-item {
-    padding: 8px 5px;
+    padding: 5px 8px;
+    height: 40px;
     position: relative;
     border-bottom: 1px solid rgb(209, 209, 209);
 }
@@ -63,42 +64,27 @@ a {
 }
 
 .ec-item .ec-item-icon {
-    width: 16px;
-    margin: 0 5px;
+    width: 25px;
+    height: 25px;
+    margin: 2px 8px 0 0;
+    float: left;
 }
 
-.ec-item .ec-item-name {
-    display: inline-block;
-    overflow: hidden;
-
-    width: 400px;
-
-    line-height: 15px;
-
-    white-space: nowrap;
-    text-overflow: ellipsis;
+.ec-item .ec-item-title {
+    font-size: 14px;
+    line-height: 1.4;
 }
 
-.ec-item .ec-item-note{
+.ec-item .ec-item-desc{
     display: block;
     color: rgb(166, 166, 166);
     overflow: hidden;
     width: 80%;
     text-overflow: ellipsis;
     white-space: nowrap;
+    height: 1em;
 }
 
-.ec-item .ec-plugin-name {
-    display: inline-block;
-    width: 20px;
-    margin: 0 5px;
-    font-weight: bold;
-}
-.ec-item .ec-plugin-subtitle {
-    display: block;
-    margin-left: 30px;
-    color: #8F8F8F;
-}
 .ec-itemList .ec-item-select {
     background: rgb(209, 209, 209);
 }
@@ -112,9 +98,16 @@ a {
     right: 0;
     top: 0;
     margin-right: 10px;
+    font-size: 14px;
     line-height: 34px;
+    color: rgb(92, 13, 123);
 }
 
+.ec-item .ec-item-tip .icon {
+    font-size: 16px;
+    position: relative;
+    top: 1px;
+}
 /* scrollbar styles */
 ::-webkit-scrollbar {
     width: 2px; 

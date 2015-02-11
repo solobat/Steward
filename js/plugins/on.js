@@ -7,6 +7,8 @@
 
 define(function (require, exports, module) {
     var util = require('../common/util');
+    var key = 'on';
+    var icon = chrome.extension.getURL('img/on.png');
     var title = '启用扩展';
     var subtitle = '查找并启用扩展';
 
@@ -24,11 +26,26 @@ define(function (require, exports, module) {
         });
     }
 
+    function dataFormat(rawList) {
+        return rawList.map(function (item) {
+            var url = item.icons instanceof Array ? item.icons[item.icons.length - 1].url : '';
+            var isWarn = item.installType === 'development';
+            return {
+                key: key,
+                id: item.id,
+                icon: url,
+                title: item.name,
+                desc: item.description,
+                isWarn: isWarn
+            };
+        });
+    }
+
     function onInput(key) {
         var that = this;
         getExtensions(key.toLowerCase(), false, function (matchExts) {
             sortExtensions(matchExts, key, function (matchExts) {
-                that.showItemList(matchExts);
+                that.showItemList(dataFormat(matchExts));
             });
         });
     }
@@ -125,24 +142,12 @@ define(function (require, exports, module) {
         return obj;
     }
 
-    function createItem(index, item) {
-        var url = item.icons instanceof Array ? item.icons[0].url : '';
-
-        return [
-            '<div data-type="ext" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
-            '<img class="ec-item-icon" src="' + url + '" alt="" />',
-            '<span class="ec-item-name ' + (item.installType === 'development' ? 'ec-item-warn' : '') + '">' + item.name + '</span>',
-            '</div>'
-        ];
-    }
-
     module.exports = {
-        key: 'on',
+        key: key,
+        icon: icon,
         title: title,
         subtitle: subtitle,
         onInput: onInput,
-        onEnter: onEnter,
-        createItem: createItem
-
+        onEnter: onEnter
     };
 });
