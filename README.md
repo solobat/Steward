@@ -7,8 +7,8 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 2.1
-icon
+### 2.1.0.1
+fix bug
 
 ---
 ## Useage
@@ -24,4 +24,3 @@ icon
 ---
 ## TODOS
 + `cls` 清除历史记录
-+ [set schema](https://developer.chrome.com/apps/manifest/storage) 了解并运用，以替换on /off 中的sync

@@ -129,7 +129,9 @@ define(function (require, exports, module) {
         cmdbox.bind('enter', function (event, elem) {
             if (!this.cmd) {
                 var key = $(elem).data('id');
-                this.render(key + ' ');
+                if (key) {
+                    this.render(key + ' ');
+                }
 
                 return;
             }
@@ -158,4 +160,5 @@ define(function (require, exports, module) {
     }
 
     init();
+    document.execCommand('copy');
 });
