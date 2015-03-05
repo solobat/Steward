@@ -7,12 +7,12 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 2.1.0.1
-fix bug
+### 2.1.1
+添加`set`命令，打开扩展的设置页面
 
 ---
 ## Useage
-+ `on`/`off`/`del` 启动/禁用/删除相应的扩展
++ `on`/`off`/`set`/`del` 启动/禁用/设置/删除相应的扩展
 + `run` 命令启动App
 + `tab` 命令查找并定位到打开的标签页
 + `his` 命令查找历史记录并新标签打开
