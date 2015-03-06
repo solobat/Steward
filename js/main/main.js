@@ -23,7 +23,8 @@ define(function (require, exports, module) {
         yd: require('/js/plugins/yd'),
         todo: require('/js/plugins/todo'),
         po: require('/js/plugins/pocket'),
-        calc: require('/js/plugins/calculate')
+        calc: require('/js/plugins/calculate'),
+        bk: require('/js/plugins/urlblock')
 
     };
     // TODO: options
@@ -84,7 +85,7 @@ define(function (require, exports, module) {
 
                 // WHY: why /g can not capture (.+)
                 // TODO: 改成配置的形式
-                var reg = /^((?:on|off|set|del|run|pb|tab|his|bm|yd|todo|po))\s(.*)$/i;
+                var reg = /^((?:on|off|set|del|run|pb|tab|his|bm|yd|todo|po|bk))\s(.*)$/i;
                 var mArr = str.match(reg) || [];
                 var cmd = mArr[1];
                 var key = mArr[2];

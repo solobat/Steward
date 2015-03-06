@@ -7,8 +7,8 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 2.1.1
-添加`set`命令，打开扩展的设置页面
+### 2.1.2
+添加`bk`命令，禁用(重定向)包含指定key的url
 
 ---
 ## Useage
@@ -20,6 +20,7 @@ Easy Extensions / Tabs / History / Translation etc.
 + `yd` 有道词典
 + `todo` 待办事项，标签页显示
 + `po` 命令查找pocket
++ `bk` url block
 
 ---
 ## TODOS
