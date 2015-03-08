@@ -8,10 +8,11 @@
 define(function (require, exports, module) {
     var request = require('../common/request');
 
+    var name = 'todolist';
     var key = 'todo';
     var icon = chrome.extension.getURL('img/todo.png');
-    var title = '添加todo';
-    var subtitle = '添加todo，单击todo选项消除';
+    var title = chrome.i18n.getMessage(name + '_title');
+    var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 
     function onInput(key) {
     }

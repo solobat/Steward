@@ -8,10 +8,11 @@
 define(function (require, exports, module) {
     var util = require('../common/util');
 
+    var name = 'locateTab';
     var key = 'tab';
     var icon = chrome.extension.getURL('img/tab.png');
-    var title = '跳转到标签页';
-    var subtitle = '查找并跳转至标签页';
+    var title = chrome.i18n.getMessage(name + '_title');
+    var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 
     function getAllTabs(key, callback) {
         chrome.windows.getAll(function (wins) {

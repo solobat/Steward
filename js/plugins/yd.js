@@ -11,10 +11,11 @@ define(function (require, exports, module) {
     'keyfrom=mineword&key=1362458147&type=data&doctype=json&version=1.1&q=';
     var emptyReg = /^\s+$/g;
 
+    var name = 'youdao';
     var key = 'yd';
     var icon = chrome.extension.getURL('img/youdao.png');
-    var title = '有道翻译';
-    var subtitle = '使用有道翻译你想知道的单词或短语...';
+    var title = chrome.i18n.getMessage(name + '_title');
+    var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 
     function onInput(key) {
         if (emptyReg.test(key)) {

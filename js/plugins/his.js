@@ -6,10 +6,11 @@
  */
 
 define(function (require, exports, module) {
+    var name = 'history';
     var key = 'his';
     var icon = chrome.extension.getURL('img/history.png');
-    var title = '查找历史记录';
-    var subtitle = '查找历史记录并打开';
+    var title = chrome.i18n.getMessage(name + '_title');
+    var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 
     function searchHistory(cmdbox, key, callback) {
         chrome.history.search({

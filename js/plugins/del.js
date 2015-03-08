@@ -8,10 +8,11 @@
 define(function (require, exports, module) {
     var util = require('../common/util');
 
+    var name = 'deleteExtension';
     var key = 'del';
     var icon = chrome.extension.getURL('img/del.png');
-    var title = '删除扩展';
-    var subtitle = '查找并删除扩展';
+    var title = chrome.i18n.getMessage(name + '_title');
+    var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 
     function uninstall(id, cb) {
         chrome.management.uninstall(id, function () {

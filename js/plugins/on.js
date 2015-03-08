@@ -7,10 +7,12 @@
 
 define(function (require, exports, module) {
     var util = require('../common/util');
+
+    var name = 'onExtension';
     var key = 'on';
     var icon = chrome.extension.getURL('img/on.png');
-    var title = '启用扩展';
-    var subtitle = '查找并启用扩展';
+    var title = chrome.i18n.getMessage(name + '_title');
+    var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 
     function setEnabled(id, enabled) {
         chrome.management.setEnabled(id, enabled, function () {});

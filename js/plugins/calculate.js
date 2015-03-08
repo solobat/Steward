@@ -6,10 +6,11 @@
  */
 
 define(function (require, exports, module) {
+    var name = 'calculate';
     var key = 'calc';
     var icon = chrome.extension.getURL('img/calc.png');
-    var title = '运算';
-    var subtitle = '支持各种四则运算';
+    var title = chrome.i18n.getMessage(name + '_title');
+    var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 
     function onInput() {
         var data = [];

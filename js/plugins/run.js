@@ -8,10 +8,11 @@
 define(function (require, exports, module) {
     var util = require('../common/util');
 
+    var name = 'runapp';
     var key = 'run';
     var icon = chrome.extension.getURL('img/app.png');
-    var title = '运行应用(app)';
-    var subtitle = '查找并运行应用(app)';
+    var title = chrome.i18n.getMessage(name + '_title');
+    var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 
     function getExtensions(key, callback) {
         chrome.management.getAll(function (extList) {

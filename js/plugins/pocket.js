@@ -10,10 +10,11 @@ define(function (require, exports, module) {
     var conf = require('../conf/pocket_conf');
     var auth = new Auth(conf);
 
+    var name = 'pocket';
     var key = 'po';
     var icon = 'http://getpocket.com/i/apple-touch-icon/Pocket_AppIcon_57.png';
-    var title = '查找pocket';
-    var subtitle = '查找我的pocket文档并打开';
+    var title = chrome.i18n.getMessage(name + '_title');
+    var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 
     function handler(results) {
         var ret = {};

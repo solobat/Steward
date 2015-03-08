@@ -7,10 +7,12 @@
 
 define(function (require, exports, module) {
     var util = require('../common/util');
+
+    var name = 'offExtension';
     var key = 'off';
     var icon = chrome.extension.getURL('img/off.png');
-    var title = '禁用扩展/App';
-    var subtitle = '查找并禁用扩展/App';
+    var title = chrome.i18n.getMessage(name + '_title');
+    var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 
     function setEnabled(id, enabled) {
         chrome.management.setEnabled(id, enabled, function () {});

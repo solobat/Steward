@@ -6,10 +6,11 @@
  */
 
 define(function (require, exports, module) {
+    var name = 'bookmark';
     var key = 'bm';
     var icon = chrome.extension.getURL('img/bookmark.png');
-    var title = '查找书签';
-    var subtitle = '查找书签记录并打开';
+    var title = chrome.i18n.getMessage(name + '_title');
+    var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 
 
     function searchBookmark(cmdbox, key, callback) {

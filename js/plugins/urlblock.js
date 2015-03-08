@@ -8,10 +8,11 @@
 define(function (require, exports, module) {
     var request = require('../common/request');
 
+    var name = 'urlblock';
     var key = 'bk';
     var icon = chrome.extension.getURL('img/urlblock.png');
-    var title = '屏蔽网址';
-    var subtitle = '屏蔽指定网址';
+    var title = chrome.i18n.getMessage(name + '_title');
+    var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 
     function onInput(key) {
         if (!key) {

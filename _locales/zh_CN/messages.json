@@ -1,0 +1,83 @@
+{
+    "name": {
+        "message": "扩展/APP管理/标签页/历史记录/有道翻译/alfred"
+    },
+    "bookmark_title": {
+        "message": "查找书签"
+    },
+    "bookmark_subtitle": {
+        "message": "查找书签记录并打开"
+    },
+    "calculate_title": {
+        "message": "运算"
+    },
+    "calculate_subtitle": {
+        "message": "支持各种四则运算"
+    },
+    "deleteExtension_title": {
+        "message": "删除扩展"
+    },
+    "deleteExtension_subtitle": {
+        "message": "查找并删除扩展"
+    },
+    "history_title": {
+        "message": "查找历史记录"
+    },
+    "history_subtitle": {
+        "message": "查找历史记录并打开"
+    },
+    "offExtension_title": {
+        "message": "禁用扩展/App"
+    },
+    "offExtension_subtitle": {
+        "message": "查找并禁用扩展/App"
+    },
+    "onExtension_title": {
+        "message": "启用扩展"
+    },
+    "onExtension_subtitle": {
+        "message": "查找并启用扩展"
+    },
+    "pocket_title": {
+        "message": "查找pocket"
+    },
+    "pocket_subtitle": {
+        "message": "查找我的pocket文档并打开"
+    },
+    "runapp_title": {
+        "message": "运行应用(app)"
+    },
+    "runapp_subtitle": {
+        "message": "查找并运行应用(app)"
+    },
+    "setOption_title": {
+        "message": "设置扩展"
+    },
+    "setOption_subtitle": {
+        "message": "查找并设置扩展"
+    },
+    "locateTab_title": {
+        "message": "跳转到标签页"
+    },
+    "locateTab_subtitle": {
+        "message": "查找并跳转至标签页"
+    },
+    "todolist_title": {
+        "message": "添加todo"
+    },
+    "todolist_subtitle": {
+        "message": "添加todo，单击todo选项消除"
+    },
+    "urlblock_title": {
+        "message": "屏蔽网址"
+    },
+    "urlblock_subtitle": {
+        "message": "屏蔽指定网址"
+    },
+    "youdao_title": {
+        "message": "有道翻译"
+    },
+    "youdao_subtitle": {
+        "message": "使用有道翻译你想知道的单词或短语..."
+    }
+}

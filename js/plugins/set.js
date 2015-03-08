@@ -8,10 +8,11 @@
 define(function (require, exports, module) {
     var util = require('../common/util');
 
+    var name = 'setOption';
     var key = 'set';
     var icon = chrome.extension.getURL('img/set.png');
-    var title = '设置扩展';
-    var subtitle = '查找并设置扩展';
+    var title = chrome.i18n.getMessage(name + '_title');
+    var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 
     function openOptionPage(id, elem, cb) {
         var url = $(elem).data('url');
