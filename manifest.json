@@ -1,10 +1,10 @@
 {
     "manifest_version": 2,
-    "name": "Steward: __MSG_name__",
+    "name": "Steward: extension/app/tab/history/alfred",
     "short_name": "Steward",
-    "version": "2.1.2.1",
+    "version": "2.1.2.5",
     "description": "Easy Extensions / Tabs / History / Translation / Pocket",
-    "default_locale": "zh_CN",
+    "default_locale": "en",
     "chrome_url_overrides" : {
         "newtab": "steward.html"
     },
