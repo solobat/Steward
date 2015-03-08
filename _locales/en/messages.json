@@ -1,0 +1,83 @@
+{
+    "name": {
+        "message": "extension/app manage/tab/history/youdao translator/alfred"
+    },
+    "bookmark_title": {
+        "message": "find bookmark"
+    },
+    "bookmark_subtitle": {
+        "message": "find bookmark and open it"
+    },
+    "calculate_title": {
+        "message": "calculate"
+    },
+    "calculate_subtitle": {
+        "message": "calculate"
+    },
+    "deleteExtension_title": {
+        "message": "delete exntension"
+    },
+    "deleteExtension_subtitle": {
+        "message": "find extension and delete it"
+    },
+    "history_title": {
+        "message": "find history"
+    },
+    "history_subtitle": {
+        "message": "find history and open it"
+    },
+    "offExtension_title": {
+        "message": "disable extension / app"
+    },
+    "offExtension_subtitle": {
+        "message": "find extension / app and disable it"
+    },
+    "onExtension_title": {
+        "message": "enable extension / app"
+    },
+    "onExtension_subtitle": {
+        "message": "find extension / it and enable it"
+    },
+    "pocket_title": {
+        "message": "find pocket"
+    },
+    "pocket_subtitle": {
+        "message": "find my pocket article and goto it"
+    },
+    "runapp_title": {
+        "message": "run app"
+    },
+    "runapp_subtitle": {
+        "message": "find app and run it"
+    },
+    "setOption_title": {
+        "message": "open extension's option page"
+    },
+    "setOption_subtitle": {
+        "message": "find extension and open its option page"
+    },
+    "locateTab_title": {
+        "message": "goto tab"
+    },
+    "locateTab_subtitle": {
+        "message": "find tab and goto it"
+    },
+    "todolist_title": {
+        "message": "add todo item"
+    },
+    "todolist_subtitle": {
+        "message": "add todo item, delete one by click it..."
+    },
+    "urlblock_title": {
+        "message": "block url"
+    },
+    "urlblock_subtitle": {
+        "message": "block url"
+    },
+    "youdao_title": {
+        "message": "youdao translator"
+    },
+    "youdao_subtitle": {
+        "message": "translate a word / phrase by youdao translator..."
+    }
+}
