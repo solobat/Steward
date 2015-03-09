@@ -27,6 +27,9 @@ define(function (require, exports, module) {
         bk: require('/js/plugins/urlblock')
 
     };
+
+    var keys = Object.keys(plugins).join('|');
+    var reg = new RegExp('^((?:' + keys + '))\\s(?:\\-(\\w+))?\\s?(.*)$', 'i');
     // TODO: options
     // delete plugins[xx, xx, xx]
     var cmdbox;
@@ -70,6 +73,7 @@ define(function (require, exports, module) {
 
                 this.str = str;
                 this.cmd = '';
+                this.param = '';
                 this.query = '';
 
                 if (regValidExpress.test(str)) {
@@ -84,11 +88,12 @@ define(function (require, exports, module) {
                 }
 
                 // WHY: why /g can not capture (.+)
-                // TODO: 改成配置的形式
-                var reg = /^((?:on|off|set|del|run|pb|tab|his|bm|yd|todo|po|bk))\s(.*)$/i;
+                // TODO: 空查询优化
+                
                 var mArr = str.match(reg) || [];
                 var cmd = mArr[1];
-                var key = mArr[2];
+                var param = mArr[2];
+                var key = mArr[3];
 
                 if (!cmd) {
                     this.clearList();
@@ -96,6 +101,7 @@ define(function (require, exports, module) {
                 }
 
                 this.cmd = cmd;
+                this.param = param;
                 this.query = key;
 
                 storage.h5.set(CONST.LAST_CMD, str);
