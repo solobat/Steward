@@ -82,7 +82,6 @@ a {
     width: 80%;
     text-overflow: ellipsis;
     white-space: nowrap;
-    height: 1em;
 }
 
 .ec-itemList .ec-item-select {
