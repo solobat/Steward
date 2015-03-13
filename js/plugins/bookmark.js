@@ -6,6 +6,7 @@
  */
 
 define(function (require, exports, module) {
+    var chrome = window.chrome;
     var name = 'bookmark';
     var key = 'bm';
     var icon = chrome.extension.getURL('img/bookmark.png');
@@ -55,7 +56,9 @@ define(function (require, exports, module) {
     }
 
     function onEnter(id, elem) {
-        window.open($(elem).data('url'));
+        chrome.tabs.create({
+            url: $(elem).data('url')
+        });
     }
 
     module.exports = {

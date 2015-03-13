@@ -7,8 +7,8 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 2.1.2
-添加`bk`命令，禁用(重定向)包含指定key的url
+### 2.1.2.7
+`bm`优化
 
 ---
 ## Useage

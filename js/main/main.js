@@ -87,9 +87,7 @@ define(function (require, exports, module) {
                     return matchPlugins.call(this, str);
                 }
 
-                // WHY: why /g can not capture (.+)
                 // TODO: 空查询优化
-                
                 var mArr = str.match(reg) || [];
                 var cmd = mArr[1];
                 var param = mArr[2];
