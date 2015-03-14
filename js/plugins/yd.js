@@ -44,6 +44,7 @@ define(function (require, exports, module) {
     function getTranslation(cmdbox, key) {
         $.get(url + key, function (data) {
             if (!data.basic) {
+                cmdbox.clearList();
                 return;
             }
             var retData = [];
