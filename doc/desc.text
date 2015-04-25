@@ -1,0 +1,18 @@
+update: 
+version 2.1.2.8 yd command optimize 
+description:
+search or manage extensions / apps / tabs / history / bookmark etc.. by command in new tab
+
+feature:
+on enable an extension
+off disable an extension
+set open extension's option page
+del delete an extension
+run launch an app
+tab find a tab and goto
+his find in history and goto
+bm find in bookmark and goto
+yd youdao translator
+po search your pocket article
+todo todolist
+bk block an url

@@ -1,0 +1,43 @@
+{
+    "manifest_version": 2,
+    "name": "Steward: extension/app/tab/history/alfred",
+    "short_name": "Steward",
+    "version": "2.1.2.8",
+    "description": "Easy Extensions / Tabs / History / Translation / Pocket",
+    "default_locale": "en",
+    "chrome_url_overrides" : {
+        "newtab": "steward.html"
+    },
+    "background": {
+        "page": "bg.html"
+    },
+    "browser_action": {
+        "default_icon": "img/icon.png",
+        "default_title": "Steward",
+        "default_popup": "popup.html"
+    },
+
+    "icons": {
+        "16": "img/icon16.png"
+    },
+    "web_accessible_resources": [
+        "img/*",
+        "urlblock.html",
+        "login.html"
+    ],
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "options_page": "options.html",
+    "optional_permissions": [
+        "background", "clipboardRead", "clipboardWrite"
+    ],
+    "permissions": [
+        "history",
+        "bookmarks",
+        "tabs",
+        "storage",
+        "contextMenus",
+        "management",
+        "notifications",
+        "<all_urls>"
+    ]
+}
