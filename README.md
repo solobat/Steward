@@ -24,4 +24,3 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## TODOS
-+ `cls` 清除历史记录
