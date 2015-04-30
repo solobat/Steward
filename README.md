@@ -7,8 +7,8 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
-### 2.1.2.8
-`yd`优化
+### 2.1.3
+popup 页面调整
 
 ---
 ## Useage
