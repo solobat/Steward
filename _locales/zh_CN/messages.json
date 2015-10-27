@@ -5,6 +5,12 @@
     "bookmark_subtitle": {
         "message": "查找书签记录并打开"
     },
+    "download_title": {
+        "message": "下载列表"
+    },
+    "download_subtitle": {
+        "message": "查找下载记录并打开所在文件夹"
+    },
     "calculate_title": {
         "message": "运算"
     },

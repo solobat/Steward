@@ -24,8 +24,8 @@ define(function (require, exports, module) {
         todo: require('/js/plugins/todo'),
         po: require('/js/plugins/pocket'),
         calc: require('/js/plugins/calculate'),
-        bk: require('/js/plugins/urlblock')
-
+        bk: require('/js/plugins/urlblock'),
+        dl: require('/js/plugins/download')
     };
 
     var keys = Object.keys(plugins).join('|');

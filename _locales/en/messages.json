@@ -5,6 +5,12 @@
     "bookmark_subtitle": {
         "message": "find bookmark and open it"
     },
+    "download_title": {
+        "message": "show downloads"
+    },
+    "download_subtitle": {
+        "message": "search downloads and open folder"
+    },
     "calculate_title": {
         "message": "calculate"
     },
