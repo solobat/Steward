@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Steward: extension/app/tab/history/alfred",
     "short_name": "Steward",
-    "version": "2.1.4",
+    "version": "2.1.5",
     "description": "Easy Extensions / Tabs / History / Translation / Pocket",
     "default_locale": "en",
     "chrome_url_overrides" : {
