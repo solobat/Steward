@@ -25,7 +25,8 @@ define(function (require, exports, module) {
         po: require('/js/plugins/pocket'),
         calc: require('/js/plugins/calculate'),
         bk: require('/js/plugins/urlblock'),
-        dl: require('/js/plugins/download')
+        dl: require('/js/plugins/download'),
+        help: require('/js/plugins/help')
     };
 
     var keys = Object.keys(plugins).join('|');
