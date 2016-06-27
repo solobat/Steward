@@ -7,6 +7,9 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
+### 2.1.6
+add help command
+
 ### 2.1.4
 add downloads plugin
 
@@ -22,6 +25,7 @@ add downloads plugin
 + `todo` 待办事项，标签页显示
 + `po` 命令查找pocket
 + `bk` url block
++ `help` 查看帮助
 
 ---
 ## TODOS
