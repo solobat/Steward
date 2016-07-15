@@ -48,7 +48,6 @@ function refreshTodo() {
 
                 chrome.tabs.executeScript(tab.id, {
                     code: 'document.title = "' + todo.title + '"'
-
                 });
             }
         });
@@ -81,8 +80,10 @@ function blockUrl (url) {
 
 function blockTab(tab) {
     chrome.tabs.executeScript(tab.id, {
-        code: 'window.location.href = "' + blockPageUrl + '"'
-
+        code: `
+            window.history.pushState({}, "${tab.title}", "${tab.url}");
+            window.location.href = "${blockPageUrl}?original=${tab.url}"
+        `
     });
 }
 function checkTabByUrl(tab) {

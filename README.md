@@ -7,11 +7,11 @@ Easy Extensions / Tabs / History / Translation etc.
 
 ---
 ## Update
+### 2.1.7
+optimize urlblock
+
 ### 2.1.6
 add help command
-
-### 2.1.4
-add downloads plugin
 
 ---
 ## Useage
