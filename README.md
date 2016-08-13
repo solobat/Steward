@@ -23,7 +23,10 @@ note 添加笔记, # 查看标签
 + `po` 命令查找pocket
 + `bk` url block
 + `help` 查看帮助
++ `note` 创建笔记
++ `#` 查看笔记及标签
 
 ---
 ## TODOS
 - [ x ] note 笔记管理/备份
+- [ x ] help 列表点击跳转到对应命令
