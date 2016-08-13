@@ -29,6 +29,12 @@
     "history_subtitle": {
         "message": "查找历史记录并打开"
     },
+    "note_title": {
+        "message": "note 添加笔记, # 查看标签"
+    },
+    "note_subtitle": {
+        "message": "标签以'#'开始, 标签文本只支持英文及中文字符, 其它字符自动作为标签结尾标志"
+    },
     "offExtension_title": {
         "message": "禁用扩展/App"
     },

@@ -29,6 +29,12 @@
     "history_subtitle": {
         "message": "find history and open it"
     },
+    "note_title": {
+        "message": "note add one note, # show tags"
+    },
+    "note_subtitle": {
+        "message": "tag begin with '#', should be end with space/,/; etc."
+    },
     "offExtension_title": {
         "message": "disable extension / app"
     },

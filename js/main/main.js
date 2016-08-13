@@ -10,24 +10,7 @@ define(function (require, exports, module) {
     var storage = require('/js/common/storage');
     var CONST = require('/js/common/const');
     var regValidExpress = /^(==|~=|&&|\|\||[0-9]|[\+\-\*\/\^\.%, ""]|[\(\)\|\!\[\]])+$/;
-
-    var plugins = {
-        tab: require('/js/plugins/tab'),
-        on: require('/js/plugins/on'),
-        off: require('/js/plugins/off'),
-        set: require('/js/plugins/set'),
-        del: require('/js/plugins/del'),
-        run: require('/js/plugins/run'),
-        his: require('/js/plugins/his'),
-        bm: require('/js/plugins/bookmark'),
-        yd: require('/js/plugins/yd'),
-        todo: require('/js/plugins/todo'),
-        po: require('/js/plugins/pocket'),
-        calc: require('/js/plugins/calculate'),
-        bk: require('/js/plugins/urlblock'),
-        dl: require('/js/plugins/download'),
-        help: require('/js/plugins/help')
-    };
+    var plugins = require('../plugins/plugins')
 
     var keys = Object.keys(plugins).join('|');
     var reg = new RegExp('^((?:' + keys + '))\\s(?:\\-(\\w+))?\\s?(.*)$', 'i');
@@ -162,6 +145,14 @@ define(function (require, exports, module) {
         cmdbox.bind('clear', function () {
             this.ipt.removeClass('cmdbox-drop');
         });
+
+        cmdbox.clearQuery = function() {
+            var newIpt = this.cmd + ' '
+
+            this.query = ''
+            this.str = this.term = newIpt
+            this.ipt.val(newIpt)
+        }
 
         cmdbox.init();
     }

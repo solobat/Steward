@@ -3,15 +3,12 @@ Steward
 
 Alfred for chrome
 
-Easy Extensions / Tabs / History / Translation etc.
+扩展 / 应用 / 历史记录 / 书签 等查看及管理
 
 ---
 ## Update
-### 2.1.7
-optimize urlblock
-
-### 2.1.6
-add help command
+### 2.2
+note 添加笔记, # 查看标签
 
 ---
 ## Useage
@@ -29,4 +26,4 @@ add help command
 
 ---
 ## TODOS
-nothing
+- [ x ] note 笔记管理/备份
