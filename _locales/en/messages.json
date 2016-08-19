@@ -29,6 +29,12 @@
     "history_subtitle": {
         "message": "find history and open it"
     },
+    "jenkins_title": {
+        "message": "find jenkins jobs"
+    },
+    "jenkins_subtitle": {
+        "message": "find and open jenkins jobs"
+    },
     "note_title": {
         "message": "note add one note, # show tags"
     },

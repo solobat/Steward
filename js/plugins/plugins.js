@@ -1,5 +1,6 @@
 define(function(require, exports, module) {
     var pluginList = [
+        require('/js/plugins/jenkins'),
         require('/js/plugins/note'),
         require('/js/plugins/tab'),
         require('/js/plugins/on'),

@@ -29,6 +29,12 @@
     "history_subtitle": {
         "message": "查找历史记录并打开"
     },
+    "jenkins_title": {
+        "message": "查找jenkins jobs"
+    },
+    "jenkins_subtitle": {
+        "message": "查找并打开jenkins jobs"
+    },
     "note_title": {
         "message": "note 添加笔记, # 查看标签"
     },
