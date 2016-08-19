@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Steward: 扩展/应用/标签/历史记录/alfred",
     "short_name": "Steward",
-    "version": "2.3.0",
+    "version": "2.3.1",
     "description": "便捷管理扩展/应用/标签/历史记录等",
     "default_locale": "zh_CN",
     "chrome_url_overrides" : {

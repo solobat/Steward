@@ -66,8 +66,10 @@ define(function (require, exports, module) {
         }
 
         getJobs().then((results) => {
+            var filterRE = new RegExp([].slice.call(key).join('\.\*'))
+
             var jobs = results.filter((job) => {
-                return key ? job.name.replace(/-/, '').indexOf(key.replace(/-/, '')) !== -1 : true
+                return key ? !!job.name.match(filterRE) : true
             }).slice(0, 50)
 
             this.showItemList(jobs.map((item) => {
