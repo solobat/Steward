@@ -31,9 +31,7 @@ define(function (require, exports, module) {
                     resolve(jobs)
                 })
                 .catch(() => {
-                    window.localStorage.removeItem['jenkins_url']
-                    SERVER_URL = ''
-                    alert('jenkins接口异常, 请重新填写server url...')
+                    reject('fetch jenkins jobs failed...')
                 })
         })
     }
