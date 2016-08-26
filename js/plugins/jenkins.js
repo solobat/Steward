@@ -9,7 +9,7 @@ define(function (require, exports, module) {
     var util = require('../common/util')
 
     var name = 'jenkins'
-    var key = 'jk'
+    var key = ['jk', 'jkb', 'jkc', 'jkw']
     var icon = chrome.extension.getURL('img/jenkins.png')
     var title = chrome.i18n.getMessage(name + '_title')
     var subtitle = chrome.i18n.getMessage(name + '_subtitle')
@@ -54,6 +54,13 @@ define(function (require, exports, module) {
         window.localStorage['jenkins_url'] = SERVER_URL
     }
 
+    const keyUrlMap = {
+        'jk': '',
+        'jkb': 'build',
+        'jkc': 'configure',
+        'jkw': 'ws'
+    }
+
     function onInput(key) {
         if (!SERVER_URL) {
             setUrl()
@@ -73,8 +80,8 @@ define(function (require, exports, module) {
             this.showItemList(jobs.map((item) => {
                 return {
                     key: key,
-                    id: item.url,
-                    icon: icon,
+                    id: item.url + keyUrlMap[this.cmd],
+                    icon: '/img/jenkins/' + (item.healthReport.length ? item.healthReport[0].iconUrl : 'nobuilt.png'),
                     title: item.name,
                     desc: item.healthReport.length ? item.healthReport[0].description : 'no build history',
                     isWarn: item.healthReport.length && item.healthReport[0].score !== 100
