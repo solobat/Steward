@@ -23,6 +23,12 @@
     "deleteExtension_subtitle": {
         "message": "查找并删除扩展"
     },
+    "help_title": {
+        "message": "查看命令帮助"
+    },
+    "help_subtitle": {
+        "message": "查看命令列表并跳转"
+    },
     "history_title": {
         "message": "查找历史记录"
     },

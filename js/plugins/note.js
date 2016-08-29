@@ -25,6 +25,14 @@ define(function (require, exports, module) {
     function onInput(key) {
         if (this.cmd === '#') {
             handleTagQuery.call(this, key)
+        } else {
+            this.showItemList([
+                {
+                    icon: icon,
+                    title: '新增一条笔记',
+                    desc: '#添加标签'
+                }
+            ])
         }
     }
 

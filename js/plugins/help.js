@@ -18,6 +18,7 @@ define(function (require, exports, module) {
         var helpList = _.uniq(_.values(plugins)).map((plugin) => {
             return {
                 icon: plugin.icon,
+                id: plugin.key,
                 title: (plugin.key instanceof Array ? plugin.key[0] : plugin.key) + ': ' + plugin.title,
                 desc: plugin.subtitle
             }
@@ -33,7 +34,8 @@ define(function (require, exports, module) {
         that.showItemList(getPlugins());
     }
 
-    function onEnter() {
+    function onEnter(key) {
+        this.render(key.split(',')[0] + ' ');
     }
 
     module.exports = {

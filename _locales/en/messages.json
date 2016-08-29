@@ -23,6 +23,12 @@
     "deleteExtension_subtitle": {
         "message": "find extension and delete it"
     },
+    "help_title": {
+        "message": "show help"
+    },
+    "help_subtitle": {
+        "message": "show plugins list"
+    },
     "history_title": {
         "message": "find history"
     },
