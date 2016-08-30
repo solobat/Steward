@@ -14,8 +14,6 @@ define(function (require, exports, module) {
 
     var keys = Object.keys(plugins).join('|');
     var reg = new RegExp('^((?:' + keys + '))\\s(?:\\-(\\w+))?\\s?(.*)$', 'i');
-    // TODO: options
-    // delete plugins[xx, xx, xx]
     var cmdbox;
 
     function findMatchPlugins(query) {
@@ -27,9 +25,8 @@ define(function (require, exports, module) {
                     key: 'plugins',
                     id: key,
                     icon: plugins[key].icon,
-                    title: plugins[key].title || '',
+                    title: key + ': ' + plugins[key].title,
                     desc: plugins[key].subtitle || ''
-
                 });
             }
         }

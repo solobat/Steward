@@ -7,8 +7,8 @@ Alfred for chrome
 
 ---
 ## Update
-### 2.2
-note 添加笔记, # 查看标签
+### 2.3.5
+fix bug
 
 ---
 ## Useage
@@ -25,8 +25,7 @@ note 添加笔记, # 查看标签
 + `help` 查看帮助
 + `note` 创建笔记
 + `#` 查看笔记及标签
++ `jk` 查看jenkins jobs并打开
 
 ---
 ## TODOS
-- [ x ] note 笔记管理/备份
-- [ x ] help 列表点击跳转到对应命令
