@@ -43,40 +43,33 @@ define(function (require, exports, module) {
 
     function getTranslation(cmdbox, key) {
         $.get(url + key, function (data) {
-            if (!data.basic) {
-                cmdbox.clearList();
-                return;
-            }
             var retData = [];
-            var phonetic = '[' + [
+            var phonetic = data.basic ? '[' + [
                 data.basic.phonetic,
                 data.basic['uk-phonetic'],
                 data.basic['us-phonetic']
-            ].join(',') + ']';
+            ].join(',') + ']' : '';
 
             retData.push({
-                text: data.translation.join(';') + phonetic,
+                text: (data.translation || []).join(';') + phonetic,
                 note: '翻译结果'
-
             });
 
-            var explains = data.basic.explains.map(function (exp) {
+            var explains = data.basic && data.basic.explains && data.basic.explains.map(function (exp) {
                 return {
                     text: exp,
                     note: '简明释义'
-
                 };
             });
 
-            var webs = data.web.map(function (web) {
+            var webs = data.web && data.web.map(function (web) {
                 return {
                     text: web.value.join(', '),
                     note: '网络释义: ' + web.key
-
                 };
             });
 
-            retData = retData.concat(explains).concat(webs);
+            retData = retData.concat(explains || []).concat(webs || []);
 
             cmdbox.showItemList(dataFormat(retData));
         });

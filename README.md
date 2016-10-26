@@ -7,8 +7,8 @@ Alfred for chrome
 
 ---
 ## Update
-### 2.3.5
-fix bug
+### 2.3.6
+fix yd bug
 
 ---
 ## Useage
