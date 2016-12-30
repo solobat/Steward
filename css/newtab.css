@@ -1,13 +1,15 @@
+
 body {
     margin: 0;
     padding: 0;
 
     -webkit-user-select: none;
-    background: rgb(242, 242, 242);
 }
+
 img {
     vertical-align: top;
 }
+
 a {
     text-decoration: none;
 }
@@ -23,6 +25,23 @@ a {
     width: 900px;
     margin: 40px auto 0;
 }
+
+.fixed-tools {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 100;
+}
+
+.refresh-wp {
+    display: block;
+    background: url(../img/refresh.png);
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
 .cmdbox {
     width: 900px;
     height: 80px;
@@ -43,7 +62,7 @@ a {
     width: 900px;
     margin: 0 auto;
     overflow-y: scroll;
-    
+
     height: 400px;
 
     background: rgb(235, 235, 235);
@@ -109,17 +128,17 @@ a {
 }
 /* scrollbar styles */
 ::-webkit-scrollbar {
-    width: 2px; 
-    height: 8px; 
+    width: 2px;
+    height: 8px;
 }
 
-::-webkit-scrollbar-button:start, 
-::-webkit-scrollbar-button:end { 
-    display: none; 
+::-webkit-scrollbar-button:start,
+::-webkit-scrollbar-button:end {
+    display: none;
 }
 
 ::-webkit-scrollbar-track-piece {
-    -webkit-border-radius: 0;  
+    -webkit-border-radius: 0;
     background-color: rgba(0, 0, 0, 0.6);
 }
 

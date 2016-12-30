@@ -7,8 +7,8 @@ Alfred for chrome
 
 ---
 ## Update
-### 2.3.6
-fix yd bug
+### 2.4
+首页添加壁纸
 
 ---
 ## Useage

@@ -10,11 +10,12 @@ define(function (require, exports, module) {
     var storage = require('/js/common/storage');
     var CONST = require('/js/common/const');
     var regValidExpress = /^(==|~=|&&|\|\||[0-9]|[\+\-\*\/\^\.%, ""]|[\(\)\|\!\[\]])+$/;
-    var plugins = require('../plugins/plugins')
+    var plugins = require('../plugins/plugins');
 
     var keys = Object.keys(plugins).join('|');
     var reg = new RegExp('^((?:' + keys + '))\\s(?:\\-(\\w+))?\\s?(.*)$', 'i');
     var cmdbox;
+    const Wallpaper = require('/js/main/wallpaper');
 
     function findMatchPlugins(query) {
         var items = [];
@@ -42,6 +43,8 @@ define(function (require, exports, module) {
 
     function init() {
         $('.cmdbox').focus();
+
+        Wallpaper.init();
 
         cmdbox = new EasyComplete({
             id: 'cmdbox',
