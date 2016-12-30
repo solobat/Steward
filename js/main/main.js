@@ -44,7 +44,9 @@ define(function (require, exports, module) {
     function init() {
         $('.cmdbox').focus();
 
-        Wallpaper.init();
+        if ($('html').data('page') === 'newtab') {
+            Wallpaper.init();
+        }
 
         cmdbox = new EasyComplete({
             id: 'cmdbox',
