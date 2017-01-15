@@ -1,16 +1,27 @@
 define(function (require, exports, module) {
-    const root = 'https://bing.ioliu.cn/v1';
+    const root = 'http://www.bing.com';
     const api = require('/js/utils/api');
+    const baseParams = {
+        format: 'js',
+        idx: 0,
+        n: 1,
+        mkt: 'zh-CN'
+    };
+    const MAX_IDX = 16;
 
-    exports.today = (params = {}) => {
-        return api.fetch(api.url('/'), params);
+    function getRandom(to = MAX_IDX) {
+        return Math.round(Math.random() * to);
+    }
+
+    exports.today = () => {
+        return api.fetch(api.url(root, '/HPImageArchive.aspx'), baseParams);
     };
 
-    exports.rand = (params = {}) => {
-        if (!params.type) {
-            params.type = 'json';
-        }
-
-        return api.fetch(api.url(root, '/rand'), params);
+    exports.rand = () => {
+        return api.fetch(api.url(root, '/HPImageArchive.aspx'), Object.assign({}, baseParams, {
+            idx: getRandom()
+        }));
     };
+
+    exports.root = root;
 });

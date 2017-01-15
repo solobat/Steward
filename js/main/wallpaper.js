@@ -1,6 +1,7 @@
 define(function(require, exports, module) {
     const { NUMBER } = require('/js/constant/index');
     const api = require('../api/index');
+    const date = require('/js/utils/date');
 
     let wallpaper = '';
     let $body = $('body');
@@ -10,8 +11,6 @@ define(function(require, exports, module) {
             return;
         }
 
-        wallpaper = url;
-
         if (save) {
             window.localStorage.setItem('wallpaper', url);
         }
@@ -19,9 +18,13 @@ define(function(require, exports, module) {
         $body.css('background-image', `url(${url})`);
     }
 
-    function refreshWallpaper() {
-        api.bing.rand().then((resp) => {
-            updateWallpaper(resp.data.url, true);
+    function refreshWallpaper(today) {
+        let method = today ? 'today' : 'rand';
+
+        api.bing[method]().then((resp) => {
+            updateWallpaper(api.bing.root + resp.images[0].url, true);
+        }).catch(resp => {
+            console.log(resp);
         });
     }
 
@@ -29,9 +32,14 @@ define(function(require, exports, module) {
 
     exports.init = function() {
         // restore
-        let defaultWallpaper = window.localStorage.getItem('wallpaper');
+        const lastDate = new Date(window.localStorage.getItem('lastDate') || +new Date);
+        const defaultWallpaper = window.localStorage.getItem('wallpaper');
 
-        if (!defaultWallpaper) {
+        window.localStorage.setItem('lastDate', date.format());
+
+        if (date.isNewDate(new Date(), lastDate)) {
+            refreshWallpaper(true);
+        } else if (!defaultWallpaper) {
             refreshWallpaper();
         } else {
             updateWallpaper(defaultWallpaper);
