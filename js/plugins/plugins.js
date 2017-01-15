@@ -16,7 +16,8 @@ define(function(require, exports, module) {
         require('/js/plugins/calculate'),
         require('/js/plugins/urlblock'),
         require('/js/plugins/download'),
-        require('/js/plugins/help')
+        require('/js/plugins/help'),
+        require('/js/plugins/epl')
     ]
 
     var plugins = {}

@@ -100,5 +100,11 @@
     },
     "youdao_subtitle": {
         "message": "使用有道翻译你想知道的单词或短语..."
+    },
+    "epl_title": {
+        "message": "英超赛程榜"
+    },
+    "epl_subtitle": {
+        "message": "数据来自lesports"
     }
 }

@@ -7,8 +7,9 @@ Alfred for chrome
 
 ---
 ## Update
-### 2.4
-首页添加壁纸
+### 2.4.2
+切换壁纸api  
+epl英超赛程查询插件
 
 ---
 ## Useage
@@ -26,6 +27,7 @@ Alfred for chrome
 + `note` 创建笔记
 + `#` 查看笔记及标签
 + `jk` 查看jenkins jobs并打开
++ `epl` 查看英超赛程
 
 ---
 ## TODOS
