@@ -46,7 +46,9 @@ define(function(require, exports, module) {
         }
 
         // bind events
-        $('#j-refresh-wp').on('click', refreshWallpaper);
+        $('#j-refresh-wp').on('click', function() {
+            refreshWallpaper();
+        });
 
         // set interval
         setInterval(refreshWallpaper, NUMBER.WALLPAPER_INTERVAL);

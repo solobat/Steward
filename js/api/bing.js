@@ -5,6 +5,7 @@ define(function (require, exports, module) {
         format: 'js',
         idx: 0,
         n: 1,
+        nc: +new Date(),
         mkt: 'zh-CN'
     };
     const MAX_IDX = 16;
