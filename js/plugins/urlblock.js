@@ -13,6 +13,7 @@ define(function (require, exports, module) {
     var icon = chrome.extension.getURL('img/urlblock.png');
     var title = chrome.i18n.getMessage(name + '_title');
     var subtitle = chrome.i18n.getMessage(name + '_subtitle');
+    var BLOCK_EXPIRED = 8 * 60 * 60 * 1000;
 
     function onInput(key) {
         if (!key) {
@@ -31,6 +32,12 @@ define(function (require, exports, module) {
 
     function removeBlacklist(id) {
         var cmdbox = this;
+
+        if ((+new Date() - id) < BLOCK_EXPIRED) {
+            console.log('url will be blocked 8 hours...');
+            return;
+        }
+
         getBlacklist(function (blacklist) {
             blacklist = blacklist.filter(function (url) {
                 return url.id !== id;
