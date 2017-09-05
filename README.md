@@ -7,9 +7,8 @@ Alfred for chrome
 
 ---
 ## Update
-### 2.4.2
-切换壁纸api  
-epl英超赛程查询插件
+### 2.4.4
+url block默认时长为8hours
 
 ---
 ## Useage
