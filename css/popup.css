@@ -24,8 +24,7 @@ a {
 .cmdbox {
     width: 500px;
     height: 50px;
-    border: 5px solid rgba(0, 0, 0, 0.6);
-    border-radius: 10px;
+    border: 3px solid rgba(0, 0, 0, 0.6);
     font-size: 22px;
 }
 
@@ -34,37 +33,35 @@ a {
 }
 
 .cmdbox-drop {
-    border-radius: 10px 10px 0 0;
 }
 
 .ec-itemList {
     width: 500px;
     margin: 0 auto;
     overflow-y: scroll;
-    
+
     height: 400px;
 
     background: rgb(235, 235, 235);
-    border: 5px solid rgba(0, 0, 0, 0.6);
+    border: 3px solid rgba(0, 0, 0, 0.6);
     border-top: 0;
-    border-radius: 0 0 10px 10px;
 }
 
 .ec-itemList .ec-item {
-    padding: 5px 8px;
+    padding: 2px 8px;
     height: 40px;
     position: relative;
     border-bottom: 1px solid rgb(209, 209, 209);
 }
 
 .ec-itemList .ec-item:hover {
-    background: rgb(209, 209, 209);
+    background: rgb(255, 255, 255, .5);
 }
 
 .ec-item .ec-item-icon {
     width: 25px;
     height: 25px;
-    margin: 2px 8px 0 0;
+    margin: 4px 8px 0 0;
     float: left;
 }
 
@@ -112,24 +109,23 @@ a {
 }
 /* scrollbar styles */
 ::-webkit-scrollbar {
-    width: 2px; 
-    height: 8px; 
+    width: 2px;
+    height: 8px;
 }
 
-::-webkit-scrollbar-button:start, 
-::-webkit-scrollbar-button:end { 
-    display: none; 
+::-webkit-scrollbar-button:start,
+::-webkit-scrollbar-button:end {
+    display: none;
 }
 
 ::-webkit-scrollbar-track-piece {
-    -webkit-border-radius: 0;  
+    -webkit-border-radius: 0;
     background-color: rgba(0, 0, 0, 0.6);
 }
 
 ::-webkit-scrollbar-thumb {
     width: 50px;
 
-    -webkit-border-radius: 8px;
     outline: 1px solid #ccc;
     background-color: #CCCCCC;
 }

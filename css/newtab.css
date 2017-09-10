@@ -22,7 +22,9 @@ a {
     height: 80px;
 }
 #main {
-    width: 900px;
+    width: 60%;
+    max-width: 800px;
+    min-width: 600px;
     margin: 40px auto 0;
 }
 
@@ -43,68 +45,84 @@ a {
 }
 
 .cmdbox {
-    width: 900px;
+    width: 100%;
     height: 80px;
-    border: 10px solid rgba(0, 0, 0, 0.6);
-    border-radius: 20px;
+    border: 4px solid rgba(0, 0, 0, 0.8);
     font-size: 26px;
+    background-color: rgba(255,255,255, .5);
 }
 
 .cmdbox:focus {
     outline: 0;
 }
 
-.cmdbox-drop {
-    border-radius: 20px 20px 0 0;
-}
-
 .ec-itemList {
-    width: 900px;
+    width: 60%;
+    max-width: 800px;
+    min-width: 600px;
     margin: 0 auto;
     overflow-y: scroll;
 
     height: 400px;
 
-    background: rgb(235, 235, 235);
-    border: 10px solid rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, .4);
+    border: 4px solid rgba(0, 0, 0, 0.8);
     border-top: 0;
-    border-radius: 0 0 20px 20px;
 }
 
 .ec-itemList .ec-item {
-    padding: 5px 8px;
+    padding: 3px 8px;
     height: 40px;
     position: relative;
-    border-bottom: 1px solid rgb(209, 209, 209);
+    border-bottom: 1px solid rgba(209, 209, 209, .3);
 }
 
 .ec-itemList .ec-item:hover {
-    background: rgb(209, 209, 209);
+    background: rgba(209, 209, 209, .7);
 }
 
 .ec-item .ec-item-icon {
     width: 25px;
     height: 25px;
-    margin: 2px 8px 0 0;
+    margin: 3px 8px 0 0;
     float: left;
 }
 
 .ec-item .ec-item-title {
+    color: #fff;
     font-size: 14px;
     line-height: 1.4;
+    font-weight: 100;
 }
 
-.ec-item .ec-item-desc{
+.ec-item .ec-item-desc {
     display: block;
-    color: rgb(166, 166, 166);
+    color: #c5cfe2;
     overflow: hidden;
     width: 80%;
     text-overflow: ellipsis;
     white-space: nowrap;
+    font-weight: 100;
+}
+
+.ec-item:hover .ec-item-title {
+    color: #333;
+}
+
+.ec-item:hover .ec-item-desc {
+    color: #666;
 }
 
 .ec-itemList .ec-item-select {
-    background: rgb(209, 209, 209);
+    background: rgba(209, 209, 209, .7);
+}
+
+.ec-itemList .ec-item-select .ec-item-title {
+    color: #333;
+}
+
+.ec-itemList .ec-item-select .ec-item-desc {
+    color: #666;
 }
 
 .ec-item .ec-item-warn {
@@ -118,7 +136,7 @@ a {
     margin-right: 10px;
     font-size: 14px;
     line-height: 34px;
-    color: rgb(92, 13, 123);
+    color:#fff;
 }
 
 .ec-item .ec-item-tip .icon {
