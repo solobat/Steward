@@ -26,7 +26,6 @@ url block默认时长为8hours
 + `note` 创建笔记
 + `#` 查看笔记及标签
 + `jk` 查看jenkins jobs并打开
-+ `epl` 查看英超赛程
 
 ---
 ## TODOS

@@ -100,11 +100,5 @@
     },
     "youdao_subtitle": {
         "message": "translate a word / phrase by youdao translator..."
-    },
-    "epl_title": {
-        "message": "epl matches"
-    },
-    "epl_subtitle": {
-        "message": "data from lesports"
     }
 }
