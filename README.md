@@ -40,6 +40,8 @@
 ---
 #### 许可:
 [![license-badge]][license-link]
+
+<!-- Link -->
 [version-badge]:    https://img.shields.io/badge/lastest_version-2.4.7-blue.svg
 [version-link]:     https://github.com/solobat/Steward
 [chrome-badge]:     https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg
