@@ -45,6 +45,10 @@ define(function (require, exports, module) {
     function addTodo(todo) {
         var cmdbox = this;
 
+        if (!todo) {
+            return;
+        }
+
         getTodos(function (todos) {
             if (!todos || !todos.length) {
                 todos = [];
