@@ -40,5 +40,15 @@
         "management",
         "notifications",
         "<all_urls>"
-    ]
+    ],
+    "commands": {
+        "_execute_browser_action": {
+            "suggested_key": {
+                "windows": "Ctrl+K",
+                "mac": "Command+K",
+                "chromeos": "Ctrl+K",
+                "linux": "Ctrl+K"
+            }
+        }
+    }
 }
