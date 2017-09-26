@@ -35,17 +35,47 @@
     "history_subtitle": {
         "message": "find history and open it"
     },
-    "jenkins_title": {
-        "message": "find jenkins jobs"
+    "jenkins_jk_title": {
+        "message": "Find and open"
     },
-    "jenkins_subtitle": {
-        "message": "find and open jenkins jobs"
+    "jenkins_jk_subtitle": {
+        "message": "Find and open jenkins jobs"
     },
-    "note_title": {
-        "message": "note add one note, # show tags"
+    "jenkins_jkb_title": {
+        "message": "Find and build"
     },
-    "note_subtitle": {
-        "message": "tag begin with '#', should be end with space/,/; etc."
+    "jenkins_jkb_subtitle": {
+        "message": "Find and build jenkins jobs"
+    },
+    "jenkins_jkc_title": {
+        "message": "Find and configure"
+    },
+    "jenkins_jkc_subtitle": {
+        "message": "Find and configure jenkins jobs"
+    },
+    "jenkins_jkw_title": {
+        "message": "Find and open the workspace"
+    },
+    "jenkins_jkw_subtitle": {
+        "message": "Find jenkins jobs and open the workspace"
+    },
+    "jenkins_jkset_title": {
+        "message": "Set jenkins url"
+    },
+    "jenkins_jkset_subtitle": {
+        "message": "Set jenkins url"
+    },
+    "note_note_title": {
+        "message": "Add notes"
+    },
+    "note_note_subtitle": {
+        "message": "The label starts with '#', the label text only supports both English and Chinese characters, and the other characters are automatically marked as the end of the label"
+    },
+    "note_notetag_title": {
+        "message": "Find note by the tag"
+    },
+    "note_notetag_subtitle": {
+        "message": "Find note by the tag"
     },
     "offExtension_title": {
         "message": "disable extension / app"

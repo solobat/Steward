@@ -13,6 +13,13 @@ define(function (require, exports, module) {
     var icon = chrome.extension.getURL('img/on.png');
     var title = chrome.i18n.getMessage(name + '_title');
     var subtitle = chrome.i18n.getMessage(name + '_subtitle');
+    var commands = [{
+        key,
+        title,
+        subtitle,
+        icon,
+        editable: true
+    }];
 
     function setEnabled(id, enabled) {
         chrome.management.setEnabled(id, enabled, function () {});
@@ -69,6 +76,7 @@ define(function (require, exports, module) {
 
             if (!sExts) {
                 callback(matchExts);
+                return;
             }
 
             // sExts: {id: {id: '', querys: {'key': {num: 0, update: ''}}}}
@@ -146,12 +154,11 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
-        key: key,
-        icon: icon,
-        title: title,
-        subtitle: subtitle,
+        name: 'Enable Extension',
+        icon,
+        title,
+        commands,
         onInput: onInput,
         onEnter: onEnter
-
     };
 });

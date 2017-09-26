@@ -2,16 +2,16 @@
 <h1 align="center">Steward</h1>
 <p align="center">Chrome里的Alfred，命令式管理扩展/应用/书签/历史记录/标签...</p>
 <p align="center">
-   <a href="https://github.com/solobat/Steward/releases"><img src="https://img.shields.io/badge/lastest_version-2.4.7-blue.svg"></a>
+   <a href="https://github.com/solobat/Steward/releases"><img src="https://img.shields.io/badge/lastest_version-2.5.0-blue.svg"></a>
    <a target="_blank" href="https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd"><img src="https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg"></a>
-   <a href="http://owsjc7iz3.bkt.clouddn.com/Steward.crx"><img src="https://img.shields.io/badge/download-_crx-brightgreen.svg"></a>
+   <a href="http://owsjc7iz3.bkt.clouddn.com/Steward-2.5.0.crx"><img src="https://img.shields.io/badge/download-_crx-brightgreen.svg"></a>
 </p>
 
 ***
 
 #### 安装：
 - [Chrome 应用商店](https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd)
-- [离线下载](http://owsjc7iz3.bkt.clouddn.com/Steward.crx)。
+- [离线下载](http://owsjc7iz3.bkt.clouddn.com/Steward-2.5.0.crx)。
 
 ---
 #### 功能:
@@ -30,6 +30,7 @@
 + `note` 创建笔记
 + `#` 查看笔记及标签
 + `jk` 查看jenkins jobs并打开
++ 选项页可以修改各插件的keyword
 + ...
 
 ---
@@ -42,11 +43,11 @@
 [![license-badge]][license-link]
 
 <!-- Link -->
-[version-badge]:    https://img.shields.io/badge/lastest_version-2.4.7-blue.svg
+[version-badge]:    https://img.shields.io/badge/lastest_version-2.5.0-blue.svg
 [version-link]:     https://github.com/solobat/Steward
 [chrome-badge]:     https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg
 [chrome-link]:      https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd
 [offline-badge]:    https://img.shields.io/badge/download-_crx-brightgreen.svg
-[offline-link]:     http://owsjc7iz3.bkt.clouddn.com/Steward.crx
+[offline-link]:     http://owsjc7iz3.bkt.clouddn.com/Steward-2.5.0.crx
 [license-badge]:    https://img.shields.io/github/license/mashape/apistatus.svg
 [license-link]:     https://opensource.org/licenses/MIT

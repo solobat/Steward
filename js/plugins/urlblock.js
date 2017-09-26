@@ -14,6 +14,13 @@ define(function (require, exports, module) {
     var title = chrome.i18n.getMessage(name + '_title');
     var subtitle = chrome.i18n.getMessage(name + '_subtitle');
     var BLOCK_EXPIRED = 8 * 60 * 60 * 1000;
+    var commands = [{
+        key,
+        title,
+        subtitle,
+        icon,
+        editable: true
+    }];
 
     function onInput(key) {
         if (!key) {
@@ -111,17 +118,16 @@ define(function (require, exports, module) {
         var cmdbox = this;
 
         getBlacklist(function (blacklist) {
-            cmdbox.showItemList(dataFormat(blacklist));
+            cmdbox.showItemList(dataFormat(blacklist || []));
         });
     }
 
     module.exports = {
-        key: key,
-        icon: icon,
-        title: title,
-        subtitle: subtitle,
+        name: 'URL Block',
+        icon,
+        title,
+        commands,
         onInput: onInput,
         onEnter: onEnter
-
     };
 });
