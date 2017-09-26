@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Steward: 扩展/应用/标签/历史记录/alfred",
     "short_name": "Steward",
-    "version": "2.5",
+    "version": "2.5.1",
     "description": "便捷管理扩展/应用/标签/历史记录等",
     "default_locale": "zh_CN",
     "chrome_url_overrides" : {
@@ -18,14 +18,16 @@
     },
 
     "icons": {
-        "16": "img/icon16.png"
+        "16": "img/icon16.png",
+        "48": "img/icon48.png",
+        "128": "img/icon128.png"
     },
     "web_accessible_resources": [
         "img/*",
         "urlblock.html",
         "login.html"
     ],
-    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com; object-src 'self'",
     "options_page": "options.html",
     "optional_permissions": [
         "background", "clipboardRead", "clipboardWrite"
@@ -39,7 +41,8 @@
         "contextMenus",
         "management",
         "notifications",
-        "<all_urls>"
+        "<all_urls>",
+        "topSites"
     ],
     "commands": {
         "_execute_browser_action": {
