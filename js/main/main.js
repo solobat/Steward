@@ -13,6 +13,7 @@ define(function (require, exports, module) {
     var plugins = require('../plugins/plugins').plugins;
     const Wallpaper = require('/js/main/wallpaper');
 
+    var _gaq = window._gaq || [];
     var commands = {};
     var keys;
     var reg;
@@ -92,6 +93,12 @@ define(function (require, exports, module) {
                 this.query = key;
 
                 storage.h5.set(CONST.LAST_CMD, str);
+
+                if (this.lastcmd !== this.cmd) {
+                    _gaq.push(['_trackEvent', 'command', 'input', this.cmd]);
+                    this.lastcmd = this.cmd;
+                }
+
                 return commands[this.cmd].plugin.onInput.call(this, key);
             },
 
@@ -115,7 +122,7 @@ define(function (require, exports, module) {
         });
 
         cmdbox.bind('init', function () {
-            var cmd = storage.h5.get(CONST.LAST_CMD) || 'todo ';
+            var cmd = storage.h5.get(CONST.LAST_CMD) || 'site ';
 
             this.ipt.val(cmd);
             this.render(cmd);
@@ -131,7 +138,10 @@ define(function (require, exports, module) {
                 return;
             }
 
-            commands[this.cmd].plugin.onEnter.call(this, $(elem).data('id'), elem);
+            let plugin = commands[this.cmd].plugin;
+
+            plugin.onEnter.call(this, $(elem).data('id'), elem);
+            _gaq.push(['_trackEvent', 'exec', 'enter', plugin.name]);
         });
 
         cmdbox.bind('empty', function () {

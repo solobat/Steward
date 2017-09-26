@@ -16,7 +16,7 @@ define(function (require, exports, module) {
         title,
         subtitle,
         icon,
-        editable: true
+        editable: false
     }];
 
     function onInput() {

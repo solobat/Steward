@@ -5,6 +5,12 @@
     "bookmark_subtitle": {
         "message": "查找书签记录并打开"
     },
+    "topsites_title": {
+        "message": "常用网站"
+    },
+    "topsites_subtitle": {
+        "message": "常用网站并打开"
+    },
     "download_title": {
         "message": "下载列表"
     },

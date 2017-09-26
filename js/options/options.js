@@ -57,8 +57,13 @@ define(function(require, exports, module) {
                 }
             },
             methods: {
-                handleClick: function() {
+                handleClick: function(tab) {
+                    _gaq.push(['_trackEvent', 'options_tab', 'click', tab.name]);
+                },
 
+                handlePluginClick: function(plugin) {
+                    this.currentPlugin = plugin;
+                    _gaq.push(['_trackEvent', 'options_plugins', 'click', plugin.name]);
                 },
 
                 handlePluginsSubmit: function() {
@@ -72,6 +77,7 @@ define(function(require, exports, module) {
                     }, function() {
                         self.$message('保存成功!');
                     });
+                    _gaq.push(['_trackEvent', 'options_plugins', 'save']);
                 }
             }
         });

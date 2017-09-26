@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Steward Preference</title>
+    <script src="js/common/ga.js"></script>
     <link rel="stylesheet" href="css/element-ui.css">
     <link rel="stylesheet" href="css/options.css">
 </head>
@@ -22,7 +23,7 @@
                                 <el-input placeholder="Search" icon="search" v-model="pluginSearchText">
                                 </el-input>
                             </div>
-                            <div class="plugin-item" v-for="plugin in plugins" @click="currentPlugin = plugin">
+                            <div class="plugin-item" v-for="plugin in plugins" @click="handlePluginClick(plugin)">
                                 <img :src="plugin.icon" class="plugin-icon" alt="">
                                 <span class="plugin-name">{{plugin.name}}</span>
                             </div>
