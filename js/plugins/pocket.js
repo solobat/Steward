@@ -15,6 +15,13 @@ define(function (require, exports, module) {
     var icon = 'http://getpocket.com/i/apple-touch-icon/Pocket_AppIcon_57.png';
     var title = chrome.i18n.getMessage(name + '_title');
     var subtitle = chrome.i18n.getMessage(name + '_subtitle');
+    var commands = [{
+        key,
+        title,
+        subtitle,
+        icon,
+        editable: true
+    }];
 
     function handler(results) {
         var ret = {};
@@ -90,12 +97,11 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
-        key: key,
-        icon: icon,
-        title: title,
-        subtitle: subtitle,
+        name: 'Pocket',
+        icon,
+        title,
+        commands,
         onInput: onInput,
         onEnter: onEnter
-
     };
 });

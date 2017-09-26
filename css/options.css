@@ -1,0 +1,93 @@
+
+[v-cloak] {
+    display: none;
+}
+
+body,
+p,
+div,
+ul,
+li {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    vertical-align: top;
+}
+
+a {
+    text-decoration: none;
+}
+
+.steward {
+    width: 1200px;
+    margin: 40px auto 0;
+}
+
+.steward .el-tabs__header {
+    margin-bottom: 0;
+}
+
+.plugin-searchbar {
+    padding: 10px;
+}
+
+.plugin-list,
+.plugin-editor {
+    height: 600px;
+    overflow: scroll;
+}
+
+.bg-black {
+    background: #303030;
+}
+
+.plugin-item {
+    cursor: pointer;
+    padding: 3px 8px;
+    height: 40px;
+    position: relative;
+}
+
+.plugin-icon {
+    width: 20px;
+    height: 20px;
+    float: left;
+}
+
+.plugin-name {
+    margin-left: 5px;
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: 100;
+}
+
+/* editor */
+.plugin-editor-header {
+    display: flex;
+    background: #212121;
+    height: 40px;
+    padding: 12px;
+}
+
+.plugin-editor-icon {
+    width: 40px;
+    height: 40px;
+}
+
+.plugin-editor-text {
+    flex: 1;
+    margin-left: 10px;
+}
+
+.plugin-editor-name {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #fff;
+}
+
+.plugin-editor-title {
+    font-size: 12px;
+    color: #999;
+}

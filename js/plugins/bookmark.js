@@ -12,6 +12,13 @@ define(function (require, exports, module) {
     var icon = chrome.extension.getURL('img/bookmark.png');
     var title = chrome.i18n.getMessage(name + '_title');
     var subtitle = chrome.i18n.getMessage(name + '_subtitle');
+    var commands = [{
+        key,
+        title,
+        subtitle,
+        icon,
+        editable: true
+    }];
 
 
     function searchBookmark(cmdbox, key, callback) {
@@ -62,12 +69,11 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
-        key: key,
-        icon: icon,
-        title: title,
-        subtitle: subtitle,
+        name: 'Bookmarks',
+        icon,
+        title,
+        commands,
         onInput: onInput,
         onEnter: onEnter
-
     };
 });

@@ -11,6 +11,13 @@ define(function (require, exports, module) {
     var icon = chrome.extension.getURL('img/history.png');
     var title = chrome.i18n.getMessage(name + '_title');
     var subtitle = chrome.i18n.getMessage(name + '_subtitle');
+    var commands = [{
+        key,
+        title,
+        subtitle,
+        icon,
+        editable: true
+    }];
 
     function searchHistory(cmdbox, key, callback) {
         chrome.history.search({
@@ -52,10 +59,10 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
-        key: 'his',
-        icon: icon,
-        title: title,
-        subtitle: subtitle,
+        name: 'History',
+        icon,
+        title,
+        commands,
         onInput: onInput,
         onEnter: onEnter
 

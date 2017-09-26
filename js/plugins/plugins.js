@@ -19,15 +19,7 @@ define(function(require, exports, module) {
         require('/js/plugins/help')
     ]
 
-    var plugins = {}
-
-    pluginList.forEach((plugin) => {
-        if (plugin.key instanceof Array) {
-            plugin.key.forEach((item) => plugins[item] = plugin)
-        } else if (typeof plugin.key === 'string') {
-            plugins[plugin.key] = plugin
-        }
-    })
-
-    module.exports = plugins
+    module.exports = {
+        plugins: pluginList
+    }
 })

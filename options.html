@@ -3,15 +3,71 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Easy extensions Settings</title>
+    <title>Steward Preference</title>
+    <link rel="stylesheet" href="css/element-ui.css">
+    <link rel="stylesheet" href="css/options.css">
 </head>
 
 <body>
-    <form action>
-        TODO
-    </form>
-    <script src="lib/jquery.js"></script>
-    <script src="js/options.js"></script>
+    <div id="app" class="steward" v-cloak>
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+            <el-tab-pane label="General" name="general">
+                TODO
+            </el-tab-pane>
+            <el-tab-pane label="Plugins" name="plugins">
+                <el-row>
+                    <el-col :span="6">
+                        <div class="grid-content plugin-list">
+                            <div class="plugin-searchbar">
+                                <el-input placeholder="Search" icon="search" v-model="pluginSearchText">
+                                </el-input>
+                            </div>
+                            <div class="plugin-item" v-for="plugin in plugins" @click="currentPlugin = plugin">
+                                <img :src="plugin.icon" class="plugin-icon" alt="">
+                                <span class="plugin-name">{{plugin.name}}</span>
+                            </div>
+                        </div>
+                    </el-col>
+                    <el-col :span="18">
+                        <div class="grid-content bg-black plugin-editor">
+                            <div v-if="currentPlugin" class="plugin-editor-container">
+                                <div class="plugin-editor-header">
+                                    <img :src="currentPlugin.icon" class="plugin-editor-icon" alt="">
+                                    <div class="plugin-editor-text">
+                                        <p class="plugin-editor-name">{{currentPlugin.name}}</p>
+                                        <p class="plugin-editor-title">{{currentPlugin.title}}</p>
+                                    </div>
+                                </div>
+                                <div class="plugin-editor-config">
+                                    <el-form style="margin: 20px;padding: 12px; background: #e6e6e6; min-height: 150px;" ref="form" :model="pluginsData" label-width="200px">
+                                        <el-form-item :label="command.title" v-for="(command, index) in currentPlugin.commands" :key="index">
+                                            <input type="text" :disabled="!pluginsData[currentPlugin.name].commands[index].editable" v-model="pluginsData[currentPlugin.name].commands[index].key">
+                                        </el-form-item>
+                                        <el-form-item>
+                                            <el-button type="primary" @click.native.prevent="handlePluginsSubmit">Save</el-button>
+                                        </el-form-item>
+                                    </el-form>
+                                </div>
+                            </div>
+                        </div>
+                    </el-col>
+                </el-row>
+            </el-tab-pane>
+            <el-tab-pane label="Appearance" name="appearance">
+                TODO
+            </el-tab-pane>
+            <el-tab-pane label="Advanced" name="advanced">
+                TODO
+            </el-tab-pane>
+            <el-tab-pane label="Help" name="help">
+                TODO
+            </el-tab-pane>
+        </el-tabs>
+    </div>
+    <script src="js/lib/vue.js"></script>
+    <script src="js/lib/element-ui.js"></script>
+    <script src="js/lib/sea.js"></script>
+    <script src="js/options/options_conf.js"></script>
 </body>
 
 </html>

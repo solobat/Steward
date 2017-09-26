@@ -40,9 +40,13 @@ define(function (require, exports, module) {
     };
 
     var sync = {
-        set: function (data, cb) {},
+        set: function (data, cb) {
+            baseSet('sync', data, cb);
+        },
 
-        get: function (key, cb) {}
+        get: function (key, cb) {
+            baseGet('sync', key, cb);
+        }
 
     };
 
@@ -50,6 +54,5 @@ define(function (require, exports, module) {
         h5: h5,
         local: local,
         sync: sync
-
     };
 });

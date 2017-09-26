@@ -13,6 +13,13 @@ define(function (require, exports, module) {
     var icon = chrome.extension.getURL('img/todo.png');
     var title = chrome.i18n.getMessage(name + '_title');
     var subtitle = chrome.i18n.getMessage(name + '_subtitle');
+    var commands = [{
+        key,
+        title,
+        subtitle,
+        icon,
+        editable: true
+    }];
 
     function onInput(key) {
     }
@@ -101,18 +108,17 @@ define(function (require, exports, module) {
         var cmdbox = this;
 
         getTodos(function (todos) {
-            cmdbox.showItemList(dataFormat(todos));
+            cmdbox.showItemList(dataFormat(todos || []));
         });
     }
 
     module.exports = {
-        key: key,
-        icon: icon,
-        title: title,
-        subtitle: subtitle,
+        name: 'Todolist',
+        icon,
+        title,
+        commands,
         showTodos: showTodos,
         onInput: onInput,
         onEnter: onEnter
-
     };
 });

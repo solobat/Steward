@@ -10,24 +10,27 @@ define(function (require, exports, module) {
     var storage = require('/js/common/storage');
     var CONST = require('/js/common/const');
     var regValidExpress = /^(==|~=|&&|\|\||[0-9]|[\+\-\*\/\^\.%, ""]|[\(\)\|\!\[\]])+$/;
-    var plugins = require('../plugins/plugins');
-
-    var keys = Object.keys(plugins).join('|');
-    var reg = new RegExp('^((?:' + keys + '))\\s(?:\\-(\\w+))?\\s?(.*)$', 'i');
-    var cmdbox;
+    var plugins = require('../plugins/plugins').plugins;
     const Wallpaper = require('/js/main/wallpaper');
+
+    var commands = {};
+    var keys;
+    var reg;
+    var cmdbox;
+
+    window.stewardCache = {};
 
     function findMatchPlugins(query) {
         var items = [];
 
-        for (var key in plugins) {
+        for (var key in commands) {
             if (key.indexOf(query) !== -1) {
                 items.push({
                     key: 'plugins',
                     id: key,
-                    icon: plugins[key].icon,
-                    title: key + ': ' + plugins[key].title,
-                    desc: plugins[key].subtitle || ''
+                    icon: commands[key].icon,
+                    title: key + ': ' + commands[key].title,
+                    desc: commands[key].subtitle || ''
                 });
             }
         }
@@ -66,7 +69,7 @@ define(function (require, exports, module) {
                     this.cmd = 'calc';
                     storage.h5.set(CONST.LAST_CMD, str);
 
-                    return plugins.calc.onInput.call(this, str);
+                    return commands.calc.plugin.onInput.call(this, str);
                 }
 
                 if (str.indexOf(' ') === -1) {
@@ -89,7 +92,7 @@ define(function (require, exports, module) {
                 this.query = key;
 
                 storage.h5.set(CONST.LAST_CMD, str);
-                return plugins[this.cmd].onInput.call(this, key);
+                return commands[this.cmd].plugin.onInput.call(this, key);
             },
 
             createItem: function (index, item) {
@@ -128,7 +131,7 @@ define(function (require, exports, module) {
                 return;
             }
 
-            plugins[this.cmd].onEnter.call(this, $(elem).data('id'), elem);
+            commands[this.cmd].plugin.onEnter.call(this, $(elem).data('id'), elem);
         });
 
         cmdbox.bind('empty', function () {
@@ -136,7 +139,7 @@ define(function (require, exports, module) {
 
             that.cmd = 'todo';
             that.searchTimer = setTimeout(function () {
-                plugins.todo.showTodos.call(that);
+                commands.todo.plugin.showTodos.call(that);
             }, that.delay);
         });
 
@@ -159,6 +162,42 @@ define(function (require, exports, module) {
         cmdbox.init();
     }
 
-    init();
-    document.execCommand('copy');
+    function restoreConfig() {
+        return new Promise((resove, reject) => {
+            chrome.storage.sync.get('config', function(res) {
+                let pluginsData;
+
+                try {
+                    pluginsData = res.config.plugins;
+                } catch (e) {
+                    console.log('There is no plugins configuration yet');
+                }
+
+                plugins.forEach((plugin) => {
+                    if (plugin.commands instanceof Array) {
+                        let pcmds = pluginsData ? pluginsData[plugin.name].commands : plugin.commands;
+
+                        pcmds.forEach((command) => commands[command.key] = {
+                            ...command,
+                            name: plugin.name,
+                            plugin
+                        });
+                    }
+                });
+
+                 keys = Object.keys(commands).join('|');
+                 reg = new RegExp('^((?:' + keys + '))\\s(?:\\-(\\w+))?\\s?(.*)$', 'i');
+
+                 stewardCache.commands = commands;
+                 stewardCache.config = res.config;
+                 resove(res);
+            });
+        });
+    }
+
+    restoreConfig().then(config => {
+        console.log(stewardCache);
+        init();
+        document.execCommand('copy');
+    });
 });

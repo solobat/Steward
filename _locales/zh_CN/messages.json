@@ -35,17 +35,47 @@
     "history_subtitle": {
         "message": "查找历史记录并打开"
     },
-    "jenkins_title": {
-        "message": "查找jenkins jobs"
+    "jenkins_jk_title": {
+        "message": "查找并打开"
     },
-    "jenkins_subtitle": {
+    "jenkins_jk_subtitle": {
         "message": "查找并打开jenkins jobs"
     },
-    "note_title": {
-        "message": "note 添加笔记, # 查看标签"
+    "jenkins_jkb_title": {
+        "message": "查找并编译"
     },
-    "note_subtitle": {
+    "jenkins_jkb_subtitle": {
+        "message": "查找并编译jenkins jobs"
+    },
+    "jenkins_jkc_title": {
+        "message": "查找并配置"
+    },
+    "jenkins_jkc_subtitle": {
+        "message": "查找并配置jenkins jobs"
+    },
+    "jenkins_jkw_title": {
+        "message": "查找打开工作空间"
+    },
+    "jenkins_jkw_subtitle": {
+        "message": "查找jenkins jobs打开工作空间"
+    },
+    "jenkins_jkset_title": {
+        "message": "设置jenkins url"
+    },
+    "jenkins_jkset_subtitle": {
+        "message": "设置jenkins url"
+    },
+    "note_note_title": {
+        "message": "添加笔记"
+    },
+    "note_note_subtitle": {
         "message": "标签以'#'开始, 标签文本只支持英文及中文字符, 其它字符自动作为标签结尾标志"
+    },
+    "note_notetag_title": {
+        "message": "查找标签"
+    },
+    "note_notetag_subtitle": {
+        "message": "根据标签查找note"
     },
     "offExtension_title": {
         "message": "禁用扩展/App"

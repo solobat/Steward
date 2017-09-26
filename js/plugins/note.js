@@ -8,11 +8,13 @@
 define(function (require, exports, module) {
     var util = require('../common/util')
     var name = 'note'
-    var key = ['note', '#']
+    var keys = [{key: 'note'}, {key: '#', keyname: 'notetag', editable: false}]
     var icon = chrome.extension.getURL('img/note.png')
     var title = chrome.i18n.getMessage(name + '_title')
     var subtitle = chrome.i18n.getMessage(name + '_subtitle')
     var tagReg = /#([a-zA-Z\u4e00-\u9fa5]+)/ig
+
+    var commands = util.genCommands(name, icon, keys);
 
     function createNote(...args) {
         return {
@@ -171,10 +173,10 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
-        key: key,
-        icon: icon,
-        title: title,
-        subtitle: subtitle,
+        name: 'Note',
+        icon,
+        title,
+        commands,
         onInput: onInput,
         onEnter: onEnter
     }

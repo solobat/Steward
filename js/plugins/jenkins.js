@@ -9,12 +9,21 @@ define(function (require, exports, module) {
     var util = require('../common/util')
 
     var name = 'jenkins'
-    var key = ['jk', 'jkb', 'jkc', 'jkw', 'jkset']
+    //'jk', 'jkb', 'jkc', 'jkw', 'jkset'
+    var keys = [
+        { key: 'jk' },
+        { key: 'jkb' },
+        { key: 'jkc' },
+        { key: 'jkw' },
+        { key: 'jkset' }
+    ];
     var icon = chrome.extension.getURL('img/jenkins.png')
     var title = chrome.i18n.getMessage(name + '_title')
     var subtitle = chrome.i18n.getMessage(name + '_subtitle')
     var SERVER_URL = window.localStorage['jenkins_url'] || ''
     var jobs = []
+
+    var commands = util.genCommands(name, icon, keys);
 
     const keyUrlMap = {
         'jk': '',
@@ -25,14 +34,14 @@ define(function (require, exports, module) {
 
     const actionTips = {
         seturl: {
-            key: key,
+            key: 'jkset',
             icon: icon,
             id: 'action-seturl',
             title: '设置jenkins url',
             desc: '输入jenkins url，回车确认'
         },
         errorurl: {
-            key: key,
+            key: 'jk',
             icon: icon,
             id: 'action-error',
             title: '获取不到jenkins jobs',
@@ -88,7 +97,7 @@ define(function (require, exports, module) {
         }
 
         this.showItemList([{
-            key: key,
+            key: 'jk',
             icon: icon,
             id: actionTip.id,
             title: actionTip.title,
@@ -156,10 +165,10 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
-        key: key,
-        icon: icon,
-        title: title,
-        subtitle: subtitle,
+        name: 'Jenkins',
+        icon,
+        title,
+        commands,
         onInput: onInput,
         onEnter: onEnter
     };

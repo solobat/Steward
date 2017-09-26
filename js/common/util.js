@@ -43,9 +43,24 @@ define(function (require, exports, module) {
         s4() + '-' + s4() + s4() + s4();
     }
 
+    function genCommands(name, icon, items) {
+        return items.map(item => {
+            let {key, editable, keyname} = item;
+
+            return {
+                key: item.key,
+                title: chrome.i18n.getMessage(name + '_' + (keyname || key) + '_title'),
+                subtitle: chrome.i18n.getMessage(name + '_' + (keyname || key) + '_subtitle'),
+                icon,
+                editable: editable === false ? false : true
+            };
+        });
+    }
+
     module.exports = {
         matchText: matchText,
         isMac: isMac,
-        guid: guid
+        guid: guid,
+        genCommands
     };
 });

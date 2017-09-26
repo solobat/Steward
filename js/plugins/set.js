@@ -13,6 +13,13 @@ define(function (require, exports, module) {
     var icon = chrome.extension.getURL('img/set.png');
     var title = chrome.i18n.getMessage(name + '_title');
     var subtitle = chrome.i18n.getMessage(name + '_subtitle');
+    var commands = [{
+        key,
+        title,
+        subtitle,
+        icon,
+        editable: true
+    }];
 
     function openOptionPage(id, elem, cb) {
         var url = $(elem).data('url');
@@ -81,6 +88,7 @@ define(function (require, exports, module) {
 
             if (!sExts) {
                 callback(matchExts);
+                return;
             }
 
             // sExts: {id: {id: '', querys: {'key': {num: 0, update: ''}}}}
@@ -107,12 +115,11 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
-        key: key,
-        icon: icon,
-        title: title,
-        subtitle: subtitle,
+        name: 'Set Extension',
+        icon,
+        title,
+        commands,
         onInput: onInput,
         onEnter: onEnter
-
     };
 });
