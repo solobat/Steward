@@ -44,6 +44,7 @@ define(function(require, exports, module) {
             el: '#app',
             data: function() {
                 return {
+                    version: '2.5.4',
                     activeName: 'plugins',
                     pluginSearchText: '',
                     currentPlugin: null,
