@@ -24,13 +24,16 @@ define(function(require, exports, module) {
 
         if (config.plugins) {
             pluginsData = config.plugins;
-        } else {
-            plugins.forEach(plugin => {
+        }
+
+        // 总是确保数据是最新的
+        plugins.forEach(plugin => {
+            if (!pluginsData[plugin.name]) {
                 pluginsData[plugin.name] = {
                     commands: plugin.commands
                 };
-            });
-        }
+            }
+        });
 
         render(pluginsData);
     });

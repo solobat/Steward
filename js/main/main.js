@@ -185,13 +185,22 @@ define(function (require, exports, module) {
 
                 plugins.forEach((plugin) => {
                     if (plugin.commands instanceof Array) {
-                        let pcmds = pluginsData ? pluginsData[plugin.name].commands : plugin.commands;
+                        let pcmds;
 
-                        pcmds.forEach((command) => commands[command.key] = {
-                            ...command,
-                            name: plugin.name,
-                            plugin
-                        });
+                        try {
+                            pcmds = pluginsData[plugin.name].commands;
+                        } catch (e) {
+                            pcmds = plugin.commands;
+                        }
+
+                        // FIX: 新增插件后，缓存里可能还没有
+                        if (pcmds) {
+                            pcmds.forEach((command) => commands[command.key] = {
+                                ...command,
+                                name: plugin.name,
+                                plugin
+                            });
+                        }
                     }
                 });
 
