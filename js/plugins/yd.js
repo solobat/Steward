@@ -11,6 +11,7 @@ define(function (require, exports, module) {
     'keyfrom=mineword&key=1362458147&type=data&doctype=json&version=1.1&q=';
     var emptyReg = /^\s+$/g;
 
+    var version = 1;
     var name = 'youdao';
     var key = 'yd';
     var icon = chrome.extension.getURL('img/youdao.png');
@@ -83,6 +84,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: name,
         icon,
         title,

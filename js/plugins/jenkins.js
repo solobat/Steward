@@ -8,6 +8,7 @@
 define(function (require, exports, module) {
     var util = require('../common/util')
 
+    var version = 1;
     var name = 'jenkins'
     //'jk', 'jkb', 'jkc', 'jkw', 'jkset'
     var keys = [
@@ -165,6 +166,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Jenkins',
         icon,
         title,

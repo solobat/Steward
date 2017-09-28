@@ -99,7 +99,7 @@ define(function (require, exports, module) {
                     this.lastcmd = this.cmd;
                 }
 
-                return commands[this.cmd].plugin.onInput.call(this, key);
+                return commands[this.cmd].plugin.onInput.call(this, key, commands[this.cmd]);
             },
 
             createItem: function (index, item) {
@@ -140,7 +140,7 @@ define(function (require, exports, module) {
 
             let plugin = commands[this.cmd].plugin;
 
-            plugin.onEnter.call(this, $(elem).data('id'), elem);
+            plugin.onEnter.call(this, $(elem).data('id'), elem, commands[this.cmd]);
             _gaq.push(['_trackEvent', 'exec', 'enter', plugin.name]);
         });
 
@@ -185,10 +185,14 @@ define(function (require, exports, module) {
 
                 plugins.forEach((plugin) => {
                     if (plugin.commands instanceof Array) {
+                        let pname = plugin.name;
                         let pcmds;
 
                         try {
-                            pcmds = pluginsData[plugin.name].commands;
+                            pcmds = pluginsData[pname].commands;
+                            if (plugin.version > (pluginsData[pname].version || 1)) {
+                                pcmds = $.extend(true, plugin.commands, pcmds);
+                            }
                         } catch (e) {
                             pcmds = plugin.commands;
                         }
@@ -197,7 +201,7 @@ define(function (require, exports, module) {
                         if (pcmds) {
                             pcmds.forEach((command) => commands[command.key] = {
                                 ...command,
-                                name: plugin.name,
+                                name: pname,
                                 plugin
                             });
                         }

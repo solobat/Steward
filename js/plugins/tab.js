@@ -8,6 +8,7 @@
 define(function (require, exports, module) {
     var util = require('../common/util');
 
+    var version = 1;
     var name = 'locateTab';
     var key = 'tab';
     var icon = chrome.extension.getURL('img/tab.png');
@@ -74,6 +75,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Tabs',
         icon,
         title,

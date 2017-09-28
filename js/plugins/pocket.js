@@ -10,6 +10,7 @@ define(function (require, exports, module) {
     var conf = require('../conf/pocket_conf');
     var auth = new Auth(conf);
 
+    var version = 1;
     var name = 'pocket';
     var key = 'po';
     var icon = 'http://getpocket.com/i/apple-touch-icon/Pocket_AppIcon_57.png';
@@ -97,6 +98,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Pocket',
         icon,
         title,

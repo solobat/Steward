@@ -41,6 +41,12 @@
     "history_subtitle": {
         "message": "查找历史记录并打开"
     },
+    "jenkins_title": {
+        "message": "查找并打开"
+    },
+    "jenkins_subtitle": {
+        "message": "查找并打开jenkins jobs"
+    },
     "jenkins_jk_title": {
         "message": "查找并打开"
     },
@@ -70,6 +76,12 @@
     },
     "jenkins_jkset_subtitle": {
         "message": "设置jenkins url"
+    },
+    "note_title": {
+        "message": "添加笔记"
+    },
+    "note_subtitle": {
+        "message": "标签以'#'开始, 标签文本只支持英文及中文字符, 其它字符自动作为标签结尾标志"
     },
     "note_note_title": {
         "message": "添加笔记"
@@ -130,6 +142,18 @@
     },
     "urlblock_subtitle": {
         "message": "屏蔽指定网址"
+    },
+    "urlblock_bk_title": {
+        "message": "屏蔽网址"
+    },
+    "urlblock_bk_subtitle": {
+        "message": "屏蔽指定网址"
+    },
+    "urlblock_bk8_title": {
+        "message": "屏蔽网址8小时"
+    },
+    "urlblock_bk8_subtitle": {
+        "message": "屏蔽指定网址8小时"
     },
     "youdao_title": {
         "message": "有道翻译"

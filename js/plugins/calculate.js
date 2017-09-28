@@ -7,6 +7,7 @@
 
 define(function (require, exports, module) {
     var name = 'calculate';
+    var version = 1;
     var key = 'calc';
     var icon = chrome.extension.getURL('img/calc.png');
     var title = chrome.i18n.getMessage(name + '_title');
@@ -42,6 +43,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Calculator',
         icon,
         title,

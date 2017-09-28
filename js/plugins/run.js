@@ -8,6 +8,7 @@
 define(function (require, exports, module) {
     var util = require('../common/util');
 
+    var version = 1;
     var name = 'runapp';
     var key = 'run';
     var icon = chrome.extension.getURL('img/app.png');
@@ -66,6 +67,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Run App',
         icon,
         title,

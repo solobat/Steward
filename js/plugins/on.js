@@ -8,6 +8,7 @@
 define(function (require, exports, module) {
     var util = require('../common/util');
 
+    var version = 1;
     var name = 'onExtension';
     var key = 'on';
     var icon = chrome.extension.getURL('img/on.png');
@@ -154,6 +155,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Enable Extension',
         icon,
         title,

@@ -2,10 +2,11 @@ define(function(require, exports, module) {
     var pluginList = require('/js/plugins/plugins').plugins;
 
     let plugins = pluginList.map(plugin => {
-        let {name, icon, commands, title} = plugin;
+        let {name, icon, commands, title, version} = plugin;
 
         return {
             name,
+            version,
             commands,
             title,
             icon
@@ -13,6 +14,14 @@ define(function(require, exports, module) {
     });
     let config;
 
+    /*
+        pluginsData: {
+            [pname]: {
+                version,
+                commands
+            }
+        }
+     */
     chrome.storage.sync.get('config', function(res) {
         if (res.config) {
             config = res.config;
@@ -28,23 +37,41 @@ define(function(require, exports, module) {
 
         // 总是确保数据是最新的
         plugins.forEach(plugin => {
-            if (!pluginsData[plugin.name]) {
-                pluginsData[plugin.name] = {
-                    commands: plugin.commands
-                };
-            }
+            mergePluginData(plugin, pluginsData);
         });
 
         render(pluginsData);
     });
 
+    function mergePluginData(plugin, pluginsData) {
+        let pname = plugin.name;
+        let cachePlugin = pluginsData[pname];
+        let version = plugin.version;
+
+        if (!cachePlugin) {
+            pluginsData[pname] = {
+                version,
+                commands: plugin.commands
+            };
+        } else {
+            if (!cachePlugin.version) {
+                cachePlugin.version = 1;
+            }
+
+            if (version > cachePlugin.version) {
+                // rough merge
+                cachePlugin.commands = $.extend(true, plugin.commands, cachePlugin.commands);
+                cachePlugin.version = version;
+            }
+        }
+    }
+
     function render(pluginsData) {
-        console.log(pluginsData);
         new Vue({
             el: '#app',
             data: function() {
                 return {
-                    version: '2.5.4',
+                    version: '2.5.5',
                     activeName: 'plugins',
                     pluginSearchText: '',
                     currentPlugin: null,
@@ -81,7 +108,7 @@ define(function(require, exports, module) {
                     }, function() {
                         self.$message('保存成功!');
                     });
-                    _gaq.push(['_trackEvent', 'options_plugins', 'save']);
+                    _gaq.push(['_trackEvent', 'options_plugins', 'save', this.currentPlugin.name]);
                 }
             }
         });

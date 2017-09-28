@@ -8,6 +8,7 @@
 define(function (require, exports, module) {
     var util = require('../common/util');
 
+    var version = 1;
     var name = 'offExtension';
     var key = 'off';
     var icon = chrome.extension.getURL('img/off.png');
@@ -154,6 +155,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Disable Extension',
         icon,
         title,

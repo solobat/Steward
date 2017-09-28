@@ -7,6 +7,7 @@
 
 define(function (require, exports, module) {
     var chrome = window.chrome;
+    var version = 1;
     var name = 'topsites';
     var key = 'site';
     var icon = chrome.extension.getURL('img/topsites.png');
@@ -47,6 +48,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Top Sites',
         icon,
         title,
