@@ -160,5 +160,8 @@
     },
     "youdao_subtitle": {
         "message": "使用有道翻译你想知道的单词或短语..."
+    },
+    "general_cacheLastCmd": {
+        "message": "缓存上一条命令"
     }
 }

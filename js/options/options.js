@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
     var pluginList = require('/js/plugins/plugins').plugins;
 
-    let plugins = pluginList.map(plugin => {
+    let pluginModules = pluginList.map(plugin => {
         let {name, icon, commands, title, version} = plugin;
 
         return {
@@ -14,42 +14,68 @@ define(function(require, exports, module) {
     });
     let config;
 
-    /*
-        pluginsData: {
-            [pname]: {
-                version,
-                commands
-            }
-        }
-     */
+    // plugins: { [pname]: { version, commands } }
     chrome.storage.sync.get('config', function(res) {
         if (res.config) {
             config = res.config;
         } else {
             config = {};
         }
+        console.log(config);
 
-        let pluginsData = {};
+        let plugins = {};
+        let general = {
+            cacheLastCmd: true
+        };
+
+        if (config.general) {
+            general = config.general;
+        }
 
         if (config.plugins) {
-            pluginsData = config.plugins;
+            plugins = config.plugins;
         }
 
         // 总是确保数据是最新的
-        plugins.forEach(plugin => {
-            mergePluginData(plugin, pluginsData);
+        pluginModules.forEach(plugin => {
+            mergePluginData(plugin, plugins);
         });
 
-        render(pluginsData);
+        let formData = {
+            general,
+            plugins
+        };
+
+        let i18nTexts = getI18nTexts({general});
+
+        render(formData, i18nTexts);
     });
 
-    function mergePluginData(plugin, pluginsData) {
+    function getI18nTexts(obj) {
+        let texts = {};
+
+        try {
+            for (let cate in obj) {
+                let subobj = texts[cate] = {};
+
+                for (var key in obj[cate]) {
+                    subobj[key] = chrome.i18n.getMessage(`${cate}_${key}`);
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+
+        return texts;
+    }
+
+    function mergePluginData(plugin, plugins) {
         let pname = plugin.name;
-        let cachePlugin = pluginsData[pname];
+        let cachePlugin = plugins[pname];
         let version = plugin.version;
 
         if (!cachePlugin) {
-            pluginsData[pname] = {
+            plugins[pname] = {
                 version,
                 commands: plugin.commands
             };
@@ -66,7 +92,8 @@ define(function(require, exports, module) {
         }
     }
 
-    function render(pluginsData) {
+    const panelKeys = ['general', 'plugins'];
+    function render({general, plugins}, i18nTexts) {
         new Vue({
             el: '#app',
             data: function() {
@@ -75,14 +102,16 @@ define(function(require, exports, module) {
                     activeName: 'plugins',
                     pluginSearchText: '',
                     currentPlugin: null,
-                    pluginsData
+                    general,
+                    plugins,
+                    i18nTexts
                 }
             },
             computed: {
-                plugins: function() {
+                filteredPlugins: function() {
                     let text = this.pluginSearchText.toLowerCase();
 
-                    return plugins.filter(plugin => {
+                    return pluginModules.filter(plugin => {
                         return plugin.name.toLowerCase().indexOf(text) > -1;
                     });
                 }
@@ -92,22 +121,37 @@ define(function(require, exports, module) {
                     _gaq.push(['_trackEvent', 'options_tab', 'click', tab.name]);
                 },
 
+                saveConfig: function() {
+                    let self = this;
+                    let newConfig = {};
+
+                    panelKeys.forEach(key => {
+                        newConfig[key] = JSON.parse(JSON.stringify(this[key]));
+                    });
+
+                    console.log('newConfig is: ', newConfig);
+
+                    chrome.storage.sync.set({
+                        config: newConfig
+                    }, function() {
+                        self.$message('保存成功!');
+                    });
+                },
+
+                handleGeneralSubmit: function() {
+                    this.saveConfig();
+
+                    _gaq.push(['_trackEvent', 'options_general', 'save']);
+                },
+
                 handlePluginClick: function(plugin) {
                     this.currentPlugin = plugin;
                     _gaq.push(['_trackEvent', 'options_plugins', 'click', plugin.name]);
                 },
 
                 handlePluginsSubmit: function() {
-                    let formData = JSON.parse(JSON.stringify(this.pluginsData));
-                    const self = this;
+                    this.saveConfig();
 
-                    chrome.storage.sync.set({
-                        config: {
-                            plugins: formData
-                        }
-                    }, function() {
-                        self.$message('保存成功!');
-                    });
                     _gaq.push(['_trackEvent', 'options_plugins', 'save', this.currentPlugin.name]);
                 }
             }
