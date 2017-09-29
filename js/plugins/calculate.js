@@ -20,8 +20,12 @@ define(function (require, exports, module) {
         editable: false
     }];
 
-    function onInput() {
+    function onInput(key) {
         var data = [];
+        if (this.term.startsWith('calc ') && key) {
+            this.render(key);
+            return;
+        }
         try {
             result = eval(this.str);
             data = [
