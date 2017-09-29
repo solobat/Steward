@@ -45,7 +45,7 @@ define(function (require, exports, module) {
         this.showItemList(items);
     }
 
-    function init() {
+    function init(config) {
         $('.cmdbox').focus();
 
         if ($('html').data('page') === 'newtab') {
@@ -122,10 +122,12 @@ define(function (require, exports, module) {
         });
 
         cmdbox.bind('init', function () {
-            var cmd = storage.h5.get(CONST.LAST_CMD) || 'site ';
+            if (config.general.cacheLastCmd) {
+                var cmd = storage.h5.get(CONST.LAST_CMD) || 'site ';
 
-            this.ipt.val(cmd);
-            this.render(cmd);
+                this.ipt.val(cmd);
+                this.render(cmd);
+            }
         });
 
         cmdbox.bind('enter', function (event, elem) {
@@ -212,15 +214,20 @@ define(function (require, exports, module) {
                  reg = new RegExp('^((?:' + keys + '))\\s(?:\\-(\\w+))?\\s?(.*)$', 'i');
 
                  stewardCache.commands = commands;
-                 stewardCache.config = res.config;
-                 resove(res);
+                 stewardCache.config = res.config || {};
+
+                if (!stewardCache.config.general) {
+                    stewardCache.config.general = {
+                        cacheLastCmd: true
+                    }
+                }
+                 resove(stewardCache.config);
             });
         });
     }
 
     restoreConfig().then(config => {
-        console.log(stewardCache);
-        init();
+        init(config);
         document.execCommand('copy');
     });
 });

@@ -160,5 +160,8 @@
     },
     "youdao_subtitle": {
         "message": "translate a word / phrase by youdao translator..."
+    },
+    "general_cacheLastCmd": {
+        "message": "Cache the last command"
     }
 }

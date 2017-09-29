@@ -114,8 +114,10 @@ a {
     color: #20a0ff;
 }
 
-.text-panel .notice {
+.text-panel .notice,
+.text-panel em {
     color: #ff3f80;
+    font-style: normal;
 }
 
 .text-panel .wx-pay {

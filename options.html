@@ -13,7 +13,17 @@
     <div id="app" class="steward" v-cloak>
         <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="General" name="general">
-                TODO
+                <el-form style="margin: 20px 0; min-height: 150px;" ref="general" :model="config.general">
+                    <el-form-item :label="i18nTexts.general.cacheLastCmd">
+                        <el-switch
+                          v-model="config.general.cacheLastCmd"
+                          on-color="#20a0ff">
+                        </el-switch>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click.native.prevent="handleGeneralSubmit">Save</el-button>
+                    </el-form-item>
+                </el-form>
             </el-tab-pane>
             <el-tab-pane label="Plugins" name="plugins">
                 <el-row>
@@ -23,7 +33,7 @@
                                 <el-input placeholder="Search" icon="search" v-model="pluginSearchText">
                                 </el-input>
                             </div>
-                            <div class="plugin-item" v-for="plugin in plugins" @click="handlePluginClick(plugin)">
+                            <div class="plugin-item" v-for="plugin in filteredPlugins" @click="handlePluginClick(plugin)">
                                 <img :src="plugin.icon" class="plugin-icon" alt="">
                                 <span class="plugin-name">{{plugin.name}}</span>
                             </div>
@@ -40,9 +50,9 @@
                                     </div>
                                 </div>
                                 <div class="plugin-editor-config">
-                                    <el-form style="margin: 20px;padding: 12px; background: #e6e6e6; min-height: 150px;" ref="form" :model="pluginsData" label-width="200px">
+                                    <el-form style="margin: 20px;padding: 12px; background: #e6e6e6; min-height: 150px;" ref="form" :model="config.plugins" label-width="200px">
                                         <el-form-item :label="command.title" v-for="(command, index) in currentPlugin.commands" :key="index">
-                                            <input type="text" :disabled="!pluginsData[currentPlugin.name].commands[index].editable" v-model="pluginsData[currentPlugin.name].commands[index].key">
+                                            <input type="text" :disabled="!config.plugins[currentPlugin.name].commands[index].editable" v-model="config.plugins[currentPlugin.name].commands[index].key">
                                         </el-form-item>
                                         <el-form-item>
                                             <el-button type="primary" @click.native.prevent="handlePluginsSubmit">Save</el-button>
@@ -62,29 +72,20 @@
             </el-tab-pane>
             <el-tab-pane label="Help" name="help">
                 <div class="text-panel">
+                    请尽量及时升级最新版浏览器，避免有些功能使用不了。<br>
                     如果使用过程中有建议/问题可以去<a href="https://github.com/solobat/Steward/issues">这里</a>，或者加入QQ群<span class="notice">575397892</span>反馈。
                 </div>
             </el-tab-pane>
             <el-tab-pane label="Update" name="update">
                 <div class="text-panel">
-                    <h2>Steward v2.5.5</h2>
+                    <h2>Steward v{{config.version}}</h2>
                     <section class="changelog">
-                        <h3>v2.5.5</h3>
-                        <p>
-                            URL Block插件新增<span class="notice">bk8</span>命令以替代原来的<span class="notice">bk</span>，后者不再有时间限制
-                            <br>
-                            插件添加版本管理，从v1开始计数
-                        </p>
-                        <h3>v2.5.4</h3>
-                        <p>添加帮助文档/更新日志/相关</p>
-                        <h3>v2.5.3</h3>
-                        <p>紧急修复Bug</p>
-                        <h3>v2.5.2</h3>
-                        <p>添加topsites插件，使用<span class="notice">site</span>关键字，查找你的最常访问网站</p>
-                        <h3>v2.5</h3>
-                        <p>添加插件管理页，可更改各插件的<span class="notice">keyword</span></p>
+                        <template v-for="update in changelog">
+                            <h3 v-html="update.version"></h3>
+                            <p v-html="update.detail"></p>
+                        </template>
                     </section>
-                    <a :href="'http://owsjc7iz3.bkt.clouddn.com/Steward-' + version + '.crx'">最新版离线安装包</a>
+                    <a :href="'http://owsjc7iz3.bkt.clouddn.com/Steward-' + config.version + '.crx'">download crx</a>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="About" name="about">

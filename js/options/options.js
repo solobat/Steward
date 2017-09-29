@@ -1,7 +1,10 @@
 define(function(require, exports, module) {
     var pluginList = require('/js/plugins/plugins').plugins;
+    var changelog = require('/js/info/changelog');
+    var manifest = chrome.runtime.getManifest();
+    const version = manifest.version;
 
-    let plugins = pluginList.map(plugin => {
+    let pluginModules = pluginList.map(plugin => {
         let {name, icon, commands, title, version} = plugin;
 
         return {
@@ -14,42 +17,71 @@ define(function(require, exports, module) {
     });
     let config;
 
-    /*
-        pluginsData: {
-            [pname]: {
-                version,
-                commands
+    // plugins: { [pname]: { version, commands } }
+    function init() {
+        chrome.storage.sync.get('config', function(res) {
+            if (res.config) {
+                config = res.config;
+            } else {
+                config = {};
             }
-        }
-     */
-    chrome.storage.sync.get('config', function(res) {
-        if (res.config) {
-            config = res.config;
-        } else {
-            config = {};
-        }
+            console.log(config);
 
-        let pluginsData = {};
+            let plugins = {};
+            let general = {
+                cacheLastCmd: true
+            };
 
-        if (config.plugins) {
-            pluginsData = config.plugins;
-        }
+            if (config.general) {
+                general = config.general;
+            }
 
-        // 总是确保数据是最新的
-        plugins.forEach(plugin => {
-            mergePluginData(plugin, pluginsData);
+            if (config.plugins) {
+                plugins = config.plugins;
+            }
+
+            // 总是确保数据是最新的
+            pluginModules.forEach(plugin => {
+                mergePluginData(plugin, plugins);
+            });
+
+            let results = {
+                general,
+                plugins,
+                lastVersion: config.version || version
+            };
+
+            let i18nTexts = getI18nTexts({general});
+
+            render(results, i18nTexts);
         });
+    }
 
-        render(pluginsData);
-    });
+    function getI18nTexts(obj) {
+        let texts = {};
 
-    function mergePluginData(plugin, pluginsData) {
+        try {
+            for (let cate in obj) {
+                let subobj = texts[cate] = {};
+
+                for (var key in obj[cate]) {
+                    subobj[key] = chrome.i18n.getMessage(`${cate}_${key}`);
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+
+        return texts;
+    }
+
+    function mergePluginData(plugin, plugins) {
         let pname = plugin.name;
-        let cachePlugin = pluginsData[pname];
+        let cachePlugin = plugins[pname];
         let version = plugin.version;
 
         if (!cachePlugin) {
-            pluginsData[pname] = {
+            plugins[pname] = {
                 version,
                 commands: plugin.commands
             };
@@ -66,24 +98,43 @@ define(function(require, exports, module) {
         }
     }
 
-    function render(pluginsData) {
+    const panelKeys = ['general', 'plugins'];
+    function render({general, plugins, lastVersion}, i18nTexts) {
+        let activeName = 'general';
+
+        if (lastVersion < version) {
+            activeName = 'update';
+        }
+
         new Vue({
             el: '#app',
             data: function() {
                 return {
-                    version: '2.5.5',
-                    activeName: 'plugins',
+                    activeName,
                     pluginSearchText: '',
                     currentPlugin: null,
-                    pluginsData
+                    changelog,
+                    config: {
+                        general,
+                        plugins,
+                        version
+                    },
+                    i18nTexts
                 }
             },
             computed: {
-                plugins: function() {
+                filteredPlugins: function() {
                     let text = this.pluginSearchText.toLowerCase();
 
-                    return plugins.filter(plugin => {
+                    return pluginModules.filter(plugin => {
                         return plugin.name.toLowerCase().indexOf(text) > -1;
+                    });
+                }
+            },
+            mounted: function() {
+                if (activeName === 'update') {
+                    this.$nextTick(() => {
+                        this.saveConfig(true);
                     });
                 }
             },
@@ -92,25 +143,40 @@ define(function(require, exports, module) {
                     _gaq.push(['_trackEvent', 'options_tab', 'click', tab.name]);
                 },
 
+                saveConfig: function(silent) {
+                    let self = this;
+                    let newConfig = JSON.parse(JSON.stringify(this.config));
+
+                    chrome.storage.sync.set({
+                        config: newConfig
+                    }, function() {
+                        if (silent) {
+                            console.log('保存成功');
+                        } else {
+                            self.$message('保存成功!');
+                        }
+                    });
+                },
+
+                handleGeneralSubmit: function() {
+                    this.saveConfig();
+
+                    _gaq.push(['_trackEvent', 'options_general', 'save']);
+                },
+
                 handlePluginClick: function(plugin) {
                     this.currentPlugin = plugin;
                     _gaq.push(['_trackEvent', 'options_plugins', 'click', plugin.name]);
                 },
 
                 handlePluginsSubmit: function() {
-                    let formData = JSON.parse(JSON.stringify(this.pluginsData));
-                    const self = this;
+                    this.saveConfig();
 
-                    chrome.storage.sync.set({
-                        config: {
-                            plugins: formData
-                        }
-                    }, function() {
-                        self.$message('保存成功!');
-                    });
                     _gaq.push(['_trackEvent', 'options_plugins', 'save', this.currentPlugin.name]);
                 }
             }
         });
     }
+
+    init();
 });
