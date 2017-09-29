@@ -1,5 +1,7 @@
 define(function(require, exports, module) {
     var pluginList = require('/js/plugins/plugins').plugins;
+    var manifest = chrome.runtime.getManifest();
+    const version = manifest.version;
 
     let pluginModules = pluginList.map(plugin => {
         let {name, icon, commands, title, version} = plugin;
@@ -15,41 +17,44 @@ define(function(require, exports, module) {
     let config;
 
     // plugins: { [pname]: { version, commands } }
-    chrome.storage.sync.get('config', function(res) {
-        if (res.config) {
-            config = res.config;
-        } else {
-            config = {};
-        }
-        console.log(config);
+    function init() {
+        chrome.storage.sync.get('config', function(res) {
+            if (res.config) {
+                config = res.config;
+            } else {
+                config = {};
+            }
+            console.log(config);
 
-        let plugins = {};
-        let general = {
-            cacheLastCmd: true
-        };
+            let plugins = {};
+            let general = {
+                cacheLastCmd: true
+            };
 
-        if (config.general) {
-            general = config.general;
-        }
+            if (config.general) {
+                general = config.general;
+            }
 
-        if (config.plugins) {
-            plugins = config.plugins;
-        }
+            if (config.plugins) {
+                plugins = config.plugins;
+            }
 
-        // 总是确保数据是最新的
-        pluginModules.forEach(plugin => {
-            mergePluginData(plugin, plugins);
+            // 总是确保数据是最新的
+            pluginModules.forEach(plugin => {
+                mergePluginData(plugin, plugins);
+            });
+
+            let results = {
+                general,
+                plugins,
+                lastVersion: config.version || version
+            };
+
+            let i18nTexts = getI18nTexts({general});
+
+            render(results, i18nTexts);
         });
-
-        let formData = {
-            general,
-            plugins
-        };
-
-        let i18nTexts = getI18nTexts({general});
-
-        render(formData, i18nTexts);
-    });
+    }
 
     function getI18nTexts(obj) {
         let texts = {};
@@ -93,17 +98,25 @@ define(function(require, exports, module) {
     }
 
     const panelKeys = ['general', 'plugins'];
-    function render({general, plugins}, i18nTexts) {
+    function render({general, plugins, lastVersion}, i18nTexts) {
+        let activeName = 'general';
+
+        if (lastVersion < version) {
+            activeName = 'update';
+        }
+
         new Vue({
             el: '#app',
             data: function() {
                 return {
-                    version: '2.5.5',
-                    activeName: 'plugins',
+                    activeName,
                     pluginSearchText: '',
                     currentPlugin: null,
-                    general,
-                    plugins,
+                    config: {
+                        general,
+                        plugins,
+                        version
+                    },
                     i18nTexts
                 }
             },
@@ -116,25 +129,30 @@ define(function(require, exports, module) {
                     });
                 }
             },
+            mounted: function() {
+                if (activeName === 'update') {
+                    this.$nextTick(() => {
+                        this.saveConfig(true);
+                    });
+                }
+            },
             methods: {
                 handleClick: function(tab) {
                     _gaq.push(['_trackEvent', 'options_tab', 'click', tab.name]);
                 },
 
-                saveConfig: function() {
+                saveConfig: function(silent) {
                     let self = this;
-                    let newConfig = {};
-
-                    panelKeys.forEach(key => {
-                        newConfig[key] = JSON.parse(JSON.stringify(this[key]));
-                    });
-
-                    console.log('newConfig is: ', newConfig);
+                    let newConfig = JSON.parse(JSON.stringify(this.config));
 
                     chrome.storage.sync.set({
                         config: newConfig
                     }, function() {
-                        self.$message('保存成功!');
+                        if (silent) {
+                            console.log('保存成功');
+                        } else {
+                            self.$message('保存成功!');
+                        }
                     });
                 },
 
@@ -157,4 +175,6 @@ define(function(require, exports, module) {
             }
         });
     }
+
+    init();
 });

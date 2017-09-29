@@ -13,10 +13,10 @@
     <div id="app" class="steward" v-cloak>
         <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="General" name="general">
-                <el-form style="margin: 20px 0; min-height: 150px;" ref="general" :model="general">
+                <el-form style="margin: 20px 0; min-height: 150px;" ref="general" :model="config.general">
                     <el-form-item :label="i18nTexts.general.cacheLastCmd">
                         <el-switch
-                          v-model="general.cacheLastCmd"
+                          v-model="config.general.cacheLastCmd"
                           on-color="#20a0ff">
                         </el-switch>
                     </el-form-item>
@@ -50,9 +50,9 @@
                                     </div>
                                 </div>
                                 <div class="plugin-editor-config">
-                                    <el-form style="margin: 20px;padding: 12px; background: #e6e6e6; min-height: 150px;" ref="form" :model="plugins" label-width="200px">
+                                    <el-form style="margin: 20px;padding: 12px; background: #e6e6e6; min-height: 150px;" ref="form" :model="config.plugins" label-width="200px">
                                         <el-form-item :label="command.title" v-for="(command, index) in currentPlugin.commands" :key="index">
-                                            <input type="text" :disabled="!plugins[currentPlugin.name].commands[index].editable" v-model="plugins[currentPlugin.name].commands[index].key">
+                                            <input type="text" :disabled="!config.plugins[currentPlugin.name].commands[index].editable" v-model="config.plugins[currentPlugin.name].commands[index].key">
                                         </el-form-item>
                                         <el-form-item>
                                             <el-button type="primary" @click.native.prevent="handlePluginsSubmit">Save</el-button>
@@ -78,7 +78,7 @@
             </el-tab-pane>
             <el-tab-pane label="Update" name="update">
                 <div class="text-panel">
-                    <h2>Steward v2.5.5</h2>
+                    <h2>Steward v{{config.version}}</h2>
                     <section class="changelog">
                         <h3>v2.5.5</h3>
                         <p>
@@ -95,7 +95,7 @@
                         <h3>v2.5</h3>
                         <p>添加插件管理页，可更改各插件的<span class="notice">keyword</span></p>
                     </section>
-                    <a :href="'http://owsjc7iz3.bkt.clouddn.com/Steward-' + version + '.crx'">最新版离线安装包</a>
+                    <a :href="'http://owsjc7iz3.bkt.clouddn.com/Steward-' + config.version + '.crx'">最新版离线安装包</a>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="About" name="about">
