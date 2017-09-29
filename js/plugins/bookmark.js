@@ -7,6 +7,7 @@
 
 define(function (require, exports, module) {
     var chrome = window.chrome;
+    var version = 1;
     var name = 'bookmark';
     var key = 'bm';
     var icon = chrome.extension.getURL('img/bookmark.png');
@@ -69,6 +70,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Bookmarks',
         icon,
         title,

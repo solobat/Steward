@@ -7,6 +7,7 @@
 
 define(function (require, exports, module) {
     var chrome = window.chrome;
+    var version = 1;
     var name = 'download';
     var key = 'dl';
     var icon = chrome.extension.getURL('img/download.png');
@@ -70,6 +71,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Downloads',
         icon,
         title,

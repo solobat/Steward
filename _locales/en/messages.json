@@ -41,6 +41,12 @@
     "history_subtitle": {
         "message": "find history and open it"
     },
+    "jenkins_title": {
+        "message": "Find and open"
+    },
+    "jenkins_subtitle": {
+        "message": "Find and open jenkins jobs"
+    },
     "jenkins_jk_title": {
         "message": "Find and open"
     },
@@ -70,6 +76,12 @@
     },
     "jenkins_jkset_subtitle": {
         "message": "Set jenkins url"
+    },
+    "note_title": {
+        "message": "Add notes"
+    },
+    "note_subtitle": {
+        "message": "The label starts with '#', the label text only supports both English and Chinese characters, and the other characters are automatically marked as the end of the label"
     },
     "note_note_title": {
         "message": "Add notes"
@@ -126,10 +138,22 @@
         "message": "add todo item, delete one by click it..."
     },
     "urlblock_title": {
-        "message": "block url"
+        "message": "Block URL"
     },
     "urlblock_subtitle": {
-        "message": "block url"
+        "message": "Block the specified URL"
+    },
+    "urlblock_bk_title": {
+        "message": "Block URL"
+    },
+    "urlblock_bk_subtitle": {
+        "message": "Block the specified URL"
+    },
+    "urlblock_bk8_title": {
+        "message": "Block URL for 8 hours"
+    },
+    "urlblock_bk8_subtitle": {
+        "message": "Block the specified URL for 8 hours"
     },
     "youdao_title": {
         "message": "youdao translator"

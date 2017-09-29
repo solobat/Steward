@@ -8,6 +8,7 @@
 define(function (require, exports, module) {
     var util = require('../common/util');
 
+    var version = 1;
     var name = 'setOption';
     var key = 'set';
     var icon = chrome.extension.getURL('img/set.png');
@@ -115,6 +116,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Set Extension',
         icon,
         title,

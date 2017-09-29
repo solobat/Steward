@@ -6,6 +6,7 @@
  */
 
 define(function (require, exports, module) {
+    var version = 1;
     var name = 'history';
     var key = 'his';
     var icon = chrome.extension.getURL('img/history.png');
@@ -59,6 +60,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'History',
         icon,
         title,

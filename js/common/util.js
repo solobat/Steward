@@ -49,6 +49,7 @@ define(function (require, exports, module) {
 
             return {
                 key: item.key,
+                orkey: item.key,
                 title: chrome.i18n.getMessage(name + '_' + (keyname || key) + '_title'),
                 subtitle: chrome.i18n.getMessage(name + '_' + (keyname || key) + '_subtitle'),
                 icon,

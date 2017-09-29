@@ -6,6 +6,7 @@
 
 define(function (require, exports, module) {
     var _ = require('../lib/underscore')
+    var version = 1;
     var name = 'help'
     var key = 'help'
     var icon = chrome.extension.getURL('img/help.ico');
@@ -46,6 +47,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Help',
         icon,
         title,

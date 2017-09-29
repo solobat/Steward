@@ -35,7 +35,7 @@
                                 <div class="plugin-editor-header">
                                     <img :src="currentPlugin.icon" class="plugin-editor-icon" alt="">
                                     <div class="plugin-editor-text">
-                                        <p class="plugin-editor-name">{{currentPlugin.name}}</p>
+                                        <p class="plugin-editor-name">{{currentPlugin.name}} - v{{currentPlugin.version}}</p>
                                         <p class="plugin-editor-title">{{currentPlugin.title}}</p>
                                     </div>
                                 </div>
@@ -67,12 +67,16 @@
             </el-tab-pane>
             <el-tab-pane label="Update" name="update">
                 <div class="text-panel">
-                    <h2>Steward v2.5.4</h2>
+                    <h2>Steward v2.5.5</h2>
                     <section class="changelog">
-                        <h3>v2.5.4</h3>
+                        <h3>v2.5.5</h3>
                         <p>
-                            添加帮助文档/更新日志/相关
+                            URL Block插件新增<span class="notice">bk8</span>命令以替代原来的<span class="notice">bk</span>，后者不再有时间限制
+                            <br>
+                            插件添加版本管理，从v1开始计数
                         </p>
+                        <h3>v2.5.4</h3>
+                        <p>添加帮助文档/更新日志/相关</p>
                         <h3>v2.5.3</h3>
                         <p>紧急修复Bug</p>
                         <h3>v2.5.2</h3>
@@ -97,6 +101,7 @@
             </el-tab-pane>
         </el-tabs>
     </div>
+    <script src="js/lib/jquery.js"></script>
     <script src="js/lib/vue.js"></script>
     <script src="js/lib/element-ui.js"></script>
     <script src="js/lib/sea.js"></script>

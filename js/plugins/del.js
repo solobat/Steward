@@ -8,6 +8,7 @@
 define(function (require, exports, module) {
     var util = require('../common/util');
 
+    var version = 1;
     var name = 'deleteExtension';
     var key = 'del';
     var icon = chrome.extension.getURL('img/del.png');
@@ -106,6 +107,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Delete Extension',
         icon,
         title,

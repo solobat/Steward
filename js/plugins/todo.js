@@ -8,6 +8,7 @@
 define(function (require, exports, module) {
     var request = require('../common/request');
 
+    var version = 1;
     var name = 'todolist';
     var key = 'todo';
     var icon = chrome.extension.getURL('img/todo.png');
@@ -113,6 +114,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Todolist',
         icon,
         title,

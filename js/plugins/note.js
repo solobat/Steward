@@ -7,6 +7,7 @@
 
 define(function (require, exports, module) {
     var util = require('../common/util')
+    var version = 1;
     var name = 'note'
     var keys = [{key: 'note'}, {key: '#', keyname: 'notetag', editable: false}]
     var icon = chrome.extension.getURL('img/note.png')
@@ -173,6 +174,7 @@ define(function (require, exports, module) {
     }
 
     module.exports = {
+        version,
         name: 'Note',
         icon,
         title,

@@ -20,6 +20,17 @@ define(function(require, exports, module) {
         require('/js/plugins/topsites')
     ]
 
+    // orkey: original key
+    pluginList.forEach(plugin => {
+        if (plugin.commands) {
+            plugin.commands.forEach(command => {
+                if (!command.orkey) {
+                    command.orkey = command.key;
+                }
+            });
+        }
+    });
+
     module.exports = {
         plugins: pluginList
     }
