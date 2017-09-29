@@ -2,7 +2,7 @@ define(function(require, exports, module) {
     let langZh = [
         {
             version: 'v2.5.6',
-            detail: "新增缓存上一条命令选项。<br />修复<em>calc</em>的bug。<br />版本更新后自动切换到update面板。"
+            detail: "新增缓存上一条命令选项。<br />修复<em>calc</em>的bug。<br />版本更新后自动切换到update面板。<br />修复bk8不能unblock的问题。"
         },
         {
             version: 'v2.5.5',

@@ -214,11 +214,13 @@ define(function (require, exports, module) {
                  reg = new RegExp('^((?:' + keys + '))\\s(?:\\-(\\w+))?\\s?(.*)$', 'i');
 
                  stewardCache.commands = commands;
-                 stewardCache.config = res.config || {
-                     general: {
-                         cacheLastCmd: true
-                     }
-                 };
+                 stewardCache.config = res.config || {};
+
+                if (!stewardCache.config.general) {
+                    stewardCache.config.general = {
+                        cacheLastCmd: true
+                    }
+                }
                  resove(stewardCache.config);
             });
         });

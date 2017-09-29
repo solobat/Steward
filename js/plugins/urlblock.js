@@ -36,7 +36,7 @@ define(function (require, exports, module) {
     function removeBlacklist(id) {
         var cmdbox = this;
 
-        if (!id.startsWith('bk_') && (+new Date() - id) < BLOCK_EXPIRED) {
+        if (!(String(id)).startsWith('bk_') && (+new Date() - id) < BLOCK_EXPIRED) {
             console.log('url will be blocked 8 hours...');
             return;
         }
