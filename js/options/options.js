@@ -1,5 +1,6 @@
 define(function(require, exports, module) {
     var pluginList = require('/js/plugins/plugins').plugins;
+    var changelog = require('/js/info/changelog');
     var manifest = chrome.runtime.getManifest();
     const version = manifest.version;
 
@@ -112,6 +113,7 @@ define(function(require, exports, module) {
                     activeName,
                     pluginSearchText: '',
                     currentPlugin: null,
+                    changelog,
                     config: {
                         general,
                         plugins,
