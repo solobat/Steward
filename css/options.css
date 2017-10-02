@@ -92,6 +92,45 @@ a {
     color: #999;
 }
 
+.appearance-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 3px 8px;
+    height: 40px;
+    position: relative;
+}
+
+.appearance-item.is-active {
+    background: #20a0ff;
+    color: #fff;
+}
+
+.appearance-item-icon {
+    width: 20px;
+    height: 20px;
+    float: left;
+}
+
+.appearance-item-name {
+    margin-left: 5px;
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: 100;
+}
+
+.appearance-item-panel {
+    height: 600px;
+    overflow: scroll;
+}
+
+.themes-info {
+    margin-top: 24px;
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+}
+
 .changelog {
     padding: 5px 12px;
     height: 400px;
@@ -128,4 +167,38 @@ a {
     margin-top: 10px;
     margin-bottom: 10px;
     width: 200px;
+}
+
+.wallpapers-container {
+
+}
+
+.wallpaper-box {
+    position: relative;
+    width: 25%;
+    padding: 5px;
+    float: left;
+    box-sizing: border-box;
+}
+
+.wallpaper-box .wallpaper-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    transition: transform .3s ease-out;
+}
+
+.wallpaper-box.is-selected {
+}
+
+.wallpaper-box .selected-icon {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+}
+
+.wallpaper-box img:hover {
+    transform: scale(1.1);
 }
