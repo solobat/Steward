@@ -1,6 +1,7 @@
 define(function(require, exports, module) {
     var pluginList = require('/js/plugins/plugins').plugins;
     var changelog = require('/js/info/changelog');
+    const storage = require('/js/utils/storage');
     var manifest = chrome.runtime.getManifest();
     const version = manifest.version;
 
@@ -99,6 +100,13 @@ define(function(require, exports, module) {
     }
 
     const panelKeys = ['general', 'plugins'];
+    const appearanceItems = [{
+        name: 'wallpapers',
+        icon: '/img/wallpaper-icon.png'
+    }, {
+        name: 'themes',
+        icon: '/img/themes-icon.png'
+    }];
     function render({general, plugins, lastVersion}, i18nTexts) {
         let activeName = 'general';
 
@@ -113,6 +121,10 @@ define(function(require, exports, module) {
                     activeName,
                     pluginSearchText: '',
                     currentPlugin: null,
+                    curApprItem: null,
+                    appearanceItems,
+                    wallpapers: [],
+                    selectedWallpaper: window.localStorage.getItem('wallpaper') || '',
                     changelog,
                     config: {
                         general,
@@ -151,9 +163,9 @@ define(function(require, exports, module) {
                         config: newConfig
                     }, function() {
                         if (silent) {
-                            console.log('保存成功');
+                            console.log('save successfully');
                         } else {
-                            self.$message('保存成功!');
+                            self.$message('save successfully!');
                         }
                     });
                 },
@@ -173,6 +185,39 @@ define(function(require, exports, module) {
                     this.saveConfig();
 
                     _gaq.push(['_trackEvent', 'options_plugins', 'save', this.currentPlugin.name]);
+                },
+
+                handleApprItemClick: function(apprItem) {
+                    this.curApprItem = apprItem;
+
+                    switch (apprItem.name) {
+                        case 'wallpapers':
+                            this.loadWallpapersIfNeeded();
+                            break;
+                        default:
+                            break;
+                    }
+
+                    _gaq.push(['_trackEvent', 'options_appearance', 'click', apprItem.name]);
+                },
+
+                loadWallpapersIfNeeded: function() {
+                    if (!this.wallpapers.length) {
+                        storage.sync.get('wallpapers').then(wallpapers => this.wallpapers = wallpapers);
+                    }
+                },
+
+                chooseWallpaper: function(wallpaper) {
+                    if (this.selectedWallpaper === wallpaper) {
+                        this.selectedWallpaper = '';
+                        window.localStorage.removeItem('wallpaper');
+                    } else {
+                        this.selectedWallpaper = wallpaper;
+                        window.localStorage.setItem('wallpaper', wallpaper);
+                    }
+                    _gaq.push(['_trackEvent', 'options_wallpaper', 'click', 'choose']);
+
+                    this.$message('set successfully!');
                 }
             }
         });

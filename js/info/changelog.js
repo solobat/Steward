@@ -1,6 +1,10 @@
 define(function(require, exports, module) {
     let langZh = [
         {
+            version: 'v2.5.7',
+            detail: "修复tab插件新标签页不显示icon的问题<br />新标签页左下角添加壁纸<em>保存</em>按钮，可以在设置->Appearance->Wallpapers查看/设置/取消"
+        },
+        {
             version: 'v2.5.6',
             detail: "新增缓存上一条命令选项。<br />修复<em>calc</em>的bug。<br />版本更新后自动切换到update面板。<br />修复bk8不能unblock的问题。"
         },

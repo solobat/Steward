@@ -52,7 +52,7 @@ define(function (require, exports, module) {
             return {
                 key: key,
                 id: item.id,
-                icon: item.favIconUrl,
+                icon: item.favIconUrl || icon,
                 title: item.title,
                 desc: subtitle
 

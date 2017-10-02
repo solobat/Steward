@@ -31,17 +31,36 @@ a {
 .fixed-tools {
     position: fixed;
     bottom: 10px;
-    right: 10px;
+    width: 100%;
+    padding: 0 10px;
     z-index: 100;
 }
 
-.refresh-wp {
+.action-btn {
     display: block;
-    background: url(../img/refresh.png);
-    background-size: cover;
     width: 20px;
     height: 20px;
     cursor: pointer;
+}
+
+.save-wplink {
+    float: left;
+    background: url(../img/save-blue.png);
+    background-size: cover;
+}
+
+.save-wplink:hover {
+    background-image: url(../img/save-red.png);
+}
+
+.refresh-wp {
+    float: right;
+    background: url(../img/refresh-blue.png);
+    background-size: cover;
+}
+
+.refresh-wp:hover {
+    background-image: url(../img/refresh-red.png);
 }
 
 .cmdbox {
