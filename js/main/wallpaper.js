@@ -36,7 +36,7 @@ define(function(require, exports, module) {
                 [STORAGE_KEY]: wallpapers
             };
         }).then(newResults => storage.sync.set(newResults)).then(resp => {
-            alert('保存成功');
+            alert('save successfully');
         });
     }
 

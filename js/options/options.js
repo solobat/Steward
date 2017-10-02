@@ -163,9 +163,9 @@ define(function(require, exports, module) {
                         config: newConfig
                     }, function() {
                         if (silent) {
-                            console.log('保存成功');
+                            console.log('save successfully');
                         } else {
-                            self.$message('保存成功!');
+                            self.$message('save successfully!');
                         }
                     });
                 },
@@ -217,7 +217,7 @@ define(function(require, exports, module) {
                     }
                     _gaq.push(['_trackEvent', 'options_wallpaper', 'click', 'choose']);
 
-                    this.$message('设置成功');
+                    this.$message('set successfully!');
                 }
             }
         });
