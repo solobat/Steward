@@ -1,6 +1,10 @@
 define(function(require, exports, module) {
     let langZh = [
         {
+            version: 'v2.5.8',
+            detail: "添加wallpaper下载及删除功能"
+        },
+        {
             version: 'v2.5.7',
             detail: "修复tab插件新标签页不显示icon的问题<br />新标签页左下角添加壁纸<em>保存</em>按钮，可以在设置->Appearance->Wallpapers查看/设置/取消"
         },
