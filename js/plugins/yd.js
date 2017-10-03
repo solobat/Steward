@@ -33,7 +33,10 @@ define(function (require, exports, module) {
         getTranslation(this, key);
     }
 
-    function onEnter(id) {
+    function onEnter(id, elem) {
+        let text = $(elem).find('.ec-item-title').text();
+
+        util.copyToClipboard(text);
     }
 
     function dataFormat(rawList) {

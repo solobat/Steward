@@ -58,10 +58,20 @@ define(function (require, exports, module) {
         });
     }
 
+    function copyToClipboard(text) {
+        document.addEventListener('copy', (event) => {
+            event.preventDefault();
+            event.clipboardData.setData('text/plain', text);
+        }, {once: true});
+
+        document.execCommand('copy');
+    }
+
     module.exports = {
         matchText: matchText,
         isMac: isMac,
         guid: guid,
-        genCommands
+        genCommands,
+        copyToClipboard
     };
 });

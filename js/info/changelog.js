@@ -1,6 +1,10 @@
 define(function(require, exports, module) {
     let langZh = [
         {
+            version: 'v2.5.9',
+            detail: "部分插件(<em>yd/note/calc</em>)添加复制到剪切板功能 <br />popup样式优化"
+        },
+        {
             version: 'v2.5.8',
             detail: "添加wallpaper下载及删除功能"
         },
