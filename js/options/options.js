@@ -218,6 +218,41 @@ define(function(require, exports, module) {
                     _gaq.push(['_trackEvent', 'options_wallpaper', 'click', 'choose']);
 
                     this.$message('set successfully!');
+                },
+
+                handleWallpaperDownload: function() {
+                    _gaq.push(['_trackEvent', 'options_wallpaper', 'click', 'download']);
+                },
+
+                confirmDeleteWallpaper: function(wallpaper) {
+                    this.$confirm('This operation will permanently delete the wallpaper, whether to continue?',
+                        'Prompt', {
+                        confirmButtonText: 'Delete',
+                        cancelButtonText: 'Cancel',
+                        type: 'warning'
+                    }).then(() => {
+                        this.deleteWallpaper(wallpaper);
+                    }).catch(() => {
+
+                    });
+                },
+
+                deleteWallpaper: function(wallpaper) {
+                    let wpIdx = this.wallpapers.indexOf(wallpaper);
+
+                    if (wpIdx !== -1) {
+                        this.wallpapers.splice(wpIdx, 1);
+                    }
+
+                    storage.sync.set({
+                        wallpapers: this.wallpapers
+                    }).then(resp => {
+                        this.$message({
+                            type: 'success',
+                            message: 'delete successfully!'
+                        });
+                        _gaq.push(['_trackEvent', 'options_wallpaper', 'click', 'delete']);
+                    });
                 }
             }
         });
