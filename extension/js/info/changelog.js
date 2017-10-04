@@ -1,5 +1,9 @@
 let langZh = [
     {
+        version: 'v2.6',
+        detail: "性能优化及一些改进"
+    },
+    {
         version: 'v2.5.9',
         detail: "部分插件(<em>yd/note/calc</em>)添加复制到剪切板功能 <br />popup样式优化"
     },
