@@ -163,5 +163,11 @@
     },
     "general_cacheLastCmd": {
         "message": "Cache the last command"
+    },
+    "weather_title": {
+        "message": "weather"
+    },
+    "weather_subtitle": {
+        "message": "weather..."
     }
 }
