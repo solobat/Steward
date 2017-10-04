@@ -1,0 +1,1 @@
+exports.NUMBER = require('./number');

@@ -1,0 +1,81 @@
+/**
+ * @file bm command plugin script
+ * @description 书签记录检索
+ * @author tomasy
+ * @email solopea@gmail.com
+ */
+
+import $ from 'jquery'
+
+var chrome = window.chrome;
+var version = 1;
+var name = 'bookmark';
+var key = 'bm';
+var icon = chrome.extension.getURL('img/bookmark.png');
+var title = chrome.i18n.getMessage(name + '_title');
+var subtitle = chrome.i18n.getMessage(name + '_subtitle');
+var commands = [{
+    key,
+    title,
+    subtitle,
+    icon,
+    editable: true
+}];
+
+
+function searchBookmark(cmdbox, key, callback) {
+    if (!key) {
+        chrome.bookmarks.getRecent(10, function (bookMarkList) {
+            callback(bookMarkList || []);
+        });
+
+        return;
+    }
+
+    chrome.bookmarks.search(key, function (bookMarkList) {
+        bookMarkList = bookMarkList || [];
+
+        bookMarkList = bookMarkList.filter(function (bookmark) {
+            return bookmark.url !== undefined;
+        });
+
+        callback(bookMarkList);
+    });
+}
+
+function onInput(key) {
+    var that = this;
+    searchBookmark(that, key, function (bookMarkList) {
+        var arr = [];
+        for (var i in bookMarkList) {
+            var item = bookMarkList[i];
+            arr.push({
+                key: key,
+                id: item.id,
+                icon: icon,
+                url: item.url,
+                title: item.title,
+                desc: item.url,
+                isWarn: false
+
+            });
+        }
+        that.showItemList(arr);
+    });
+}
+
+function onEnter(id, elem) {
+    chrome.tabs.create({
+        url: $(elem).data('url')
+    });
+}
+
+export default {
+    version,
+    name: 'Bookmarks',
+    icon,
+    title,
+    commands,
+    onInput: onInput,
+    onEnter: onEnter
+};
