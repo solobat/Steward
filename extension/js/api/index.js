@@ -1,0 +1,1 @@
+exports.bing = require('./bing');
