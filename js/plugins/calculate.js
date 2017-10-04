@@ -6,6 +6,7 @@
  */
 
 define(function (require, exports, module) {
+    var util = require('../common/util');
     var name = 'calculate';
     var version = 1;
     var key = 'calc';
@@ -43,7 +44,10 @@ define(function (require, exports, module) {
         return data;
     }
 
-    function onEnter(id) {
+    function onEnter(id, elem) {
+        let text = $(elem).find('.ec-item-title').text();
+
+        util.copyToClipboard(text);
     }
 
     module.exports = {
