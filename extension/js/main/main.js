@@ -11,10 +11,10 @@ import storage from '../common/storage'
 import CONST from '../common/const'
 import { plugins }  from '../plugins/plugins'
 import * as Wallpaper from './wallpaper'
+import ga from '../../js/common/ga'
 
 var regValidExpress = /^(==|~=|&&|\|\||[0-9]|[\+\-\*\/\^\.%, ""]|[\(\)\|\!\[\]])+$/;
 
-var _gaq = window._gaq || [];
 var commands = {};
 var keys;
 var reg;
@@ -173,6 +173,12 @@ function init(config, mode) {
     }
 
     cmdbox.init();
+
+    if (mode === 'newTab') {
+        ga();
+    } else {
+        setTimeout(ga, 200);
+    }
 }
 
 function restoreConfig() {

@@ -30,7 +30,7 @@ function onInput(key) {
         return;
     }
     try {
-        result = mathexp.eval(this.str);
+        let result = mathexp.eval(this.str);
         data = [
             {
                 key: title,
