@@ -163,5 +163,11 @@
     },
     "general_cacheLastCmd": {
         "message": "缓存上一条命令"
+    },
+    "weather_title": {
+        "message": "查询城市天气"
+    },
+    "weather_subtitle": {
+        "message": "输入城市名，查询天气、指数、pm2.5..."
     }
 }
