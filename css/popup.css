@@ -3,8 +3,7 @@ body {
     padding: 0;
 
     -webkit-user-select: none;
-    background: rgb(242, 242, 242);
-    height: 450px;
+    max-height: 450px;
 }
 img {
     vertical-align: top;
@@ -24,8 +23,9 @@ a {
 .cmdbox {
     width: 500px;
     height: 50px;
-    border: 3px solid rgba(0, 0, 0, 0.6);
     font-size: 22px;
+    border: 0;
+    padding: 5px 10px;
 }
 
 .cmdbox:focus {
@@ -41,17 +41,12 @@ a {
     overflow-y: scroll;
 
     height: 400px;
-
-    background: rgb(235, 235, 235);
-    border: 3px solid rgba(0, 0, 0, 0.6);
-    border-top: 0;
 }
 
 .ec-itemList .ec-item {
     padding: 2px 8px;
     height: 40px;
     position: relative;
-    border-bottom: 1px solid rgb(209, 209, 209);
 }
 
 .ec-itemList .ec-item:hover {

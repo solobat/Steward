@@ -61,7 +61,7 @@ define(function (require, exports, module) {
                         key: key,
                         icon: icon,
                         title: note.text,
-                        desc: 'note'
+                        desc: 'Copy note to your clipboard'
                     }
                 })
             }
@@ -107,6 +107,8 @@ define(function (require, exports, module) {
             if (type === 'tag') {
                 this.ipt.val('# ' + $elem.data('id'))
                 this.ipt.trigger('input')
+            } else {
+                util.copyToClipboard($elem.find('.ec-item-title').text());
             }
         } else {
             var query = this.query
