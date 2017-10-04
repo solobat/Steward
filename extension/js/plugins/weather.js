@@ -60,6 +60,7 @@ function dataFormat(results) {
 
 const QUERY_DELAY = 200;
 let timer = 0;
+const cityReg = /^[\u4e00-\u9fa5]{2,}$/;
 
 function onInput(key) {
     let cityName = key;
@@ -69,6 +70,10 @@ function onInput(key) {
     }
 
     clearTimeout(timer);
+
+    if (!cityReg.test(cityName)) {
+        return;
+    }
 
     timer = setTimeout(() => {
         getByCity(cityName).then(resp => {
