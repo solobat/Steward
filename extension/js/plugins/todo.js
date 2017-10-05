@@ -25,12 +25,12 @@ var commands = [{
 function onInput(key) {
 }
 
-function onEnter(key, elem) {
-    if (!elem || $(elem).data('type') === 'plugins') {
+function onEnter(item) {
+    if (!item || item.key === 'plugins') {
         addTodo.call(this, this.query);
     }
     else {
-        removeTodo.call(this, key);
+        removeTodo.call(this, item.id);
     }
 }
 

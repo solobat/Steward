@@ -61,7 +61,7 @@ function launch(id) {
     });
 }
 
-function onEnter(id) {
+function onEnter({ id }) {
     launch(id);
     this.refresh();
 }

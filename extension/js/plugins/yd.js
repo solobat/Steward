@@ -34,10 +34,8 @@ function onInput(key) {
     getTranslation(this, key);
 }
 
-function onEnter(id, elem) {
-    let text = $(elem).find('.ec-item-title').text();
-
-    util.copyToClipboard(text);
+function onEnter({ title }) {
+    util.copyToClipboard(title);
 }
 
 function dataFormat(rawList) {

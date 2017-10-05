@@ -93,7 +93,7 @@ function query(key, callback) {
     });
 }
 
-function onEnter(id, elem) {
+function onEnter({ id }) {
     window.open('http://getpocket.com/a/read/' + id);
 }
 

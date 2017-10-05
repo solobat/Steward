@@ -14,7 +14,7 @@ function createItem(index, item) {
 function onInput(key) {
 }
 
-function onEnter(id) {
+function onEnter({ id }) {
 }
 
 export default {

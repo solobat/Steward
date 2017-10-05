@@ -43,8 +43,8 @@ function onInput(key) {
     that.showItemList(getPlugins());
 }
 
-function onEnter(key) {
-    this.render(key.split(',')[0] + '');
+function onEnter(item) {
+    this.render(item.id.split(',')[0] + '');
 }
 
 export default {

@@ -64,9 +64,9 @@ function onInput(key) {
     });
 }
 
-function onEnter(id, elem) {
+function onEnter(item) {
     chrome.tabs.create({
-        url: $(elem).data('url')
+        url: item.url
     });
 }
 

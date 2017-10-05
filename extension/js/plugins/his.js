@@ -56,8 +56,8 @@ function onInput(key) {
     });
 }
 
-function onEnter(id, elem) {
-    window.open($(elem).data('url'));
+function onEnter(item) {
+    window.open(item.url);
 }
 
 export default {

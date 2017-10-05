@@ -22,8 +22,8 @@ var commands = [{
     editable: true
 }];
 
-function openOptionPage(id, elem, cb) {
-    var url = $(elem).data('url');
+function openOptionPage(item, cb) {
+    var url = item.url;
 
     if (!url) {
         cb.call(null);
@@ -73,8 +73,8 @@ function onInput(key) {
     });
 }
 
-function onEnter(id, elem) {
-    openOptionPage(id, elem, function () {
+function onEnter(item) {
+    openOptionPage(item, function () {
         // cb
     });
 }

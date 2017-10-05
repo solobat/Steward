@@ -179,6 +179,7 @@ EasyComplete.prototype = {
     },
 
     clearList: function () {
+        this.dataList = [];
         if ($('.ec-itemList').length) {
             $('.ec-itemList').remove();
         }
@@ -190,6 +191,7 @@ EasyComplete.prototype = {
         if (!dataList || !dataList.length) {
             return;
         }
+        this.dataList = dataList;
 
         // TODO: 没有此需求的时候怎么办呢
         var createItemFn = fn || this.opt.createItem;

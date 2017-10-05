@@ -141,7 +141,7 @@ function onInput(key) {
     });
 }
 
-function onEnter(id) {
+function onEnter({ id }) {
     if (id.startsWith('action-')) {
         let actionName = id.split('-')[1];
 

@@ -24,12 +24,12 @@ function onInput(key, command) {
     }
 }
 
-function onEnter(key, elem, command) {
+function onEnter(item, command) {
     if (this.query) {
         addBlacklist.call(this, command.key, this.query, command.orkey);
     }
     else {
-        removeBlacklist.call(this, key);
+        removeBlacklist.call(this, item.id);
     }
 }
 

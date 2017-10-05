@@ -67,8 +67,8 @@ function onInput(key) {
     });
 }
 
-function onEnter(id, elem) {
-    chrome.downloads.show(id);
+function onEnter(item) {
+    chrome.downloads.show(item.id);
 }
 
 export default {

@@ -67,10 +67,9 @@ function onInput(key) {
     });
 }
 
-function onEnter(id) {
+function onEnter({ id }) {
     chrome.tabs.update(id, {
         active: true
-
     });
 }
 

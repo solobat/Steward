@@ -63,8 +63,8 @@ function onInput(key) {
     });
 }
 
-function onEnter(id) {
-    uninstall(id, function () {
+function onEnter(item) {
+    uninstall(item.id, function () {
         // cb
     });
     this.refresh();

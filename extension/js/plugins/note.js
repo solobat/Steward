@@ -100,16 +100,13 @@ function findNoteById(notes, id) {
     return notes.filter((note) => note._id === id)[0]
 }
 
-function onEnter(key, elem) {
+function onEnter(item) {
     if (this.cmd === '#') {
-        var $elem = $(elem);
-        var type = $elem.data('type')
-
-        if (type === 'tag') {
-            this.ipt.val('# ' + $elem.data('id'))
+        if (item.key === 'tag') {
+            this.ipt.val('# ' + item.id)
             this.ipt.trigger('input')
         } else {
-            util.copyToClipboard($elem.find('.ec-item-title').text());
+            util.copyToClipboard(item.title);
         }
     } else {
         var query = this.query

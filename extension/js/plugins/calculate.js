@@ -46,8 +46,8 @@ function onInput(key) {
     return data;
 }
 
-function onEnter(id, elem) {
-    let text = $(elem).find('.ec-item-title').text();
+function onEnter(item) {
+    let text = item.title;
 
     util.copyToClipboard(text);
 }

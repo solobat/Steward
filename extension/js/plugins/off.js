@@ -61,7 +61,7 @@ function onInput(key) {
     });
 }
 
-function onEnter(id) {
+function onEnter({ id }) {
     setEnabled(id, false);
     this.refresh();
     addRecord('ext', this.query, id);

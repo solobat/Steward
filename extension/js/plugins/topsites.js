@@ -42,9 +42,9 @@ function onInput(key) {
     });
 }
 
-function onEnter(id, elem) {
+function onEnter({ url }) {
     chrome.tabs.create({
-        url: $(elem).data('url')
+        url
     });
 }
 

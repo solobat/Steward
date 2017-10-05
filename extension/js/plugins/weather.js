@@ -87,7 +87,7 @@ function onInput(key) {
     }, QUERY_DELAY);
 }
 
-function onEnter(id) {
+function onEnter() {
 
 }
 

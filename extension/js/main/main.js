@@ -132,8 +132,10 @@ function init(config, mode) {
     });
 
     cmdbox.bind('enter', function (event, elem) {
+        let $elem = $(elem);
+
         if (!this.cmd) {
-            var key = $(elem).data('id');
+            var key = $elem.data('id');
             if (key) {
                 this.render(key + ' ');
             }
@@ -142,8 +144,9 @@ function init(config, mode) {
         }
 
         let plugin = commands[this.cmd].plugin;
+        let index = $elem.index();
 
-        plugin.onEnter.call(this, $(elem).data('id'), elem, commands[this.cmd]);
+        plugin.onEnter.call(this, this.dataList[index], commands[this.cmd]);
         _gaq.push(['_trackEvent', 'exec', 'enter', plugin.name]);
     });
 
