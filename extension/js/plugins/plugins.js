@@ -17,6 +17,7 @@ import download from './download'
 import help from './help'
 import topsites from './topsites'
 import weather from './weather'
+import openurl from './openurl'
 
 var pluginList = [
     jenkins,
@@ -37,7 +38,8 @@ var pluginList = [
     download,
     help,
     topsites,
-    weather
+    weather,
+    openurl
 ]
 
 // orkey: original key

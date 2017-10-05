@@ -13,9 +13,8 @@ import { plugins }  from '../plugins/plugins'
 import * as Wallpaper from './wallpaper'
 import ga from '../../js/common/ga'
 
-var regValidExpress = /^(==|~=|&&|\|\||[0-9]|[\+\-\*\/\^\.%, ""]|[\(\)\|\!\[\]])+$/;
-
 var commands = {};
+var withoutKeyCommands = [];
 var keys;
 var reg;
 var cmdbox;
@@ -26,7 +25,7 @@ function findMatchPlugins(query) {
     var items = [];
 
     for (var key in commands) {
-        if (key.indexOf(query) !== -1) {
+        if (key.indexOf(query) !== -1 && !commands[key].withoutKey) {
             items.push({
                 key: 'plugins',
                 id: key,
@@ -38,6 +37,12 @@ function findMatchPlugins(query) {
     }
 
     return items;
+}
+
+function findRegExpMatched(str) {
+    return withoutKeyCommands.find(item => {
+        return item.regExp && str.match(item.regExp);
+    });
 }
 
 function matchPlugins(query) {
@@ -67,11 +72,11 @@ function init(config, mode) {
             this.param = '';
             this.query = '';
 
-            if (regValidExpress.test(str)) {
-                this.cmd = 'calc';
-                storage.h5.set(CONST.LAST_CMD, str);
+            let spCommand = findRegExpMatched(str);
 
-                return commands.calc.plugin.onInput.call(this, str);
+            if (spCommand) {
+                this.cmd = spCommand.key;
+                return spCommand.plugin.onInput.call(this, str, spCommand);
             }
 
             if (str.indexOf(' ') === -1) {
@@ -100,7 +105,11 @@ function init(config, mode) {
                 this.lastcmd = this.cmd;
             }
 
-            return commands[this.cmd].plugin.onInput.call(this, key, commands[this.cmd]);
+            let command = commands[this.cmd];
+
+            if (!command.withoutKey) {
+                return command.plugin.onInput.call(this, key, command);
+            }
         },
 
         createItem: function (index, item) {
@@ -141,6 +150,8 @@ function init(config, mode) {
             }
 
             return;
+        } else {
+            // google/baidu
         }
 
         let plugin = commands[this.cmd].plugin;
@@ -209,7 +220,7 @@ function restoreConfig() {
                         pcmds = plugin.commands;
                     }
 
-                    // FIX: 新增插件后，缓存里可能还没有
+                    // FIX: if add new plugin, the cache may not have
                     if (pcmds) {
                         pcmds.forEach((command) => commands[command.key] = {
                             ...command,
@@ -223,6 +234,7 @@ function restoreConfig() {
              keys = Object.keys(commands).join('|');
              reg = new RegExp('^((?:' + keys + '))\\s(?:\\-(\\w+))?\\s?(.*)$', 'i');
 
+             withoutKeyCommands = Object.values(commands).filter(item => item.withoutKey);
              stewardCache.commands = commands;
              stewardCache.config = res.config || {};
 

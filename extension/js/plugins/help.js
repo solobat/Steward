@@ -29,9 +29,10 @@ function getPlugins() {
             icon: command.icon,
             id: command.key,
             title: command.key + ': ' + command.title,
-            desc: command.subtitle
+            desc: command.subtitle,
+            withoutKey: command.withoutKey
         }
-    })
+    }).filter(item => !item.withoutKey);
 
     return helpList;
 }

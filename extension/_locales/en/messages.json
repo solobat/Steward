@@ -169,5 +169,11 @@
     },
     "weather_subtitle": {
         "message": "weather..."
+    },
+    "openurl_title": {
+        "message": "Open the typed url"
+    },
+    "openurl_subtitle": {
+        "message": "Open the typed url"
     }
 }
