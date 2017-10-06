@@ -8,9 +8,10 @@
 import $ from 'jquery'
 import { getByCity } from '../api/weather'
 
-var version = 1;
+var version = 2;
 var name = 'weather';
 var key = 'tq';
+var type = 'keyword';
 var icon = chrome.extension.getURL('img/weather.png');
 var indexIcon = chrome.extension.getURL('img/index.png');
 var pm25Icon = chrome.extension.getURL('img/pm25.png');
@@ -18,6 +19,7 @@ var title = chrome.i18n.getMessage(name + '_title');
 var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 var commands = [{
     key,
+    type,
     title,
     subtitle,
     icon,
@@ -87,7 +89,7 @@ function onInput(key) {
     }, QUERY_DELAY);
 }
 
-function onEnter(id) {
+function onEnter() {
 
 }
 

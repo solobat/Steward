@@ -8,22 +8,24 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 1;
+var version = 2;
 var name = 'setOption';
 var key = 'set';
+var type = 'keyword';
 var icon = chrome.extension.getURL('img/set.png');
 var title = chrome.i18n.getMessage(name + '_title');
 var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 var commands = [{
     key,
+    type,
     title,
     subtitle,
     icon,
     editable: true
 }];
 
-function openOptionPage(id, elem, cb) {
-    var url = $(elem).data('url');
+function openOptionPage(item, cb) {
+    var url = item.url;
 
     if (!url) {
         cb.call(null);
@@ -73,8 +75,8 @@ function onInput(key) {
     });
 }
 
-function onEnter(id, elem) {
-    openOptionPage(id, elem, function () {
+function onEnter(item) {
+    openOptionPage(item, function () {
         // cb
     });
 }

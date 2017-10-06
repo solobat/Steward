@@ -21,7 +21,10 @@ function updateWallpaper(url, save) {
     }
 
     curUrl = url;
-    $body.css('background-image', `url(${url})`);
+    $body.css({
+        'background-image': `url(${url})`,
+        'background-size': 'cover'
+    });
 }
 
 function saveWallpaperLink() {

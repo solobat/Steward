@@ -8,14 +8,16 @@
 import $ from 'jquery'
 import request from '../common/request'
 
-var version = 1;
+var version = 2;
 var name = 'todolist';
 var key = 'todo';
+var type = 'keyword';
 var icon = chrome.extension.getURL('img/todo.png');
 var title = chrome.i18n.getMessage(name + '_title');
 var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 var commands = [{
     key,
+    type,
     title,
     subtitle,
     icon,
@@ -25,12 +27,12 @@ var commands = [{
 function onInput(key) {
 }
 
-function onEnter(key, elem) {
-    if (!elem || $(elem).data('type') === 'plugins') {
+function onEnter(item) {
+    if (!item || item.key === 'plugins') {
         addTodo.call(this, this.query);
     }
     else {
-        removeTodo.call(this, key);
+        removeTodo.call(this, item.id);
     }
 }
 

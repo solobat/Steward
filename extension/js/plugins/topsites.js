@@ -8,14 +8,16 @@
 import $ from 'jquery'
 
 var chrome = window.chrome;
-var version = 1;
+var version = 2;
 var name = 'topsites';
 var key = 'site';
+var type = 'keyword';
 var icon = chrome.extension.getURL('img/topsites.png');
 var title = chrome.i18n.getMessage(name + '_title');
 var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 var commands = [{
     key,
+    type,
     title,
     subtitle,
     icon,
@@ -42,9 +44,9 @@ function onInput(key) {
     });
 }
 
-function onEnter(id, elem) {
+function onEnter({ url }) {
     chrome.tabs.create({
-        url: $(elem).data('url')
+        url
     });
 }
 

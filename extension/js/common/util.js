@@ -42,12 +42,13 @@ function guid() {
     s4() + '-' + s4() + s4() + s4();
 }
 
-function genCommands(name, icon, items) {
+function genCommands(name, icon, items, type) {
     return items.map(item => {
         let {key, editable, keyname} = item;
 
         return {
             key: item.key,
+            type,
             orkey: item.key,
             title: chrome.i18n.getMessage(name + '_' + (keyname || key) + '_title'),
             subtitle: chrome.i18n.getMessage(name + '_' + (keyname || key) + '_subtitle'),

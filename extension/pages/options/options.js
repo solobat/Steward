@@ -14,7 +14,7 @@ const version = manifest.version;
 Vue.use(ElementUI)
 
 let pluginModules = pluginList.map(plugin => {
-    let {name, icon, commands, title, version} = plugin;
+    let {name, icon, commands, title, version, type} = plugin;
 
     return {
         name,
@@ -25,6 +25,8 @@ let pluginModules = pluginList.map(plugin => {
     }
 });
 let config;
+
+console.log(pluginModules);
 
 // plugins: { [pname]: { version, commands } }
 function init() {

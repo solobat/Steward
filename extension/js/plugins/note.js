@@ -8,15 +8,16 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 1;
-var name = 'note'
-var keys = [{key: 'note'}, {key: '#', keyname: 'notetag', editable: false}]
+var version = 2;
+var name = 'note';
+var keys = [{key: 'note'}, {key: '#', keyname: 'notetag', editable: false}];
+var type = 'keyword';
 var icon = chrome.extension.getURL('img/note.png')
 var title = chrome.i18n.getMessage(name + '_title')
 var subtitle = chrome.i18n.getMessage(name + '_subtitle')
 var tagReg = /#([a-zA-Z\u4e00-\u9fa5]+)/ig
 
-var commands = util.genCommands(name, icon, keys);
+var commands = util.genCommands(name, icon, keys, type);
 
 function createNote(...args) {
     return {
@@ -100,16 +101,13 @@ function findNoteById(notes, id) {
     return notes.filter((note) => note._id === id)[0]
 }
 
-function onEnter(key, elem) {
+function onEnter(item) {
     if (this.cmd === '#') {
-        var $elem = $(elem);
-        var type = $elem.data('type')
-
-        if (type === 'tag') {
-            this.ipt.val('# ' + $elem.data('id'))
+        if (item.key === 'tag') {
+            this.ipt.val('# ' + item.id)
             this.ipt.trigger('input')
         } else {
-            util.copyToClipboard($elem.find('.ec-item-title').text());
+            util.copyToClipboard(item.title);
         }
     } else {
         var query = this.query

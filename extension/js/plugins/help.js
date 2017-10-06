@@ -7,14 +7,16 @@
 import $ from 'jquery'
 import _ from 'underscore'
 
-var version = 1;
-var name = 'help'
-var key = 'help'
+var version = 2;
+var name = 'help';
+var key = 'help';
+var type = 'keyword';
 var icon = chrome.extension.getURL('img/help.ico');
 var title = chrome.i18n.getMessage(name + '_title');
 var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 var commands = [{
     key,
+    type,
     title,
     subtitle,
     icon,
@@ -29,9 +31,10 @@ function getPlugins() {
             icon: command.icon,
             id: command.key,
             title: command.key + ': ' + command.title,
-            desc: command.subtitle
+            desc: command.subtitle,
+            type: command.type
         }
-    })
+    }).filter(item => item.type === 'keyword');
 
     return helpList;
 }
@@ -43,8 +46,8 @@ function onInput(key) {
     that.showItemList(getPlugins());
 }
 
-function onEnter(key) {
-    this.render(key.split(',')[0] + '');
+function onEnter(item) {
+    this.render(item.id.split(',')[0] + '');
 }
 
 export default {

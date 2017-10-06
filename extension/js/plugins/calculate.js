@@ -10,17 +10,23 @@ import util from '../common/util'
 import mathexp from 'math-expression-evaluator'
 
 var name = 'calculate';
-var version = 1;
+var version = 3;
+var type = 'regexp';
 var key = 'calc';
 var icon = chrome.extension.getURL('img/calc.png');
 var title = chrome.i18n.getMessage(name + '_title');
 var subtitle = chrome.i18n.getMessage(name + '_subtitle');
+var withoutKey = true;
+var regExp = /^(==|~=|&&|\|\||[0-9]|[\+\-\*\/\^\.%, ""]|[\(\)\|\!\[\]])+$/;
+
 var commands = [{
     key,
+    type,
     title,
     subtitle,
     icon,
-    editable: false
+    editable: false,
+    regExp
 }];
 
 function onInput(key) {
@@ -46,8 +52,8 @@ function onInput(key) {
     return data;
 }
 
-function onEnter(id, elem) {
-    let text = $(elem).find('.ec-item-title').text();
+function onEnter(item) {
+    let text = item.title;
 
     util.copyToClipboard(text);
 }
@@ -58,6 +64,7 @@ export default {
     icon,
     title,
     commands,
+    withoutKey,
     onInput: onInput,
     onEnter: onEnter
 };

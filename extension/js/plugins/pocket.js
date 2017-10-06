@@ -10,14 +10,16 @@ import Auth from '../common/auth'
 import conf from '../conf/pocket_conf'
 
 var auth = new Auth(conf);
-var version = 1;
+var version = 2;
 var name = 'pocket';
 var key = 'po';
+var type = 'keyword';
 var icon = 'http://getpocket.com/i/apple-touch-icon/Pocket_AppIcon_57.png';
 var title = chrome.i18n.getMessage(name + '_title');
 var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 var commands = [{
     key,
+    type,
     title,
     subtitle,
     icon,
@@ -93,7 +95,7 @@ function query(key, callback) {
     });
 }
 
-function onEnter(id, elem) {
+function onEnter({ id }) {
     window.open('http://getpocket.com/a/read/' + id);
 }
 

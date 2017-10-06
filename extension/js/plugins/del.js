@@ -8,14 +8,16 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 1;
+var version = 2;
 var name = 'deleteExtension';
 var key = 'del';
+var type = 'keyword';
 var icon = chrome.extension.getURL('img/del.png');
 var title = chrome.i18n.getMessage(name + '_title');
 var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 var commands = [{
     key,
+    type,
     title,
     subtitle,
     icon,
@@ -63,8 +65,8 @@ function onInput(key) {
     });
 }
 
-function onEnter(id) {
-    uninstall(id, function () {
+function onEnter(item) {
+    uninstall(item.id, function () {
         // cb
     });
     this.refresh();

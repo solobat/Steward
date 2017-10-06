@@ -8,7 +8,7 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 1;
+var version = 2;
 var name = 'jenkins'
 //'jk', 'jkb', 'jkc', 'jkw', 'jkset'
 var keys = [
@@ -18,13 +18,14 @@ var keys = [
     { key: 'jkw' },
     { key: 'jkset' }
 ];
+var type = 'keyword';
 var icon = chrome.extension.getURL('img/jenkins.png')
 var title = chrome.i18n.getMessage(name + '_title')
 var subtitle = chrome.i18n.getMessage(name + '_subtitle')
 var SERVER_URL = window.localStorage['jenkins_url'] || ''
 var jobs = []
 
-var commands = util.genCommands(name, icon, keys);
+var commands = util.genCommands(name, icon, keys, type);
 
 const keyUrlMap = {
     'jk': '',
@@ -141,7 +142,7 @@ function onInput(key) {
     });
 }
 
-function onEnter(id) {
+function onEnter({ id }) {
     if (id.startsWith('action-')) {
         let actionName = id.split('-')[1];
 

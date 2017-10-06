@@ -169,5 +169,17 @@
     },
     "weather_subtitle": {
         "message": "输入城市名，查询天气、指数、pm2.5..."
+    },
+    "openurl_title": {
+        "message": "打开输入的网址"
+    },
+    "openurl_subtitle": {
+        "message": "打开输入的网址"
+    },
+    "search_title": {
+        "message": "搜索指定内容"
+    },
+    "search_subtitle": {
+        "message": "搜索指定内容"
     }
 }

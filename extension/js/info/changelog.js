@@ -1,5 +1,9 @@
 let langZh = [
     {
+        version: 'v2.6.2',
+        detail: "新增打开网址功能<br /> 新增使用Google/百度/知乎/Bing/Stack Overflow搜索功能 <br />一些优化"
+    },
+    {
         version: 'v2.6.1',
         detail: "新增天气插件, keyword默认为<em>tq</em>"
     },

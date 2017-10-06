@@ -8,7 +8,7 @@
 function emptyFn() {
 }
 
-function send(obj, callback) {
+function send(obj, callback = () => {}) {
     chrome.extension.sendRequest(obj || {}, function (response) {
         callback(response);
     });
