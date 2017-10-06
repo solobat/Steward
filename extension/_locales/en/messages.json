@@ -181,5 +181,8 @@
     },
     "search_subtitle": {
         "message": "Search for"
+    },
+    "general_defaultPlugin": {
+        "message": "Default plugin for New Tab"
     }
 }

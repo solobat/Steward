@@ -18,6 +18,16 @@
                           on-color="#20a0ff">
                         </el-switch>
                     </el-form-item>
+                    <el-form-item :label="i18nTexts.general.defaultPlugin">
+                        <el-select v-model="config.general.defaultPlugin" clearable :disabled="config.general.cacheLastCmd" placeholder="please choose">
+                            <el-option
+                              v-for="item in defaultPlugins"
+                              :key="item.value"
+                              :label="item.label"
+                              :value="item.value">
+                            </el-option>
+                          </el-select>
+                    </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click.native.prevent="handleGeneralSubmit">Save</el-button>
                     </el-form-item>

@@ -161,9 +161,6 @@
     "youdao_subtitle": {
         "message": "使用有道翻译你想知道的单词或短语..."
     },
-    "general_cacheLastCmd": {
-        "message": "缓存上一条命令"
-    },
     "weather_title": {
         "message": "查询城市天气"
     },
@@ -181,5 +178,11 @@
     },
     "search_subtitle": {
         "message": "搜索指定内容"
+    },
+    "general_cacheLastCmd": {
+        "message": "缓存上一条命令"
+    },
+    "general_defaultPlugin": {
+        "message": "New Tab默认插件"
     }
 }
