@@ -138,11 +138,22 @@ function init(config, mode) {
     });
 
     cmdbox.bind('init', function () {
-        if (mode === 'newTab' && config.general.cacheLastCmd) {
-            var cmd = storage.h5.get(CONST.LAST_CMD) || 'site ';
+        if (mode === 'newTab') {
+            let cmd;
+            if (config.general.cacheLastCmd) {
+                cmd = storage.h5.get(CONST.LAST_CMD) || 'site ';
+            } else if (config.general.defaultPlugin) {
+                let defaultCommand = Object.values(commands).find(command => command.name === config.general.defaultPlugin);
 
-            this.ipt.val(cmd);
-            this.render(cmd);
+                if (defaultCommand) {
+                    cmd = defaultCommand.key + ' ';
+                }
+            }
+
+            if (cmd) {
+                this.ipt.val(cmd);
+                this.render(cmd);
+            }
         }
     });
 

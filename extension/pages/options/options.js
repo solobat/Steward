@@ -40,11 +40,12 @@ function init() {
 
         let plugins = {};
         let general = {
-            cacheLastCmd: true
+            cacheLastCmd: true,
+            defaultPlugin: ''
         };
 
         if (config.general) {
-            general = config.general;
+            $.extend(general, config.general);
         }
 
         if (config.plugins) {
@@ -118,6 +119,13 @@ const appearanceItems = [{
     name: 'themes',
     icon: '/img/themes-icon.png'
 }];
+const defaultPlugins = ['Top Sites', 'Bookmarks', 'Tabs', 'Weather'].map(name => {
+    return {
+        label: name,
+        value: name
+    }
+});
+
 function render({general, plugins, lastVersion}, i18nTexts) {
     let activeName = 'general';
 
@@ -137,6 +145,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                 wallpapers: [],
                 selectedWallpaper: window.localStorage.getItem('wallpaper') || '',
                 changelog,
+                defaultPlugins,
                 config: {
                     general,
                     plugins,
