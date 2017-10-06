@@ -14,7 +14,8 @@ import * as Wallpaper from './wallpaper'
 import ga from '../../js/common/ga'
 
 var commands = {};
-var withoutKeyCommands = [];
+var regExpCommands = [];
+var otherCommands = [];
 var keys;
 var reg;
 var cmdbox;
@@ -25,7 +26,7 @@ function findMatchPlugins(query) {
     var items = [];
 
     for (var key in commands) {
-        if (key.indexOf(query) !== -1 && !commands[key].withoutKey) {
+        if (key.indexOf(query) !== -1) {
             items.push({
                 key: 'plugins',
                 id: key,
@@ -40,15 +41,9 @@ function findMatchPlugins(query) {
 }
 
 function findRegExpMatched(str) {
-    return withoutKeyCommands.find(item => {
+    return regExpCommands.find(item => {
         return item.regExp && str.match(item.regExp);
     });
-}
-
-function matchPlugins(query) {
-    var items = findMatchPlugins(query);
-
-    this.showItemList(items);
 }
 
 function init(config, mode) {
@@ -56,6 +51,17 @@ function init(config, mode) {
 
     if ($('html').data('page') === 'newtab') {
         Wallpaper.init();
+    }
+
+    function callCommand(command, key) {
+        if (!command) {
+            return;
+        }
+        
+        this.cmd = command.key;
+        this.command = command;
+
+        return command.plugin.onInput.call(this, key, command);
     }
 
     cmdbox = new EasyComplete({
@@ -74,24 +80,26 @@ function init(config, mode) {
 
             let spCommand = findRegExpMatched(str);
 
+            // handle regexp commands
             if (spCommand) {
-                this.cmd = spCommand.key;
-                return spCommand.plugin.onInput.call(this, str, spCommand);
+               return callCommand.call(this, spCommand, str);
             }
 
-            if (str.indexOf(' ') === -1) {
-                return matchPlugins.call(this, str);
+            let matchPlugins = findMatchPlugins(str);
+
+            // match commands
+            if (str.indexOf(' ') === -1 && matchPlugins.length) {
+                return this.showItemList(matchPlugins);
             }
 
-            // TODO: 空查询优化
             var mArr = str.match(reg) || [];
             var cmd = mArr[1];
             var param = mArr[2];
             var key = mArr[3];
 
-            if (!cmd) {
-                this.clearList();
-                return;
+            // handle other commands
+            if (!cmd && otherCommands.length) {
+                return callCommand.call(this, otherCommands[0], str);
             }
 
             this.cmd = cmd;
@@ -107,9 +115,7 @@ function init(config, mode) {
 
             let command = commands[this.cmd];
 
-            if (!command.withoutKey) {
-                return command.plugin.onInput.call(this, key, command);
-            }
+            callCommand.call(this, command, key);
         },
 
         createItem: function (index, item) {
@@ -150,14 +156,12 @@ function init(config, mode) {
             }
 
             return;
-        } else {
-            // google/baidu
         }
 
-        let plugin = commands[this.cmd].plugin;
+        let plugin = this.command.plugin;
         let index = $elem.index();
 
-        plugin.onEnter.call(this, this.dataList[index], commands[this.cmd]);
+        plugin.onEnter.call(this, this.dataList[index], this.command);
         _gaq.push(['_trackEvent', 'exec', 'enter', plugin.name]);
     });
 
@@ -222,10 +226,26 @@ function restoreConfig() {
 
                     // FIX: if add new plugin, the cache may not have
                     if (pcmds) {
-                        pcmds.forEach((command) => commands[command.key] = {
-                            ...command,
-                            name: pname,
-                            plugin
+                        pcmds.forEach((command) => {
+                            let cmd = {
+                                ...command,
+                                name: pname,
+                                plugin
+                            };
+
+                            switch(command.type) {
+                            case 'regexp':
+                                regExpCommands.push(cmd);
+                                break;
+                            case 'other':
+                                otherCommands.push(cmd);
+                                break;
+                            case 'keyword':
+                                commands[command.key] = cmd;
+                                break;
+                            default:
+                                break;
+                            }
                         });
                     }
                 }
@@ -234,7 +254,6 @@ function restoreConfig() {
              keys = Object.keys(commands).join('|');
              reg = new RegExp('^((?:' + keys + '))\\s(?:\\-(\\w+))?\\s?(.*)$', 'i');
 
-             withoutKeyCommands = Object.values(commands).filter(item => item.withoutKey);
              stewardCache.commands = commands;
              stewardCache.config = res.config || {};
 

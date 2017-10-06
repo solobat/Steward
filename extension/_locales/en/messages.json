@@ -175,5 +175,11 @@
     },
     "openurl_subtitle": {
         "message": "Open the typed url"
+    },
+    "search_title": {
+        "message": "Search for"
+    },
+    "search_subtitle": {
+        "message": "Search for"
     }
 }

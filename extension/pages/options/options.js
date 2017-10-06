@@ -14,15 +14,14 @@ const version = manifest.version;
 Vue.use(ElementUI)
 
 let pluginModules = pluginList.map(plugin => {
-    let {name, icon, commands, title, version, withoutKey} = plugin;
+    let {name, icon, commands, title, version, type} = plugin;
 
     return {
         name,
         version,
         commands,
         title,
-        icon,
-        withoutKey
+        icon
     }
 });
 let config;
@@ -151,7 +150,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                 let text = this.pluginSearchText.toLowerCase();
 
                 return pluginModules.filter(plugin => {
-                    return !plugin.withoutKey && plugin.name.toLowerCase().indexOf(text) > -1;
+                    return plugin.name.toLowerCase().indexOf(text) > -1;
                 });
             }
         },

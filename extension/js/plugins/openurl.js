@@ -8,9 +8,10 @@
 import $ from 'jquery'
 import util from '../common/util'
 
+var version = 2;
 var name = 'openurl';
 var key = 'open';
-var version = 1;
+var type = 'regexp';
 var icon = chrome.extension.getURL('img/openurl.png');
 var title = chrome.i18n.getMessage(name + '_title');
 var subtitle = chrome.i18n.getMessage(name + '_subtitle');
@@ -19,10 +20,10 @@ var regExp = /^(https?:\/\/)?(www\.)?(\w+\.)+\w{2,5}$/gi;
 var commands = [{
     key,
     title,
+    type,
     subtitle,
     icon,
     editable: false,
-    withoutKey,
     regExp
 }];
 
@@ -55,6 +56,5 @@ export default {
     title,
     onInput,
     onEnter,
-    commands,
-    withoutKey
+    commands
 };

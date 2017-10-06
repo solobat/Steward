@@ -11,6 +11,7 @@ import mathexp from 'math-expression-evaluator'
 
 var name = 'calculate';
 var version = 3;
+var type = 'regexp';
 var key = 'calc';
 var icon = chrome.extension.getURL('img/calc.png');
 var title = chrome.i18n.getMessage(name + '_title');
@@ -20,12 +21,12 @@ var regExp = /^(==|~=|&&|\|\||[0-9]|[\+\-\*\/\^\.%, ""]|[\(\)\|\!\[\]])+$/;
 
 var commands = [{
     key,
+    type,
     title,
     subtitle,
     icon,
     editable: false,
-    regExp,
-    withoutKey
+    regExp
 }];
 
 function onInput(key) {

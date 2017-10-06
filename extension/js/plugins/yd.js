@@ -15,11 +15,13 @@ var emptyReg = /^\s+$/g;
 var version = 1;
 var name = 'youdao';
 var key = 'yd';
+var type = 'keyword';
 var icon = chrome.extension.getURL('img/youdao.png');
 var title = chrome.i18n.getMessage(name + '_title');
 var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 var commands = [{
     key,
+    type,
     title,
     subtitle,
     icon,

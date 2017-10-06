@@ -8,15 +8,16 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 1;
-var name = 'note'
-var keys = [{key: 'note'}, {key: '#', keyname: 'notetag', editable: false}]
+var version = 2;
+var name = 'note';
+var keys = [{key: 'note'}, {key: '#', keyname: 'notetag', editable: false}];
+var type = 'keyword';
 var icon = chrome.extension.getURL('img/note.png')
 var title = chrome.i18n.getMessage(name + '_title')
 var subtitle = chrome.i18n.getMessage(name + '_subtitle')
 var tagReg = /#([a-zA-Z\u4e00-\u9fa5]+)/ig
 
-var commands = util.genCommands(name, icon, keys);
+var commands = util.genCommands(name, icon, keys, type);
 
 function createNote(...args) {
     return {

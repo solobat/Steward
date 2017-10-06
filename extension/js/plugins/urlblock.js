@@ -9,14 +9,15 @@ import $ from 'jquery'
 import request from '../common/request'
 import util from '../common/util'
 
-var version = 2;
+var version = 3;
 var name = 'urlblock';
 var keys = [{ key: 'bk' }, { key: 'bk8' }];
+var type = 'keyword';
 var icon = chrome.extension.getURL('img/urlblock.png');
 var title = chrome.i18n.getMessage(name + '_title');
 var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 var BLOCK_EXPIRED = 8 * 60 * 60 * 1000;
-var commands = util.genCommands(name, icon, keys);
+var commands = util.genCommands(name, icon, keys, type);
 
 function onInput(key, command) {
     if (!key) {

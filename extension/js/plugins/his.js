@@ -7,14 +7,16 @@
 
 import $ from 'jquery'
 
-var version = 1;
+var version = 2;
 var name = 'history';
 var key = 'his';
+var type = 'keyword';
 var icon = chrome.extension.getURL('img/history.png');
 var title = chrome.i18n.getMessage(name + '_title');
 var subtitle = chrome.i18n.getMessage(name + '_subtitle');
 var commands = [{
     key,
+    type,
     title,
     subtitle,
     icon,
