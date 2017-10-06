@@ -49,7 +49,7 @@ function findRegExpMatched(str) {
 function init(config, mode) {
     $('.cmdbox').focus();
 
-    if ($('html').data('page') === 'newtab') {
+    if (mode === 'newTab') {
         Wallpaper.init();
     }
 
