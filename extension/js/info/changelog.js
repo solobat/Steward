@@ -1,5 +1,9 @@
 let langZh = [
     {
+        version: 'v2.6.4',
+        detail: "新增newTab默认插件设置"
+    },
+    {
         version: 'v2.6.3',
         detail: "紧急bug修复"
     },

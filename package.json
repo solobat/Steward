@@ -6,6 +6,7 @@
     "build": "webpack",
     "dev": "npm run watch",
     "watch": "webpack --watch",
+    "prod": "bash build/build.sh",
     "build:minified": "cross-env NODE_ENV=production webpack",
     "cleaninstall": "rm -rf node_modules && npm i"
   },
