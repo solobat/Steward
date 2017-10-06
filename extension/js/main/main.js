@@ -42,7 +42,7 @@ function findMatchPlugins(query) {
 
 function findRegExpMatched(str) {
     return regExpCommands.find(item => {
-        return item.regExp && str.match(item.regExp);
+        return item.regExp && str.match(item.plugin.commands[0].regExp);
     });
 }
 
