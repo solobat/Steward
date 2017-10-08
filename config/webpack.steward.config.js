@@ -19,7 +19,7 @@ const config = {
     urlblock: './extension/pages/urlblock/urlblock.js'
   },
   output: {
-    path: path.resolve(__dirname, './output'),
+    path: path.resolve(__dirname, '../output/steward/'),
     filename: '[name].js'
   },
   resolve: {
@@ -62,6 +62,9 @@ const config = {
     ]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      EXT_TYPE: JSON.stringify("steward")
+    }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     //Generate an HTML5 file that includes all webpack bundles(includes css & js) in the body using script tags
     new HtmlWebpackPlugin({

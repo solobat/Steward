@@ -10,6 +10,10 @@ import storage from '../../js/utils/storage'
 
 var manifest = chrome.runtime.getManifest();
 const version = manifest.version;
+const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'steward';
+
+console.log(`ext_type is: ${extType}`);
+const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jglmompgeddkbcdamdknmebaimldkkbl';
 
 Vue.use(ElementUI)
 
@@ -146,6 +150,8 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                 selectedWallpaper: window.localStorage.getItem('wallpaper') || '',
                 changelog,
                 defaultPlugins,
+                extType,
+                storeId,
                 config: {
                     general,
                     plugins,

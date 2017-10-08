@@ -1,5 +1,11 @@
 var _gaq = window._gaq || (window._gaq = []);
-_gaq.push(['_setAccount', 'UA-106561500-1']);
+
+if (EXT_TYPE === 'alfred') {
+    _gaq.push(['_setAccount', 'UA-106939576-1']);
+} else {
+    _gaq.push(['_setAccount', 'UA-106561500-1']);
+}
+
 _gaq.push(['_trackPageview']);
 
 export default function() {

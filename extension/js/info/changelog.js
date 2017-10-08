@@ -1,7 +1,8 @@
 let langZh = [
     {
         version: 'v2.6.4',
-        detail: "新增newTab默认插件设置"
+        detail: "新增newTab默认插件设置",
+        ext: 'steward'
     },
     {
         version: 'v2.6.3',
@@ -25,7 +26,8 @@ let langZh = [
     },
     {
         version: 'v2.5.8',
-        detail: "添加wallpaper下载及删除功能"
+        detail: "添加wallpaper下载及删除功能",
+        ext: 'steward'
     },
     {
         version: 'v2.5.7',
