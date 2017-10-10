@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import util from './util'
+import KEY from '../constant/keycode'
 
 function EasyComplete(opt) {
     this.opt = opt;
@@ -48,7 +49,7 @@ EasyComplete.prototype = {
 
             var elem = this;
             var keyCode = event.keyCode;
-            if (keyCode === 38 || keyCode === 40) {
+            if (keyCode === KEY.UP || keyCode === KEY.DOWN) {
                 return;
             }
 
@@ -61,26 +62,26 @@ EasyComplete.prototype = {
         // keydown才能连续移动选中
         $(document).bind('keydown', function (event) {
             var keyCode = event.keyCode;
-
+            
             // up or down
-            if (keyCode === 38 || keyCode === 40) {
-                that.move(keyCode === 38 ? 'up' : 'down');
+            if (keyCode === KEY.UP || keyCode === KEY.DOWN || keyCode === KEY.TAB ) {
+                that.move(keyCode === KEY.UP ? 'up' : 'down');
                 event.preventDefault();
                 return false;
             }
 
             // enter to execute the cmd
-            if (keyCode === 13) {
+            if (keyCode === KEY.ENTER) {
                 that.exec();
                 return;
             }
 
             var keyType = util.isMac ? 'ctrlKey' : 'altKey';
-            if (event[keyType] && 49 <= keyCode && keyCode <= 57) {
+            if (event[keyType] && KEY.NUM0 <= keyCode && keyCode <= KEY.NUM9) {
                 event.preventDefault();
                 event.stopPropagation();
 
-                that.select(keyCode - 49);
+                that.select(keyCode - KEY.NUM0);
 
                 return;
             }
@@ -120,7 +121,13 @@ EasyComplete.prototype = {
         var dataList = this.opt.onInput.call(this, this.getTerm());
 
         if (dataList) {
-            this.showItemList(dataList);
+            if (dataList instanceof Promise || typeof dataList.then === 'function') {
+                dataList.then(resp => {
+                    this.showItemList(resp);
+                });
+            } else {
+                this.showItemList(dataList);
+            }
         }
     },
 

@@ -23,6 +23,12 @@
     "calculate_subtitle": {
         "message": "复制到剪切板"
     },
+    "viewExtension_title": {
+        "message": "查看扩展或应用"
+    },
+    "viewExtension_subtitle": {
+        "message": "在chrome://extensions/页查看扩展或应用"
+    },
     "deleteExtension_title": {
         "message": "删除扩展"
     },

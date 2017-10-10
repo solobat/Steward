@@ -1,5 +1,9 @@
 let langZh = [
     {
+        version: 'v2.6.5',
+        detail: "在下拉列表中使用<em>Tab</em>键也可以向下移动;<br/>插件/命令有序显示;<br />新增查看扩展/应用插件, keyword为<em>ext</em>"
+    },
+    {
         version: 'v2.6.4',
         detail: "新增newTab默认插件设置",
         ext: 'steward'
