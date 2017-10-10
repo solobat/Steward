@@ -1,5 +1,6 @@
 import $ from 'jquery'
 import Vue from 'vue'
+import _ from 'underscore'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import './options.css'
@@ -17,7 +18,7 @@ const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jg
 
 Vue.use(ElementUI)
 
-let pluginModules = pluginList.map(plugin => {
+let pluginModules = _.sortBy(pluginList, 'name').map(plugin => {
     let {name, icon, commands, title, version, type} = plugin;
 
     return {

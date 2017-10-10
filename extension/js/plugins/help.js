@@ -36,7 +36,7 @@ function getPlugins() {
         }
     }).filter(item => item.type === 'keyword');
 
-    return helpList;
+    return _.sortBy(helpList, 'id');
 }
 
 function onInput(key) {
