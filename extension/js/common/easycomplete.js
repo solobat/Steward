@@ -121,7 +121,13 @@ EasyComplete.prototype = {
         var dataList = this.opt.onInput.call(this, this.getTerm());
 
         if (dataList) {
-            this.showItemList(dataList);
+            if (dataList instanceof Promise || typeof dataList.then === 'function') {
+                dataList.then(resp => {
+                    this.showItemList(resp);
+                });
+            } else {
+                this.showItemList(dataList);
+            }
         }
     },
 

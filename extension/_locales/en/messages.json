@@ -23,6 +23,12 @@
     "calculate_subtitle": {
         "message": "Copy number to your clipboard"
     },
+    "viewExtension_title": {
+        "message": "view extension or app"
+    },
+    "viewExtension_subtitle": {
+        "message": "view extension or app in chrome://extensions/"
+    },
     "deleteExtension_title": {
         "message": "delete exntension"
     },

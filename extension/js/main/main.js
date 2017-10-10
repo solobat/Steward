@@ -115,7 +115,7 @@ function init(config, mode) {
 
             let command = commands[this.cmd];
 
-            callCommand.call(this, command, key);
+            return callCommand.call(this, command, key);
         },
 
         createItem: function (index, item) {
