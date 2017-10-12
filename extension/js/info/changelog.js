@@ -1,5 +1,10 @@
 let langZh = [
     {
+        version: 'v2.6.6',
+        detail: "在New Tab可以使用快捷键(windows: alt + right, mac: command + right)隐藏/显示命令框; <br />修复因cache导致的某些命令无法使用的bug。",
+        ext: 'steward'
+    },
+    {
         version: 'v2.6.5',
         detail: "在下拉列表中使用<em>Tab</em>键也可以向下移动;<br/>插件/命令有序显示;<br />新增查看扩展/应用插件, keyword为<em>ext</em>"
     },

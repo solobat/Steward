@@ -12,6 +12,7 @@ import CONST from '../common/const'
 import { plugins }  from '../plugins/plugins'
 import * as Wallpaper from './wallpaper'
 import ga from '../../js/common/ga'
+import KEY from '../constant/keycode'
 
 var commands = {};
 var regExpCommands = [];
@@ -204,6 +205,14 @@ function init(config, mode) {
     cmdbox.init();
 
     if (mode === 'newTab') {
+        $(document).on('keydown', function(event) {
+            let keyType = util.isMac ? 'metaKey' : 'altKey';
+            let keyCode = event.keyCode;
+
+            if (event[keyType] && keyCode === KEY.RIGHT) {
+                $('#main, .ec-itemList').fadeToggle();
+            }
+        });
         ga();
     } else {
         setTimeout(ga, 200);
@@ -255,6 +264,8 @@ function restoreConfig() {
                                 commands[command.key] = cmd;
                                 break;
                             default:
+                                // bugfix
+                                commands[command.key] = cmd;
                                 break;
                             }
                         });
