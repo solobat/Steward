@@ -12,7 +12,7 @@ var url = 'https://fanyi.youdao.com/openapi.do?' +
 'keyfrom=mineword&key=1362458147&type=data&doctype=json&version=1.1&q=';
 var emptyReg = /^\s+$/g;
 
-var version = 1;
+var version = 2;
 var name = 'youdao';
 var key = 'yd';
 var type = 'keyword';
