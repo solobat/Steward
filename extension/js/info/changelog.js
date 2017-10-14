@@ -1,5 +1,9 @@
 let langZh = [
     {
+        version: 'v2.6.7',
+        detail: "shift + tab向上选择item，移除ctrl/alt + num选择功能(支持不好); <br />bug修复。"
+    },
+    {
         version: 'v2.6.6',
         detail: "在New Tab可以使用快捷键(windows: alt + right, mac: command + right)隐藏/显示命令框; <br />修复因cache导致的某些命令无法使用的bug。",
         ext: 'steward'
