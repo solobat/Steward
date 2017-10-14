@@ -64,8 +64,18 @@ EasyComplete.prototype = {
             var keyCode = event.keyCode;
             
             // up or down
-            if (keyCode === KEY.UP || keyCode === KEY.DOWN || keyCode === KEY.TAB ) {
-                that.move(keyCode === KEY.UP ? 'up' : 'down');
+            let direction;
+
+            if (keyCode === KEY.DOWN || keyCode === KEY.TAB ) {
+                direction = 'down';
+            }
+
+            if (keyCode === KEY.UP || (event.shiftKey && keyCode === KEY.TAB)) {
+                direction = 'up';
+            }
+
+            if (direction) {
+                that.move(direction);
                 event.preventDefault();
                 return false;
             }
