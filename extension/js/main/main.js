@@ -128,11 +128,6 @@ function init(config, mode) {
                 '</div>'
             ];
 
-            if (index <= 8) {
-                var tipHtml = '<div class="ec-item-tip">' + (util.isMac ? '<span class="icon">⌃</span>' : 'ALT') + (index + 1) + '</div>';
-                html.splice(html.length - 2, 0, tipHtml);
-            }
-
             return html.join('');
         }
 

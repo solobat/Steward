@@ -1,6 +1,7 @@
 import $ from 'jquery'
 import util from './util'
 import KEY from '../constant/keycode'
+import keyboardJS from 'keyboardjs'
 
 function EasyComplete(opt) {
     this.opt = opt;
@@ -41,6 +42,10 @@ EasyComplete.prototype = {
         this.trigger('empty');
     },
 
+    isVisible: function() {
+        return this.ipt.is(':visible');
+    },
+
     bindEvent: function () {
         var that = this;
 
@@ -59,41 +64,22 @@ EasyComplete.prototype = {
             }, 0);
         });
 
-        // keydown才能连续移动选中
-        $(document).bind('keydown', function (event) {
-            var keyCode = event.keyCode;
-            
-            // up or down
-            let direction;
-
-            if (keyCode === KEY.DOWN || keyCode === KEY.TAB ) {
-                direction = 'down';
+        keyboardJS.bind(['down', 'tab'], function(event) {
+            event.preventDefault();
+            if (that.isVisible()) {
+                that.move('down');
             }
-
-            if (keyCode === KEY.UP || (event.shiftKey && keyCode === KEY.TAB)) {
-                direction = 'up';
+        });
+        keyboardJS.bind(['up', 'shift + tab'], function(event) {
+            event.preventDefault();
+            if (that.isVisible()) {
+                that.move('up');
             }
-
-            if (direction) {
-                that.move(direction);
-                event.preventDefault();
-                return false;
-            }
-
-            // enter to execute the cmd
-            if (keyCode === KEY.ENTER) {
+        });
+        keyboardJS.bind('enter', function(event) {
+            event.preventDefault();
+            if (that.isVisible()) {
                 that.exec();
-                return;
-            }
-
-            var keyType = util.isMac ? 'ctrlKey' : 'altKey';
-            if (event[keyType] && KEY.NUM0 <= keyCode && keyCode <= KEY.NUM9) {
-                event.preventDefault();
-                event.stopPropagation();
-
-                that.select(keyCode - KEY.NUM0);
-
-                return;
             }
         });
 
