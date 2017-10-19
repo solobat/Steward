@@ -1,5 +1,9 @@
 let langZh = [
     {
+        version: 'v2.7',
+        detail: "可以在任何页面使用" + EXT_TYPE + "，快捷键在<em>chrome://extensions/configureCommands</em>设置; <br />一些交互/ui优化"
+    },
+    {
         version: 'v2.6.7',
         detail: "shift + tab向上选择item，移除ctrl/alt + num选择功能(支持不好); <br />bug修复。"
     },

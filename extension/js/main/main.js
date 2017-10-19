@@ -47,11 +47,13 @@ function findRegExpMatched(str) {
     });
 }
 
-function init(config, mode) {
+function init(config, mode, inContent) {
     $('.cmdbox').focus();
 
     if (mode === 'newTab') {
         Wallpaper.init();
+    } else if (inContent) {
+        _gaq.push(['_trackEvent', 'content', 'open']);
     }
 
     function callCommand(command, key) {
@@ -67,6 +69,7 @@ function init(config, mode) {
 
     cmdbox = new EasyComplete({
         id: 'cmdbox',
+        container: '#main',
         onInput: function (str) {
             if (!str) {
                 this.empty();
@@ -169,6 +172,12 @@ function init(config, mode) {
         let index = $elem.index();
 
         plugin.onEnter.call(this, this.dataList[index], this.command);
+        
+        if (plugin.name !== 'Help' && window.parentWindow) {
+            window.parentWindow.postMessage({
+                action: 'closeBox'
+            }, '*');
+        }
         _gaq.push(['_trackEvent', 'exec', 'enter', plugin.name]);
     });
 
@@ -206,6 +215,8 @@ function init(config, mode) {
 
             if (event[keyType] && keyCode === KEY.RIGHT) {
                 $('#main, .ec-itemList').fadeToggle();
+
+                cmdbox.ipt.focus();
             }
         });
         ga();
@@ -284,9 +295,9 @@ function restoreConfig() {
     });
 }
 
-export default function(mode) {
+export default function(mode, inContent) {
     restoreConfig().then(config => {
-        init(config, mode);
+        init(config, mode, inContent);
         document.execCommand('copy');
     });
 };

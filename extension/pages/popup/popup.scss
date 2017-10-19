@@ -16,10 +16,11 @@ a {
     box-sizing: border-box;
 }
 
-#main {
+.main {
     width: 500px;
     margin: 0 auto;
 }
+
 .cmdbox {
     width: 500px;
     height: 50px;
@@ -28,17 +29,39 @@ a {
     padding: 5px 10px;
 }
 
+.content-page {
+    .main {
+        border: 1px solid #d8e4e6;
+        box-shadow: 0 2px 10px 0 rgba(0,0,0,0.12), 0 0 10px 0 rgba(0,0,0,.04);
+    }
+
+    ::-webkit-scrollbar-track-piece {
+        background-color: #fff;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        outline: 1px solid #666;
+        background-color: #666;
+
+        &:hover {
+            background-color: #000;
+        }
+    }
+}
+
 .cmdbox:focus {
     outline: 0;
 }
 
-.cmdbox-drop {
+.content-page .cmdbox-drop {
+    border-bottom: 0;
 }
 
 .ec-itemList {
     width: 500px;
     margin: 0 auto;
     overflow-y: scroll;
+    background: #fff;
 
     height: 400px;
 }
@@ -50,7 +73,7 @@ a {
 }
 
 .ec-itemList .ec-item:hover {
-    background: rgb(255, 255, 255, .5);
+    background: rgba(255, 255, 255, .5);
 }
 
 .ec-item .ec-item-icon {
@@ -114,7 +137,7 @@ a {
 }
 
 ::-webkit-scrollbar-track-piece {
-    -webkit-border-radius: 0;
+    border-radius: 0;
     background-color: rgba(0, 0, 0, 0.6);
 }
 

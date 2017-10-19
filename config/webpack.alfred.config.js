@@ -11,6 +11,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 const config = {
   entry: {
+    content: './extension/pages/content/content.js',
     popup: './extension/pages/popup/popup.js',
     options: './extension/pages/options/options.js',
     background: './extension/pages/background/background.js',
@@ -66,6 +67,12 @@ const config = {
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     //Generate an HTML5 file that includes all webpack bundles(includes css & js) in the body using script tags
+    new HtmlWebpackPlugin({
+      title: 'Browser Alfred - Content',
+      template: './extension/pages/content/content.html',
+      filename: 'content.html',
+      chunks: ['content']
+    }),
     new HtmlWebpackPlugin({
       title: 'Browser Alfred - Background',
       template: './extension/pages/background/background.html',

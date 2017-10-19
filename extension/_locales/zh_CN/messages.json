@@ -188,6 +188,9 @@
     "general_cacheLastCmd": {
         "message": "缓存上一条命令"
     },
+    "general_useInContentPage": {
+        "message": "在网页中启动"
+    },
     "general_defaultPlugin": {
         "message": "New Tab默认插件"
     }

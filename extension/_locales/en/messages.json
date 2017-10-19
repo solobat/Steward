@@ -188,6 +188,9 @@
     "search_subtitle": {
         "message": "Search for"
     },
+    "general_useInContentPage": {
+        "message": "use in every page"
+    },
     "general_defaultPlugin": {
         "message": "Default plugin for New Tab"
     }
