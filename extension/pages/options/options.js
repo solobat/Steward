@@ -3,7 +3,7 @@ import Vue from 'vue'
 import _ from 'underscore'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
-import './options.css'
+import './options.scss'
 import ga from '../../js/common/ga'
 import { plugins as pluginList } from '../../js/plugins/plugins'
 import changelog from '../../js/info/changelog'
@@ -133,6 +133,10 @@ const defaultPlugins = ['Top Sites', 'Bookmarks', 'Tabs', 'Weather'].map(name =>
 
 function render({general, plugins, lastVersion}, i18nTexts) {
     let activeName = 'general';
+
+    if (EXT_TYPE === 'alfred') {
+        activeName = 'plugins';
+    }
 
     if (lastVersion < version) {
         activeName = 'update';

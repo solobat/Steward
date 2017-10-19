@@ -225,7 +225,11 @@ EasyComplete.prototype = {
         });
         $itemList.find('.ec-item').first().addClass('ec-item-select');
 
-        $('body').append($itemList);
+        if (this.opt.container) {
+            $(this.opt.container).append($itemList);
+        } else {
+            $('body').append($itemList);
+        }
         this.trigger('show');
     }
 

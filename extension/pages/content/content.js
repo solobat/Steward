@@ -20,11 +20,13 @@ let App = {
 
         if (this.isOpen) {
             return;
+        } else {
+            this.isOpen = true;
         }
 
         let popupurl = chrome.extension.getURL('popup.html');
         let html = `
-            <iframe id="steward-iframe" src="${popupurl}" name="steward-box" width="500" height="450" frameborder="0"></iframe>
+            <iframe id="steward-iframe" src="${popupurl}" name="steward-box" width="510" height="460" frameborder="0"></iframe>
         `;
         this.$el.html(html);
         this.$iframe = $('#steward-iframe');
@@ -37,8 +39,6 @@ let App = {
                 ext_from: 'content'
             }, '*');
         });
-
-        this.isOpen = true;
     },
 
     closeBox() {
@@ -61,7 +61,11 @@ let App = {
 
         chrome.runtime.onMessage.addListener((req, sender, resp) => {
             if (req.action === 'openBox') {
-                this.openBox();
+                if (this.isOpen) {
+                    this.closeBox();
+                } else {
+                    this.openBox();
+                }
             }
         });
 

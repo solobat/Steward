@@ -16,10 +16,11 @@ a {
     box-sizing: border-box;
 }
 
-#main {
+.main {
     width: 500px;
     margin: 0 auto;
 }
+
 .cmdbox {
     width: 500px;
     height: 50px;
@@ -28,14 +29,24 @@ a {
     padding: 5px 10px;
 }
 
-.content-page .cmdbox {
-    border: 2px solid #d1dbe5;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
-}
+.content-page {
+    .main {
+        border: 1px solid #d8e4e6;
+        box-shadow: 0 2px 10px 0 rgba(0,0,0,0.12), 0 0 10px 0 rgba(0,0,0,.04);
+    }
 
-.content-page .ec-itemList {
-    border: 2px solid #d1dbe5;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
+    ::-webkit-scrollbar-track-piece {
+        background-color: #fff;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        outline: 1px solid #666;
+        background-color: #666;
+
+        &:hover {
+            background-color: #000;
+        }
+    }
 }
 
 .cmdbox:focus {
@@ -62,7 +73,7 @@ a {
 }
 
 .ec-itemList .ec-item:hover {
-    background: rgb(255, 255, 255, .5);
+    background: rgba(255, 255, 255, .5);
 }
 
 .ec-item .ec-item-icon {
@@ -126,7 +137,7 @@ a {
 }
 
 ::-webkit-scrollbar-track-piece {
-    -webkit-border-radius: 0;
+    border-radius: 0;
     background-color: rgba(0, 0, 0, 0.6);
 }
 

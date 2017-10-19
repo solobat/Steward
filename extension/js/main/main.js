@@ -69,6 +69,7 @@ function init(config, mode, inContent) {
 
     cmdbox = new EasyComplete({
         id: 'cmdbox',
+        container: '#main',
         onInput: function (str) {
             if (!str) {
                 this.empty();
@@ -172,7 +173,7 @@ function init(config, mode, inContent) {
 
         plugin.onEnter.call(this, this.dataList[index], this.command);
         
-        if (window.parentWindow) {
+        if (plugin.name !== 'Help' && window.parentWindow) {
             window.parentWindow.postMessage({
                 action: 'closeBox'
             }, '*');

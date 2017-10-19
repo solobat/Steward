@@ -1,4 +1,4 @@
-import './popup.css'
+import './popup.scss'
 import extension from '../../js/main/main'
 import keyboardJS from 'keyboardjs'
 
