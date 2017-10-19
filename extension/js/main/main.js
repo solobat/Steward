@@ -214,6 +214,8 @@ function init(config, mode, inContent) {
 
             if (event[keyType] && keyCode === KEY.RIGHT) {
                 $('#main, .ec-itemList').fadeToggle();
+
+                cmdbox.ipt.focus();
             }
         });
         ga();
