@@ -11,6 +11,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 const config = {
   entry: {
+    content: './extension/pages/content/content.js',
     steward: './extension/pages/steward/steward.js',
     popup: './extension/pages/popup/popup.js',
     options: './extension/pages/options/options.js',
@@ -67,6 +68,12 @@ const config = {
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     //Generate an HTML5 file that includes all webpack bundles(includes css & js) in the body using script tags
+    new HtmlWebpackPlugin({
+      title: 'Steward - Content',
+      template: './extension/pages/content/content.html',
+      filename: 'content.html',
+      chunks: ['content']
+    }),
     new HtmlWebpackPlugin({
       title: 'Steward - Extension',
       template: './extension/pages/steward/steward.html',

@@ -46,7 +46,8 @@ function init() {
         let plugins = {};
         let general = {
             cacheLastCmd: true,
-            defaultPlugin: ''
+            defaultPlugin: '',
+            useInContentPage: false
         };
 
         if (config.general) {

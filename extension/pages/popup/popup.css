@@ -28,6 +28,16 @@ a {
     padding: 5px 10px;
 }
 
+.content-page .cmdbox {
+    border: 1px solid #d1dbe5;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
+}
+
+.content-page .ec-itemList {
+    border: 1px solid #d1dbe5;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
+}
+
 .cmdbox:focus {
     outline: 0;
 }
@@ -39,6 +49,7 @@ a {
     width: 500px;
     margin: 0 auto;
     overflow-y: scroll;
+    background: #fff;
 
     height: 400px;
 }

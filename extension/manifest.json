@@ -16,7 +16,12 @@
         "default_title": "Steward",
         "default_popup": "popup.html"
     },
-
+    "content_scripts": [{
+        "matches": ["<all_urls>"],
+        "css": ["content.css"],
+        "all_frames": true,
+        "js": ["content.js"]
+    }],
     "icons": {
         "16": "img/icon16.png",
         "48": "img/icon48.png",
@@ -25,7 +30,8 @@
     "web_accessible_resources": [
         "img/*",
         "urlblock.html",
-        "login.html"
+        "login.html",
+        "popup.html"
     ],
     "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com; object-src 'self'",
     "options_page": "options.html",
