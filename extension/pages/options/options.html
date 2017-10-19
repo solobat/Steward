@@ -10,8 +10,8 @@
 <body>
     <div id="app" class="steward" v-cloak>
         <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane label="General" name="general">
-                <el-form v-if="extType === 'steward'" style="margin: 20px 0; min-height: 150px;" ref="general" :model="config.general">
+            <el-tab-pane v-if="extType === 'steward'" label="General" name="general">
+                <el-form style="margin: 20px 0; min-height: 150px;" ref="general" :model="config.general">
                     <el-form-item :label="i18nTexts.general.cacheLastCmd">
                         <el-switch
                           v-model="config.general.cacheLastCmd"
@@ -19,10 +19,12 @@
                         </el-switch>
                     </el-form-item>
                     <el-form-item :label="i18nTexts.general.useInContentPage">
-                        <el-switch
-                          v-model="config.general.useInContentPage"
-                          on-color="#20a0ff">
-                        </el-switch>
+                        <el-tooltip class="item" effect="dark" content="shortcut is [ctrl + space]" placement="top-start">
+                            <el-switch
+                                v-model="config.general.useInContentPage"
+                                on-color="#20a0ff">
+                            </el-switch>
+                        </el-tooltip>
                     </el-form-item>
                     <el-form-item :label="i18nTexts.general.defaultPlugin">
                         <el-select v-model="config.general.defaultPlugin" clearable :disabled="config.general.cacheLastCmd" placeholder="please choose">
@@ -38,7 +40,6 @@
                         <el-button type="primary" @click.native.prevent="handleGeneralSubmit">Save</el-button>
                     </el-form-item>
                 </el-form>
-                <div v-else>TODO</div>
             </el-tab-pane>
             <el-tab-pane label="Plugins" name="plugins">
                 <el-row>
@@ -79,8 +80,8 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane label="Appearance" name="appearance">
-                <el-row v-if="extType === 'steward'">
+            <el-tab-pane v-if="extType === 'steward'" label="Appearance" name="appearance">
+                <el-row>
                     <el-col :span="4">
                         <div class="appearance-items">
                             <div v-for="apprItem in appearanceItems" @click="handleApprItemClick(apprItem)"
@@ -113,10 +114,6 @@
                         </div>
                     </el-col>
                 </el-row>
-                <div v-else>TODO</div>
-            </el-tab-pane>
-            <el-tab-pane label="Advanced" name="advanced">
-                TODO
             </el-tab-pane>
             <el-tab-pane label="Help" name="help">
                 <div class="text-panel">
