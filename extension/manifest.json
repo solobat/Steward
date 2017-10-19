@@ -58,6 +58,16 @@
                 "chromeos": "Ctrl+K",
                 "linux": "Ctrl+K"
             }
+        },
+        "open-in-content-page": {
+            "suggested_key": {
+                "windows": "Ctrl+J",
+                "mac": "Command+J",
+                "chromeos": "Ctrl+J",
+                "linux": "Ctrl+J"
+            },
+            "description": "open Steward in page",
+            "global": true
         }
     }
 }

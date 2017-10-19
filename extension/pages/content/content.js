@@ -14,7 +14,6 @@ let App = {
 
         $('body').append(html);
         this.$el = $('#steward-main');
-        this.$iframe = $('#steward-iframe');
     },
     openBox() {
         let self = this;
@@ -50,15 +49,6 @@ let App = {
     bindEvents() {
         let self = this;
 
-        keyboardJS.bind('ctrl + space', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            console.log('steward');
-            self.openBox();
-    
-            return false;
-        });
-
         keyboardJS.bind('esc', function() {
             self.closeBox();
         });
@@ -66,6 +56,12 @@ let App = {
         window.addEventListener('message', (event) => {
             if (event.data.action === 'closeBox') {
                 this.closeBox();
+            }
+        });
+
+        chrome.runtime.onMessage.addListener((req, sender, resp) => {
+            if (req.action === 'openBox') {
+                this.openBox();
             }
         });
 
@@ -82,18 +78,4 @@ let App = {
     }
 };
 
-chrome.storage.sync.get('config', function({ config = {} }) {
-    let general = {
-        cacheLastCmd: true,
-        defaultPlugin: '',
-        useInContentPage: false
-    };
-
-    if (config.general) {
-        $.extend(general, config.general);
-    }
-
-    if (general.useInContentPage) {
-        App.init();
-    }
-});
+App.init();

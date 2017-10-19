@@ -18,14 +18,6 @@
                           on-color="#20a0ff">
                         </el-switch>
                     </el-form-item>
-                    <el-form-item :label="i18nTexts.general.useInContentPage">
-                        <el-tooltip class="item" effect="dark" content="shortcut is [ctrl + space]" placement="top-start">
-                            <el-switch
-                                v-model="config.general.useInContentPage"
-                                on-color="#20a0ff">
-                            </el-switch>
-                        </el-tooltip>
-                    </el-form-item>
                     <el-form-item :label="i18nTexts.general.defaultPlugin">
                         <el-select v-model="config.general.defaultPlugin" clearable :disabled="config.general.cacheLastCmd" placeholder="please choose">
                             <el-option
