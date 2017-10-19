@@ -4,12 +4,14 @@ import * as api from '../api/index'
 import * as date from '../utils/date'
 import _ from 'underscore'
 import storage from '../utils/storage'
+import Toast from 'toastr'
 
 const STORAGE_KEY = 'wallpapers';
 
 let wallpaper = '';
 let $body = $('body');
 let curUrl = '';
+let intervalTimer = 0;
 
 function updateWallpaper(url, save) {
     if (!url) {
@@ -40,7 +42,7 @@ function saveWallpaperLink() {
             [STORAGE_KEY]: wallpapers
         };
     }).then(newResults => storage.sync.set(newResults)).then(resp => {
-        alert('save successfully');
+        Toast.success('save successfully');
     });
 }
 
@@ -80,6 +82,13 @@ export function init() {
         _gaq.push(['_trackEvent', 'wallpaper', 'click', 'save']);
     });
 
+    $(document).on('dblclick', function(event) {
+        if (event.target.tagName === 'BODY') {
+            clearInterval(intervalTimer);
+            Toast.success('The automatic refresh of the wallpaper has been disabled');
+        }
+    });
+
     // set interval
-    setInterval(refreshWallpaper, NUMBER.WALLPAPER_INTERVAL);
+    intervalTimer = setInterval(refreshWallpaper, NUMBER.WALLPAPER_INTERVAL);
 }
