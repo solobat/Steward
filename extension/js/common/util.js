@@ -75,7 +75,7 @@ function copyToClipboard(text, showMsg) {
 }
 
 function getMatches(suggestions, query) {
-    const matches = fuzzaldrinPlus.filter(suggestions, query, {maxResults: 20});
+    const matches = fuzzaldrinPlus.filter(suggestions, query, {maxResults: 20, usePathScoring: true});
 
     return matches;
 }
