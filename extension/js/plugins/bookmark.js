@@ -1,6 +1,5 @@
 /**
- * @file bm command plugin script
- * @description 书签记录检索
+ * @description search in bookmarks
  * @author tomasy
  * @email solopea@gmail.com
  */

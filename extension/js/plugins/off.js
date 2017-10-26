@@ -1,6 +1,5 @@
 /**
- * @file off command plugin script
- * @description 禁用扩展/应用
+ * @description disable extensions/apps
  * @author tomasy
  * @email solopea@gmail.com
  */

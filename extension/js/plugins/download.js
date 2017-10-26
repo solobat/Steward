@@ -1,6 +1,5 @@
 /**
- * @file dl command plugin script
- * @description 下载列表
+ * @description download
  * @author tomasy
  * @email solopea@gmail.com
  */

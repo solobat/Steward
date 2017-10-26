@@ -1,6 +1,6 @@
 /**
  * @file help command plugin script
- * @description 帮助
+ * @description help
  * @author rong
  */
 

@@ -1,6 +1,5 @@
 /**
- * @file po command plugin script
- * @description pocket文档查找
+ * @description find in your pocket
  * @author tomasy
  * @email solopea@gmail.com
  */

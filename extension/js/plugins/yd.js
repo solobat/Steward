@@ -1,6 +1,5 @@
 /**
- * @file yd command plugin script
- * @description 有道翻译
+ * @description translator power by youdao api
  * @author tomasy
  * @email solopea@gmail.com
  */

@@ -1,6 +1,5 @@
 /**
- * @file tab command plugin script
- * @description 标签页查找
+ * @description list tabs and open
  * @author tomasy
  * @email solopea@gmail.com
  */

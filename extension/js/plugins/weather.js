@@ -1,5 +1,4 @@
 /**
- * @file weather plugin
  * @description powered by baidu weather api
  * @author tomasy
  * @email solopea@gmail.com

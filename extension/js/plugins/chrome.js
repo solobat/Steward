@@ -1,6 +1,5 @@
 /**
- * @file del command script
- * @description delete extensions / apps by del command
+ * @description chrome urls
  * @author  tomasy
  * @mail solopea@gmail.com
  */

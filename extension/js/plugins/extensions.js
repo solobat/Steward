@@ -1,6 +1,5 @@
 /**
- * @file run command plugin script
- * @description 启动指定应用
+ * @description extensions
  * @author tomasy
  * @email solopea@gmail.com
  */

@@ -1,5 +1,4 @@
 /**
- * @file del command script
  * @description delete extensions / apps by del command
  * @author  tomasy
  * @mail solopea@gmail.com

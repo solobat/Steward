@@ -1,6 +1,5 @@
 /**
- * @file pb command plugin script
- * @description pushbullet API 调用
+ * @description pushbullet
  * @author tomasy
  * @email solopea@gmail.com
  */

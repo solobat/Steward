@@ -1,6 +1,5 @@
 /**
- * @file his command plugin script
- * @description 历史记录检索
+ * @description find in history
  * @author tomasy
  * @email solopea@gmail.com
  */

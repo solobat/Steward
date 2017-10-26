@@ -1,5 +1,4 @@
 /**
- * @file set command script
  * @description open extension's option page
  * @author  tomasy
  * @mail solopea@gmail.com

@@ -1,6 +1,5 @@
 /**
- * @file todo command plugin script
- * @description 待办事项管理，并在标签页显示
+ * @description todo
  * @author tomasy
  * @email solopea@gmail.com
  */

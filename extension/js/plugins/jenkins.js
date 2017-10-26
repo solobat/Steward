@@ -1,5 +1,4 @@
 /**
- * @file jenkins plugin script
  * @description jenkins plugin
  * @author tomasy
  * @email solopea@gmail.com
