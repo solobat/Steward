@@ -227,6 +227,14 @@ function init(config, mode, inContent) {
         }
     });
 
+    function closeBoxIfNeeded() {
+        if (window.parentWindow) {
+            window.parentWindow.postMessage({
+                action: 'closeBox'
+            }, '*');
+        }
+    }
+
     cmdbox.bind('enter', function (event, elem) {
         let $elem = $(elem);
 
@@ -247,6 +255,10 @@ function init(config, mode, inContent) {
                 util.copyToClipboard($elem.data('url'), true);
             }
 
+            _gaq.push(['_trackEvent', 'exec', 'enter', type]);
+            
+            closeBoxIfNeeded();
+
             return;
         }
 
@@ -255,10 +267,8 @@ function init(config, mode, inContent) {
 
         plugin.onEnter.call(this, this.dataList[index], this.command);
         
-        if (plugin.name !== 'Help' && window.parentWindow) {
-            window.parentWindow.postMessage({
-                action: 'closeBox'
-            }, '*');
+        if (plugin.name !== 'Help') {
+            closeBoxIfNeeded();
         }
         _gaq.push(['_trackEvent', 'exec', 'enter', plugin.name]);
     });

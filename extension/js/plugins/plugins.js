@@ -21,6 +21,7 @@ import openurl from './openurl'
 import search from './search'
 import extensions from './extensions'
 import chrome from './chrome'
+import steward from './steward'
 
 const pluginList = [
     jenkins,
@@ -45,7 +46,8 @@ const pluginList = [
     openurl,
     search,
     extensions,
-    chrome
+    chrome,
+    steward
 ]
 
 // orkey: original key
