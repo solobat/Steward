@@ -7,14 +7,14 @@
 
 import $ from 'jquery'
 
-var version = 2;
-var name = 'history';
-var key = 'his';
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/history.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const version = 2;
+const name = 'history';
+const key = 'his';
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/history.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -23,7 +23,7 @@ var commands = [{
     editable: true
 }];
 
-function searchHistory(cmdbox, key, callback) {
+function searchHistory(key, callback) {
     chrome.history.search({
         text: key
 
@@ -52,9 +52,10 @@ function dataFormat(rawList) {
 }
 
 function onInput(key) {
-    var that = this;
-    searchHistory(that, key, function (matchUrls) {
-        that.showItemList(dataFormat(matchUrls));
+    return new Promise((resolve) => {
+        searchHistory(key, function (matchUrls) {
+            resolve(dataFormat(matchUrls));
+        });
     });
 }
 
@@ -68,6 +69,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

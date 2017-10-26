@@ -7,15 +7,15 @@
 
 import $ from 'jquery'
 
-var chrome = window.chrome;
-var version = 2;
-var name = 'bookmark';
-var key = 'bm';
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/bookmark.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const chrome = window.chrome;
+const version = 2;
+const name = 'bookmark';
+const key = 'bm';
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/bookmark.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -24,8 +24,7 @@ var commands = [{
     editable: true
 }];
 
-
-function searchBookmark(cmdbox, key, callback) {
+function searchBookmark(key, callback) {
     if (!key) {
         chrome.bookmarks.getRecent(10, function (bookMarkList) {
             callback(bookMarkList || []);
@@ -46,24 +45,27 @@ function searchBookmark(cmdbox, key, callback) {
 }
 
 function onInput(key) {
-    var that = this;
-    searchBookmark(that, key, function (bookMarkList) {
-        var arr = [];
-        for (var i in bookMarkList) {
-            var item = bookMarkList[i];
-            arr.push({
-                key: key,
-                id: item.id,
-                icon: icon,
-                url: item.url,
-                title: item.title,
-                desc: item.url,
-                isWarn: false
+    return new Promise((resolve, reject) => {
+        searchBookmark(key, bookMarkList => {
+            let arr = [];
+            
+            for (let i in bookMarkList) {
+                let item = bookMarkList[i];
 
-            });
-        }
-        that.showItemList(arr);
-    });
+                arr.push({
+                    key: key,
+                    id: item.id,
+                    icon: icon,
+                    url: item.url,
+                    title: item.title,
+                    desc: item.url,
+                    isWarn: false
+                });
+            }
+
+            resolve(arr);
+        });
+    });    
 }
 
 function onEnter(item) {
@@ -78,6 +80,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

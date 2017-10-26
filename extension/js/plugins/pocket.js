@@ -9,15 +9,15 @@ import $ from 'jquery'
 import Auth from '../common/auth'
 import conf from '../conf/pocket_conf'
 
-var auth = new Auth(conf);
-var version = 2;
-var name = 'pocket';
-var key = 'po';
-var type = 'keyword';
-var icon = 'http://getpocket.com/i/apple-touch-icon/Pocket_AppIcon_57.png';
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const auth = new Auth(conf);
+const version = 2;
+const name = 'pocket';
+const key = 'po';
+const type = 'keyword';
+const icon = 'http://getpocket.com/i/apple-touch-icon/Pocket_AppIcon_57.png';
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -33,11 +33,11 @@ function handler(results) {
     return ret;
 }
 
-var ajax;
+let ajax;
 
 function dataFormat(rawList) {
     return rawList.map(function (item) {
-        var title = item.given_title || item.resolved_title || item.excerpt;
+        let title = item.given_title || item.resolved_title || item.excerpt;
         return {
             key: key,
             id: item.id,
@@ -56,10 +56,10 @@ function onInput(key) {
         return;
     }
 
-    var cmdbox = this;
-
-    query(key, function (data) {
-        cmdbox.showItemList(dataFormat(data));
+    return new Promise(resolve => {
+        query(key, function (data) {
+            resolve(dataFormat(data));
+        });
     });
 }
 
@@ -67,25 +67,23 @@ function query(key, callback) {
     if (ajax) {
         ajax.abort();
     }
-    var params = {
+    let params = {
         consumer_key: auth.consumer_key,
         access_token: auth.get(auth.accessTokenName)
-
     };
 
     if (key) {
         $.extend(params, {
             search: key,
             state: 'all'
-
         });
     }
 
     ajax = $.post('https://getpocket.com/v3/get', params, function (data) {
         if (data.list) {
-            var list = [];
-            for (var i in data.list) {
-                var item = data.list[i];
+            let list = [];
+            for (let i in data.list) {
+                let item = data.list[i];
 
                 item.id = i;
                 list.push(item);
@@ -105,6 +103,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

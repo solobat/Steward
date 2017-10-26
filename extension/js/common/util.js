@@ -5,6 +5,9 @@
  */
 
 import pinyin from 'pinyin'
+import Toast from 'toastr'
+import fuzzaldrinPlus from 'fuzzaldrin-plus'
+import '../../../node_modules/toastr/toastr.scss'
 
 function getPinyin(name) {
     return pinyin(name, {
@@ -58,13 +61,23 @@ function genCommands(name, icon, items, type) {
     });
 }
 
-function copyToClipboard(text) {
+function copyToClipboard(text, showMsg) {
     document.addEventListener('copy', (event) => {
         event.preventDefault();
         event.clipboardData.setData('text/plain', text);
+
+        if (showMsg) {
+            Toast.success(`"${text}" has been copied to the clipboard`);
+        }
     }, {once: true});
 
     document.execCommand('copy');
+}
+
+function getMatches(suggestions, query) {
+    const matches = fuzzaldrinPlus.filter(suggestions, query, {maxResults: 20});
+
+    return matches;
 }
 
 export default {
@@ -72,5 +85,6 @@ export default {
     isMac: isMac,
     guid: guid,
     genCommands,
-    copyToClipboard
+    copyToClipboard,
+    getMatches
 };

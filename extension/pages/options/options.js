@@ -18,7 +18,7 @@ const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jg
 
 Vue.use(ElementUI)
 
-let pluginModules = _.sortBy(pluginList, 'name').map(plugin => {
+let pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name').map(plugin => {
     let {name, icon, commands, title, version, type} = plugin;
 
     return {

@@ -7,15 +7,15 @@
 
 import $ from 'jquery'
 
-var chrome = window.chrome;
-var version = 2;
-var name = 'download';
-var key = 'dl';
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/download.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const chrome = window.chrome;
+const version = 2;
+const name = 'download';
+const key = 'dl';
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/download.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -24,7 +24,7 @@ var commands = [{
     editable: true
 }];
 
-function searchDownload(cmdbox, query, callback) {
+function searchDownload(query, callback) {
     chrome.downloads.search({
       query: [query],
       orderBy: ['-endTime']
@@ -46,26 +46,29 @@ function formatTitle (item) {
   ].join('');
 }
 function onInput(key) {
-    var that = this;
-    searchDownload(that, key, function (downloadList) {
-        var arr = [];
-        for (var i in downloadList) {
-            var item = downloadList[i];
-            if (!item.filename) {
-              continue;
-            }
-            arr.push({
-                key: key,
-                id: item.id,
-                icon: icon,
-                url: item.url,
-                title: formatTitle(item),
-                desc: item.url,
-                isWarn: false
+    return new Promise((resolve) => {
+        searchDownload(key, function (downloadList) {
+            let arr = [];
 
-            });
-        }
-        that.showItemList(arr);
+            for (let i in downloadList) {
+                let item = downloadList[i];
+                if (!item.filename) {
+                  continue;
+                }
+                arr.push({
+                    key: key,
+                    id: item.id,
+                    icon: icon,
+                    url: item.url,
+                    title: formatTitle(item),
+                    desc: item.url,
+                    isWarn: false
+    
+                });
+            }
+
+            resolve(arr);
+        });
     });
 }
 
@@ -79,6 +82,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

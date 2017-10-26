@@ -8,14 +8,14 @@
 import $ from 'jquery'
 import request from '../common/request'
 
-var version = 2;
-var name = 'todolist';
-var key = 'todo';
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/todo.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const version = 2;
+const name = 'todolist';
+const key = 'todo';
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/todo.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -83,7 +83,6 @@ function addTodo(todo) {
 function noticeBg2refresh() {
     request.send({
         action: 'addTodo'
-
     });
 }
 
@@ -103,12 +102,11 @@ function dataFormat(rawList) {
             icon: icon,
             title: item.title,
             desc: subtitle
-
         };
     });
 }
 function showTodos() {
-    var cmdbox = this;
+    let cmdbox = this;
 
     getTodos(function (todos) {
         cmdbox.showItemList(dataFormat(todos || []));
@@ -121,7 +119,7 @@ export default {
     icon,
     title,
     commands,
-    showTodos: showTodos,
-    onInput: onInput,
-    onEnter: onEnter
+    showTodos,
+    onInput,
+    onEnter
 };

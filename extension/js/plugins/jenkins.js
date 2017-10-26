@@ -8,32 +8,28 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 2;
-var name = 'jenkins'
+const version = 2;
+const name = 'jenkins'
 //'jk', 'jkb', 'jkc', 'jkw', 'jkset'
-var keys = [
+const keys = [
     { key: 'jk' },
     { key: 'jkb' },
     { key: 'jkc' },
     { key: 'jkw' },
     { key: 'jkset' }
 ];
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/jenkins.png')
-var title = chrome.i18n.getMessage(name + '_title')
-var subtitle = chrome.i18n.getMessage(name + '_subtitle')
-var SERVER_URL = window.localStorage['jenkins_url'] || ''
-var jobs = []
-
-var commands = util.genCommands(name, icon, keys, type);
-
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/jenkins.png')
+const title = chrome.i18n.getMessage(name + '_title')
+const subtitle = chrome.i18n.getMessage(name + '_subtitle')
+let SERVER_URL = window.localStorage['jenkins_url'] || ''
+const commands = util.genCommands(name, icon, keys, type);
 const keyUrlMap = {
     'jk': '',
     'jkb': 'build',
     'jkc': 'configure',
     'jkw': 'ws'
 }
-
 const actionTips = {
     seturl: {
         key: 'jkset',
@@ -51,6 +47,8 @@ const actionTips = {
         isWarn: true
     }
 };
+
+let jobs = [];
 
 function getJobs() {
     if (jobs.length) {
@@ -98,20 +96,18 @@ function showActionTips(action) {
         return;
     }
 
-    this.showItemList([{
+    return [{
         key: 'jk',
         icon: icon,
         id: actionTip.id,
         title: actionTip.title,
         desc: actionTip.desc
-    }]);
+    }];
 }
 
 function onInput(key) {
     if (this.cmd === 'jkset') {
-        showActionTips.call(this, 'seturl');
-
-        return;
+        return showActionTips('seturl');
     }
 
     if (!SERVER_URL) {
@@ -120,14 +116,14 @@ function onInput(key) {
         return;
     }
 
-    getJobs().then((results) => {
+    return getJobs().then((results) => {
         var filterRE = new RegExp([].slice.call(key).join('\.\*'))
 
         var jobs = results.filter((job) => {
             return key ? !!job.name.match(filterRE) : true
         }).slice(0, 50)
 
-        this.showItemList(jobs.map((item) => {
+        return jobs.map((item) => {
             return {
                 key: key,
                 id: item.url + keyUrlMap[this.cmd],
@@ -136,9 +132,9 @@ function onInput(key) {
                 desc: item.healthReport.length ? item.healthReport[0].description : 'no build history',
                 isWarn: item.healthReport.length && item.healthReport[0].score !== 100
             }
-        }))
+        });
     }).catch((results) => {
-        this.showItemList(results);
+        return Promise.resolve(results);
     });
 }
 
@@ -172,6 +168,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

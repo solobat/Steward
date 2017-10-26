@@ -8,14 +8,14 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 2;
-var name = 'runapp';
-var key = 'run';
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/app.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const version = 2;
+const name = 'runapp';
+const key = 'run';
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/app.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -26,7 +26,7 @@ var commands = [{
 
 function getExtensions(key, callback) {
     chrome.management.getAll(function (extList) {
-        var data = extList.filter(function (ext) {
+        let data = extList.filter(function (ext) {
             return util.matchText(key, ext.name) && ext.isApp;
         });
 
@@ -36,8 +36,9 @@ function getExtensions(key, callback) {
 
 function dataFormat(rawList) {
     return rawList.map(function (item) {
-        var url = item.icons instanceof Array ? item.icons[0].url : '';
-        var isWarn = item.installType === 'development';
+        let url = item.icons instanceof Array ? item.icons[0].url : '';
+        let isWarn = item.installType === 'development';
+
         return {
             key: key,
             id: item.id,
@@ -45,15 +46,15 @@ function dataFormat(rawList) {
             title: item.name,
             desc: item.description,
             isWarn: isWarn
-
         };
     });
 }
 
 function onInput(key) {
-    var that = this;
-    getExtensions(key.toLowerCase(), function (data) {
-        that.showItemList(dataFormat(data));
+    return new Promise(resolve => {
+        getExtensions(key.toLowerCase(), function (data) {
+            resolve(dataFormat(data));
+        });
     });
 }
 
@@ -74,6 +75,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

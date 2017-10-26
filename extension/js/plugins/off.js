@@ -8,14 +8,14 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 2;
-var name = 'offExtension';
-var key = 'off';
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/off.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const version = 2;
+const name = 'offExtension';
+const key = 'off';
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/off.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -55,10 +55,11 @@ function dataFormat(rawList) {
 }
 
 function onInput(key) {
-    var that = this;
-    getExtensions(key.toLowerCase(), true, function (matchExts) {
-        sortExtensions(matchExts, key, function (matchExts) {
-            that.showItemList(dataFormat(matchExts));
+    return new Promise(resolve => {
+        getExtensions(key.toLowerCase(), true, function (matchExts) {
+            sortExtensions(matchExts, key, function (matchExts) {
+                resolve(dataFormat(matchExts));
+            });
         });
     });
 }
@@ -162,6 +163,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

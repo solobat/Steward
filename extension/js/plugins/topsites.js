@@ -7,15 +7,15 @@
 
 import $ from 'jquery'
 
-var chrome = window.chrome;
-var version = 2;
-var name = 'topsites';
-var key = 'site';
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/topsites.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const chrome = window.chrome;
+const version = 2;
+const name = 'topsites';
+const key = 'site';
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/topsites.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -25,11 +25,12 @@ var commands = [{
 }];
 
 function onInput(key) {
-    var that = this;
+    let that = this;
+
     chrome.topSites.get(function (sites) {
-        var arr = [];
-        for (var i in sites) {
-            var item = sites[i];
+        let arr = [];
+        for (let i in sites) {
+            let item = sites[i];
             arr.push({
                 key: key,
                 id: item.id,
@@ -56,6 +57,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

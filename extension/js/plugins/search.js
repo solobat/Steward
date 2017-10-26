@@ -8,14 +8,14 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var name = 'search';
-var key = 'search';
-var version = 1;
-var type = 'other';
-var icon = chrome.extension.getURL('img/google.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const name = 'search';
+const key = 'search';
+const version = 1;
+const type = 'other';
+const icon = chrome.extension.getURL('img/google.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -23,7 +23,7 @@ var commands = [{
     icon,
     editable: false
 }];
-var searchMap = {
+const searchMap = {
     'Google': {
         url: 'https://www.google.com/search?q=',
         icon: chrome.extension.getURL('img/google.png')
@@ -47,7 +47,7 @@ var searchMap = {
 };
 
 function onInput(query) {
-    var data = Object.keys(searchMap).map(engine => {
+    let data = Object.keys(searchMap).map(engine => {
         return {
             key: 'search',
             query,
@@ -63,6 +63,7 @@ function onInput(query) {
 
 function onEnter({ query, engine }) {
     let url = searchMap[engine].url + query.split(' ').join('+');
+    
     chrome.tabs.create({
         url
     });

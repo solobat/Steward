@@ -8,14 +8,14 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 2;
-var name = 'onExtension';
-var key = 'on';
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/on.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const version = 2;
+const name = 'onExtension';
+const key = 'on';
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/on.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -40,8 +40,9 @@ function getExtensions(key, enabled, callback) {
 
 function dataFormat(rawList) {
     return rawList.map(function (item) {
-        var url = item.icons instanceof Array ? item.icons[item.icons.length - 1].url : '';
-        var isWarn = item.installType === 'development';
+        let url = item.icons instanceof Array ? item.icons[item.icons.length - 1].url : '';
+        let isWarn = item.installType === 'development';
+
         return {
             key: key,
             id: item.id,
@@ -55,10 +56,11 @@ function dataFormat(rawList) {
 }
 
 function onInput(key) {
-    var that = this;
-    getExtensions(key.toLowerCase(), false, function (matchExts) {
-        sortExtensions(matchExts, key, function (matchExts) {
-            that.showItemList(dataFormat(matchExts));
+    return new Promise(resolve => {
+        getExtensions(key.toLowerCase(), false, function (matchExts) {
+            sortExtensions(matchExts, key, function (matchExts) {
+                resolve(dataFormat(matchExts));
+            });
         });
     });
 }
@@ -84,7 +86,7 @@ function sortExtensions(matchExts, key, callback) {
 
         // sExts: {id: {id: '', querys: {'key': {num: 0, update: ''}}}}
         matchExts = matchExts.map(function (extObj) {
-            var id = extObj.id;
+            let id = extObj.id;
 
             if (!sExts[id] || !sExts[id].querys[key]) {
                 extObj.num = 0;
@@ -108,15 +110,15 @@ function sortExtensions(matchExts, key, callback) {
 function addRecord(type, query, id) {
     chrome.storage.sync.get(type, function (data) {
         // data = {ext: {}}
-        var extObj = data;
+        let extObj = data;
         // info = {id: {}};
-        var info = extObj[type];
+        let info = extObj[type];
 
         if ($.isEmptyObject(extObj)) {
             info = extObj[type] = {};
         }
 
-        var obj;
+        let obj;
 
         if (!info[id]) {
             obj = info[id] = createObj4Storage(id, query);
@@ -162,6 +164,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };
