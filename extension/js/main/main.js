@@ -113,8 +113,8 @@ function init(config, mode, inContent) {
             let matchedPlugins = findMatchedPlugins(str);
 
             return Promise.all([
-                searched,
-                matchedPlugins
+                matchedPlugins,
+                searched
             ]).then(res => {
                 let searchRes = _.flatten(res.filter(item => item && item.length));
 
