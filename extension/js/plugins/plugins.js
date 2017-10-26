@@ -20,8 +20,9 @@ import weather from './weather'
 import openurl from './openurl'
 import search from './search'
 import extensions from './extensions'
+import chrome from './chrome'
 
-var pluginList = [
+const pluginList = [
     jenkins,
     note,
     tab,
@@ -43,7 +44,8 @@ var pluginList = [
     weather,
     openurl,
     search,
-    extensions
+    extensions,
+    chrome
 ]
 
 // orkey: original key

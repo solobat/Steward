@@ -1,20 +1,20 @@
 /**
  * @file help command plugin script
- * @description 帮助
+ * @description help
  * @author rong
  */
 
 import $ from 'jquery'
 import _ from 'underscore'
 
-var version = 2;
-var name = 'help';
-var key = 'help';
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/help.ico');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const version = 2;
+const name = 'help';
+const key = 'help';
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/help.ico');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -25,8 +25,8 @@ var commands = [{
 
 // NOTE: 只在需要的时候获取commands, main.js里已经立即获取过, 这里再获取会为空对象
 function getPlugins() {
-    var commands = window.stewardCache.commands;
-    var helpList = _.uniq(_.values(commands)).map((command) => {
+    let commands = window.stewardCache.commands;
+    let helpList = _.uniq(_.values(commands)).map((command) => {
         return {
             icon: command.icon,
             id: command.key,
@@ -40,10 +40,7 @@ function getPlugins() {
 }
 
 function onInput(key) {
-
-    var that = this;
-
-    that.showItemList(getPlugins());
+    return getPlugins();
 }
 
 function onEnter(item) {
@@ -56,6 +53,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

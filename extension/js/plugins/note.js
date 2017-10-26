@@ -1,6 +1,5 @@
 /**
- * @file
- * @description 待办事项管理，并在标签页显示
+ * @description add notes
  * @author tomasy
  * @email solopea@gmail.com
  */
@@ -8,16 +7,15 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 2;
-var name = 'note';
-var keys = [{key: 'note'}, {key: '#', keyname: 'notetag', editable: false}];
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/note.png')
-var title = chrome.i18n.getMessage(name + '_title')
-var subtitle = chrome.i18n.getMessage(name + '_subtitle')
-var tagReg = /#([a-zA-Z\u4e00-\u9fa5]+)/ig
-
-var commands = util.genCommands(name, icon, keys, type);
+const version = 2;
+const name = 'note';
+const keys = [{key: 'note'}, {key: '#', keyname: 'notetag', editable: false}];
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/note.png')
+const title = chrome.i18n.getMessage(name + '_title')
+const subtitle = chrome.i18n.getMessage(name + '_subtitle')
+const tagReg = /#([a-zA-Z\u4e00-\u9fa5]+)/ig
+const commands = util.genCommands(name, icon, keys, type);
 
 function createNote(...args) {
     return {
@@ -29,22 +27,20 @@ function createNote(...args) {
 
 function onInput(key) {
     if (this.cmd === '#') {
-        handleTagQuery.call(this, key)
+        return handleTagQuery(key);
     } else {
-        this.showItemList([
+        return [
             {
                 icon: icon,
                 title: '新增一条笔记',
                 desc: '#添加标签'
             }
-        ])
+        ];
     }
 }
 
 function handleTagQuery(key) {
-    var that = this
-
-    queryNotesByTag(key).then((res) => {
+    return queryNotesByTag(key).then((res) => {
         var data
 
         if (res.type === 'tag') {
@@ -68,7 +64,7 @@ function handleTagQuery(key) {
             })
         }
 
-        that.showItemList(data)
+        return data;
     })
 }
 
@@ -107,7 +103,7 @@ function onEnter(item) {
             this.ipt.val('# ' + item.id)
             this.ipt.trigger('input')
         } else {
-            util.copyToClipboard(item.title);
+            util.copyToClipboard(item.title, true);
         }
     } else {
         var query = this.query
@@ -180,6 +176,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 }

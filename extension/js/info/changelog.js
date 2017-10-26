@@ -1,5 +1,9 @@
 let langZh = [
     {
+        version: 'v2.8',
+        detail: "加入chrome-urls搜索；<br />一些改进"
+    },
+    {
         version: 'v2.7',
         detail: "可以在任何页面使用" + EXT_TYPE + "，快捷键在<em>chrome://extensions/configureCommands</em>设置; <br />一些交互/ui优化"
     },

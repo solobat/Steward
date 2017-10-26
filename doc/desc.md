@@ -1,0 +1,1 @@
+type: keyword / regexp / direct

@@ -1,5 +1,4 @@
 /**
- * @file set command script
  * @description open extension's option page
  * @author  tomasy
  * @mail solopea@gmail.com
@@ -8,14 +7,14 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 2;
-var name = 'setOption';
-var key = 'set';
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/set.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const version = 2;
+const name = 'setOption';
+const key = 'set';
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/set.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -25,7 +24,7 @@ var commands = [{
 }];
 
 function openOptionPage(item, cb) {
-    var url = item.url;
+    let url = item.url;
 
     if (!url) {
         cb.call(null);
@@ -42,7 +41,7 @@ function openOptionPage(item, cb) {
 // get all
 function getExtensions(key, enabled, callback) {
     chrome.management.getAll(function (extList) {
-        var matchExts = extList.filter(function (ext) {
+        let matchExts = extList.filter(function (ext) {
             return !ext.isApp && ext.enabled === enabled && util.matchText(key, ext.name);
         });
 
@@ -52,8 +51,9 @@ function getExtensions(key, enabled, callback) {
 
 function dataFormat(rawList) {
     return rawList.map(function (item) {
-        var url = item.icons instanceof Array ? item.icons[item.icons.length - 1].url : '';
-        var isWarn = item.installType === 'development';
+        let url = item.icons instanceof Array ? item.icons[item.icons.length - 1].url : '';
+        let isWarn = item.installType === 'development';
+
         return {
             key: key,
             id: item.id,
@@ -62,15 +62,15 @@ function dataFormat(rawList) {
             url: item.optionsUrl,
             desc: item.description,
             isWarn: isWarn
-
         };
     });
 }
 function onInput(key) {
-    var that = this;
-    getExtensions(key.toLowerCase(), true, function (matchExts) {
-        sortExtensions(matchExts, key, function (matchExts) {
-            that.showItemList(dataFormat(matchExts));
+    return new Promise(resolve => {
+        getExtensions(key.toLowerCase(), true, function (matchExts) {
+            sortExtensions(matchExts, key, function (matchExts) {
+                resolve(dataFormat(matchExts));
+            });
         });
     });
 }
@@ -87,7 +87,7 @@ function sortExtFn(a, b) {
 
 function sortExtensions(matchExts, key, callback) {
     chrome.storage.sync.get('ext', function (data) {
-        var sExts = data.ext;
+        let sExts = data.ext;
 
         if (!sExts) {
             callback(matchExts);
@@ -96,7 +96,7 @@ function sortExtensions(matchExts, key, callback) {
 
         // sExts: {id: {id: '', querys: {'key': {num: 0, update: ''}}}}
         matchExts = matchExts.map(function (extObj) {
-            var id = extObj.id;
+            let id = extObj.id;
 
             if (!sExts[id] || !sExts[id].querys[key]) {
                 extObj.num = 0;
@@ -123,6 +123,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

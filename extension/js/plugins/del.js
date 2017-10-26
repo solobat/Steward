@@ -1,5 +1,4 @@
 /**
- * @file del command script
  * @description delete extensions / apps by del command
  * @author  tomasy
  * @mail solopea@gmail.com
@@ -8,14 +7,14 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 2;
-var name = 'deleteExtension';
-var key = 'del';
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/del.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const version = 2;
+const name = 'deleteExtension';
+const key = 'del';
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/del.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -57,10 +56,11 @@ function dataFormat(rawList) {
     });
 }
 function onInput(key) {
-    var that = this;
-    getExtensions(key.toLowerCase(), false, function (matchExts) {
-        sortExtensions(matchExts, key, function (matchExts) {
-            that.showItemList(dataFormat(matchExts));
+    return new Promise((resolve) => {
+        getExtensions(key.toLowerCase(), false, function (matchExts) {
+            sortExtensions(matchExts, key, function (matchExts) {
+                resolve(dataFormat(matchExts));
+            });
         });
     });
 }
@@ -78,7 +78,7 @@ function sortExtFn(a, b) {
 
 function sortExtensions(matchExts, key, callback) {
     chrome.storage.sync.get('ext', function (data) {
-        var sExts = data.ext;
+        let sExts = data.ext;
 
         if (!sExts) {
             callback(matchExts);
@@ -114,6 +114,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

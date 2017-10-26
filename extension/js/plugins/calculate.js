@@ -1,6 +1,5 @@
 /**
- * @file del command script
- * @description delete extensions / apps by del command
+ * @description calculate
  * @author  tomasy
  * @mail solopea@gmail.com
  */
@@ -9,17 +8,15 @@ import $ from 'jquery'
 import util from '../common/util'
 import mathexp from 'math-expression-evaluator'
 
-var name = 'calculate';
-var version = 3;
-var type = 'regexp';
-var key = 'calc';
-var icon = chrome.extension.getURL('img/calc.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var withoutKey = true;
-var regExp = /^(==|~=|&&|\|\||[0-9]|[\+\-\*\/\^\.%, ""]|[\(\)\|\!\[\]])+$/;
-
-var commands = [{
+const name = 'calculate';
+const version = 3;
+const type = 'regexp';
+const key = 'calc';
+const icon = chrome.extension.getURL('img/calc.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const regExp = /^(==|~=|&&|\|\||[0-9]|[\+\-\*\/\^\.%, ""]|[\(\)\|\!\[\]])+$/;
+const commands = [{
     key,
     type,
     title,
@@ -43,7 +40,6 @@ function onInput(key) {
                 icon: icon,
                 title: result,
                 desc: subtitle
-
             }
         ];
     }
@@ -55,7 +51,7 @@ function onInput(key) {
 function onEnter(item) {
     let text = item.title;
 
-    util.copyToClipboard(text);
+    util.copyToClipboard(text, true);
 }
 
 export default {
@@ -64,7 +60,6 @@ export default {
     icon,
     title,
     commands,
-    withoutKey,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

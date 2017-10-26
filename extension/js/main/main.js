@@ -13,20 +13,22 @@ import { plugins }  from '../plugins/plugins'
 import * as Wallpaper from './wallpaper'
 import ga from '../../js/common/ga'
 import KEY from '../constant/keycode'
+import _ from 'underscore'
 
-var commands = {};
-var regExpCommands = [];
-var otherCommands = [];
-var keys;
-var reg;
-var cmdbox;
+let commands = {};
+let regExpCommands = [];
+let otherCommands = [];
+let searchContexts = [];
+let keys;
+let reg;
+let cmdbox;
 
 window.stewardCache = {};
 
-function findMatchPlugins(query) {
-    var items = [];
+function findMatchedPlugins(query) {
+    let items = [];
 
-    for (var key in commands) {
+    for (let key in commands) {
         if (key.indexOf(query) !== -1) {
             items.push({
                 key: 'plugins',
@@ -38,7 +40,7 @@ function findMatchPlugins(query) {
         }
     }
 
-    return items;
+    return Promise.resolve(items);
 }
 
 function findRegExpMatched(str) {
@@ -67,6 +69,104 @@ function init(config, mode, inContent) {
         return command.plugin.onInput.call(this, key, command);
     }
 
+    function searchInContext(query) {
+        let res = [];
+        let tasks = [];
+
+        searchContexts.forEach(context => {
+            let searchRet = context.onInput(query);
+
+            if (searchRet instanceof Promise || typeof searchRet.then === 'function') {
+                tasks.push(searchRet);
+            } else if (searchRet && searchRet.length) {
+                res.concat(searchRet);
+            }
+        });
+
+        if (tasks.length) {
+            return Promise.all(tasks).then(res => {
+                return _.flatten(res.filter(item => item && item.length));
+            });
+        } else {
+            return Promise.resolve(res);
+        }
+    }
+
+    function regexpStage(cmdbox) {
+        let str = cmdbox.str;
+        let spCommand = findRegExpMatched(str);
+
+        // handle regexp commands
+        if (spCommand) {
+            return Promise.reject(callCommand.call(cmdbox, spCommand, str));
+        } else {
+            return Promise.resolve(cmdbox);
+        }
+    }
+
+    function searchStage(cmdbox) {
+        let str = cmdbox.str;
+
+        // match commands && search in contexts
+        if (str.indexOf(' ') === -1) {
+            let searched = searchInContext(str);
+            let matchedPlugins = findMatchedPlugins(str);
+
+            return Promise.all([
+                matchedPlugins,
+                searched
+            ]).then(res => {
+                let searchRes = _.flatten(res.filter(item => item && item.length));
+
+                if (searchRes && searchRes.length) {
+                    return Promise.reject(searchRes);
+                } else {
+                    return Promise.resolve(cmdbox, true);
+                }
+            });
+        } else {
+            return Promise.resolve(cmdbox);
+        }
+    }
+
+    function commandStage(cmdbox, gothrough) {
+        if (gothrough) {
+            return Promise.resolve(cmdbox);
+        }
+
+        let str = cmdbox.str;
+        let mArr = str.match(reg) || [];
+        let cmd = mArr[1];
+        let param = mArr[2];
+        let key = mArr[3];
+
+        // search in context && handle other commands
+        if (cmd) {
+            cmdbox.cmd = cmd;
+            cmdbox.param = param;
+            cmdbox.query = key;
+    
+            storage.h5.set(CONST.LAST_CMD, str);
+    
+            if (cmdbox.lastcmd !== cmdbox.cmd) {
+                _gaq.push(['_trackEvent', 'command', 'input', cmdbox.cmd]);
+                cmdbox.lastcmd = cmdbox.cmd;
+            }
+    
+            let command = commands[cmdbox.cmd];
+    
+            return Promise.reject(callCommand.call(cmdbox, command, key));     
+        } else {
+            return Promise.resolve(cmdbox);
+        }
+    }
+
+    function defaultStage(cmdbox) {
+        if (otherCommands.length) {
+            return callCommand.call(cmdbox, otherCommands[0], cmdbox.str);
+        }
+    }
+
     cmdbox = new EasyComplete({
         id: 'cmdbox',
         container: '#main',
@@ -82,48 +182,19 @@ function init(config, mode, inContent) {
             this.param = '';
             this.query = '';
 
-            let spCommand = findRegExpMatched(str);
-
-            // handle regexp commands
-            if (spCommand) {
-               return callCommand.call(this, spCommand, str);
-            }
-
-            let matchPlugins = findMatchPlugins(str);
-
-            // match commands
-            if (str.indexOf(' ') === -1 && matchPlugins.length) {
-                return this.showItemList(matchPlugins);
-            }
-
-            var mArr = str.match(reg) || [];
-            var cmd = mArr[1];
-            var param = mArr[2];
-            var key = mArr[3];
-
-            // handle other commands
-            if (!cmd && otherCommands.length) {
-                return callCommand.call(this, otherCommands[0], str);
-            }
-
-            this.cmd = cmd;
-            this.param = param;
-            this.query = key;
-
-            storage.h5.set(CONST.LAST_CMD, str);
-
-            if (this.lastcmd !== this.cmd) {
-                _gaq.push(['_trackEvent', 'command', 'input', this.cmd]);
-                this.lastcmd = this.cmd;
-            }
-
-            let command = commands[this.cmd];
-
-            return callCommand.call(this, command, key);
+            return regexpStage(this)
+                .then(searchStage)
+                .then(commandStage)
+                .then(defaultStage)
+                .catch((msg) => {
+                    if (msg) {
+                        return Promise.resolve(msg);
+                    }
+                });
         },
 
         createItem: function (index, item) {
-            var html = [
+            let html = [
                 '<div data-type="' + item.key + '" data-url="' + item.url + '" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
                 '<img class="ec-item-icon" src="' + item.icon + '"/>',
                 '<span class="ec-item-title ' + (item.isWarn ? 'ec-item-warn' : '') + '">' + item.title + '</span>',
@@ -160,9 +231,20 @@ function init(config, mode, inContent) {
         let $elem = $(elem);
 
         if (!this.cmd) {
-            var key = $elem.data('id');
-            if (key) {
+            let type = $elem.data('type');
+            
+            if (type === 'plugins') {
+                let key = $elem.data('id');
+
                 this.render(key + ' ');
+            } else if (type === 'url') {
+                let url = $elem.data('url');
+
+                chrome.tabs.create({
+                    url
+                });
+            } else if (type === 'copy') {
+                util.copyToClipboard($elem.data('url'), true);
             }
 
             return;
@@ -199,7 +281,7 @@ function init(config, mode, inContent) {
     });
 
     cmdbox.clearQuery = function() {
-        var newIpt = this.cmd + ' '
+        let newIpt = this.cmd + ' '
 
         this.query = ''
         this.str = this.term = newIpt
@@ -276,6 +358,8 @@ function restoreConfig() {
                             }
                         });
                     }
+                } else {
+                    searchContexts.push(plugin);
                 }
             });
 

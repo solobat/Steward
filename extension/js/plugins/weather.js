@@ -1,5 +1,4 @@
 /**
- * @file weather plugin
  * @description powered by baidu weather api
  * @author tomasy
  * @email solopea@gmail.com
@@ -8,16 +7,16 @@
 import $ from 'jquery'
 import { getByCity } from '../api/weather'
 
-var version = 2;
-var name = 'weather';
-var key = 'tq';
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/weather.png');
-var indexIcon = chrome.extension.getURL('img/index.png');
-var pm25Icon = chrome.extension.getURL('img/pm25.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const version = 2;
+const name = 'weather';
+const key = 'tq';
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/weather.png');
+const indexIcon = chrome.extension.getURL('img/index.png');
+const pm25Icon = chrome.extension.getURL('img/pm25.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -99,6 +98,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

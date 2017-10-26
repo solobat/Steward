@@ -1,6 +1,5 @@
 /**
- * @file run command plugin script
- * @description 启动指定应用
+ * @description extensions
  * @author tomasy
  * @email solopea@gmail.com
  */
@@ -8,14 +7,14 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 1;
-var name = 'viewExtension';
-var key = 'ext';
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/viewext.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const version = 1;
+const name = 'viewExtension';
+const key = 'ext';
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/viewext.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -36,8 +35,9 @@ function getExtensions(key, callback) {
 
 function dataFormat(rawList) {
     return rawList.map(function (item) {
-        var url = item.icons instanceof Array ? item.icons[0].url : '';
-        var isWarn = item.installType === 'development';
+        let url = item.icons instanceof Array ? item.icons[0].url : '';
+        let isWarn = item.installType === 'development';
+
         return {
             key: key,
             id: item.id,
@@ -69,6 +69,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

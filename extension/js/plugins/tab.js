@@ -1,6 +1,5 @@
 /**
- * @file tab command plugin script
- * @description 标签页查找
+ * @description list tabs and open
  * @author tomasy
  * @email solopea@gmail.com
  */
@@ -8,14 +7,14 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 2;
-var name = 'locateTab';
-var key = 'tab';
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/tab.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var commands = [{
+const version = 2;
+const name = 'locateTab';
+const key = 'tab';
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/tab.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const commands = [{
     key,
     type,
     title,
@@ -57,15 +56,15 @@ function dataFormat(rawList) {
             icon: item.favIconUrl || icon,
             title: item.title,
             desc: subtitle
-
         };
     });
 }
 
 function onInput(key) {
-    var that = this;
-    getAllTabs(key, function (data) {
-        that.showItemList(dataFormat(data));
+    return new Promise(resolve => {
+        getAllTabs(key, function (data) {
+            resolve(dataFormat(data));
+        });
     });
 }
 
@@ -81,6 +80,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

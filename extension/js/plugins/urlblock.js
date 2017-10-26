@@ -1,6 +1,5 @@
 /**
- * @file url command plugin script
- * @description 待办事项管理，并在标签页显示
+ * @description url block
  * @author tomasy
  * @email solopea@gmail.com
  */
@@ -9,19 +8,19 @@ import $ from 'jquery'
 import request from '../common/request'
 import util from '../common/util'
 
-var version = 3;
-var name = 'urlblock';
-var keys = [{ key: 'bk' }, { key: 'bk8' }];
-var type = 'keyword';
-var icon = chrome.extension.getURL('img/urlblock.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var BLOCK_EXPIRED = 8 * 60 * 60 * 1000;
-var commands = util.genCommands(name, icon, keys, type);
+const version = 3;
+const name = 'urlblock';
+const keys = [{ key: 'bk' }, { key: 'bk8' }];
+const type = 'keyword';
+const icon = chrome.extension.getURL('img/urlblock.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const BLOCK_EXPIRED = 8 * 60 * 60 * 1000;
+const commands = util.genCommands(name, icon, keys, type);
 
 function onInput(key, command) {
     if (!key) {
-        showBlacklist.call(this, command.orkey);
+        return showBlacklist.call(this, command.orkey);
     }
 }
 
@@ -93,7 +92,6 @@ function noticeBackground(action, url) {
         data: {
             url: url
         }
-
     });
 }
 
@@ -118,15 +116,15 @@ function dataFormat(rawList) {
 }
 
 function showBlacklist(type) {
-    var cmdbox = this;
-
-    getBlacklist(function (blacklist) {
-        if (blacklist) {
-            blacklist = blacklist.filter(item => {
-                return type === (item.type || 'bk8');
-            });
-        }
-        cmdbox.showItemList(dataFormat(blacklist || []));
+    return new Promise(resolve => {
+        getBlacklist(function (blacklist) {
+            if (blacklist) {
+                blacklist = blacklist.filter(item => {
+                    return type === (item.type || 'bk8');
+                });
+            }
+            resolve(dataFormat(blacklist || []));
+        });
     });
 }
 
@@ -136,6 +134,6 @@ export default {
     icon,
     title,
     commands,
-    onInput: onInput,
-    onEnter: onEnter
+    onInput,
+    onEnter
 };

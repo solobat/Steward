@@ -1,6 +1,5 @@
 /**
- * @file del command script
- * @description delete extensions / apps by del command
+ * @description open url in browser
  * @author  tomasy
  * @mail solopea@gmail.com
  */
@@ -8,16 +7,15 @@
 import $ from 'jquery'
 import util from '../common/util'
 
-var version = 2;
-var name = 'openurl';
-var key = 'open';
-var type = 'regexp';
-var icon = chrome.extension.getURL('img/openurl.png');
-var title = chrome.i18n.getMessage(name + '_title');
-var subtitle = chrome.i18n.getMessage(name + '_subtitle');
-var withoutKey = true;
-var regExp = /^(https?:\/\/)?(www\.)?(\w+\.)+\w{2,5}$/gi;
-var commands = [{
+const version = 2;
+const name = 'openurl';
+const key = 'open';
+const type = 'regexp';
+const icon = chrome.extension.getURL('img/openurl.png');
+const title = chrome.i18n.getMessage(name + '_title');
+const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const regExp = /^(https?:\/\/)?(www\.)?(\w+\.)+\w{2,5}$/gi;
+const commands = [{
     key,
     title,
     type,
