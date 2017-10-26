@@ -80,11 +80,18 @@ function getMatches(suggestions, query) {
     return matches;
 }
 
+function getParameterByName(name, search = window.location.search) {
+    let urlsearch = new URLSearchParams(search);
+
+    return urlsearch.get(name);
+}
+
 export default {
     matchText: matchText,
     isMac: isMac,
     guid: guid,
     genCommands,
     copyToClipboard,
-    getMatches
+    getMatches,
+    getParameterByName
 };

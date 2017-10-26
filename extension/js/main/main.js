@@ -247,6 +247,8 @@ function init(config, mode, inContent) {
                 util.copyToClipboard($elem.data('url'), true);
             }
 
+            _gaq.push(['_trackEvent', 'exec', 'enter', type]);
+
             return;
         }
 

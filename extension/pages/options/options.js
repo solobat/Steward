@@ -8,12 +8,11 @@ import ga from '../../js/common/ga'
 import { plugins as pluginList } from '../../js/plugins/plugins'
 import changelog from '../../js/info/changelog'
 import storage from '../../js/utils/storage'
+import util from '../../js/common/util'
 
 var manifest = chrome.runtime.getManifest();
 const version = manifest.version;
 const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'steward';
-
-console.log(`ext_type is: ${extType}`);
 const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jglmompgeddkbcdamdknmebaimldkkbl';
 
 Vue.use(ElementUI)
@@ -30,8 +29,6 @@ let pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name').m
     }
 });
 let config;
-
-console.log(pluginModules);
 
 // plugins: { [pname]: { version, commands } }
 function init() {
@@ -140,6 +137,12 @@ function render({general, plugins, lastVersion}, i18nTexts) {
 
     if (lastVersion < version) {
         activeName = 'update';
+    }
+
+    let fromTab = util.getParameterByName('tab');
+
+    if (fromTab) {
+        activeName = fromTab.toLowerCase();
     }
 
     new Vue({
