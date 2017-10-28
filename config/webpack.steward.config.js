@@ -144,7 +144,7 @@ if(isProduction) {
     new OptimizeCssAssetsPlugin({
       assetNameRegExp: /\.css$/,
       cssProcessor: cssNano,
-      cssProcessorOptions: {discardComments: {removeAll: true}}, canPrint: true
+      cssProcessorOptions: {discardComments: {removeAll: true}, safe: true}, canPrint: true
     })
   )
 }

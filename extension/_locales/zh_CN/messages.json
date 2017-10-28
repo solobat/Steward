@@ -193,5 +193,17 @@
     },
     "general_defaultPlugin": {
         "message": "New Tab默认插件"
+    },
+    "chrome_title": {
+        "message": "chrome常用url"
+    },
+    "chrome_subtitle": {
+        "message": "查找chrome常用页面/命令，打开/复制到剪切板"
+    },
+    "steward_title": {
+        "message": "常用steward选项"
+    },
+    "steward_subtitle": {
+        "message": "查找常用steward选项并打开"
     }
 }

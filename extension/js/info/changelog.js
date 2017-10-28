@@ -1,5 +1,9 @@
 let langZh = [
     {
+        version: 'v2.8.2',
+        detail: "bug修复以及一些小修改。"
+    },
+    {
         version: 'v2.8.1',
         detail: "加入设置steward设置选项搜索；<br />bug修复。"
     },
