@@ -1,17 +1,17 @@
 <p align="center"><img src="http://owsjc7iz3.bkt.clouddn.com/440_280.jpg" /></p>
 <h1 align="center">Steward</h1>
-<p align="center">Chrome里的Alfred，命令式管理扩展/应用/书签/历史记录/标签...</p>
+<p align="center">浏览器启动器，命令式管理扩展/应用/书签/历史记录/标签...</p>
 <p align="center">
-   <a href="https://github.com/solobat/Steward/releases"><img src="https://img.shields.io/badge/lastest_version-2.6.3-blue.svg"></a>
+   <a href="https://github.com/solobat/Steward/releases"><img src="https://img.shields.io/badge/lastest_version-2.8.2-blue.svg"></a>
    <a target="_blank" href="https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd"><img src="https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg"></a>
-   <a href="http://owsjc7iz3.bkt.clouddn.com/Steward-2.6.3.crx"><img src="https://img.shields.io/badge/download-_crx-brightgreen.svg"></a>
+   <a href="http://owsjc7iz3.bkt.clouddn.com/Steward-2.8.2.crx"><img src="https://img.shields.io/badge/download-_crx-brightgreen.svg"></a>
 </p>
 
 ***
 
 #### 安装：
 - [Chrome 应用商店](https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd)
-- [离线下载](http://owsjc7iz3.bkt.clouddn.com/Steward-2.6.3.crx)。
+- [离线下载](http://owsjc7iz3.bkt.clouddn.com/Steward-2.8.2.crx)。
 
 ---
 #### 功能:
@@ -44,11 +44,11 @@
 [![license-badge]][license-link]
 
 <!-- Link -->
-[version-badge]:    https://img.shields.io/badge/lastest_version-2.6.3-blue.svg
+[version-badge]:    https://img.shields.io/badge/lastest_version-2.8.2-blue.svg
 [version-link]:     https://github.com/solobat/Steward
 [chrome-badge]:     https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg
 [chrome-link]:      https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd
 [offline-badge]:    https://img.shields.io/badge/download-_crx-brightgreen.svg
-[offline-link]:     http://owsjc7iz3.bkt.clouddn.com/Steward-2.6.3.crx
+[offline-link]:     http://owsjc7iz3.bkt.clouddn.com/Steward-2.8.2.crx
 [license-badge]:    https://img.shields.io/github/license/mashape/apistatus.svg
 [license-link]:     https://opensource.org/licenses/MIT

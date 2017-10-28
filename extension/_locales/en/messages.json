@@ -193,5 +193,17 @@
     },
     "general_defaultPlugin": {
         "message": "Default plugin for New Tab"
+    },
+    "chrome_title": {
+        "message": "chrome urls"
+    },
+    "chrome_subtitle": {
+        "message": "Find chrome pages or commands and open or copy to the clipboard"
+    },
+    "steward_title": {
+        "message": "steward option tabs"
+    },
+    "steward_subtitle": {
+        "message": "Find steward option tabs and open"
     }
 }

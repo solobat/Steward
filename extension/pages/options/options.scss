@@ -20,9 +20,35 @@ a {
     text-decoration: none;
 }
 
+.topbar {
+    width: 1200px;
+    height: 40px;
+    margin: 0 auto;
+    overflow: hidden;
+
+    .links {
+        display: flex;
+        height: 40px;
+        align-items: center;
+        float: right;
+
+        a {
+            display: block;
+            margin: 0 10px;
+            width: 30px;
+            height: 30px;
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+
 .steward {
     width: 1200px;
-    margin: 40px auto 0;
+    margin: 0 auto;
 }
 
 .steward .el-tabs__header {

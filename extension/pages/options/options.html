@@ -8,6 +8,19 @@
 </head>
 
 <body>
+    <header class="topbar">
+        <div class="links">
+            <a href="https://weibo.com/u/1748383310" class="weibo" target="_blank">
+                <img src="/img/weibo.png" alt="">
+            </a>
+            <a href="https://www.zhihu.com/people/woodpea" class="weibo" target="_blank">
+                <img src="/img/zhihu-icon.png" alt="">
+            </a>
+            <a href="https://github.com/solobat/steward" class="github" target="_blank">
+                <img src="/img/github.png" alt="">
+            </a>
+        </div>
+    </header>
     <div id="app" class="steward" v-cloak>
         <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane v-if="extType === 'steward'" label="General" name="general">
