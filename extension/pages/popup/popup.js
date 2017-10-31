@@ -4,25 +4,26 @@ import keyboardJS from 'keyboardjs'
 
 const chrome = window.chrome;
 
-if (window.parent !== window) {
-    extension('popup', true);
-} else {
+if (window.parent === window) {
     extension('popup');
 }
 
 window.addEventListener('message', function(event) {
     if (event.data.ext_from === 'content') {
-        initForContentPage(event.source);
+        initForContentPage(event.source, event.data.host);
     }
 });
 
-function initForContentPage(parentWindow) {
+function initForContentPage(parentWindow, parentHost) {
     document.documentElement.className += ' content-page';
     window.parentWindow = parentWindow;
+    window.parentHost = parentHost;
 
     keyboardJS.bind('esc', () => {
         parentWindow.postMessage({
             action: 'closeBox'
         }, '*');
     });
+
+    extension('popup', true);
 }

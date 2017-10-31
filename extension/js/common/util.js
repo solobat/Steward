@@ -86,6 +86,22 @@ function getParameterByName(name, search = window.location.search) {
     return urlsearch.get(name);
 }
 
+const array2map = (keyField, valField) => (arr) => {
+    let ret = {};
+
+    arr.forEach(item => {
+        if (valField) {
+            ret[item[keyField]] = item[valField];
+        } else {
+            ret[item[keyField]] = item;
+        }
+    });
+
+    return ret;
+};
+
+const options2map = array2map('value', 'label');
+
 export default {
     matchText: matchText,
     isMac: isMac,
@@ -93,5 +109,7 @@ export default {
     genCommands,
     copyToClipboard,
     getMatches,
-    getParameterByName
+    getParameterByName,
+    array2map,
+    options2map
 };

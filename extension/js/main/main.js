@@ -14,6 +14,7 @@ import * as Wallpaper from './wallpaper'
 import ga from '../../js/common/ga'
 import KEY from '../constant/keycode'
 import _ from 'underscore'
+import { websitesMap } from '../../js/plugins/website'
 
 let commands = {};
 let regExpCommands = [];
@@ -237,6 +238,7 @@ function init(config, mode, inContent) {
 
     cmdbox.bind('enter', function (event, elem) {
         let $elem = $(elem);
+        let item = this.dataList[$elem.index()];
 
         if (!this.cmd) {
             let type = $elem.data('type');
@@ -253,6 +255,13 @@ function init(config, mode, inContent) {
                 });
             } else if (type === 'copy') {
                 util.copyToClipboard($elem.data('url'), true);
+            } else if (type === 'action') {
+                if (window.parentWindow) {
+                    window.parentWindow.postMessage({
+                        action: 'command',
+                        info: item
+                    }, '*');
+                }
             }
 
             _gaq.push(['_trackEvent', 'exec', 'enter', type]);
@@ -317,7 +326,58 @@ function init(config, mode, inContent) {
     }
 }
 
-function restoreConfig() {
+function classifyPlugins(plugins, pluginsData, inContent) {
+    plugins.forEach((plugin) => {
+        if (plugin.commands instanceof Array) {
+            let pname = plugin.name;
+            let pcmds;
+
+            try {
+                pcmds = pluginsData[pname].commands;
+                if (plugin.version > (pluginsData[pname].version || 1)) {
+                    pcmds = $.extend(true, plugin.commands, pcmds);
+                }
+            } catch (e) {
+                pcmds = plugin.commands;
+            }
+
+            // FIX: if add new plugin, the cache may not have
+            if (pcmds) {
+                pcmds.forEach((command) => {
+                    let cmd = {
+                        ...command,
+                        name: pname,
+                        plugin
+                    };
+
+                    switch(command.type) {
+                    case 'regexp':
+                        regExpCommands.push(cmd);
+                        break;
+                    case 'other':
+                        otherCommands.push(cmd);
+                        break;
+                    case 'keyword':
+                        commands[command.key] = cmd;
+                        break;
+                    default:
+                        // bugfix
+                        commands[command.key] = cmd;
+                        break;
+                    }
+                });
+            }
+        } else {
+            searchContexts.push(plugin);
+        }
+    });
+
+    if (inContent && websitesMap[window.parentHost]) {
+        searchContexts.push(websitesMap[window.parentHost]); 
+    }
+}
+
+function restoreConfig(mode, inContent) {
     return new Promise((resove, reject) => {
         chrome.storage.sync.get('config', function(res) {
             let pluginsData;
@@ -328,50 +388,7 @@ function restoreConfig() {
                 console.log('There is no plugins configuration yet');
             }
 
-            plugins.forEach((plugin) => {
-                if (plugin.commands instanceof Array) {
-                    let pname = plugin.name;
-                    let pcmds;
-
-                    try {
-                        pcmds = pluginsData[pname].commands;
-                        if (plugin.version > (pluginsData[pname].version || 1)) {
-                            pcmds = $.extend(true, plugin.commands, pcmds);
-                        }
-                    } catch (e) {
-                        pcmds = plugin.commands;
-                    }
-
-                    // FIX: if add new plugin, the cache may not have
-                    if (pcmds) {
-                        pcmds.forEach((command) => {
-                            let cmd = {
-                                ...command,
-                                name: pname,
-                                plugin
-                            };
-
-                            switch(command.type) {
-                            case 'regexp':
-                                regExpCommands.push(cmd);
-                                break;
-                            case 'other':
-                                otherCommands.push(cmd);
-                                break;
-                            case 'keyword':
-                                commands[command.key] = cmd;
-                                break;
-                            default:
-                                // bugfix
-                                commands[command.key] = cmd;
-                                break;
-                            }
-                        });
-                    }
-                } else {
-                    searchContexts.push(plugin);
-                }
-            });
+            classifyPlugins(plugins, pluginsData, inContent);
 
              keys = Object.keys(commands).join('|');
              reg = new RegExp('^((?:' + keys + '))\\s(?:\\-(\\w+))?\\s?(.*)$', 'i');
@@ -390,7 +407,7 @@ function restoreConfig() {
 }
 
 export default function(mode, inContent) {
-    restoreConfig().then(config => {
+    restoreConfig(mode, inContent).then(config => {
         init(config, mode, inContent);
         document.execCommand('copy');
     });
