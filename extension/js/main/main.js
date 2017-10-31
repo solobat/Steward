@@ -277,7 +277,7 @@ function init(config, mode, inContent) {
 
             _gaq.push(['_trackEvent', 'exec', 'enter', type]);
             
-            if (!type === 'plugins') {
+            if (type !== 'plugins') {
                 closeBoxIfNeeded();
             }
 
