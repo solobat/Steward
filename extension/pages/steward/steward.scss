@@ -2,7 +2,12 @@ body {
     margin: 0;
     padding: 0;
 
-    -webkit-user-select: none;
+    user-select: none;
+    box-sizing: border-box;
+
+    * {
+        box-sizing: inherit;
+    }
 }
 
 img {
@@ -11,10 +16,6 @@ img {
 
 a {
     text-decoration: none;
-}
-
-* {
-    box-sizing: border-box;
 }
 
 #header {
@@ -77,7 +78,7 @@ a {
 .ec-itemList {
     width: 100%;
     margin: 0 auto;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     height: 400px;
 
@@ -87,6 +88,9 @@ a {
 }
 
 .ec-itemList .ec-item {
+    display: flex;
+    overflow: hidden;
+    align-items: center;
     padding: 3px 8px;
     height: 40px;
     position: relative;
@@ -98,10 +102,31 @@ a {
 }
 
 .ec-item .ec-item-icon {
+    display: block;
     width: 25px;
     height: 25px;
-    margin: 3px 8px 0 0;
-    float: left;
+    margin-right: 8px;
+}
+
+.ec-item-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+
+    &.nodesc {
+        .ec-item-title {
+            line-height: 33px;
+            font-size: 20px;
+        }
+    }
+
+    > span {
+        display: block;
+        flex: 1;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
 }
 
 .ec-item .ec-item-title {
@@ -112,13 +137,7 @@ a {
 }
 
 .ec-item .ec-item-desc {
-    display: block;
     color: #c5cfe2;
-    overflow: hidden;
-    width: 80%;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-weight: 100;
 }
 
 .ec-item:hover .ec-item-title {

@@ -1,6 +1,7 @@
 import $ from 'jquery'
 import keyboardJS from 'keyboardjs'
 import './content.scss'
+import { websitesMap } from '../../js/plugins/website'
 const chrome = window.chrome;
 
 let App = {
@@ -36,7 +37,8 @@ let App = {
             const iframeWindow = document.getElementById('steward-iframe').contentWindow;
 
             iframeWindow.postMessage({
-                ext_from: 'content'
+                ext_from: 'content',
+                host: window.location.host
             }, '*');
         });
     },
@@ -48,6 +50,11 @@ let App = {
 
     bindEvents() {
         let self = this;
+        let host = window.location.host;
+
+        if (websitesMap[host]) {
+            websitesMap[host].setup();
+        }
 
         keyboardJS.bind('esc', function() {
             self.closeBox();

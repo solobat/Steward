@@ -60,13 +60,16 @@ a {
 .ec-itemList {
     width: 500px;
     margin: 0 auto;
-    overflow-y: scroll;
+    overflow-y: auto;
     background: #fff;
 
     height: 400px;
 }
 
 .ec-itemList .ec-item {
+    display: flex;
+    width: 500px;
+    align-items: center;
     padding: 2px 8px;
     height: 40px;
     position: relative;
@@ -77,29 +80,42 @@ a {
 }
 
 .ec-item .ec-item-icon {
+    display: block;
     width: 25px;
     height: 25px;
-    margin: 4px 8px 0 0;
-    float: left;
+    margin-right: 8px;
+}
+
+
+.ec-item-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 450px;
+
+    &.nodesc {
+        .ec-item-title {
+            line-height: 33px;
+            font-size: 20px;
+        }
+    }
+
+    > span {
+        flex: 1;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
 }
 
 .ec-item .ec-item-title {
     font-size: 14px;
     line-height: 1.4;
-    display: inline-block;
-    overflow: hidden;
-    width: 80%;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .ec-item .ec-item-desc{
     display: block;
     color: rgb(166, 166, 166);
-    overflow: hidden;
-    width: 80%;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .ec-itemList .ec-item-select {

@@ -190,8 +190,8 @@ EasyComplete.prototype = {
     },
 
     showItemList: function (dataList, fn) {
-        this.clearList();
         if (!dataList || !dataList.length) {
+            this.clearList();
             return;
         }
         this.dataList = dataList;
@@ -221,14 +221,11 @@ EasyComplete.prototype = {
         $itemList.css({
             left: left,
             top: top
-
         });
         $itemList.find('.ec-item').first().addClass('ec-item-select');
 
         if (this.opt.container) {
-            $(this.opt.container).append($itemList);
-        } else {
-            $('body').append($itemList);
+            $(this.opt.container).html($itemList);
         }
         this.trigger('show');
     }
