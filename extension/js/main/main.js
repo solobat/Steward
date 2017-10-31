@@ -170,7 +170,7 @@ function init(config, mode, inContent) {
 
     cmdbox = new EasyComplete({
         id: 'cmdbox',
-        container: '#main',
+        container: '#list-wrap',
         onInput: function (str) {
             if (!str) {
                 this.empty();
@@ -195,17 +195,28 @@ function init(config, mode, inContent) {
         },
 
         createItem: function (index, item) {
-            let html = [
-                '<div data-type="' + item.key + '" data-url="' + item.url + '" data-index="' + index + '" data-id="' + item.id + '" class="ec-item">',
-                '<img class="ec-item-icon" src="' + item.icon + '"/>',
-                '<span class="ec-item-title ' + (item.isWarn ? 'ec-item-warn' : '') + '">' + item.title + '</span>',
-                '<span class="ec-item-desc">' + item.desc + '</span>',
-                '</div>'
-            ];
+            let contentClass = [
+                'ec-item-content',
+                item.desc ? '' : 'nodesc'
+            ].join(' ');
+            let titleClass = [
+                'ec-item-title',
+                item.isWarn ? 'ec-item-warn' : ''
+            ].join(' ');
+            let descStr = item.desc ? `<span class="ec-item-desc">${item.desc}</span>` : ''
 
-            return html.join('');
+            let html = `
+                <div data-type="${item.key}" data-url="${item.url}" data-index="${index}" data-id="${item.id}" class="ec-item">
+                    <img class="ec-item-icon" src="${item.icon}" />
+                    <div class="${contentClass}">
+                        <span class="${titleClass}">${item.title}</span>
+                        ${descStr}
+                    </div> 
+                </div>
+                `;
+
+            return html;
         }
-
     });
 
     cmdbox.bind('init', function () {
@@ -266,7 +277,9 @@ function init(config, mode, inContent) {
 
             _gaq.push(['_trackEvent', 'exec', 'enter', type]);
             
-            closeBoxIfNeeded();
+            if (!type === 'plugins') {
+                closeBoxIfNeeded();
+            }
 
             return;
         }

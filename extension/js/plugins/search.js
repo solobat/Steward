@@ -52,8 +52,7 @@ function onInput(query) {
             query,
             engine,
             icon: searchMap[engine].icon,
-            title: `Search ${engine} for: ${query}`,
-            desc: subtitle
+            title: `Search ${engine} for: ${query}`
         };
     });
 
