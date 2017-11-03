@@ -51,12 +51,22 @@ function findRegExpMatched(str) {
 }
 
 function init(config, mode, inContent) {
-    $('.cmdbox').focus();
+    let $cmdbox = $('.cmdbox');
+
+    $cmdbox.focus();
+    
+    // force focus in content page
+    if (inContent) {
+        window.addEventListener('focus', _ => {
+            $cmdbox.focus();
+        });
+        $cmdbox.blur(function() {
+            $cmdbox.focus();
+        });
+    }
 
     if (mode === 'newTab') {
         Wallpaper.init();
-    } else if (inContent) {
-        _gaq.push(['_trackEvent', 'content', 'open']);
     }
 
     function callCommand(command, key) {
@@ -334,7 +344,7 @@ function init(config, mode, inContent) {
             }
         });
         ga();
-    } else {
+    } else if(!inContent) {
         setTimeout(ga, 200);
     }
 }
