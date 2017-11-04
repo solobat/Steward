@@ -22,7 +22,6 @@ function getAllTabs(callback) {
         }
         var matchTabs = [];
         for (var i = 0, len = wins.length; i < len; i++) {
-            // 闭包
             (function (index) {
                 chrome.tabs.getAllInWindow(wins[index].id, function (tabs) {
                     if (index === len - 1) {

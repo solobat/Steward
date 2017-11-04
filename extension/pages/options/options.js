@@ -9,6 +9,7 @@ import { plugins as pluginList } from '../../js/plugins/plugins'
 import changelog from '../../js/info/changelog'
 import storage from '../../js/utils/storage'
 import util from '../../js/common/util'
+import { aboutus } from '../../js/info/about'
 
 var manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -160,6 +161,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                 defaultPlugins,
                 extType,
                 storeId,
+                aboutus,
                 config: {
                     general,
                     plugins,

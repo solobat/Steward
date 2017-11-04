@@ -1,5 +1,9 @@
 let langZh = [
     {
+        version: 'v2.8.4',
+        detail: '在页面中中使用 <em>/</em> 来列出所有website选项; <br/>更多的国际化支持; <br />一些小优化。'
+    },
+    {
         version: 'v2.8.3',
         detail: '新增页面插件架构，通过在网站内启动扩展使用，主要提供不同网站内导航等功能，目前提供知乎插件，具体请看帮助选项里的视频；<br />样式优化。'
     },
@@ -92,9 +96,15 @@ let langZh = [
     }
 ];
 
-// TODO: translate
 let langEn = [
-
+    {
+        version: 'v2.8.4',
+        detail: 'Some optimization'
+    },
+    {
+        version: 'v2.8.3',
+        detail: 'New page plug-in architecture, through starting the extension in page to use, mainly to provide navigation and other functions within the website, currently available in zhihu.com, specifically please see the video in the help options；<br />Style optimization。'
+    }
 ];
 
 let results;

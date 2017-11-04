@@ -113,7 +113,7 @@ EasyComplete.prototype = {
     },
 
     refresh: function () {
-        // 返回数据处理，或让用户自己处理
+        // Process the returned data, or let the user handle it
         var dataList = this.opt.onInput.call(this, this.getTerm());
 
         if (dataList) {
@@ -169,7 +169,6 @@ EasyComplete.prototype = {
         var pH = $itemList.height();
         var pTop = $itemList.get(0).scrollTop;
 
-        // 选中元素与父元素顶边的距离
         var cTop = $item.get(0).getBoundingClientRect().top - $itemList.get(0).getBoundingClientRect().top;
         var cH = $item.outerHeight();
 
@@ -196,7 +195,6 @@ EasyComplete.prototype = {
         }
         this.dataList = dataList;
 
-        // TODO: 没有此需求的时候怎么办呢
         var createItemFn = fn || this.opt.createItem;
         var html = [
             '<div class="ec-itemList">'
@@ -213,7 +211,6 @@ EasyComplete.prototype = {
 
         var $itemList = $(html.join(''));
 
-        // TODO: 在此项目中不是必须的
         var iptOffset = this.ipt.offset;
         var left = iptOffset.left;
         var top = iptOffset.top + this.ipt.css('height');

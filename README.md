@@ -1,54 +1,50 @@
 <p align="center"><img src="http://owsjc7iz3.bkt.clouddn.com/440_280.jpg" /></p>
 <h1 align="center">Steward</h1>
-<p align="center">浏览器启动器，命令式管理扩展/应用/书签/历史记录/标签...</p>
+<p align="center">A command launcher for Chrome</p>
 <p align="center">
-   <a href="https://github.com/solobat/Steward/releases"><img src="https://img.shields.io/badge/lastest_version-2.8.2-blue.svg"></a>
+   <a href="https://github.com/solobat/Steward/releases"><img src="https://img.shields.io/badge/lastest_version-2.8.4-blue.svg"></a>
    <a target="_blank" href="https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd"><img src="https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg"></a>
-   <a href="http://owsjc7iz3.bkt.clouddn.com/Steward-2.8.2.crx"><img src="https://img.shields.io/badge/download-_crx-brightgreen.svg"></a>
+   <a href="http://owsjc7iz3.bkt.clouddn.com/Steward-2.8.4.crx"><img src="https://img.shields.io/badge/download-_crx-brightgreen.svg"></a>
 </p>
 
 ***
 
-#### 安装：
-- [Chrome 应用商店](https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd)
-- [离线下载](http://owsjc7iz3.bkt.clouddn.com/Steward-2.8.2.crx)。
+#### Install：
+- [Chrome WebStore](https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd)
+- [Offline](http://owsjc7iz3.bkt.clouddn.com/Steward-2.8.4.crx)。
 
 ---
-#### 功能:
-+ 背景图来自[bing.com](https://www.bing.com)首页，15分钟自动切换，也可右下角按钮手动
-+ `on`/`off`/`set`/`del` 启动/禁用/设置/删除相应的扩展
-+ `site` 显示MostVisited网站
-+ `run` 命令启动App
-+ `tab` 命令查找并定位到打开的标签页
-+ `his` 命令查找历史记录并新标签打开
-+ `bm` 查找并打开书签
-+ `dl` 查找下载记录并打开文件位置
-+ `yd` 有道词典
-+ `todo` 待办事项，标签页显示
-+ `po` 命令查找pocket
-+ `bk` url block，默认block一个域名8小时
-+ `help` 查看帮助
-+ `note` 创建笔记
-+ `#` 查看笔记及标签
-+ `jk` 查看jenkins jobs并打开
-+ 选项页可以修改各插件的keyword
-+ ...
+#### Screenshots:
+![plugins](http://owsjc7iz3.bkt.clouddn.com/opt.png)
+![page box](http://owsjc7iz3.bkt.clouddn.com/contentbox.png)
+![help](http://owsjc7iz3.bkt.clouddn.com/help.jpg)
+![on](http://owsjc7iz3.bkt.clouddn.com/on.jpg)
+
+
+#### Videos:
+- [youtube](https://www.youtube.com/watch?v=SJ8T_Mbiyes)
+- [优酷](http://v.youku.com/v_show/id_XMzEyNDE4MDUzMg==.html?spm=a2hzp.8244740.0.0)
+
+#### Shortcut keys:
+- By default to open Steward in New Tab or you can use :
+  - in popup
+    - Mac: <kbd>Command ⌘</kbd> + <kbd>K</kbd>
+    - Windows and Linux: <kbd>Ctrl</kbd> + <kbd>K</kbd>
+  - in websites
+    - Mac: <kbd>Command ⌘</kbd> + <kbd>J</kbd>
+    - Windows and Linux: <kbd>Ctrl</kbd> + <kbd>J</kbd>
+- Alternatively, in Google Chrome, you can go to the URL `chrome://extensions` and scroll to the bottom and click **Keyboard shortcuts**
 
 ---
-#### 截图:
-![help命令大全](http://owsjc7iz3.bkt.clouddn.com/help.jpg)
-![on开启扩展](http://owsjc7iz3.bkt.clouddn.com/on.jpg)  
-
----
-#### 许可:
+#### License:
 [![license-badge]][license-link]
 
 <!-- Link -->
-[version-badge]:    https://img.shields.io/badge/lastest_version-2.8.2-blue.svg
+[version-badge]:    https://img.shields.io/badge/lastest_version-2.8.4-blue.svg
 [version-link]:     https://github.com/solobat/Steward
 [chrome-badge]:     https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg
 [chrome-link]:      https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd
 [offline-badge]:    https://img.shields.io/badge/download-_crx-brightgreen.svg
-[offline-link]:     http://owsjc7iz3.bkt.clouddn.com/Steward-2.8.2.crx
+[offline-link]:     http://owsjc7iz3.bkt.clouddn.com/Steward-2.8.4.crx
 [license-badge]:    https://img.shields.io/github/license/mashape/apistatus.svg
 [license-link]:     https://opensource.org/licenses/MIT

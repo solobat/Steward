@@ -1,6 +1,6 @@
 /**
  * @file login for auth callback
- * @description auth验证回调页
+ * @description auth validation callback
  * @author tomasy
  * @email solopea@gmail.com
  */

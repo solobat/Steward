@@ -32,8 +32,8 @@ function onInput(key) {
         return [
             {
                 icon: icon,
-                title: '新增一条笔记',
-                desc: '#添加标签'
+                title,
+                desc: subtitle
             }
         ];
     }
@@ -109,7 +109,7 @@ function onEnter(item) {
         var query = this.query
         var matches = query.match(tagReg)
         if (!matches) {
-            console.log('标签不能为空');
+            console.log('Label can not be empty');
             return
         }
 

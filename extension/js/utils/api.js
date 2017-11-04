@@ -22,7 +22,6 @@ export function fetch(api, data = {}, rawMethod = 'GET') {
                 method: options.method,
                 data: options.data
             }).done((resp) => {
-                // 兼容第三方接口
                 if (typeof resp.code === 'undefined') {
                     resolve(resp);
                 } else if (resp.code === 200) {

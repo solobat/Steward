@@ -27,7 +27,7 @@ const searchMap = {
         url: 'https://www.google.com/search?q=',
         icon: chrome.extension.getURL('img/google.png')
     },
-    '百度': {
+    'Baidu': {
         url: 'https://www.baidu.com/s?wd=',
         icon: chrome.extension.getURL('img/baidu.png')
     },
@@ -35,7 +35,7 @@ const searchMap = {
         url: 'https://bing.com/search?q=',
         icon: chrome.extension.getURL('img/bing.png')
     },
-    '知乎': {
+    'Zhihu': {
         url: 'https://www.zhihu.com/search?type=content&q=',
         icon: chrome.extension.getURL('img/zhihu.png')
     },
