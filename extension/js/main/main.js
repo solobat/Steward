@@ -83,8 +83,15 @@ function init(config, mode, inContent) {
     function searchInContext(query) {
         let res = [];
         let tasks = [];
+        let contexts;
 
-        searchContexts.forEach(context => {
+        if (inContent) {
+            contexts = _.sortBy(searchContexts, 'host');
+        } else {
+            contexts = searchContexts;
+        }
+
+        contexts.forEach(context => {
             let searchRet = context.onInput(query);
 
             if (searchRet instanceof Promise || typeof searchRet.then === 'function') {

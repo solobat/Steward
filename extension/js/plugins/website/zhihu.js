@@ -51,6 +51,7 @@ const paths = [
 
 function onInput(text) {
     const filterByName = (item) => util.matchText(text, item.name + item.path);
+    const filterByPath = (suggestions) => util.getMatches(suggestions, text, 'path');
     const mapTo = (type) => item => {
         return {
             icon,
@@ -62,9 +63,11 @@ function onInput(text) {
         }
     };
 
-    let items = paths.filter(filterByName).map(mapTo('action'));
-
-    return Promise.resolve(items);
+    if (text[0] === '/') {
+        return Promise.resolve(filterByPath(paths).map(mapTo('action')));
+    } else {
+        return Promise.resolve(paths.filter(filterByName).map(mapTo('action')));
+    }
 }
 
 const deps = {};
