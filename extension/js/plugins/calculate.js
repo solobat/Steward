@@ -15,7 +15,7 @@ const key = 'calc';
 const icon = chrome.extension.getURL('img/calc.png');
 const title = chrome.i18n.getMessage(name + '_title');
 const subtitle = chrome.i18n.getMessage(name + '_subtitle');
-const regExp = /^(==|~=|&&|\|\||[0-9]|[\+\-\*\/\^\.%, ""]|[\(\)\|\!\[\]])+$/;
+const regExp = /^([-+]?)([\d\.]+)(?:\s*([-+*\/])\s*((?:\s[-+])?[\d\.]+)?\s*)+$/;
 const commands = [{
     key,
     type,
@@ -43,7 +43,16 @@ function onInput(key) {
             }
         ];
     }
-    catch (e) {}
+    catch (e) {
+        data = [
+            {
+                key: title,
+                icon: icon,
+                title: '...',
+                desc: 'Please enter a valid expression'
+            }
+        ];
+    }
 
     return data;
 }

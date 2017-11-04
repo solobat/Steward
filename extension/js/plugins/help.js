@@ -23,7 +23,7 @@ const commands = [{
     editable: true
 }];
 
-// NOTE: 只在需要的时候获取commands, main.js里已经立即获取过, 这里再获取会为空对象
+// NOTE: Only get the commands when needed, main.js has been immediately obtained, and then get the object will be empty
 function getPlugins() {
     let commands = window.stewardCache.commands;
     let helpList = _.uniq(_.values(commands)).map((command) => {

@@ -74,8 +74,8 @@ function copyToClipboard(text, showMsg) {
     document.execCommand('copy');
 }
 
-function getMatches(suggestions, query) {
-    const matches = fuzzaldrinPlus.filter(suggestions, query, {maxResults: 20, usePathScoring: true});
+function getMatches(suggestions, query, key) {
+    const matches = fuzzaldrinPlus.filter(suggestions, query, {maxResults: 20, usePathScoring: true, key});
 
     return matches;
 }

@@ -88,7 +88,7 @@ function getTranslation(key) {
 
 export default {
     version,
-    name: name,
+    name,
     icon,
     title,
     commands,

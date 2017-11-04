@@ -30,7 +30,6 @@ function getAllTabs(key, callback) {
         }
         var data = [];
         for (var i = 0, len = wins.length; i < len; i++) {
-            // 闭包
             (function (index) {
                 chrome.tabs.getAllInWindow(wins[index].id, function (tabs) {
                     var tabList = tabs.filter(function (tab) {

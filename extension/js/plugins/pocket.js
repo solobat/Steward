@@ -43,7 +43,6 @@ function dataFormat(rawList) {
             icon: icon,
             title: title,
             desc: subtitle
-
         };
     });
 }

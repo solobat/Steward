@@ -6,6 +6,7 @@
 
 import $ from 'jquery'
 import util from '../common/util'
+import Toast from 'toastr'
 
 const version = 2;
 const name = 'jenkins'
@@ -34,15 +35,15 @@ const actionTips = {
         key: 'jkset',
         icon: icon,
         id: 'action-seturl',
-        title: '设置jenkins url',
-        desc: '输入jenkins url，回车确认'
+        title: 'set jenkins url',
+        desc: 'input jenkins url，then press enter'
     },
     errorurl: {
         key: 'jk',
         icon: icon,
         id: 'action-error',
-        title: '获取不到jenkins jobs',
-        desc: '请使用jkset设置正确的jenkins url',
+        title: 'can not fetch jenkins jobs',
+        desc: 'please use jkset to set a valid jenkins url',
         isWarn: true
     }
 };
@@ -71,7 +72,7 @@ function getJobs() {
 
 function setUrl(iptval, callback) {
     if (!iptval) {
-        callback('请输入url');
+        callback('please input an url');
         return
     }
 
@@ -144,9 +145,9 @@ function onEnter({ id }) {
         if (actionName === 'seturl') {
             setUrl(this.query, (error) => {
                 if (error) {
-                    alert(error);
+                    Toast.error(error);
                 } else {
-                    alert('设置成功');
+                    Toast.success('set successfully');
                     jobs = [];
                     this.render('jk ');
                 }

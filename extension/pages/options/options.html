@@ -13,8 +13,11 @@
             <a href="https://weibo.com/u/1748383310" class="weibo" target="_blank">
                 <img src="/img/weibo.png" alt="">
             </a>
-            <a href="https://www.zhihu.com/people/woodpea" class="weibo" target="_blank">
+            <a href="https://www.zhihu.com/people/woodpea" class="zhihu" target="_blank">
                 <img src="/img/zhihu-icon.png" alt="">
+            </a>
+            <a href="https://twitter.com/fmlycls" class="twitter" target="_blank">
+                <img src="/img/twitter.png" alt="">
             </a>
             <a href="https://github.com/solobat/steward" class="github" target="_blank">
                 <img src="/img/github.png" alt="">
@@ -124,8 +127,8 @@
                 <div class="text-panel">
                     <iframe height="330" width="510" src='http://player.youku.com/embed/XMzEyNDE4MDUzMg==' frameborder="0" allowfullscreen></iframe>
                     <br>
-                    请尽量及时升级最新版浏览器，避免有些功能使用不了。<br>
-                    如果使用过程中有建议/问题可以去<a href="https://github.com/solobat/Steward/issues">这里</a>，或者加入QQ群<span class="notice">575397892</span>反馈。
+                    Please try to upgrade the latest version of the browser, to avoid some of the features can not be used.<br>
+                    If you have any suggestions / problems in the process of using it, you can go <a href="https://github.com/solobat/Steward/issues">Here</a>，or join the <a href="https://t.me/chromesteward" target="_blank">Telegram</a> channel。
                 </div>
             </el-tab-pane>
             <el-tab-pane label="Update" name="update">
@@ -142,14 +145,7 @@
             </el-tab-pane>
             <el-tab-pane label="About" name="about">
                 <div class="about-wrap text-panel">
-                    <a :href="'https://chrome.google.com/webstore/detail/' + storeId">{{extType}}</a>
-                    最早开发于<span class="notice">2014</span>年底，初衷是作为一个Chrome扩展爱好者，居然找不到一个方便管理它们的方式。于是花了一个晚上写了{{extType}}的第一版。
-                    虽然没怎么推广，用户也不是很多，但一有空闲就会维护，毕竟{{extType}}几乎已经成为我使用频率最高的扩展了。<br>
-                    <br>
-                    如果觉得它还不错，希望可以给我<a :href="'https://chrome.google.com/webstore/detail/' + storeId + '/reviews?hl=zh-CN'">点赞评论</a>或通过下方的二维码 <span class="notice">请我喝杯咖啡</span>，这是对{{extType}}的最大鼓励。
-                    虽然一直在安静地开发，但也希望通过大家的口口相传，让更多的人知道
-                    <a :href="'https://chrome.google.com/webstore/detail/' + storeId">{{extType}}</a>的存在。
-                    <img src="http://owsjc7iz3.bkt.clouddn.com/IMG_2180.jpg" alt="" class="wx-pay">
+                    <div v-html="aboutus"></div>
                 </div>
             </el-tab-pane>
         </el-tabs>

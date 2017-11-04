@@ -48,7 +48,6 @@ function dataFormat(rawList) {
             title: item.name,
             desc: item.description,
             isWarn: isWarn
-
         };
     });
 }

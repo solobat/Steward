@@ -1,6 +1,6 @@
 /**
  * @file request
- * @description chrome通信包装
+ * @description a wrapper for message
  * @author tomasy
  * @email solopea@gmail.com
  */
