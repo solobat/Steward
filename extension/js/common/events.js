@@ -6,31 +6,28 @@
 
 import $ from 'jquery'
 
-var events = {
+const events = {
     tabs: {
         onRemoved: function (cb) {
-            chrome.tabs.onRemoved.addListener(function (tabId, removeInfo) {
-                cb.apply(null, arguments);
+            chrome.tabs.onRemoved.addListener(function (...args) {
+                Reflect.apply(cb, null, args);
             });
         },
 
         onCreated: function (cb) {
-            chrome.tabs.onCreated.addListener(function (tab) {
-                cb.apply(null, arguments);
+            chrome.tabs.onCreated.addListener(function (...args) {
+                Reflect.apply(cb, null, args);
             });
         }
-
     },
 
     windows: {
         onCreated: function (cb) {
-            chrome.windows.onCreated.addListener(function (win) {
-                cb.apply(null, arguments);
+            chrome.windows.onCreated.addListener(function (...args) {
+                Reflect.apply(cb, null, args);
             });
         }
-
     }
-
 };
 
 function trigger(obj, actionFn) {
@@ -39,8 +36,8 @@ function trigger(obj, actionFn) {
             return;
         }
 
-        var allTypeEvents = events[eventType];
-        for (var i = 0, len = eventList.length; i < len; i++) {
+        const allTypeEvents = events[eventType];
+        for (let i = 0, len = eventList.length; i < len; i = i + 1) {
             allTypeEvents[eventList[i]](actionFn);
         }
     });

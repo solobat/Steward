@@ -8,9 +8,9 @@ function Auth(opt) {
     this.redirect_uri = opt.redirect_uri;
     this.appName = opt.appName;
 
-    this.requestTokenName = this.appName + '_request_token';
-    this.accessTokenName = this.appName + '_access_token';
-    this.userName = this.appName + '_username';
+    this.requestTokenName = `${this.appName}_request_token`;
+    this.accessTokenName = `${this.appName}_access_token`;
+    this.userName = `${this.appName}_username`;
 }
 
 Auth.prototype.set = function (key, value) {
@@ -24,38 +24,36 @@ Auth.prototype.get = function (key) {
 };
 
 Auth.prototype.isAuthenticated = function () {
-    var accessToken = this.get(this.accessTokenName);
+    const accessToken = this.get(this.accessTokenName);
 
-    return !!accessToken;
+    return Boolean(accessToken);
 };
 
 Auth.prototype.authenticate = function (handler) {
-    var that = this;
-    var data = {
+    const that = this;
+    const data = {
         consumer_key: this.consumer_key,
         redirect_uri: window.location.href
-
     };
 
     $.post(this.requestUrl, data).done(function (results) {
-        var params = handler(results);
+        const params = handler(results);
 
         params.redirect_uri = that.redirect_uri;
         that.set(that.requestTokenName, params.request_token);
 
         chrome.tabs.create({
-            'url': that.authenticateUrl + '?' + $.param(params)
+            'url': `${that.authenticateUrl}?${$.param(params)}`
 
-        }, function (tab) {});
+        }, function () { });
     });
 };
 
 Auth.prototype.getAccessToken = function (handler, callback) {
-    var that = this;
-    var data = {
+    const that = this;
+    const data = {
         'consumer_key': this.consumer_key,
         'code': this.get(this.requestTokenName)
-
     };
 
     $.ajax({
@@ -69,21 +67,20 @@ Auth.prototype.getAccessToken = function (handler, callback) {
         type: 'POST',
         dataType: 'json',
         success: function (results) {
-            var params = handler(results);
+            const params = handler(results);
 
             that.set(that.accessTokenName, params.access_token);
             that.set(that.userName, params.username);
 
             callback(results);
         },
-        error: function (xhr, status, errorThrown) {
-            var error = xhr.getResponseHeader('X-Error');
+        error: function (xhr) {
+            const error = xhr.getResponseHeader('X-Error');
 
             if (!error || error === null) {
                 console.log('Unknown error 1 [in getAccessToken].');
-            }
-            else {
-                console.log(error + '[in getAccessToken].');
+            } else {
+                console.log(`${error}[in getAccessToken].`);
             }
         }
 

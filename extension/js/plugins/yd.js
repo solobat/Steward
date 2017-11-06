@@ -15,8 +15,8 @@ const name = 'youdao';
 const key = 'yd';
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/youdao.png');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const title = chrome.i18n.getMessage(`${name}_title`);
+const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const commands = [{
     key,
     type,
@@ -26,16 +26,16 @@ const commands = [{
     editable: true
 }];
 
-function onInput(key) {
-    if (emptyReg.test(key)) {
+function onInput(query) {
+    if (emptyReg.test(query)) {
         return;
     }
 
-    return getTranslation(key);
+    return getTranslation(query);
 }
 
-function onEnter({ title }) {
-    util.copyToClipboard(title, true);
+function onEnter(item) {
+    util.copyToClipboard(item.title, true);
 }
 
 function dataFormat(rawList) {
@@ -50,37 +50,38 @@ function dataFormat(rawList) {
     });
 }
 
-function getTranslation(key) {
+function getTranslation(query) {
     return new Promise(resolve => {
-        $.get(url + key, function (data) {
-            var retData = [];
-            var phonetic = data.basic ? '[' + [
+        $.get(url + query, function (data) {
+            let retData = [];
+            const str = [
                 data.basic.phonetic,
                 data.basic['uk-phonetic'],
                 data.basic['us-phonetic']
-            ].join(',') + ']' : '';
-    
+            ].join(',');
+            const phonetic = data.basic ? `[${str}]` : '';
+
             retData.push({
                 text: (data.translation || []).join(';') + phonetic,
                 note: '翻译结果'
             });
-    
-            var explains = data.basic && data.basic.explains && data.basic.explains.map(function (exp) {
+
+            const explains = data.basic && data.basic.explains && data.basic.explains.map(function (exp) {
                 return {
                     text: exp,
                     note: '简明释义'
                 };
             });
-    
-            var webs = data.web && data.web.map(function (web) {
+
+            const webs = data.web && data.web.map(function (web) {
                 return {
                     text: web.value.join(', '),
-                    note: '网络释义: ' + web.key
+                    note: `网络释义: ${web.key}`
                 };
             });
-    
+
             retData = retData.concat(explains || []).concat(webs || []);
-    
+
             resolve(dataFormat(retData));
         });
     });

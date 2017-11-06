@@ -4,7 +4,6 @@
  * @email solopea@gmail.com
  */
 
-import $ from 'jquery'
 import util from '../common/util'
 
 const version = 2;
@@ -12,8 +11,8 @@ const name = 'note';
 const keys = [{key: 'note'}, {key: '#', keyname: 'notetag', editable: false}];
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/note.png')
-const title = chrome.i18n.getMessage(name + '_title')
-const subtitle = chrome.i18n.getMessage(name + '_subtitle')
+const title = chrome.i18n.getMessage(`${name}_title`);
+const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const tagReg = /#([a-zA-Z\u4e00-\u9fa5]+)/ig
 const commands = util.genCommands(name, icon, keys, type);
 
@@ -40,21 +39,21 @@ function onInput(key) {
 }
 
 function handleTagQuery(key) {
-    return queryNotesByTag(key).then((res) => {
-        var data
+    return queryNotesByTag(key).then(res => {
+        let data;
 
         if (res.type === 'tag') {
-            data = res.data.map((tag) => {
+            data = res.data.map(tag => {
                 return {
                     key: 'tag',
                     icon: icon,
                     id: tag,
-                    title: '#' + tag,
+                    title: `#${tag}`,
                     desc: 'tag'
                 }
             })
         } else {
-            data = res.data.map((note) => {
+            data = res.data.map(note => {
                 return {
                     key: key,
                     icon: icon,
@@ -69,22 +68,22 @@ function handleTagQuery(key) {
 }
 
 function queryNotesByTag(query) {
-    return new Promise((resolve, reject) => {
+    return new Promise(resolve => {
         Promise.all([
             getNotes(),
             getTags()
-        ]).then((res) => {
-            var notes = res[0]
-            var tags = res[1]
+        ]).then(res => {
+            const notes = res[0];
+            const tags = res[1];
 
             if (!tags[query]) {
                 resolve({
-                    data: Object.keys(tags).filter((tag) => tag.indexOf(query) !== -1),
+                    data: Object.keys(tags).filter(tag => tag.indexOf(query) !== -1),
                     type: 'tag'
                 })
             } else {
                 resolve({
-                    data: tags[query].map((id) => findNoteById(notes, id)),
+                    data: tags[query].map(id => findNoteById(notes, id)),
                     type: 'note'
                 })
             }
@@ -94,28 +93,28 @@ function queryNotesByTag(query) {
 
 
 function findNoteById(notes, id) {
-    return notes.filter((note) => note._id === id)[0]
+    return notes.filter(note => note._id === id)[0]
 }
 
 function onEnter(item) {
     if (this.cmd === '#') {
         if (item.key === 'tag') {
-            this.ipt.val('# ' + item.id)
+            this.ipt.val(`# ${item.id}`)
             this.ipt.trigger('input')
         } else {
             util.copyToClipboard(item.title, true);
         }
     } else {
-        var query = this.query
-        var matches = query.match(tagReg)
+        const query = this.query;
+        const matches = query.match(tagReg);
         if (!matches) {
             console.log('Label can not be empty');
             return
         }
 
-        var tags = matches.map((match) => match.substr(1))
-        var noteText = query.replace(/[#\s]+/g, '')
-        var note = createNote(noteText, tags)
+        const tags = matches.map(match => match.substr(1))
+        const noteText = query.replace(/[#\s]+/g, '')
+        const note = createNote(noteText, tags)
 
         saveNote(note)
         this.clearQuery()
@@ -132,14 +131,14 @@ function saveNote(note) {
         getTags()
     ]).then(function(res) {
         // push note
-        var notes = res[0] = res[0] || []
+        const notes = res[0] = res[0] || [];
 
         notes.push(note)
 
         // push tags
-        var tags = res[1] || {};
+        const tags = res[1] || {};
 
-        note.tags.forEach((tag) => {
+        note.tags.forEach(tag => {
             if (!tags[tag]) {
                 tags[tag] = []
             }
@@ -147,10 +146,10 @@ function saveNote(note) {
             tags[tag].push(note._id)
         })
 
-        res[1] = tags
+        res[1] = tags;
 
-        return res
-    }).then((res) => {
+        return res;
+    }).then(res => {
         chrome.storage.sync.set({
             notes: res[0],
             tags: res[1]
@@ -159,14 +158,14 @@ function saveNote(note) {
 }
 
 function getNotes() {
-    return new Promise(function(resolve, reject) {
-        chrome.storage.sync.get('notes', (results) => resolve(results.notes))
+    return new Promise(function(resolve) {
+        chrome.storage.sync.get('notes', results => resolve(results.notes))
     });
 }
 
 function getTags() {
-    return new Promise((resolve, reject) => {
-        chrome.storage.sync.get('tags', (results) => resolve(results.tags))
+    return new Promise(resolve => {
+        chrome.storage.sync.get('tags', results => resolve(results.tags))
     })
 }
 

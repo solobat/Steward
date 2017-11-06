@@ -4,11 +4,11 @@ import './content.scss'
 import { websitesMap } from '../../js/plugins/website'
 const chrome = window.chrome;
 
-let App = {
+const App = {
     isOpen: false,
 
     initDom() {
-        let html = `
+        const html = `
             <div id="steward-main" class="steward-main" style="display:none;">
             </div>
         `;
@@ -17,16 +17,14 @@ let App = {
         this.$el = $('#steward-main');
     },
     openBox() {
-        let self = this;
-
         if (this.isOpen) {
             return;
         } else {
             this.isOpen = true;
         }
 
-        let popupurl = chrome.extension.getURL('popup.html');
-        let html = `
+        const popupurl = chrome.extension.getURL('popup.html');
+        const html = `
             <iframe id="steward-iframe" src="${popupurl}" name="steward-box" width="510" height="460" frameborder="0"></iframe>
         `;
         this.$el.html(html);
@@ -49,24 +47,24 @@ let App = {
     },
 
     bindEvents() {
-        let self = this;
-        let host = window.location.host;
+        const that = this;
+        const host = window.location.host;
 
         if (websitesMap[host]) {
             websitesMap[host].setup();
         }
 
         keyboardJS.bind('esc', function() {
-            self.closeBox();
+            that.closeBox();
         });
 
-        window.addEventListener('message', (event) => {
+        window.addEventListener('message', event => {
             if (event.data.action === 'closeBox') {
                 this.closeBox();
             }
         });
 
-        chrome.runtime.onMessage.addListener((req, sender, resp) => {
+        chrome.runtime.onMessage.addListener(req => {
             if (req.action === 'openBox') {
                 if (this.isOpen) {
                     this.closeBox();
@@ -77,8 +75,8 @@ let App = {
         });
 
         $(document).on('click', function(e) {
-            if (self.isOpen && e.target.id !== 'steward-main') {
-                self.closeBox();
+            if (that.isOpen && e.target.id !== 'steward-main') {
+                that.closeBox();
             }
         });
     },

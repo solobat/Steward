@@ -11,8 +11,7 @@ const version = 1;
 const name = 'zhihu';
 const type = 'search';
 const icon = chrome.extension.getURL('img/zhihu.png');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const title = chrome.i18n.getMessage(`${name}_title`);
 const host = 'www.zhihu.com';
 
 const paths = [
@@ -50,12 +49,12 @@ const paths = [
 ];
 
 function onInput(text) {
-    const filterByName = (item) => util.matchText(text, item.name + item.path);
-    const filterByPath = (suggestions) => util.getMatches(suggestions, text, 'path');
-    const mapTo = (type) => item => {
+    const filterByName = item => util.matchText(text, item.name + item.path);
+    const filterByPath = suggestions => util.getMatches(suggestions, text, 'path');
+    const mapTo = key => item => {
         return {
             icon,
-            key: type,
+            key,
             title: item.name,
             desc: item.path,
             path: item.path,
@@ -74,19 +73,23 @@ const deps = {};
 const usertokenAttrName = 'data-zop-usertoken';
 
 function initDeps() {
-    let $usertoken = $(`[${usertokenAttrName}]`);
-    let $currentUser = $('[data-name="current_user"]');
+    const $usertoken = $(`[${usertokenAttrName}]`);
+    const $currentUser = $('[data-name="current_user"]');
 
     if ($usertoken.length) {
         try {
             deps.urltoken = JSON.parse($usertoken.attr(usertokenAttrName)).urlToken;
-        } catch (error) { }
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     if ($currentUser.length) {
         try {
             deps.urltoken = JSON.parse($currentUser.html())[1];
-        } catch (error) { }
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
@@ -94,11 +97,11 @@ function handlePath(path, info) {
     if (info.deps) {
         let realPath = path;
 
-        info.deps.forEach((field) => {
+        info.deps.forEach(field => {
             realPath = realPath.replace(`{{${field}}}`, deps[field]);
         });
 
-        window.location.href = realPath; 
+        window.location.href = realPath;
     } else {
         window.location.href = path;
     }
@@ -107,8 +110,8 @@ function handlePath(path, info) {
 function setup() {
     initDeps();
 
-    window.addEventListener('message', (event) => {
-        let { data } = event;
+    window.addEventListener('message', event => {
+        const { data } = event;
 
         if (data.action === 'command') {
             if (data.info.path) {

@@ -1,4 +1,3 @@
-import * as apiUtils from '../utils/api'
 import $ from 'jquery'
 
 const BASE_URL = 'https://api.map.baidu.com/telematics/v3/weather';
@@ -9,9 +8,11 @@ export function getByCity(location) {
         return Promise.reject(null);
     }
 
-    return fetch(BASE_URL + '?' + $.param({
+    const params = $.param({
         location,
         output: 'json',
         ak
-    })).then(resp => resp.json());
+    });
+
+    return fetch(`${BASE_URL}?${params}`).then(resp => resp.json());
 }

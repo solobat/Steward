@@ -10,5 +10,5 @@ export default {
     RIGHT: 39,
     DOWN: 40,
     NUM0: 49,
-    NUM9: 57 
+    NUM9: 57
 }

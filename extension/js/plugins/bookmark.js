@@ -4,16 +4,14 @@
  * @email solopea@gmail.com
  */
 
-import $ from 'jquery'
-
 const chrome = window.chrome;
 const version = 2;
 const name = 'bookmark';
 const key = 'bm';
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/bookmark.png');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const title = chrome.i18n.getMessage(`${name}_title`);
+const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const commands = [{
     key,
     type,
@@ -23,8 +21,8 @@ const commands = [{
     editable: true
 }];
 
-function searchBookmark(key, callback) {
-    if (!key) {
+function searchBookmark(query, callback) {
+    if (!query) {
         chrome.bookmarks.getRecent(10, function (bookMarkList) {
             callback(bookMarkList || []);
         });
@@ -32,29 +30,30 @@ function searchBookmark(key, callback) {
         return;
     }
 
-    chrome.bookmarks.search(key, function (bookMarkList) {
-        bookMarkList = bookMarkList || [];
+    chrome.bookmarks.search(query, function (data) {
+        let bookMarkList = data || [];
 
         bookMarkList = bookMarkList.filter(function (bookmark) {
-            return bookmark.url !== undefined;
+            return typeof bookmark.url !== 'undefined';
         });
 
         callback(bookMarkList);
     });
 }
 
-function onInput(key) {
-    return new Promise((resolve, reject) => {
-        searchBookmark(key, bookMarkList => {
-            let arr = [];
-            
-            for (let i in bookMarkList) {
-                let item = bookMarkList[i];
+function onInput(query) {
+    return new Promise(resolve => {
+        searchBookmark(query, bookMarkList => {
+            const arr = [];
+            let i;
+
+            for (i in bookMarkList) {
+                const item = bookMarkList[i];
 
                 arr.push({
-                    key: key,
+                    key,
                     id: item.id,
-                    icon: icon,
+                    icon,
                     url: item.url,
                     title: item.title,
                     desc: item.url,
@@ -64,7 +63,7 @@ function onInput(key) {
 
             resolve(arr);
         });
-    });    
+    });
 }
 
 function onEnter(item) {

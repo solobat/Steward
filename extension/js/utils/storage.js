@@ -1,5 +1,5 @@
-const storageFactory = (storgaeArea) => (action) => (key, defaultValue) => {
-    return new Promise((resolve, reject) => {
+const storageFactory = storgaeArea => action => (key, defaultValue) => {
+    return new Promise(resolve => {
         if (action === 'clear') {
             storgaeArea[action](resp => resolve(resp));
         } else if (action === 'get') {
@@ -19,12 +19,12 @@ const storageFactory = (storgaeArea) => (action) => (key, defaultValue) => {
 }
 
 const actions = ['get', 'set', 'remove', 'clear'];
-let storage = {};
+const storage = {};
 
 ['sync', 'local'].forEach(storageArea => {
-    let factory = storageFactory(chrome.storage[storageArea]);
+    const factory = storageFactory(chrome.storage[storageArea]);
 
-    let methods = storage[storageArea] = {};
+    const methods = storage[storageArea] = {};
     actions.forEach(action => {
         methods[action] = factory(action);
     });

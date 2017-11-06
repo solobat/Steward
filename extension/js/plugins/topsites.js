@@ -4,16 +4,14 @@
  * @email solopea@gmail.com
  */
 
-import $ from 'jquery'
-
 const chrome = window.chrome;
 const version = 2;
 const name = 'topsites';
 const key = 'site';
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/topsites.png');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const title = chrome.i18n.getMessage(`${name}_title`);
+const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const commands = [{
     key,
     type,
@@ -23,15 +21,15 @@ const commands = [{
     editable: true
 }];
 
-function onInput(key) {
-    let that = this;
+function onInput() {
+    chrome.topSites.get(sites => {
+        const arr = [];
+        let i;
 
-    chrome.topSites.get(function (sites) {
-        let arr = [];
-        for (let i in sites) {
-            let item = sites[i];
+        for (i in sites) {
+            const item = sites[i];
             arr.push({
-                key: key,
+                key,
                 id: item.id,
                 icon: icon,
                 url: item.url,
@@ -40,7 +38,7 @@ function onInput(key) {
                 isWarn: false
             });
         }
-        that.showItemList(arr);
+        this.showItemList(arr);
     });
 }
 

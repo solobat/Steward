@@ -1,3 +1,4 @@
+/*global EXT_TYPE _gaq*/
 import $ from 'jquery'
 import Vue from 'vue'
 import _ from 'underscore'
@@ -11,19 +12,19 @@ import storage from '../../js/utils/storage'
 import util from '../../js/common/util'
 import { aboutus } from '../../js/info/about'
 
-var manifest = chrome.runtime.getManifest();
+const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
 const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'steward';
 const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jglmompgeddkbcdamdknmebaimldkkbl';
 
 Vue.use(ElementUI)
 
-let pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name').map(plugin => {
-    let {name, icon, commands, title, version, type} = plugin;
+const pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name').map(plugin => {
+    const {name, icon, commands, title} = plugin;
 
     return {
         name,
-        version,
+        version: plugin.version,
         commands,
         title,
         icon
@@ -42,7 +43,7 @@ function init() {
         console.log(config);
 
         let plugins = {};
-        let general = {
+        const general = {
             cacheLastCmd: true,
             defaultPlugin: ''
         };
@@ -60,13 +61,13 @@ function init() {
             mergePluginData(plugin, plugins);
         });
 
-        let results = {
+        const results = {
             general,
             plugins,
             lastVersion: config.version || version
         };
 
-        let i18nTexts = getI18nTexts({general});
+        const i18nTexts = getI18nTexts({general});
 
         ga();
         render(results, i18nTexts);
@@ -74,13 +75,15 @@ function init() {
 }
 
 function getI18nTexts(obj) {
-    let texts = {};
+    const texts = {};
 
     try {
-        for (let cate in obj) {
-            let subobj = texts[cate] = {};
+        let cate;
+        for (cate in obj) {
+            const subobj = texts[cate] = {};
 
-            for (var key in obj[cate]) {
+            let key;
+            for (key in obj[cate]) {
                 subobj[key] = chrome.i18n.getMessage(`${cate}_${key}`);
             }
         }
@@ -92,13 +95,12 @@ function getI18nTexts(obj) {
 }
 
 function mergePluginData(plugin, plugins) {
-    let pname = plugin.name;
-    let cachePlugin = plugins[pname];
-    let version = plugin.version;
+    const pname = plugin.name;
+    const cachePlugin = plugins[pname];
 
     if (!cachePlugin) {
         plugins[pname] = {
-            version,
+            version: plugin.version,
             commands: plugin.commands
         };
     } else {
@@ -106,15 +108,14 @@ function mergePluginData(plugin, plugins) {
             cachePlugin.version = 1;
         }
 
-        if (version > cachePlugin.version) {
+        if (plugin.version > cachePlugin.version) {
             // rough merge
             cachePlugin.commands = $.extend(true, plugin.commands, cachePlugin.commands);
-            cachePlugin.version = version;
+            cachePlugin.version = plugin.version;
         }
     }
 }
 
-const panelKeys = ['general', 'plugins'];
 const appearanceItems = [{
     name: 'wallpapers',
     icon: '/img/wallpaper-icon.png'
@@ -140,7 +141,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
         activeName = 'update';
     }
 
-    let fromTab = util.getParameterByName('tab');
+    const fromTab = util.getParameterByName('tab');
 
     if (fromTab) {
         activeName = fromTab.toLowerCase();
@@ -172,7 +173,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
         },
         computed: {
             filteredPlugins: function() {
-                let text = this.pluginSearchText.toLowerCase();
+                const text = this.pluginSearchText.toLowerCase();
 
                 return pluginModules.filter(plugin => {
                     return plugin.name.toLowerCase().indexOf(text) > -1;
@@ -192,8 +193,8 @@ function render({general, plugins, lastVersion}, i18nTexts) {
             },
 
             saveConfig: function(silent) {
-                let self = this;
-                let newConfig = JSON.parse(JSON.stringify(this.config));
+                const that = this;
+                const newConfig = JSON.parse(JSON.stringify(this.config));
 
                 chrome.storage.sync.set({
                     config: newConfig
@@ -201,7 +202,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                     if (silent) {
                         console.log('save successfully');
                     } else {
-                        self.$message('save successfully!');
+                        that.$message('save successfully!');
                     }
                 });
             },
@@ -239,7 +240,9 @@ function render({general, plugins, lastVersion}, i18nTexts) {
 
             loadWallpapersIfNeeded: function() {
                 if (!this.wallpapers.length) {
-                    storage.sync.get('wallpapers').then(wallpapers => this.wallpapers = wallpapers);
+                    storage.sync.get('wallpapers').then(wallpapers => {
+                        this.wallpapers = wallpapers;
+                    });
                 }
             },
 
@@ -274,7 +277,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
             },
 
             deleteWallpaper: function(wallpaper) {
-                let wpIdx = this.wallpapers.indexOf(wallpaper);
+                const wpIdx = this.wallpapers.indexOf(wallpaper);
 
                 if (wpIdx !== -1) {
                     this.wallpapers.splice(wpIdx, 1);
@@ -282,7 +285,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
 
                 storage.sync.set({
                     wallpapers: this.wallpapers
-                }).then(resp => {
+                }).then(() => {
                     this.$message({
                         type: 'success',
                         message: 'delete successfully!'

@@ -1,3 +1,4 @@
+/*global _gaq*/
 import $ from 'jquery'
 import { NUMBER } from '../constant/index'
 import * as api from '../api/index'
@@ -7,9 +8,8 @@ import storage from '../utils/storage'
 import Toast from 'toastr'
 
 const STORAGE_KEY = 'wallpapers';
+const $body = $('body');
 
-let wallpaper = '';
-let $body = $('body');
 let curUrl = '';
 let intervalTimer = 0;
 
@@ -30,7 +30,9 @@ function updateWallpaper(url, save) {
 }
 
 function saveWallpaperLink() {
-    storage.sync.get(STORAGE_KEY, []).then(wallpapers => {
+    storage.sync.get(STORAGE_KEY, []).then(data => {
+        let wallpapers = data;
+
         if (curUrl) {
             wallpapers.push(curUrl);
             wallpapers = _.uniq(wallpapers);
@@ -41,15 +43,15 @@ function saveWallpaperLink() {
         return {
             [STORAGE_KEY]: wallpapers
         };
-    }).then(newResults => storage.sync.set(newResults)).then(resp => {
+    }).then(newResults => storage.sync.set(newResults)).then(() => {
         Toast.success('save successfully');
     });
 }
 
 export function refreshWallpaper(today) {
-    let method = today ? 'today' : 'rand';
+    const method = today ? 'today' : 'rand';
 
-    api.bing[method]().then((resp) => {
+    api.bing[method]().then(resp => {
         updateWallpaper(api.bing.root + resp.images[0].url, true);
     }).catch(resp => {
         console.log(resp);
@@ -58,7 +60,7 @@ export function refreshWallpaper(today) {
 
 export function init() {
     // restore
-    const lastDate = new Date(window.localStorage.getItem('lastDate') || +new Date);
+    const lastDate = new Date(window.localStorage.getItem('lastDate') || Number(new Date()));
     const defaultWallpaper = window.localStorage.getItem('wallpaper');
 
     window.localStorage.setItem('lastDate', date.format());

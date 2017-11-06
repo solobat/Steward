@@ -4,7 +4,6 @@
  * @author rong
  */
 
-import $ from 'jquery'
 import _ from 'underscore'
 
 const version = 2;
@@ -12,8 +11,8 @@ const name = 'help';
 const key = 'help';
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/help.ico');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const title = chrome.i18n.getMessage(`${name}_title`);
+const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const commands = [{
     key,
     type,
@@ -25,12 +24,12 @@ const commands = [{
 
 // NOTE: Only get the commands when needed, main.js has been immediately obtained, and then get the object will be empty
 function getPlugins() {
-    let commands = window.stewardCache.commands;
-    let helpList = _.uniq(_.values(commands)).map((command) => {
+    const allcommands = window.stewardCache.commands;
+    const helpList = _.uniq(_.values(allcommands)).map(command => {
         return {
             icon: command.icon,
             id: command.key,
-            title: command.key + ': ' + command.title,
+            title: `${command.key}: ${command.title}`,
             desc: command.subtitle,
             type: command.type
         }
@@ -39,12 +38,12 @@ function getPlugins() {
     return _.sortBy(helpList, 'id');
 }
 
-function onInput(key) {
+function onInput() {
     return getPlugins();
 }
 
 function onEnter(item) {
-    this.render(item.id.split(',')[0] + '');
+    this.render(String(item.id.split(',')[0]));
 }
 
 export default {

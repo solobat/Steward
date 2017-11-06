@@ -22,13 +22,13 @@ function log(msg) {
 }
 
 function get(cb) {
-    chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
-        cb.apply(null, arguments);
+    chrome.extension.onRequest.addListener(function (...args) {
+        Reflect.apply(cb, null, args);
     });
 }
 
 export default {
-    send: send,
-    log: log,
-    get: get
+    send,
+    log,
+    get
 };

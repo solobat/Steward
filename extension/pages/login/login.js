@@ -5,16 +5,15 @@
  * @email solopea@gmail.com
  */
 
-import $ from 'jquery'
 import Auth from '../../js/common/auth'
 import conf from '../../js/conf/pocket_conf'
 
 console.log('hello login.js....');
 
-var auth = new Auth(conf);
+const auth = new Auth(conf);
 
 function handler(results) {
-    var ret = results || {};
+    const ret = results || {};
 
     return ret;
 }

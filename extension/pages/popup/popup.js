@@ -2,8 +2,6 @@ import './popup.scss'
 import extension from '../../js/main/main'
 import keyboardJS from 'keyboardjs'
 
-const chrome = window.chrome;
-
 if (window.parent === window) {
     extension('popup');
 }

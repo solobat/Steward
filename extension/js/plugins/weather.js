@@ -4,7 +4,6 @@
  * @email solopea@gmail.com
  */
 
-import $ from 'jquery'
 import { getByCity } from '../api/weather'
 
 const version = 2;
@@ -14,8 +13,8 @@ const type = 'keyword';
 const icon = chrome.extension.getURL('img/weather.png');
 const indexIcon = chrome.extension.getURL('img/index.png');
 const pm25Icon = chrome.extension.getURL('img/pm25.png');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const title = chrome.i18n.getMessage(`${name}_title`);
+const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const commands = [{
     key,
     type,
@@ -26,7 +25,7 @@ const commands = [{
 }];
 
 function dataFormat(results) {
-    let data = results.weather_data.map(item => {
+    const data = results.weather_data.map(item => {
         return {
             key: key,
             id: item.date,
@@ -35,7 +34,7 @@ function dataFormat(results) {
             desc: `${item.date}`
         }
     });
-    let index = results.index.map(item => {
+    const index = results.index.map(item => {
         return {
             key: key,
             id: item.tipt,
@@ -44,7 +43,7 @@ function dataFormat(results) {
             icon: indexIcon
         }
     });
-    let pm25 = {
+    const pm25 = {
         key: key,
         id: 'pm2.5',
         title: `pm2.5: ${results.pm25}`,
@@ -63,8 +62,8 @@ const QUERY_DELAY = 200;
 let timer = 0;
 const cityReg = /^[\u4e00-\u9fa5]{2,}$/;
 
-function onInput(key) {
-    let cityName = key;
+function onInput(query) {
+    let cityName = query;
 
     if (!cityName) {
         cityName = window.localStorage.getItem('location') || '北京';

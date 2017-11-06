@@ -5,7 +5,7 @@ const baseParams = {
     format: 'js',
     idx: 0,
     n: 1,
-    nc: +new Date(),
+    nc: Number(new Date()),
     mkt: 'zh-CN'
 };
 const MAX_IDX = 16;
