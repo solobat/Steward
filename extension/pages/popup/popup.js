@@ -1,4 +1,5 @@
 import './popup.scss'
+import $ from 'jquery'
 import extension from '../../js/main/main'
 import keyboardJS from 'keyboardjs'
 
@@ -8,7 +9,11 @@ if (window.parent === window) {
 
 window.addEventListener('message', function(event) {
     if (event.data.ext_from === 'content') {
-        initForContentPage(event.source, event.data.host);
+        if (event.data.action === 'show') {
+            $('#cmdbox').focus();
+        } else {
+            initForContentPage(event.source, event.data.host);
+        }
     }
 });
 
@@ -17,11 +22,12 @@ function initForContentPage(parentWindow, parentHost) {
     window.parentWindow = parentWindow;
     window.parentHost = parentHost;
 
-    keyboardJS.bind('esc', () => {
-        parentWindow.postMessage({
-            action: 'closeBox'
-        }, '*');
+    extension('popup', true).then(cmdbox => {
+        keyboardJS.bind('esc', () => {
+            cmdbox.empty();
+            parentWindow.postMessage({
+                action: 'closeBox'
+            }, '*');
+        });
     });
-
-    extension('popup', true);
 }

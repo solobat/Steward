@@ -437,8 +437,10 @@ function restoreConfig(mode, inContent) {
 }
 
 export default function(mode, inContent) {
-    restoreConfig(mode, inContent).then(config => {
+    return restoreConfig(mode, inContent).then(config => {
         init(config, mode, inContent);
         document.execCommand('copy');
+
+        return cmdbox;
     });
 }

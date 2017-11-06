@@ -8,29 +8,16 @@ const App = {
     isOpen: false,
 
     initDom() {
+        const popupurl = chrome.extension.getURL('popup.html');
         const html = `
-            <div id="steward-main" class="steward-main" style="display:none;">
+            <div id="steward-main" class="steward-main">
+                <iframe style="display:none;" id="steward-iframe" src="${popupurl}" name="steward-box" width="510" height="460" frameborder="0"></iframe>
             </div>
         `;
 
         $('body').append(html);
         this.$el = $('#steward-main');
-    },
-    openBox() {
-        if (this.isOpen) {
-            return;
-        } else {
-            this.isOpen = true;
-        }
-
-        const popupurl = chrome.extension.getURL('popup.html');
-        const html = `
-            <iframe id="steward-iframe" src="${popupurl}" name="steward-box" width="510" height="460" frameborder="0"></iframe>
-        `;
-        this.$el.html(html);
         this.$iframe = $('#steward-iframe');
-
-        this.$el.show();
         this.$iframe.load(function() {
             const iframeWindow = document.getElementById('steward-iframe').contentWindow;
 
@@ -40,9 +27,26 @@ const App = {
             }, '*');
         });
     },
+    openBox() {
+        if (this.isOpen) {
+            return;
+        } else {
+            this.isOpen = true;
+        }
+
+        this.$iframe.show().focus();
+        setTimeout(() => {
+            const iframeWindow = document.getElementById('steward-iframe').contentWindow;
+
+            iframeWindow.postMessage({
+                ext_from: 'content',
+                action: 'show'
+            }, '*');
+        }, 25);
+    },
 
     closeBox() {
-        this.$el.empty().hide();
+        this.$iframe.hide();
         this.isOpen = false;
     },
 
