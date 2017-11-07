@@ -1,11 +1,12 @@
 /**
- * @description chrome urls
+ * @description zhihu urls
  * @author  tomasy
  * @mail solopea@gmail.com
  */
 
 import $ from 'jquery'
 import util from '../../common/util'
+import * as Websites from '../../helper/websites'
 
 const version = 1;
 const name = 'zhihu';
@@ -49,8 +50,7 @@ const paths = [
 ];
 
 function onInput(text) {
-    const filterByName = item => util.matchText(text, item.name + item.path);
-    const filterByPath = suggestions => util.getMatches(suggestions, text, 'path');
+    const cnNameFilter = item => util.matchText(text, item.name + item.path);
     const mapTo = key => item => {
         return {
             icon,
@@ -63,9 +63,9 @@ function onInput(text) {
     };
 
     if (text[0] === '/') {
-        return Promise.resolve(filterByPath(paths).map(mapTo('action')));
+        return Promise.resolve(Websites.filterByPath(paths, text).map(mapTo('action')));
     } else {
-        return Promise.resolve(paths.filter(filterByName).map(mapTo('action')));
+        return Promise.resolve(paths.filter(cnNameFilter).map(mapTo('action')));
     }
 }
 
@@ -93,20 +93,6 @@ function initDeps() {
     }
 }
 
-function handlePath(path, info) {
-    if (info.deps) {
-        let realPath = path;
-
-        info.deps.forEach(field => {
-            realPath = realPath.replace(`{{${field}}}`, deps[field]);
-        });
-
-        window.location.href = realPath;
-    } else {
-        window.location.href = path;
-    }
-}
-
 function setup() {
     initDeps();
 
@@ -115,7 +101,7 @@ function setup() {
 
         if (data.action === 'command') {
             if (data.info.path) {
-                handlePath(data.info.path, data.info);
+                Websites.handlePath(data.info.path, data.info, deps);
             }
         }
     });
