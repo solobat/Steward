@@ -4,36 +4,21 @@ import './content.scss'
 import { websitesMap } from '../../js/plugins/website'
 const chrome = window.chrome;
 
-let App = {
+const App = {
     isOpen: false,
 
     initDom() {
-        let html = `
-            <div id="steward-main" class="steward-main" style="display:none;">
+        const popupurl = chrome.extension.getURL('popup.html');
+        const html = `
+            <div id="steward-main" class="steward-main">
+                <iframe style="display:none;" id="steward-iframe" src="${popupurl}" name="steward-box" width="510" height="460" frameborder="0"></iframe>
             </div>
         `;
 
         $('body').append(html);
         this.$el = $('#steward-main');
-    },
-    openBox() {
-        let self = this;
-
-        if (this.isOpen) {
-            return;
-        } else {
-            this.isOpen = true;
-        }
-
-        let popupurl = chrome.extension.getURL('popup.html');
-        let html = `
-            <iframe id="steward-iframe" src="${popupurl}" name="steward-box" width="510" height="460" frameborder="0"></iframe>
-        `;
-        this.$el.html(html);
         this.$iframe = $('#steward-iframe');
-
-        this.$el.show();
-        this.$iframe.load(function() {
+        this.$iframe.load(() => {
             const iframeWindow = document.getElementById('steward-iframe').contentWindow;
 
             iframeWindow.postMessage({
@@ -42,31 +27,58 @@ let App = {
             }, '*');
         });
     },
+    openBox() {
+        if (this.isOpen) {
+            return;
+        } else {
+            this.isOpen = true;
+        }
+
+        this.$iframe.show().focus();
+        setTimeout(() => {
+            const iframeWindow = document.getElementById('steward-iframe').contentWindow;
+
+            iframeWindow.postMessage({
+                ext_from: 'content',
+                action: 'show'
+            }, '*');
+        }, 25);
+    },
 
     closeBox() {
-        this.$el.empty().hide();
+        this.$iframe.hide();
         this.isOpen = false;
     },
 
+    handleBoxInited() {
+        if (document.activeElement === this.$iframe[0]) {
+            document.activeElement.blur();
+        }
+    },
+
     bindEvents() {
-        let self = this;
-        let host = window.location.host;
+        const that = this;
+        const host = window.location.host;
 
         if (websitesMap[host]) {
             websitesMap[host].setup();
         }
 
         keyboardJS.bind('esc', function() {
-            self.closeBox();
+            that.closeBox();
         });
 
-        window.addEventListener('message', (event) => {
-            if (event.data.action === 'closeBox') {
+        window.addEventListener('message', event => {
+            const action = event.data.action;
+
+            if (action === 'closeBox') {
                 this.closeBox();
+            } else if (action === 'boxInited') {
+                this.handleBoxInited();
             }
         });
 
-        chrome.runtime.onMessage.addListener((req, sender, resp) => {
+        chrome.runtime.onMessage.addListener(req => {
             if (req.action === 'openBox') {
                 if (this.isOpen) {
                     this.closeBox();
@@ -77,8 +89,8 @@ let App = {
         });
 
         $(document).on('click', function(e) {
-            if (self.isOpen && e.target.id !== 'steward-main') {
-                self.closeBox();
+            if (that.isOpen && e.target.id !== 'steward-main') {
+                that.closeBox();
             }
         });
     },

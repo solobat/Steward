@@ -4,15 +4,14 @@
  * @mail solopea@gmail.com
  */
 
-import $ from 'jquery'
+/*global EXT_TYPE*/
 import util from '../common/util'
 
 const version = 1;
 const name = 'steward';
 const type = 'search';
 const icon = chrome.extension.getURL('img/icon.png');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const title = chrome.i18n.getMessage(`${name}_title`);
 const baseUrl = chrome.extension.getURL('options.html');
 
 let stewardTabs;
@@ -28,18 +27,18 @@ function caseFormat(str) {
 }
 
 function onInput(text) {
-    const filterByName = (suggestions) => util.getMatches(suggestions, text);
+    const filterByName = suggestions => util.getMatches(suggestions, text);
     const extType = caseFormat(EXT_TYPE);
-    const mapTo = (type) => item => {
+    const mapTo = itemType => item => {
         return {
             icon,
-            key: type,
+            key: itemType,
             title: item,
-            url: item === extType ? baseUrl : (baseUrl + '?tab=' + item) 
+            url: item === extType ? baseUrl : `${baseUrl}?tab=${item}`
         }
     };
 
-    let tabs = filterByName(stewardTabs).map(mapTo('url'));
+    const tabs = filterByName(stewardTabs).map(mapTo('url'));
 
     return Promise.resolve(tabs);
 }

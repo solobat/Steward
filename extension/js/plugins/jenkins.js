@@ -4,7 +4,6 @@
  * @email solopea@gmail.com
  */
 
-import $ from 'jquery'
 import util from '../common/util'
 import Toast from 'toastr'
 
@@ -20,9 +19,8 @@ const keys = [
 ];
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/jenkins.png')
-const title = chrome.i18n.getMessage(name + '_title')
-const subtitle = chrome.i18n.getMessage(name + '_subtitle')
-let SERVER_URL = window.localStorage['jenkins_url'] || ''
+const title = chrome.i18n.getMessage(`${name}_title`);
+let SERVER_URL = window.localStorage.jenkins_url || ''
 const commands = util.genCommands(name, icon, keys, type);
 const keyUrlMap = {
     'jk': '',
@@ -52,25 +50,27 @@ let jobs = [];
 
 function getJobs() {
     if (jobs.length) {
-        return new Promise((resolve, reject) => {
+        return new Promise(resolve => {
             resolve(jobs)
         })
     }
 
     return new Promise((resolve, reject) => {
-        fetch(SERVER_URL + '/api/json?tree=jobs[name,url,color,healthReport[description,score,iconUrl]]')
-            .then((resp) => resp.json())
-            .then((results) => {
+        fetch(`${SERVER_URL}/api/json?tree=jobs[name,url,color,healthReport[description,score,iconUrl]]`)
+            .then(resp => resp.json())
+            .then(results => {
                 jobs = results.jobs
                 resolve(jobs)
             })
             .catch(() => {
-                reject([actionTips['errorurl']])
+                reject([actionTips.errorurl])
             })
     })
 }
 
-function setUrl(iptval, callback) {
+function setUrl(query, callback) {
+    let iptval = query;
+
     if (!iptval) {
         callback('please input an url');
         return
@@ -81,16 +81,16 @@ function setUrl(iptval, callback) {
     }
 
     if (iptval.indexOf('http://') === -1) {
-        iptval = 'http://' + iptval
+        iptval = `http://${iptval}`
     }
 
     SERVER_URL = iptval
-    window.localStorage['jenkins_url'] = SERVER_URL
+    window.localStorage.jenkins_url = SERVER_URL
     callback();
 }
 
 function showActionTips(action) {
-    let actionTip = actionTips[action];
+    const actionTip = actionTips[action];
 
     if (!actionTip) {
         return;
@@ -116,34 +116,36 @@ function onInput(key) {
         return;
     }
 
-    return getJobs().then((results) => {
-        var filterRE = new RegExp([].slice.call(key).join('\.\*'))
+    return getJobs().then(results => {
+        const filterRE = new RegExp(Reflect.apply([].slice, key, []).join('\.\*'));
 
-        var jobs = results.filter((job) => {
-            return key ? !!job.name.match(filterRE) : true
+        const filteredJobs = results.filter(job => {
+            return key ? Boolean(job.name.match(filterRE)) : true
         }).slice(0, 50)
 
-        return jobs.map((item) => {
+        return filteredJobs.map(item => {
+            const iconUrl = item.healthReport.length ? item.healthReport[0].iconUrl : 'nobuilt.png';
+
             return {
                 key: key,
                 id: item.url + keyUrlMap[this.cmd],
-                icon: '/img/jenkins/' + (item.healthReport.length ? item.healthReport[0].iconUrl : 'nobuilt.png'),
+                icon: `/img/jenkins/${iconUrl}`,
                 title: item.name,
                 desc: item.healthReport.length ? item.healthReport[0].description : 'no build history',
                 isWarn: item.healthReport.length && item.healthReport[0].score !== 100
             }
         });
-    }).catch((results) => {
+    }).catch(results => {
         return Promise.resolve(results);
     });
 }
 
 function onEnter({ id }) {
     if (id.startsWith('action-')) {
-        let actionName = id.split('-')[1];
+        const actionName = id.split('-')[1];
 
         if (actionName === 'seturl') {
-            setUrl(this.query, (error) => {
+            setUrl(this.query, error => {
                 if (error) {
                     Toast.error(error);
                 } else {

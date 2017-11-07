@@ -1,11 +1,12 @@
 /**
  * about
  */
+/*global EXT_TYPE*/
 
 const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'steward';
 const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jglmompgeddkbcdamdknmebaimldkkbl';
 
-let langZh = `
+const langZh = `
 <a href="https://chrome.google.com/webstore/detail/${storeId}">${extType}</a>
 最早开发于<span class="notice">2014</span>年底，初衷是作为一个Chrome扩展爱好者，居然找不到一个方便管理它们的方式。于是花了一个晚上写了${extType}的第一版。
 虽然没怎么推广，用户也不是很多，但一有空闲就会维护，毕竟${extType}几乎已经成为我使用频率最高的扩展了。<br>
@@ -16,7 +17,7 @@ let langZh = `
 <img src="http://owsjc7iz3.bkt.clouddn.com/IMG_2180.jpg" alt="" class="wx-pay">
 `;
 
-let langEn = `
+const langEn = `
 <a href="https://chrome.google.com/webstore/detail/${storeId}">${extType}</a> 
 was first developed at the end of <span class="notice">2014</span>. 
 The original intention is as a Chrome extension enthusiasts, I actually can not find a convenient way to manage them。

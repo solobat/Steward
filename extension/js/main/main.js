@@ -3,23 +3,24 @@
  * @author tomasy
  * @email solopea@gmail.com
  */
+/*global _gaq stewardCache*/
 
 import $ from 'jquery'
 import EasyComplete from '../common/easycomplete'
 import util from '../common/util'
 import storage from '../common/storage'
 import CONST from '../common/const'
-import { plugins }  from '../plugins/plugins'
+import {plugins} from '../plugins/plugins'
 import * as Wallpaper from './wallpaper'
 import ga from '../../js/common/ga'
 import KEY from '../constant/keycode'
 import _ from 'underscore'
 import { websitesMap } from '../../js/plugins/website'
 
-let commands = {};
-let regExpCommands = [];
-let otherCommands = [];
-let searchContexts = [];
+const commands = {};
+const regExpCommands = [];
+const otherCommands = [];
+const searchContexts = [];
 let keys;
 let reg;
 let cmdbox;
@@ -27,15 +28,16 @@ let cmdbox;
 window.stewardCache = {};
 
 function findMatchedPlugins(query) {
-    let items = [];
+    const items = [];
+    let key;
 
-    for (let key in commands) {
+    for (key in commands) {
         if (key.indexOf(query) !== -1) {
             items.push({
                 key: 'plugins',
                 id: key,
                 icon: commands[key].icon,
-                title: key + ': ' + commands[key].title,
+                title: `${key}: ${commands[key].title}`,
                 desc: commands[key].subtitle || ''
             });
         }
@@ -51,13 +53,13 @@ function findRegExpMatched(str) {
 }
 
 function init(config, mode, inContent) {
-    let $cmdbox = $('.cmdbox');
+    const $cmdbox = $('.cmdbox');
 
     $cmdbox.focus();
-    
+
     // force focus in content page
     if (inContent) {
-        window.addEventListener('focus', _ => {
+        window.addEventListener('focus', () => {
             $cmdbox.focus();
         });
         $cmdbox.blur(function() {
@@ -73,16 +75,16 @@ function init(config, mode, inContent) {
         if (!command) {
             return;
         }
-        
-        this.cmd = command.key;
-        this.command = command;
 
-        return command.plugin.onInput.call(this, key, command);
+        cmdbox.cmd = command.key;
+        cmdbox.command = command;
+
+        return Reflect.apply(command.plugin.onInput, cmdbox, [key, command]);
     }
 
     function searchInContext(query) {
-        let res = [];
-        let tasks = [];
+        const res = [];
+        const tasks = [];
         let contexts;
 
         if (inContent) {
@@ -92,7 +94,7 @@ function init(config, mode, inContent) {
         }
 
         contexts.forEach(context => {
-            let searchRet = context.onInput(query);
+            const searchRet = context.onInput(query);
 
             if (searchRet instanceof Promise || typeof searchRet.then === 'function') {
                 tasks.push(searchRet);
@@ -102,86 +104,86 @@ function init(config, mode, inContent) {
         });
 
         if (tasks.length) {
-            return Promise.all(tasks).then(res => {
-                return _.flatten(res.filter(item => item && item.length));
+            return Promise.all(tasks).then(resp => {
+                return _.flatten(resp.filter(item => item && item.length));
             });
         } else {
             return Promise.resolve(res);
         }
     }
 
-    function regexpStage(cmdbox) {
-        let str = cmdbox.str;
-        let spCommand = findRegExpMatched(str);
+    function regexpStage() {
+        const str = cmdbox.str;
+        const spCommand = findRegExpMatched(str);
 
         // handle regexp commands
         if (spCommand) {
-            return Promise.reject(callCommand.call(cmdbox, spCommand, str));
+            return Promise.reject(callCommand(spCommand, str));
         } else {
-            return Promise.resolve(cmdbox);
+            return Promise.resolve();
         }
     }
 
-    function searchStage(cmdbox) {
-        let str = cmdbox.str;
+    function searchStage() {
+        const str = cmdbox.str;
 
         // match commands && search in contexts
         if (str.indexOf(' ') === -1) {
-            let searched = searchInContext(str);
-            let matchedPlugins = findMatchedPlugins(str);
+            const searched = searchInContext(str);
+            const matchedPlugins = findMatchedPlugins(str);
 
             return Promise.all([
                 matchedPlugins,
                 searched
             ]).then(res => {
-                let searchRes = _.flatten(res.filter(item => item && item.length));
+                const searchRes = _.flatten(res.filter(item => item && item.length));
 
                 if (searchRes && searchRes.length) {
                     return Promise.reject(searchRes);
                 } else {
-                    return Promise.resolve(cmdbox, true);
+                    return Promise.resolve(true);
                 }
             });
         } else {
-            return Promise.resolve(cmdbox);
+            return Promise.resolve();
         }
     }
 
-    function commandStage(cmdbox, gothrough) {
+    function commandStage(gothrough) {
         if (gothrough) {
             return Promise.resolve(cmdbox);
         }
 
-        let str = cmdbox.str;
-        let mArr = str.match(reg) || [];
-        let cmd = mArr[1];
-        let param = mArr[2];
-        let key = mArr[3];
+        const str = cmdbox.str;
+        const mArr = str.match(reg) || [];
+        const cmd = mArr[1];
+        const param = mArr[2];
+        const key = mArr[3];
 
         // search in context && handle other commands
         if (cmd) {
             cmdbox.cmd = cmd;
             cmdbox.param = param;
             cmdbox.query = key;
-    
+
             storage.h5.set(CONST.LAST_CMD, str);
-    
+
             if (cmdbox.lastcmd !== cmdbox.cmd) {
                 _gaq.push(['_trackEvent', 'command', 'input', cmdbox.cmd]);
                 cmdbox.lastcmd = cmdbox.cmd;
             }
-    
-            let command = commands[cmdbox.cmd];
-    
-            return Promise.reject(callCommand.call(cmdbox, command, key));     
+
+            const command = commands[cmdbox.cmd];
+
+            return Promise.reject(callCommand(command, key));
         } else {
             return Promise.resolve(cmdbox);
         }
     }
 
-    function defaultStage(cmdbox) {
+    function defaultStage() {
         if (otherCommands.length) {
-            return callCommand.call(cmdbox, otherCommands[0], cmdbox.str);
+            return callCommand(otherCommands[0], cmdbox.str);
         }
     }
 
@@ -204,7 +206,7 @@ function init(config, mode, inContent) {
                 .then(searchStage)
                 .then(commandStage)
                 .then(defaultStage)
-                .catch((msg) => {
+                .catch(msg => {
                     if (msg) {
                         return Promise.resolve(msg);
                     }
@@ -212,17 +214,17 @@ function init(config, mode, inContent) {
         },
 
         createItem: function (index, item) {
-            let contentClass = [
+            const contentClass = [
                 'ec-item-content',
                 item.desc ? '' : 'nodesc'
             ].join(' ');
-            let titleClass = [
+            const titleClass = [
                 'ec-item-title',
                 item.isWarn ? 'ec-item-warn' : ''
             ].join(' ');
-            let descStr = item.desc ? `<span class="ec-item-desc">${item.desc}</span>` : ''
+            const descStr = item.desc ? `<span class="ec-item-desc">${item.desc}</span>` : ''
 
-            let html = `
+            const html = `
                 <div data-type="${item.key}" data-url="${item.url}" data-index="${index}" data-id="${item.id}" class="ec-item">
                     <img class="ec-item-icon" src="${item.icon}" />
                     <div class="${contentClass}">
@@ -242,10 +244,10 @@ function init(config, mode, inContent) {
             if (config.general.cacheLastCmd) {
                 cmd = storage.h5.get(CONST.LAST_CMD) || 'site ';
             } else if (config.general.defaultPlugin) {
-                let defaultCommand = Object.values(commands).find(command => command.name === config.general.defaultPlugin);
+                const defaultCommand = Object.values(commands).find(command => command.name === config.general.defaultPlugin);
 
                 if (defaultCommand) {
-                    cmd = defaultCommand.key + ' ';
+                    cmd = `${defaultCommand.key} `;
                 }
             }
 
@@ -265,18 +267,18 @@ function init(config, mode, inContent) {
     }
 
     cmdbox.bind('enter', function (event, elem) {
-        let $elem = $(elem);
-        let item = this.dataList[$elem.index()];
+        const $elem = $(elem);
+        const item = this.dataList[$elem.index()];
 
         if (!this.cmd) {
-            let type = $elem.data('type');
-            
-            if (type === 'plugins') {
-                let key = $elem.data('id');
+            const type = $elem.data('type');
 
-                this.render(key + ' ');
+            if (type === 'plugins') {
+                const key = $elem.data('id');
+
+                this.render(`${key} `);
             } else if (type === 'url') {
-                let url = $elem.data('url');
+                const url = $elem.data('url');
 
                 chrome.tabs.create({
                     url
@@ -293,7 +295,7 @@ function init(config, mode, inContent) {
             }
 
             _gaq.push(['_trackEvent', 'exec', 'enter', type]);
-            
+
             if (type !== 'plugins') {
                 closeBoxIfNeeded();
             }
@@ -301,11 +303,11 @@ function init(config, mode, inContent) {
             return;
         }
 
-        let plugin = this.command.plugin;
-        let index = $elem.index();
+        const plugin = this.command.plugin;
+        const index = $elem.index();
 
-        plugin.onEnter.call(this, this.dataList[index], this.command);
-        
+        Reflect.apply(plugin.onEnter, this, [this.dataList[index], this.command]);
+
         if (plugin.name !== 'Help') {
             closeBoxIfNeeded();
         }
@@ -313,12 +315,10 @@ function init(config, mode, inContent) {
     });
 
     cmdbox.bind('empty', function () {
-        var that = this;
-
-        that.cmd = 'todo';
-        that.searchTimer = setTimeout(function () {
-            commands.todo.plugin.showTodos.call(that);
-        }, that.delay);
+        this.cmd = 'todo';
+        this.searchTimer = setTimeout(() => {
+            Reflect.apply(commands.todo.plugin.showTodos, this, []);
+        }, this.delay);
     });
 
     cmdbox.bind('show', function () {
@@ -330,19 +330,19 @@ function init(config, mode, inContent) {
     });
 
     cmdbox.clearQuery = function() {
-        let newIpt = this.cmd + ' '
+        const newIpt = `${this.cmd} `;
 
-        this.query = ''
-        this.str = this.term = newIpt
-        this.ipt.val(newIpt)
+        this.query = '';
+        this.str = this.term = newIpt;
+        this.ipt.val(newIpt);
     }
 
     cmdbox.init();
 
     if (mode === 'newTab') {
         $(document).on('keydown', function(event) {
-            let keyType = util.isMac ? 'metaKey' : 'altKey';
-            let keyCode = event.keyCode;
+            const keyType = util.isMac ? 'metaKey' : 'altKey';
+            const keyCode = event.keyCode;
 
             if (event[keyType] && keyCode === KEY.RIGHT) {
                 $('#main, .ec-itemList').fadeToggle();
@@ -356,10 +356,10 @@ function init(config, mode, inContent) {
     }
 }
 
-function classifyPlugins(plugins, pluginsData, inContent) {
-    plugins.forEach((plugin) => {
+function classifyPlugins(pluginsData, inContent) {
+    plugins.forEach(plugin => {
         if (plugin.commands instanceof Array) {
-            let pname = plugin.name;
+            const pname = plugin.name;
             let pcmds;
 
             try {
@@ -373,8 +373,8 @@ function classifyPlugins(plugins, pluginsData, inContent) {
 
             // FIX: if add new plugin, the cache may not have
             if (pcmds) {
-                pcmds.forEach((command) => {
-                    let cmd = {
+                pcmds.forEach(command => {
+                    const cmd = {
                         ...command,
                         name: pname,
                         plugin
@@ -403,12 +403,12 @@ function classifyPlugins(plugins, pluginsData, inContent) {
     });
 
     if (inContent && websitesMap[window.parentHost]) {
-        searchContexts.push(websitesMap[window.parentHost]); 
+        searchContexts.push(websitesMap[window.parentHost]);
     }
 }
 
 function restoreConfig(mode, inContent) {
-    return new Promise((resove, reject) => {
+    return new Promise(resove => {
         chrome.storage.sync.get('config', function(res) {
             let pluginsData;
 
@@ -418,10 +418,10 @@ function restoreConfig(mode, inContent) {
                 console.log('There is no plugins configuration yet');
             }
 
-            classifyPlugins(plugins, pluginsData, inContent);
+            classifyPlugins(pluginsData, inContent);
 
              keys = Object.keys(commands).join('|');
-             reg = new RegExp('^((?:' + keys + '))\\s(?:\\-(\\w+))?\\s?(.*)$', 'i');
+             reg = new RegExp(`^((?:${keys}))\\s(?:\\-(\\w+))?\\s?(.*)$`, 'i');
 
              stewardCache.commands = commands;
              stewardCache.config = res.config || {};
@@ -437,8 +437,10 @@ function restoreConfig(mode, inContent) {
 }
 
 export default function(mode, inContent) {
-    restoreConfig(mode, inContent).then(config => {
+    return restoreConfig(mode, inContent).then(config => {
         init(config, mode, inContent);
         document.execCommand('copy');
+
+        return cmdbox;
     });
-};
+}

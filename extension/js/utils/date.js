@@ -1,5 +1,5 @@
 export function format(date = new Date()) {
-    let ret = [
+    const ret = [
         date.getFullYear(),
         date.getMonth() + 1,
         date.getDate()

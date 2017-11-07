@@ -205,5 +205,8 @@
     },
     "steward_subtitle": {
         "message": "查找常用steward选项并打开"
+    },
+    "github_title": {
+        "message": "github常用页面"
     }
 }

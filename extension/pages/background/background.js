@@ -3,15 +3,22 @@
  * @author tomasy
  * @email solopea@gmail.com
  */
-
-import $ from 'jquery'
+import _ from 'underscore'
 
 // handle todos
 function getTodos(callback) {
     chrome.storage.sync.get('todo', function (results) {
-        var todos = results.todo;
+        const todos = results.todo;
 
         callback(todos);
+    });
+}
+
+function getTabsByWindows(win) {
+    return new Promise(resolve => {
+        chrome.tabs.getAllInWindow(win.id, function (tabs) {
+            resolve(tabs);
+        });
     });
 }
 
@@ -20,16 +27,15 @@ function getAllTabs(callback) {
         if (!wins.length) {
             return;
         }
-        var matchTabs = [];
-        for (var i = 0, len = wins.length; i < len; i++) {
-            (function (index) {
-                chrome.tabs.getAllInWindow(wins[index].id, function (tabs) {
-                    if (index === len - 1) {
-                        callback(tabs);
-                    }
-                });
-            })(i);
+        const tasks = [];
+
+        for (let i = 0, len = wins.length; i < len; i = i + 1) {
+            tasks.push(getTabsByWindows(wins[i]));
         }
+
+        Promise.all(tasks).then(resp => {
+            callback(_.flatten(resp));
+        });
     });
 }
 
@@ -39,16 +45,16 @@ function refreshTodo() {
             return;
         }
         getAllTabs(function (tabs) {
-            for (var i = 0, len = todos.length; i < len; i++) {
-                var tab = tabs[i];
-                var todo = todos[i];
+            for (let i = 0, len = todos.length; i < len; i = i + 1) {
+                const tab = tabs[i];
+                const todo = todos[i];
 
                 if (!tab) {
                     return;
                 }
 
                 chrome.tabs.executeScript(tab.id, {
-                    code: 'document.title = "' + todo.title + '"'
+                    code: `document.title = "${todo.title}"`
                 });
             }
         });
@@ -56,10 +62,10 @@ function refreshTodo() {
 }
 
 // handle url block
-var blockPageUrl = chrome.extension.getURL('urlblock.html');
+const blockPageUrl = chrome.extension.getURL('urlblock.html');
 function getBlacklist(callback) {
     chrome.storage.sync.get('url', function (results) {
-        var blacklist = results.url;
+        const blacklist = results.url;
 
         callback(blacklist);
     });
@@ -71,7 +77,7 @@ function blockUrl (url) {
     }
 
     getAllTabs(function (tabs) {
-        for (var i = 0; i < tabs.length; i++) {
+        for (let i = 0; i < tabs.length; i = i + 1) {
             if (tabs[i].url.indexOf(url) !== -1) {
                 blockTab(tabs[i]);
             }
@@ -92,7 +98,7 @@ function checkTabByUrl(tab) {
         return;
     }
     getBlacklist(function (blacklist) {
-        for (var i = 0; i < blacklist.length; i++) {
+        for (let i = 0; i < blacklist.length; i = i + 1) {
             if (tab.url.indexOf(blacklist[i].title) !== -1) {
                 blockTab(tab);
                 return;
@@ -102,11 +108,11 @@ function checkTabByUrl(tab) {
 }
 
 function addEvents() {
-    chrome.tabs.onRemoved.addListener(function (tabId, removeInfo) {
+    chrome.tabs.onRemoved.addListener(function () {
         refreshTodo();
     });
 
-    chrome.windows.onCreated.addListener(function (win) {
+    chrome.windows.onCreated.addListener(function () {
         refreshTodo();
     });
 
@@ -120,11 +126,11 @@ function addEvents() {
         checkTabByUrl(tab);
     });
 
-    chrome.tabs.onRemoved.addListener(function (tab) {
+    chrome.tabs.onRemoved.addListener(function () {
         refreshTodo();
     });
 
-    chrome.extension.onRequest.addListener(function (request, sender, sendResponse) {
+    chrome.extension.onRequest.addListener(function (request) {
         if (request.action === 'addTodo') {
             refreshTodo();
         }
@@ -144,8 +150,8 @@ init();
 
 chrome.commands.onCommand.addListener(function(command) {
     if (command === 'open-in-content-page') {
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-            chrome.tabs.sendMessage(tabs[0].id, {action: "openBox"}, function(response) {});  
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, {action: "openBox"}, function() {});
         });
     }
 });

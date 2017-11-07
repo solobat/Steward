@@ -11,13 +11,13 @@ import '../../../node_modules/toastr/toastr.scss'
 
 function getPinyin(name) {
     return pinyin(name, {
-        style: pinyin['STYLE_NORMAL']
+        style: pinyin.STYLE_NORMAL
 
     }).join('');
 }
 
-function matchText(key, text) {
-    text = getPinyin(text.toLowerCase());
+function matchText(key, str) {
+    const text = getPinyin(str.toLowerCase());
 
     if (!key) {
         return true;
@@ -27,42 +27,42 @@ function matchText(key, text) {
         return true;
     }
 
-    var plainKey = key.replace(/\s/g, '');
-    var reg = new RegExp('.*' + plainKey.split('').join('.*') + '.*');
+    const plainKey = key.replace(/\s/g, '');
+    const keys = plainKey.split('').join('.*');
+    const reg = new RegExp(`.*${keys}.*`);
 
     return reg.test(text);
 }
 
-var isMac = navigator.platform === 'MacIntel';
+const isMac = navigator.platform === 'MacIntel';
 
 function guid() {
     function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16)
+            .substring(1);
     }
-    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
+    return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
 }
 
 function genCommands(name, icon, items, type) {
     return items.map(item => {
-        let {key, editable, keyname} = item;
+        const {key, editable, keyname} = item;
 
         return {
             key: item.key,
             type,
             orkey: item.key,
-            title: chrome.i18n.getMessage(name + '_' + (keyname || key) + '_title'),
-            subtitle: chrome.i18n.getMessage(name + '_' + (keyname || key) + '_subtitle'),
+            title: chrome.i18n.getMessage(`${name}_${(keyname || key)}_title`),
+            subtitle: chrome.i18n.getMessage(`${name}_${(keyname || key)}_subtitle`),
             icon,
-            editable: editable === false ? false : true
+            editable: editable !== false
         };
     });
 }
 
 function copyToClipboard(text, showMsg) {
-    document.addEventListener('copy', (event) => {
+    document.addEventListener('copy', event => {
         event.preventDefault();
         event.clipboardData.setData('text/plain', text);
 
@@ -81,13 +81,13 @@ function getMatches(suggestions, query, key) {
 }
 
 function getParameterByName(name, search = window.location.search) {
-    let urlsearch = new URLSearchParams(search);
+    const urlsearch = new URLSearchParams(search);
 
     return urlsearch.get(name);
 }
 
-const array2map = (keyField, valField) => (arr) => {
-    let ret = {};
+const array2map = (keyField, valField) => arr => {
+    const ret = {};
 
     arr.forEach(item => {
         if (valField) {
@@ -103,9 +103,9 @@ const array2map = (keyField, valField) => (arr) => {
 const options2map = array2map('value', 'label');
 
 export default {
-    matchText: matchText,
-    isMac: isMac,
-    guid: guid,
+    matchText,
+    isMac,
+    guid,
     genCommands,
     copyToClipboard,
     getMatches,

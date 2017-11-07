@@ -4,16 +4,14 @@
  * @email solopea@gmail.com
  */
 
-import $ from 'jquery'
-
 const chrome = window.chrome;
 const version = 2;
 const name = 'download';
 const key = 'dl';
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/download.png');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const title = chrome.i18n.getMessage(`${name}_title`);
+const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const commands = [{
     key,
     type,
@@ -27,42 +25,47 @@ function searchDownload(query, callback) {
     chrome.downloads.search({
       query: [query],
       orderBy: ['-endTime']
-    }, function (downloadList) {
-        downloadList = downloadList || [];
+    }, function (data) {
+        const downloadList = data || [];
 
         callback(downloadList);
     });
 }
 
-var rFilename = /(?!\/)[^\/]+\.?(\w+)?$/;
-function formatTitle (item) {
-  return [
-    item.filename.match(rFilename)[0],
-    '   [',
-    (item.fileSize / 1024 / 1024).toFixed(2) + 'Mb',
-    ']   ',
-    (new Date(item.endTime)).toLocaleString()
-  ].join('');
-}
-function onInput(key) {
-    return new Promise((resolve) => {
-        searchDownload(key, function (downloadList) {
-            let arr = [];
+const rFilename = /(?!\/)[^\/]+\.?(\w+)?$/;
 
-            for (let i in downloadList) {
-                let item = downloadList[i];
+function formatTitle (item) {
+    const size = (item.fileSize / 1024 / 1024).toFixed(2);
+
+    return [
+        item.filename.match(rFilename)[0],
+        '   [',
+        `${size}Mb`,
+        ']   ',
+        (new Date(item.endTime)).toLocaleString()
+    ].join('');
+}
+function onInput(query) {
+    return new Promise(resolve => {
+        searchDownload(query, function (downloadList) {
+            const arr = [];
+            let i;
+
+            for (i in downloadList) {
+                const item = downloadList[i];
+
                 if (!item.filename) {
                   continue;
                 }
+
                 arr.push({
-                    key: key,
+                    key,
                     id: item.id,
                     icon: icon,
                     url: item.url,
                     title: formatTitle(item),
                     desc: item.url,
                     isWarn: false
-    
                 });
             }
 

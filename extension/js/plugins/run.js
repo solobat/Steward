@@ -4,7 +4,6 @@
  * @email solopea@gmail.com
  */
 
-import $ from 'jquery'
 import util from '../common/util'
 
 const version = 2;
@@ -12,8 +11,8 @@ const name = 'runapp';
 const key = 'run';
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/app.png');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const title = chrome.i18n.getMessage(`${name}_title`);
+const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const commands = [{
     key,
     type,
@@ -23,10 +22,10 @@ const commands = [{
     editable: true
 }];
 
-function getExtensions(key, callback) {
+function getExtensions(query, callback) {
     chrome.management.getAll(function (extList) {
-        let data = extList.filter(function (ext) {
-            return util.matchText(key, ext.name) && ext.isApp;
+        const data = extList.filter(function (ext) {
+            return util.matchText(query, ext.name) && ext.isApp;
         });
 
         callback(data);
@@ -35,23 +34,23 @@ function getExtensions(key, callback) {
 
 function dataFormat(rawList) {
     return rawList.map(function (item) {
-        let url = item.icons instanceof Array ? item.icons[0].url : '';
-        let isWarn = item.installType === 'development';
+        const url = item.icons instanceof Array ? item.icons[0].url : '';
+        const isWarn = item.installType === 'development';
 
         return {
-            key: key,
+            key,
             id: item.id,
             icon: url,
             title: item.name,
             desc: item.description,
-            isWarn: isWarn
+            isWarn
         };
     });
 }
 
-function onInput(key) {
+function onInput(query) {
     return new Promise(resolve => {
-        getExtensions(key.toLowerCase(), function (data) {
+        getExtensions(query.toLowerCase(), function (data) {
             resolve(dataFormat(data));
         });
     });

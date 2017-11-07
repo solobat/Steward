@@ -4,7 +4,6 @@
  * @email solopea@gmail.com
  */
 
-import $ from 'jquery'
 import request from '../common/request'
 import util from '../common/util'
 
@@ -13,76 +12,71 @@ const name = 'urlblock';
 const keys = [{ key: 'bk' }, { key: 'bk8' }];
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/urlblock.png');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const title = chrome.i18n.getMessage(`${name}_title`);
+const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const BLOCK_EXPIRED = 8 * 60 * 60 * 1000;
 const commands = util.genCommands(name, icon, keys, type);
 
 function onInput(key, command) {
     if (!key) {
-        return showBlacklist.call(this, command.orkey);
+        return Reflect.apply(showBlacklist, this, [command.orkey]);
     }
 }
 
 function onEnter(item, command) {
     if (this.query) {
-        addBlacklist.call(this, command.key, this.query, command.orkey);
-    }
-    else {
-        removeBlacklist.call(this, item.id);
+        Reflect.apply(addBlacklist, this, [command.key, this.query, command.orkey]);
+    } else {
+        Reflect.apply(removeBlacklist, this, [item.id]);
     }
 }
 
 function removeBlacklist(id) {
-    var cmdbox = this;
-
-    if (!(String(id)).startsWith('bk_') && (+new Date() - id) < BLOCK_EXPIRED) {
+    if (!String(id).startsWith('bk_') && (Number(new Date()) - id) < BLOCK_EXPIRED) {
         console.log('url will be blocked 8 hours...');
         return;
     }
 
-    getBlacklist(function (blacklist) {
-        blacklist = blacklist.filter(function (url) {
+    getBlacklist(resp => {
+        const blacklist = resp.filter(function (url) {
             return url.id !== id;
         });
 
         chrome.storage.sync.set({
             url: blacklist
-        }, function () {
-                cmdbox.refresh();
+        }, () => {
+                this.refresh();
             });
     });
 }
 
-function addBlacklist(key, url, type) {
-    var cmdbox = this;
-
-    getBlacklist(function (blacklist) {
+function addBlacklist(key, url, cmd) {
+    getBlacklist(data => {
+        let blacklist = data;
         if (!blacklist || !blacklist.length) {
             blacklist = [];
         }
         let id;
+        const datetime = Number(new Date());
 
-        if (type === 'bk8') {
-            id = +new Date();
+        if (cmd === 'bk8') {
+            id = datetime;
         } else {
-            id = 'bk_' + (+new Date());
+            id = `bk_${datetime}`;
         }
-
 
         blacklist.push({
             id,
-            type,
+            type: cmd,
             title: url
         });
 
         chrome.storage.sync.set({
             url: blacklist
-
-        }, function () {
-                cmdbox.render(key + ' ');
-                noticeBackground('blockUrl', url);
-            });
+        }, () => {
+            this.render(`${key} `);
+            noticeBackground('blockUrl', url);
+        });
     });
 }
 
@@ -97,7 +91,7 @@ function noticeBackground(action, url) {
 
 function getBlacklist(callback) {
     chrome.storage.sync.get('url', function (results) {
-        var blacklist = results.url;
+        const blacklist = results.url;
 
         callback(blacklist);
     });
@@ -115,15 +109,16 @@ function dataFormat(rawList) {
     });
 }
 
-function showBlacklist(type) {
+function showBlacklist(cmd) {
     return new Promise(resolve => {
         getBlacklist(function (blacklist) {
+            let data = [];
             if (blacklist) {
-                blacklist = blacklist.filter(item => {
-                    return type === (item.type || 'bk8');
-                });
+                data = blacklist.filter(item => {
+                    return cmd === (item.type || 'bk8');
+                }) || [];
             }
-            resolve(dataFormat(blacklist || []));
+            resolve(dataFormat(data));
         });
     });
 }

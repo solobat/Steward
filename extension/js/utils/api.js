@@ -1,7 +1,5 @@
 import $ from 'jquery'
 
-const validMethods = ['GET', 'POST'];
-
 function handleParams(api, data, method) {
     return Promise.resolve({
         url: api,
@@ -21,7 +19,7 @@ export function fetch(api, data = {}, rawMethod = 'GET') {
                 url: options.url,
                 method: options.method,
                 data: options.data
-            }).done((resp) => {
+            }).done(resp => {
                 if (typeof resp.code === 'undefined') {
                     resolve(resp);
                 } else if (resp.code === 200) {
@@ -30,7 +28,7 @@ export function fetch(api, data = {}, rawMethod = 'GET') {
                     reject(resp);
                 }
             })
-            .fail((resp) => reject(resp));
+            .fail(resp => reject(resp));
         });
     });
 }

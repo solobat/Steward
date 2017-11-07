@@ -1,7 +1,12 @@
-let langZh = [
+/*global EXT_TYPE */
+const langZh = [
+    {
+        version: 'v2.8.5',
+        detail: '优化页面内使用的体验;<br /> 添加github website插件; <br />其它一些优化。'
+    },
     {
         version: 'v2.8.4',
-        detail: '在页面中中使用 <em>/</em> 来列出所有website选项; <br/>更多的国际化支持; <br />一些小优化。'
+        detail: '在页面中使用 <em>/</em> 来列出所有website选项; <br/>更多的国际化支持; <br />一些小优化。'
     },
     {
         version: 'v2.8.3',
@@ -21,7 +26,7 @@ let langZh = [
     },
     {
         version: 'v2.7',
-        detail: "可以在任何页面使用" + EXT_TYPE + "，快捷键在<em>chrome://extensions/configureCommands</em>设置; <br />一些交互/ui优化"
+        detail: `可以在任何页面使用${EXT_TYPE}，快捷键在<em>chrome://extensions/configureCommands</em>设置; <br />一些交互/ui优化`
     },
     {
         version: 'v2.6.7',
@@ -96,7 +101,11 @@ let langZh = [
     }
 ];
 
-let langEn = [
+const langEn = [
+    {
+        version: 'v2.8.5',
+        detail: 'Optimize the experience used within the page; <br />Add github plugin.'
+    },
     {
         version: 'v2.8.4',
         detail: 'Some optimization'

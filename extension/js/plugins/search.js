@@ -4,16 +4,13 @@
  * @mail solopea@gmail.com
  */
 
-import $ from 'jquery'
-import util from '../common/util'
-
 const name = 'search';
 const key = 'search';
 const version = 1;
 const type = 'other';
 const icon = chrome.extension.getURL('img/google.png');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const title = chrome.i18n.getMessage(`${name}_title`);
+const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const commands = [{
     key,
     type,
@@ -46,7 +43,7 @@ const searchMap = {
 };
 
 function onInput(query) {
-    let data = Object.keys(searchMap).map(engine => {
+    const data = Object.keys(searchMap).map(engine => {
         return {
             key: 'search',
             query,
@@ -60,8 +57,8 @@ function onInput(query) {
 }
 
 function onEnter({ query, engine }) {
-    let url = searchMap[engine].url + query.split(' ').join('+');
-    
+    const url = searchMap[engine].url + query.split(' ').join('+');
+
     chrome.tabs.create({
         url
     });

@@ -1,11 +1,10 @@
 import $ from 'jquery'
-import util from './util'
 import KEY from '../constant/keycode'
 import keyboardJS from 'keyboardjs'
 
 function EasyComplete(opt) {
     this.opt = opt;
-    this.ipt = $('#' + opt.id);
+    this.ipt = $(`#${opt.id}`);
     this.ipt.val(opt.text);
     this.delay = opt.delay || 200;
     this.term = '';
@@ -17,15 +16,12 @@ EasyComplete.prototype = {
     searchTimer: null,
 
     bind: function (event, handle) {
-        this.o.bind.apply(this.o, [
-            event,
-            $.proxy(handle, this)
-        ]);
+        Reflect.apply(this.o.bind, this.o, [event, $.proxy(handle, this)]);
         return this;
     },
 
-    trigger: function () {
-        this.o.trigger.apply(this.o, arguments);
+    trigger: function (...args) {
+        Reflect.apply(this.o.trigger, this.o, args);
         return this;
     },
 
@@ -47,19 +43,18 @@ EasyComplete.prototype = {
     },
 
     bindEvent: function () {
-        var that = this;
+        const that = this;
 
         this.ipt.bind('input', function (event) {
-            clearTimeout(this.searchTimer);
+            clearTimeout(that.searchTimer);
 
-            var elem = this;
-            var keyCode = event.keyCode;
+            const keyCode = event.keyCode;
             if (keyCode === KEY.UP || keyCode === KEY.DOWN) {
                 return;
             }
 
-            this.searchTimer = setTimeout(function () {
-                that.setTerm($(elem).val());
+            that.searchTimer = setTimeout(() => {
+                that.setTerm($(this).val());
                 that.refresh();
             }, 0);
         });
@@ -95,7 +90,7 @@ EasyComplete.prototype = {
     },
 
     select: function (index) {
-        var itemNum = $('.ec-item').length;
+        const itemNum = $('.ec-item').length;
 
         if (index >= 0 && index <= itemNum - 1) {
             this.selectItemByIndex(index);
@@ -114,7 +109,7 @@ EasyComplete.prototype = {
 
     refresh: function () {
         // Process the returned data, or let the user handle it
-        var dataList = this.opt.onInput.call(this, this.getTerm());
+        const dataList = Reflect.apply(this.opt.onInput, this, [this.getTerm()]);
 
         if (dataList) {
             if (dataList instanceof Promise || typeof dataList.then === 'function') {
@@ -132,22 +127,18 @@ EasyComplete.prototype = {
     },
 
     move: function (direction) {
-        var $itemList = $('.ec-itemList');
-        var maxIndex = $('.ec-item').length - 1;
-        var selectIndex = $('.ec-item-select').data('index');
-        var scrollToY;
+        const maxIndex = $('.ec-item').length - 1;
+        let selectIndex = $('.ec-item-select').data('index');
 
         if (direction === 'up') {
-            selectIndex--;
-        }
-        else {
-            selectIndex++;
+            selectIndex = selectIndex - 1;
+        } else {
+            selectIndex = selectIndex + 1;
         }
 
         if (selectIndex < 0) {
             selectIndex = maxIndex;
-        }
-        else if (selectIndex > maxIndex) {
+        } else if (selectIndex > maxIndex) {
             selectIndex = 0;
         }
 
@@ -156,26 +147,25 @@ EasyComplete.prototype = {
 
     selectItemByIndex: function (index) {
         $('.ec-item-select').removeClass('ec-item-select');
-        $('.ec-item:eq(' + index + ')').addClass('ec-item-select');
+        $(`.ec-item:eq(${index})`).addClass('ec-item-select');
 
         this.refreshScrollbar();
     },
 
     refreshScrollbar: function () {
-        var $item = $('.ec-item-select');
-        var $itemList = $item.parent();
+        const $item = $('.ec-item-select');
+        const $itemList = $item.parent();
 
         // scroll to visible
-        var pH = $itemList.height();
-        var pTop = $itemList.get(0).scrollTop;
+        const pH = $itemList.height();
+        const pTop = $itemList.get(0).scrollTop;
 
-        var cTop = $item.get(0).getBoundingClientRect().top - $itemList.get(0).getBoundingClientRect().top;
-        var cH = $item.outerHeight();
+        const cTop = $item.get(0).getBoundingClientRect().top - $itemList.get(0).getBoundingClientRect().top;
+        const cH = $item.outerHeight();
 
         if (cTop < 0) {
             $itemList.scrollTop(pTop + cTop);
-        }
-        else if (cTop + cH > pH) {
+        } else if (cTop + cH > pH) {
             $itemList.scrollTop(pTop + cTop + cH - pH);
         }
     },
@@ -195,31 +185,33 @@ EasyComplete.prototype = {
         }
         this.dataList = dataList;
 
-        var createItemFn = fn || this.opt.createItem;
-        var html = [
+        const createItemFn = fn || this.opt.createItem;
+        const html = [
             '<div class="ec-itemList">'
         ];
 
-        for (var i = 0, len = dataList.length; i < len; i++) {
+        for (let i = 0, len = dataList.length; i < len; i = i + 1) {
             if (createItemFn) {
-                html.push(createItemFn.call(this, i, dataList[i]));
+                html.push(Reflect.apply(createItemFn, this, [i, dataList[i]]));
                 continue;
             }
         }
 
         html.push('</div>');
 
-        var $itemList = $(html.join(''));
+        const $itemList = $(html.join(''));
 
-        var iptOffset = this.ipt.offset;
-        var left = iptOffset.left;
-        var top = iptOffset.top + this.ipt.css('height');
+        const iptOffset = this.ipt.offset;
+        const left = iptOffset.left;
+        const top = iptOffset.top + this.ipt.css('height');
 
         $itemList.css({
             left: left,
             top: top
         });
-        $itemList.find('.ec-item').first().addClass('ec-item-select');
+        $itemList.find('.ec-item')
+            .first()
+            .addClass('ec-item-select');
 
         if (this.opt.container) {
             $(this.opt.container).html($itemList);

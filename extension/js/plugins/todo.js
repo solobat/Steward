@@ -4,7 +4,6 @@
  * @email solopea@gmail.com
  */
 
-import $ from 'jquery'
 import request from '../common/request'
 
 const version = 2;
@@ -12,8 +11,8 @@ const name = 'todolist';
 const key = 'todo';
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/todo.png');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const title = chrome.i18n.getMessage(`${name}_title`);
+const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const commands = [{
     key,
     type,
@@ -23,59 +22,55 @@ const commands = [{
     editable: true
 }];
 
-function onInput(key) {
+function onInput() {
 }
 
 function onEnter(item) {
     if (!item || item.key === 'plugins') {
-        addTodo.call(this, this.query);
-    }
-    else {
-        removeTodo.call(this, item.id);
+        Reflect.apply(addTodo, this, [this.query]);
+    } else {
+        Reflect.apply(removeTodo, this, [item.id]);
     }
 }
 
 function removeTodo(id) {
-    var cmdbox = this;
-    getTodos(function (todos) {
-        todos = todos.filter(function (todo) {
+    getTodos(resp => {
+        const todos = resp.filter(function (todo) {
             return todo.id !== id;
         });
 
         chrome.storage.sync.set({
             todo: todos
-
-        }, function () {
-                cmdbox.empty();
-            });
+        }, () => {
+            this.empty();
+        });
     });
 }
 
 function addTodo(todo) {
-    var cmdbox = this;
-
     if (!todo) {
         return;
     }
 
-    getTodos(function (todos) {
+    getTodos(resp => {
+        let todos = resp;
+
         if (!todos || !todos.length) {
             todos = [];
         }
 
         todos.push({
-            id: +new Date(),
+            id: Number(new Date()),
             title: todo
-
         });
 
         chrome.storage.sync.set({
             todo: todos
 
-        }, function () {
-                cmdbox.empty();
-                noticeBg2refresh();
-            });
+        }, () => {
+            this.empty();
+            noticeBg2refresh();
+        });
     });
 }
 
@@ -87,7 +82,7 @@ function noticeBg2refresh() {
 
 function getTodos(callback) {
     chrome.storage.sync.get('todo', function (results) {
-        var todos = results.todo;
+        const todos = results.todo;
 
         callback(todos);
     });
@@ -105,10 +100,8 @@ function dataFormat(rawList) {
     });
 }
 function showTodos() {
-    let cmdbox = this;
-
-    getTodos(function (todos) {
-        cmdbox.showItemList(dataFormat(todos || []));
+    getTodos(todos => {
+        this.showItemList(dataFormat(todos || []));
     });
 }
 

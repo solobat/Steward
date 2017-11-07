@@ -4,16 +4,13 @@
  * @mail solopea@gmail.com
  */
 
-import $ from 'jquery'
-import util from '../common/util'
-
 const version = 2;
 const name = 'openurl';
 const key = 'open';
 const type = 'regexp';
 const icon = chrome.extension.getURL('img/openurl.png');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const title = chrome.i18n.getMessage(`${name}_title`);
+const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const regExp = /^(https?:\/\/)?(www\.)?(\w+\.)+\w{2,5}$/gi;
 const commands = [{
     key,
@@ -26,7 +23,7 @@ const commands = [{
 }];
 
 function onInput(url) {
-    var data = [{
+    const data = [{
         key: 'url',
         id: name,
         icon,
@@ -39,11 +36,13 @@ function onInput(url) {
 }
 
 function onEnter({ url }) {
+    let theurl = url;
+
     if (!/^https?/.test(url)) {
-        url = 'http://' + url;
+        theurl = `http://${url}`;
     }
     chrome.tabs.create({
-        url
+        url: theurl
     });
 }
 

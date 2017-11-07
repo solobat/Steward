@@ -4,7 +4,6 @@
  * @mail solopea@gmail.com
  */
 
-import $ from 'jquery'
 import util from '../common/util'
 import mathexp from 'math-expression-evaluator'
 
@@ -13,9 +12,9 @@ const version = 3;
 const type = 'regexp';
 const key = 'calc';
 const icon = chrome.extension.getURL('img/calc.png');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
-const regExp = /^([-+]?)([\d\.]+)(?:\s*([-+*\/])\s*((?:\s[-+])?[\d\.]+)?\s*)+$/;
+const title = chrome.i18n.getMessage(`${name}_title`);
+const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
+const regExp = /^([-+]?)([\d\.]+)(?:\s*([-+*\/])\s*((?:\s[-+])?[\d\.]+)?\s*)+$/; 
 const commands = [{
     key,
     type,
@@ -26,14 +25,14 @@ const commands = [{
     regExp
 }];
 
-function onInput(key) {
-    var data = [];
-    if (this.term.startsWith('calc ') && key) {
-        this.render(key);
+function onInput(query) {
+    let data = [];
+    if (this.term.startsWith('calc ') && query) {
+        this.render(query);
         return;
     }
     try {
-        let result = mathexp.eval(this.str);
+        const result = mathexp.eval(this.str);
         data = [
             {
                 key: title,
@@ -42,8 +41,7 @@ function onInput(key) {
                 desc: subtitle
             }
         ];
-    }
-    catch (e) {
+    } catch (e) {
         data = [
             {
                 key: title,
@@ -58,7 +56,7 @@ function onInput(key) {
 }
 
 function onEnter(item) {
-    let text = item.title;
+    const text = item.title;
 
     util.copyToClipboard(text, true);
 }

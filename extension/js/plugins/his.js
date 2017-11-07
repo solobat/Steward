@@ -4,15 +4,13 @@
  * @email solopea@gmail.com
  */
 
-import $ from 'jquery'
-
 const version = 2;
 const name = 'history';
 const key = 'his';
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/history.png');
-const title = chrome.i18n.getMessage(name + '_title');
-const subtitle = chrome.i18n.getMessage(name + '_subtitle');
+const title = chrome.i18n.getMessage(`${name}_title`);
+const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const commands = [{
     key,
     type,
@@ -22,14 +20,14 @@ const commands = [{
     editable: true
 }];
 
-function searchHistory(key, callback) {
+function searchHistory(query, callback) {
     chrome.history.search({
-        text: key
+        text: query
+    }, function (data) {
+            let hisList = data || [];
 
-    }, function (hisList) {
-            hisList = hisList || [];
             hisList = hisList.filter(function (his) {
-                return !!his.title;
+                return Boolean(his.title);
             });
 
             callback(hisList);
@@ -50,9 +48,9 @@ function dataFormat(rawList) {
     });
 }
 
-function onInput(key) {
-    return new Promise((resolve) => {
-        searchHistory(key, function (matchUrls) {
+function onInput(query) {
+    return new Promise(resolve => {
+        searchHistory(query, function (matchUrls) {
             resolve(dataFormat(matchUrls));
         });
     });
