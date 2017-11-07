@@ -18,7 +18,7 @@ const App = {
         $('body').append(html);
         this.$el = $('#steward-main');
         this.$iframe = $('#steward-iframe');
-        this.$iframe.load(function() {
+        this.$iframe.load(() => {
             const iframeWindow = document.getElementById('steward-iframe').contentWindow;
 
             iframeWindow.postMessage({
@@ -50,6 +50,12 @@ const App = {
         this.isOpen = false;
     },
 
+    handleBoxInited() {
+        if (document.activeElement === this.$iframe[0]) {
+            document.activeElement.blur();
+        }
+    },
+
     bindEvents() {
         const that = this;
         const host = window.location.host;
@@ -63,8 +69,12 @@ const App = {
         });
 
         window.addEventListener('message', event => {
-            if (event.data.action === 'closeBox') {
+            const action = event.data.action;
+
+            if (action === 'closeBox') {
                 this.closeBox();
+            } else if (action === 'boxInited') {
+                this.handleBoxInited();
             }
         });
 
