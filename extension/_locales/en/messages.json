@@ -205,5 +205,8 @@
     },
     "steward_subtitle": {
         "message": "Find steward option tabs and open"
+    },
+    "github_title": {
+        "message": "The most visited github pages"
     }
 }

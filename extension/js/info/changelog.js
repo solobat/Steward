@@ -1,8 +1,12 @@
 /*global EXT_TYPE */
 const langZh = [
     {
+        version: 'v2.8.5',
+        detail: '优化页面内使用的体验;<br /> 添加github website插件; <br />其它一些优化。'
+    },
+    {
         version: 'v2.8.4',
-        detail: '在页面中中使用 <em>/</em> 来列出所有website选项; <br/>更多的国际化支持; <br />一些小优化。'
+        detail: '在页面中使用 <em>/</em> 来列出所有website选项; <br/>更多的国际化支持; <br />一些小优化。'
     },
     {
         version: 'v2.8.3',
@@ -98,6 +102,10 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v2.8.5',
+        detail: 'Optimize the experience used within the page; <br />Add github plugin.'
+    },
     {
         version: 'v2.8.4',
         detail: 'Some optimization'
