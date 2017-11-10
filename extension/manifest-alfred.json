@@ -1,10 +1,10 @@
 {
     "manifest_version": 2,
-    "name": "Browser Alfred: __MSG_ext_name__",
+    "name": "Browser Alfred - a command launcher",
     "short_name": "Alfred",
-    "version": "2.8.6",
-    "description": "__MSG_ext_desc__",
-    "default_locale": "zh_CN",
+    "version": "2.8.7",
+    "description": "__MSG_extDesc__",
+    "default_locale": "en",
     "background": {
         "page": "background.html"
     },
@@ -62,7 +62,7 @@
                 "chromeos": "Ctrl+J",
                 "linux": "Ctrl+J"
             },
-            "description": "__MSG_content_box_desc__",
+            "description": "__MSG_pageboxDesc__",
             "global": true
         }
     }

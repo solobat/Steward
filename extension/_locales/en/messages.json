@@ -1,11 +1,11 @@
 {
-    "ext_name": {
+    "extName": {
         "message": "extension management/app launcher/tab management"
     },
-    "ext_desc": {
+    "extDesc": {
         "message": "a command launcher with extension management/app launcher/tab management/history search/alfred"
     },
-    "content_box_desc": {
+    "pageboxDesc": {
         "message": "Open launcher in page"
     },
     "bookmark_title": {
