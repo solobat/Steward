@@ -1,6 +1,10 @@
 /*global EXT_TYPE */
 const langZh = [
     {
+        version: 'v2.8.6',
+        detail: '在页面内使用时urlblock时，输入 / 自动带出当前域名; <br/>页面内使用优化.'
+    },
+    {
         version: 'v2.8.5',
         detail: '优化页面内使用的体验;<br /> 添加github website插件; <br />其它一些优化。'
     },
@@ -102,6 +106,10 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v2.8.6',
+        detail: 'When using urlblock within a page, enter / automatically bring out the current domain name; <br />Optimize the experience within the page.'
+    },
     {
         version: 'v2.8.5',
         detail: 'Optimize the experience used within the page; <br />Add github plugin.'
