@@ -51,6 +51,7 @@ const App = {
     },
 
     handleBoxInited() {
+        // don't need to get the focus while inited
         if (document.activeElement === this.$iframe[0]) {
             document.activeElement.blur();
         }

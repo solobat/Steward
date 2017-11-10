@@ -7,7 +7,7 @@
 import request from '../common/request'
 import util from '../common/util'
 
-const version = 3;
+const version = 4;
 const name = 'urlblock';
 const keys = [{ key: 'bk' }, { key: 'bk8' }];
 const type = 'keyword';
@@ -17,9 +17,13 @@ const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const BLOCK_EXPIRED = 8 * 60 * 60 * 1000;
 const commands = util.genCommands(name, icon, keys, type);
 
-function onInput(key, command) {
+function onInput(key, command, inContent) {
     if (!key) {
         return Reflect.apply(showBlacklist, this, [command.orkey]);
+    } else {
+        if (key === '/' && inContent) {
+            this.render(`${command.key} ${window.parentHost}`);
+        }
     }
 }
 
