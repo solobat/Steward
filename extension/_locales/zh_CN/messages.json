@@ -1,11 +1,11 @@
 {
-    "ext_name": {
+    "extName": {
         "message": "扩展管家/应用启动/标签管理/历史记录查询/alfred"
     },
-    "ext_desc": {
+    "extDesc": {
         "message": "启动器/便捷管理扩展/应用/标签/历史记录等"
     },
-    "content_box_desc": {
+    "pageboxDesc": {
         "message": "在页面上启用"
     },
     "bookmark_title": {
