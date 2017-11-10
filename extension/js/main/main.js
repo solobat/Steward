@@ -258,14 +258,6 @@ function init(config, mode, inContent) {
         }
     });
 
-    function closeBoxIfNeeded() {
-        if (window.parentWindow) {
-            window.parentWindow.postMessage({
-                action: 'closeBox'
-            }, '*');
-        }
-    }
-
     cmdbox.bind('enter', function (event, elem) {
         const $elem = $(elem);
         const item = this.dataList[$elem.index()];
@@ -286,18 +278,16 @@ function init(config, mode, inContent) {
             } else if (type === 'copy') {
                 util.copyToClipboard($elem.data('url'), true);
             } else if (type === 'action') {
-                if (window.parentWindow) {
-                    window.parentWindow.postMessage({
-                        action: 'command',
-                        info: item
-                    }, '*');
-                }
+                this.trigger('action', {
+                    action: 'command',
+                    info: item
+                });
             }
 
             _gaq.push(['_trackEvent', 'exec', 'enter', type]);
 
             if (type !== 'plugins') {
-                closeBoxIfNeeded();
+                this.trigger('shouldCloseBox');
             }
 
             return;
@@ -309,7 +299,7 @@ function init(config, mode, inContent) {
         Reflect.apply(plugin.onEnter, this, [this.dataList[index], this.command]);
 
         if (plugin.name !== 'Help') {
-            closeBoxIfNeeded();
+            this.trigger('shouldCloseBox');
         }
         _gaq.push(['_trackEvent', 'exec', 'enter', plugin.name]);
     });

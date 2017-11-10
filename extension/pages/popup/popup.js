@@ -31,6 +31,19 @@ function changeBoxStatus(disabled) {
     }
 }
 
+function closeBox() {
+    changeBoxStatus(true);
+    requestAnimationFrame(() => {
+        window.parentWindow.postMessage({
+            action: 'closeBox'
+        }, '*');
+    });
+}
+
+function handleAction(event, obj) {
+    window.parentWindow.postMessage(obj, '*');
+}
+
 function initForContentPage(parentWindow, parentHost) {
     document.documentElement.className += ' content-page';
     window.parentWindow = parentWindow;
@@ -40,14 +53,9 @@ function initForContentPage(parentWindow, parentHost) {
         box = cmdbox;
         changeBoxStatus(true);
 
-        keyboardJS.bind('esc', () => {
-            changeBoxStatus(true);
-            requestAnimationFrame(() => {
-                parentWindow.postMessage({
-                    action: 'closeBox'
-                }, '*');
-            });
-        });
+        box.bind('shouldCloseBox', closeBox);
+        box.bind('action', handleAction);
+        keyboardJS.bind('esc', closeBox);
 
         parentWindow.postMessage({
             action: 'boxInited'
