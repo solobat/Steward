@@ -79,7 +79,7 @@ function init(config, mode, inContent) {
         cmdbox.cmd = command.key;
         cmdbox.command = command;
 
-        return Reflect.apply(command.plugin.onInput, cmdbox, [key, command]);
+        return Reflect.apply(command.plugin.onInput, cmdbox, [key, command, inContent]);
     }
 
     function searchInContext(query) {
