@@ -4,7 +4,7 @@
  * @email solopea@gmail.com
  */
 
-import { getByCity } from '../api/weather'
+import { getByCity } from '../../api/weather'
 
 const version = 2;
 const name = 'weather';

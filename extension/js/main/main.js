@@ -10,12 +10,12 @@ import EasyComplete from '../common/easycomplete'
 import util from '../common/util'
 import storage from '../common/storage'
 import CONST from '../common/const'
-import {plugins} from '../plugins/plugins'
+import {plugins} from '../plugins/browser'
 import * as Wallpaper from './wallpaper'
 import ga from '../../js/common/ga'
 import KEY from '../constant/keycode'
 import _ from 'underscore'
-import { websitesMap } from '../../js/plugins/website'
+import { websitesMap } from '../plugins/website'
 
 const commands = {};
 const regExpCommands = [];

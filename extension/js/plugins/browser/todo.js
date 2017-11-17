@@ -4,7 +4,7 @@
  * @email solopea@gmail.com
  */
 
-import request from '../common/request'
+import request from '../../common/request'
 
 const version = 2;
 const name = 'todolist';

@@ -4,7 +4,7 @@
  * @mail solopea@gmail.com
  */
 
-import util from '../common/util'
+import util from '../../common/util'
 import mathexp from 'math-expression-evaluator'
 
 const name = 'calculate';

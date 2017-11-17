@@ -4,7 +4,7 @@
  * @email solopea@gmail.com
  */
 
-import util from '../common/util'
+import util from '../../common/util'
 import Toast from 'toastr'
 
 const version = 2;

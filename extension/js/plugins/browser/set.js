@@ -4,7 +4,7 @@
  * @mail solopea@gmail.com
  */
 
-import util from '../common/util'
+import util from '../../common/util'
 
 const version = 2;
 const name = 'setOption';
