@@ -100,11 +100,11 @@ function onEnter(item, command, query) {
     const str = query.trim();
 
     if (str) {
-        Toast.success(item.sentence);
+        Toast.success(item.sentence, item.title, { timeOut: 12000 });
 
-        return true;
+        return Promise.resolve(true);
     } else {
-        return `${command.key} ${item.id}`;
+        return Promise.resolve(`${command.key} ${item.id}`);
     }
 }
 

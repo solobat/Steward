@@ -36,6 +36,8 @@ function onInput(query) {
 
 function onEnter(item) {
     util.copyToClipboard(item.title, true);
+
+    return Promise.resolve(false);
 }
 
 function dataFormat(rawList) {

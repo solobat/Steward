@@ -67,7 +67,7 @@ function copyToClipboard(text, showMsg) {
         event.clipboardData.setData('text/plain', text);
 
         if (showMsg) {
-            Toast.success(`"${text}" has been copied to the clipboard`);
+            Toast.success(`"${text}" has been copied to the clipboard`, '', { timeOut: 1000 });
         }
     }, {once: true});
 

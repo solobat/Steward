@@ -59,6 +59,8 @@ function onEnter(item) {
     const text = item.title;
 
     util.copyToClipboard(text, true);
+
+    return Promise.resolve(false);
 }
 
 export default {

@@ -145,21 +145,22 @@ function onEnter({ id }) {
         const actionName = id.split('-')[1];
 
         if (actionName === 'seturl') {
-            setUrl(this.query, error => {
-                if (error) {
-                    Toast.error(error);
-                } else {
-                    Toast.success('set successfully');
-                    jobs = [];
-                    this.render('jk ');
-                }
+            return new Promise(resolve => {
+                setUrl(this.query, error => {
+                    if (error) {
+                        Toast.error(error);
+
+                        resolve(true);
+                    } else {
+                        Toast.success('set successfully');
+                        jobs = [];
+
+                        resolve('jk ');
+                    }
+                });
             });
         }
-
-        return;
-    }
-
-    if (id) {
+    } else if (id) {
         window.open(id)
     }
 }
