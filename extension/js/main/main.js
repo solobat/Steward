@@ -222,7 +222,7 @@ function init(config, mode, inContent) {
                 'ec-item-title',
                 item.isWarn ? 'ec-item-warn' : ''
             ].join(' ');
-            const descStr = item.desc ? `<span class="ec-item-desc">${item.desc}</span>` : ''
+            const descStr = item.desc ? `<span class="ec-item-desc ${item.lazyDesc ? 'lazy' : ''}">${item.desc}</span>` : ''
 
             const html = `
                 <div data-type="${item.key}" data-url="${item.url}" data-index="${index}" data-id="${item.id}" class="ec-item">
@@ -295,12 +295,18 @@ function init(config, mode, inContent) {
 
         const plugin = this.command.plugin;
         const index = $elem.index();
+        const result = Reflect.apply(plugin.onEnter, this, [this.dataList[index], this.command, this.query]);
 
-        Reflect.apply(plugin.onEnter, this, [this.dataList[index], this.command]);
-
-        if (plugin.name !== 'Help') {
-            this.trigger('shouldCloseBox');
+        if (result) {
+            if (typeof result === 'string') {
+                this.render(result);
+            }
+        } else {
+            if (plugin.name !== 'Help') {
+                this.trigger('shouldCloseBox');
+            }
         }
+
         _gaq.push(['_trackEvent', 'exec', 'enter', plugin.name]);
     });
 
@@ -348,47 +354,49 @@ function init(config, mode, inContent) {
 
 function classifyPlugins(pluginsData, inContent) {
     plugins.forEach(plugin => {
-        if (plugin.commands instanceof Array) {
-            const pname = plugin.name;
-            let pcmds;
+        if (!plugin.invalid) {
+            if (plugin.commands instanceof Array) {
+                const pname = plugin.name;
+                let pcmds;
 
-            try {
-                pcmds = pluginsData[pname].commands;
-                if (plugin.version > (pluginsData[pname].version || 1)) {
-                    pcmds = $.extend(true, plugin.commands, pcmds);
-                }
-            } catch (e) {
-                pcmds = plugin.commands;
-            }
-
-            // FIX: if add new plugin, the cache may not have
-            if (pcmds) {
-                pcmds.forEach(command => {
-                    const cmd = {
-                        ...command,
-                        name: pname,
-                        plugin
-                    };
-
-                    switch(command.type) {
-                    case 'regexp':
-                        regExpCommands.push(cmd);
-                        break;
-                    case 'other':
-                        otherCommands.push(cmd);
-                        break;
-                    case 'keyword':
-                        commands[command.key] = cmd;
-                        break;
-                    default:
-                        // bugfix
-                        commands[command.key] = cmd;
-                        break;
+                try {
+                    pcmds = pluginsData[pname].commands;
+                    if (plugin.version > (pluginsData[pname].version || 1)) {
+                        pcmds = $.extend(true, plugin.commands, pcmds);
                     }
-                });
+                } catch (e) {
+                    pcmds = plugin.commands;
+                }
+
+                // FIX: if add new plugin, the cache may not have
+                if (pcmds) {
+                    pcmds.forEach(command => {
+                        const cmd = {
+                            ...command,
+                            name: pname,
+                            plugin
+                        };
+
+                        switch(command.type) {
+                        case 'regexp':
+                            regExpCommands.push(cmd);
+                            break;
+                        case 'other':
+                            otherCommands.push(cmd);
+                            break;
+                        case 'keyword':
+                            commands[command.key] = cmd;
+                            break;
+                        default:
+                            // bugfix
+                            commands[command.key] = cmd;
+                            break;
+                        }
+                    });
+                }
+            } else {
+                searchContexts.push(plugin);
             }
-        } else {
-            searchContexts.push(plugin);
         }
     });
 

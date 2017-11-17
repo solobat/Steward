@@ -73,6 +73,10 @@ a {
     padding: 2px 8px;
     height: 40px;
     position: relative;
+
+    .lazy {
+        visibility: hidden;
+    }
 }
 
 .ec-itemList .ec-item:hover {
@@ -120,6 +124,10 @@ a {
 
 .ec-itemList .ec-item-select {
     background: rgb(209, 209, 209);
+
+    .lazy {
+        visibility: visible;
+    }
 }
 
 .ec-item .ec-item-warn {

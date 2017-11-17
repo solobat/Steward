@@ -22,6 +22,7 @@ import search from './search'
 import extensions from './extensions'
 import chrome from './chrome'
 import steward from './steward'
+import { extPlugins } from './extension'
 
 const pluginList = [
     jenkins,
@@ -47,7 +48,8 @@ const pluginList = [
     search,
     extensions,
     chrome,
-    steward
+    steward,
+    ...extPlugins
 ]
 
 // orkey: original key
