@@ -161,7 +161,9 @@ function onEnter({ id }) {
             });
         }
     } else if (id) {
-        window.open(id)
+        chrome.tabs.create({
+            url: id
+        });
     }
 }
 

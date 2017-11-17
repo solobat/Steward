@@ -57,7 +57,9 @@ function onInput(query) {
 }
 
 function onEnter(item) {
-    window.open(item.url);
+    chrome.tabs.create({
+        url: item.url
+    });
 }
 
 export default {
