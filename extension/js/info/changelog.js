@@ -7,6 +7,7 @@ const langZh = [
             新增扩展类插件架构，使用命令与其它扩展交互
             (目前提供<a href="${wordcardUrl}" target="_blank">单词小卡片扩展</a>, trigger为<em>wd</em>);<br>
             其它一些优化。
+            <br><a href="http://v.youku.com/v_show/id_XMzE2NDA4MzY1Ng==.html?spm=a2h3j.8428770.3416059.1" target="_blank">更新视频</a>
         `
     },
     {
