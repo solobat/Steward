@@ -23,7 +23,7 @@ function changeBoxStatus(disabled) {
         box.ipt.attr('readonly', disabled);
 
         if (disabled) {
-            box.empty();
+            box.empty(true);
             box.ipt.blur();
         } else {
             box.ipt.focus();

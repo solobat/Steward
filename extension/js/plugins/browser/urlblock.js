@@ -4,8 +4,8 @@
  * @email solopea@gmail.com
  */
 
-import request from '../common/request'
-import util from '../common/util'
+import request from '../../common/request'
+import util from '../../common/util'
 
 const version = 4;
 const name = 'urlblock';

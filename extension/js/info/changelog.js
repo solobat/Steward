@@ -1,5 +1,15 @@
 /*global EXT_TYPE */
+const wordcardUrl = 'https://chrome.google.com/webstore/detail/oegblnjiajbfeegijlnblepdodmnddbk';
 const langZh = [
+    {
+        version: 'v2.9',
+        detail: `
+            新增扩展类插件架构，使用命令与其它扩展交互
+            (目前提供<a href="${wordcardUrl}" target="_blank">单词小卡片扩展</a>, trigger为<em>wd</em>);<br>
+            其它一些优化。
+            <br><a href="http://v.youku.com/v_show/id_XMzE2NDA4MzY1Ng==.html?spm=a2h3j.8428770.3416059.1" target="_blank">更新视频</a>
+        `
+    },
     {
         version: 'v2.8.7',
         detail: 'i18n update'
@@ -110,6 +120,10 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v2.9',
+        detail: 'Optimize'
+    },
     {
         version: 'v2.8.7',
         detail: 'i18n update'

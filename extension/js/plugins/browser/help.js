@@ -43,7 +43,7 @@ function onInput() {
 }
 
 function onEnter(item) {
-    this.render(String(item.id.split(',')[0]));
+    return Promise.resolve(String(item.id.split(',')[0]));
 }
 
 export default {

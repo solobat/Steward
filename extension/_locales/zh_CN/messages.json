@@ -217,5 +217,11 @@
     },
     "github_title": {
         "message": "github常用页面"
+    },
+    "wordcard_title": {
+        "message": "单词小卡片扩展工具"
+    },
+    "wordcard_subtitle": {
+        "message": "需要单词小卡片扩展处于启用状态，且版本 >= v2.2.1"
     }
 }

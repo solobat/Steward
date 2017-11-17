@@ -4,7 +4,7 @@
  * @mail solopea@gmail.com
  */
 
-import util from '../common/util'
+import util from '../../common/util'
 import mathexp from 'math-expression-evaluator'
 
 const name = 'calculate';
@@ -59,6 +59,8 @@ function onEnter(item) {
     const text = item.title;
 
     util.copyToClipboard(text, true);
+
+    return Promise.resolve(false);
 }
 
 export default {

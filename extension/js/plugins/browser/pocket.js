@@ -5,8 +5,8 @@
  */
 
 import $ from 'jquery'
-import Auth from '../common/auth'
-import conf from '../conf/pocket_conf'
+import Auth from '../../common/auth'
+import conf from '../../conf/pocket_conf'
 
 const auth = new Auth(conf);
 const version = 2;

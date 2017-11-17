@@ -217,5 +217,11 @@
     },
     "github_title": {
         "message": "The most visited github pages"
+    },
+    "wordcard_title": {
+        "message": "A plugin for Wordcard extension"
+    },
+    "wordcard_subtitle": {
+        "message": "Need Wordcard extension is enabled"
     }
 }

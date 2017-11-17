@@ -95,6 +95,10 @@ a {
     height: 40px;
     position: relative;
     border-bottom: 1px solid rgba(209, 209, 209, .3);
+
+    .lazy {
+        visibility: hidden;
+    }
 }
 
 .ec-itemList .ec-item:hover {
@@ -150,6 +154,10 @@ a {
 
 .ec-itemList .ec-item-select {
     background: rgba(209, 209, 209, .7);
+
+    .lazy {
+        visibility: visible;
+    }
 }
 
 .ec-itemList .ec-item-select .ec-item-title {

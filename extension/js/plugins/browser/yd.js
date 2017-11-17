@@ -5,7 +5,7 @@
  */
 
 import $ from 'jquery'
-import util from '../common/util'
+import util from '../../common/util'
 
 const url = 'https://fanyi.youdao.com/openapi.do?' +
 'keyfrom=mineword&key=1362458147&type=data&doctype=json&version=1.1&q=';
@@ -36,6 +36,8 @@ function onInput(query) {
 
 function onEnter(item) {
     util.copyToClipboard(item.title, true);
+
+    return Promise.resolve(false);
 }
 
 function dataFormat(rawList) {

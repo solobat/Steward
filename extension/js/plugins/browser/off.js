@@ -1,17 +1,17 @@
 /**
- * @description enable extensions/apps
+ * @description disable extensions/apps
  * @author tomasy
  * @email solopea@gmail.com
  */
 
 import $ from 'jquery'
-import util from '../common/util'
+import util from '../../common/util'
 
 const version = 2;
-const name = 'onExtension';
-const key = 'on';
+const name = 'offExtension';
+const key = 'off';
 const type = 'keyword';
-const icon = chrome.extension.getURL('img/on.png');
+const icon = chrome.extension.getURL('img/off.png');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const commands = [{
@@ -55,7 +55,7 @@ function dataFormat(rawList) {
 
 function onInput(query) {
     return new Promise(resolve => {
-        getExtensions(query.toLowerCase(), false, function (matchExts) {
+        getExtensions(query.toLowerCase(), true, function (matchExts) {
             sortExtensions(matchExts, query, function (data) {
                 resolve(dataFormat(data));
             });
@@ -64,7 +64,7 @@ function onInput(query) {
 }
 
 function onEnter({ id }) {
-    setEnabled(id, true);
+    setEnabled(id, false);
     this.refresh();
     addRecord('ext', this.query, id);
 }
@@ -149,6 +149,7 @@ function createObj4Storage(id, query) {
     obj.querys[query] = {
         num: 1,
         update: Number(new Date())
+
     };
 
     return obj;
@@ -156,7 +157,7 @@ function createObj4Storage(id, query) {
 
 export default {
     version,
-    name: 'Enable Extension',
+    name: 'Disable Extension',
     icon,
     title,
     commands,

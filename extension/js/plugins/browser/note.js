@@ -4,7 +4,7 @@
  * @email solopea@gmail.com
  */
 
-import util from '../common/util'
+import util from '../../common/util'
 
 const version = 2;
 const name = 'note';
@@ -99,10 +99,10 @@ function findNoteById(notes, id) {
 function onEnter(item) {
     if (this.cmd === '#') {
         if (item.key === 'tag') {
-            this.ipt.val(`# ${item.id}`)
-            this.ipt.trigger('input')
+            return Promise.resolve(`# ${item.id}`);
         } else {
             util.copyToClipboard(item.title, true);
+            return Promise.resolve(false);
         }
     } else {
         const query = this.query;

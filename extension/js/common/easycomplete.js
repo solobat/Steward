@@ -31,11 +31,14 @@ EasyComplete.prototype = {
         this.trigger('init');
     },
 
-    empty: function () {
+    empty: function (silent) {
         this.ipt.val('');
         this.setTerm('');
+        this.clearList();
 
-        this.trigger('empty');
+        if (!silent) {
+            this.trigger('empty');
+        }
     },
 
     isVisible: function() {

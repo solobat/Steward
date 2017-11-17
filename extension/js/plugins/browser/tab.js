@@ -4,7 +4,7 @@
  * @email solopea@gmail.com
  */
 
-import util from '../common/util'
+import util from '../../common/util'
 import _ from 'underscore'
 
 const version = 2;

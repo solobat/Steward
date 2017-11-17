@@ -4,7 +4,8 @@
  * @email solopea@gmail.com
  */
 
-import request from '../common/request'
+import request from '../../common/request'
+import Toast from 'toastr'
 
 const version = 2;
 const name = 'todolist';
@@ -27,22 +28,32 @@ function onInput() {
 
 function onEnter(item) {
     if (!item || item.key === 'plugins') {
-        Reflect.apply(addTodo, this, [this.query]);
+        return Reflect.apply(addTodo, this, [this.query]);
     } else {
-        Reflect.apply(removeTodo, this, [item.id]);
+        return Reflect.apply(removeTodo, this, [item.id]);
     }
 }
 
 function removeTodo(id) {
-    getTodos(resp => {
-        const todos = resp.filter(function (todo) {
-            return todo.id !== id;
-        });
+    return new Promise(resolve => {
+        getTodos(resp => {
+            let todoName;
 
-        chrome.storage.sync.set({
-            todo: todos
-        }, () => {
-            this.empty();
+            const todos = resp.filter(function (todo) {
+                if (todo.id === id) {
+                    todoName = todo.title;
+                }
+
+                return todo.id !== id;
+            });
+
+            chrome.storage.sync.set({
+                todo: todos
+            }, () => {
+                Toast.success(`[${todoName}] is done`, 'TodoList', { timeOut: 1000 });
+                this.empty();
+                resolve(false);
+            });
         });
     });
 }
@@ -52,24 +63,27 @@ function addTodo(todo) {
         return;
     }
 
-    getTodos(resp => {
-        let todos = resp;
+    return new Promise(resolve => {
+        getTodos(resp => {
+            let todos = resp;
 
-        if (!todos || !todos.length) {
-            todos = [];
-        }
+            if (!todos || !todos.length) {
+                todos = [];
+            }
 
-        todos.push({
-            id: Number(new Date()),
-            title: todo
-        });
+            todos.push({
+                id: Number(new Date()),
+                title: todo
+            });
 
-        chrome.storage.sync.set({
-            todo: todos
-
-        }, () => {
-            this.empty();
-            noticeBg2refresh();
+            chrome.storage.sync.set({
+                todo: todos
+            }, () => {
+                this.empty();
+                noticeBg2refresh();
+                Toast.success(`Add todo [${todo}]`, 'TodoList', { timeOut: 1000 });
+                resolve(false);
+            });
         });
     });
 }
@@ -113,5 +127,6 @@ export default {
     commands,
     showTodos,
     onInput,
+    onBoxEmpty: showTodos,
     onEnter
 };
