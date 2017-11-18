@@ -203,6 +203,9 @@
     "general_defaultPlugin": {
         "message": "Default plugin for New Tab"
     },
+    "general_customCmd": {
+        "message": "New Tab custom command"
+    },
     "chrome_title": {
         "message": "chrome urls"
     },

@@ -5,6 +5,7 @@
  */
 
 import util from '../../common/util'
+import Toast from 'toastr'
 
 const version = 2;
 const name = 'note';
@@ -26,7 +27,13 @@ function createNote(...args) {
 
 function onInput(key) {
     if (this.cmd === '#') {
-        return handleTagQuery(key);
+        const { inContent } = window.stewardCache;
+
+        if (inContent && key === '/') {
+            return `# ${window.parentHost}`;
+        } else {
+            return handleTagQuery(key);
+        }
     } else {
         return [
             {
@@ -105,15 +112,21 @@ function onEnter(item) {
             return Promise.resolve(false);
         }
     } else {
+        const { inContent } = window.stewardCache;
         const query = this.query;
-        const matches = query.match(tagReg);
-        if (!matches) {
-            console.log('Label can not be empty');
-            return
+        const matches = query.match(tagReg) || [];
+        const tags = matches.map(match => match.substr(1))
+
+        if (inContent && window.parentHost) {
+            tags.push(window.parentHost);
         }
 
-        const tags = matches.map(match => match.substr(1))
-        const noteText = query.replace(/[#\s]+/g, '')
+        if (!tags.length) {
+            Toast.warning('Label can not be empty');
+            return Promise.resolve(true);
+        }
+
+        const noteText = query.replace(/[#]+/g, '')
         const note = createNote(noteText, tags)
 
         saveNote(note)
