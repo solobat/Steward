@@ -14,6 +14,18 @@
     "bookmark_subtitle": {
         "message": "查找书签记录并打开"
     },
+    "bookmark_bm_title": {
+        "message": "查找书签"
+    },
+    "bookmark_bm_subtitle": {
+        "message": "查找书签记录并打开"
+    },
+    "bookmark_bmd_title": {
+        "message": "查找书签并删除"
+    },
+    "bookmark_bmd_subtitle": {
+        "message": "查找书签记录并删除"
+    },
     "topsites_title": {
         "message": "常用网站"
     },

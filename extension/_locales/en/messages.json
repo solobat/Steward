@@ -14,6 +14,18 @@
     "bookmark_subtitle": {
         "message": "find bookmark and open it"
     },
+    "bookmark_bm_title": {
+        "message": "find bookmark"
+    },
+    "bookmark_bm_subtitle": {
+        "message": "find bookmark and open it"
+    },
+    "bookmark_bmd_title": {
+        "message": "find bookmark and delete it"
+    },
+    "bookmark_bmd_subtitle": {
+        "message": "find bookmark and delete it"
+    },
     "topsites_title": {
         "message": "top sites"
     },
