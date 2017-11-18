@@ -246,15 +246,19 @@ function handleInit () {
     const config = stewardCache.config;
 
     if (mode === 'newTab') {
+        const { cacheLastCmd, defaultPlugin, customCmd } = config.general;
         let cmd;
-        if (config.general.cacheLastCmd) {
+
+        if (cacheLastCmd) {
             cmd = storage.h5.get(CONST.LAST_CMD) || 'site ';
-        } else if (config.general.defaultPlugin) {
-            const defaultCommand = Object.values(commands).find(command => command.name === config.general.defaultPlugin);
+        } else if (defaultPlugin && defaultPlugin !== 'Other') {
+            const defaultCommand = Object.values(commands).find(command => command.name === defaultPlugin);
 
             if (defaultCommand) {
                 cmd = `${defaultCommand.key} `;
             }
+        } else if (customCmd) {
+            cmd = config.general.customCmd;
         }
 
         if (cmd) {

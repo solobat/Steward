@@ -45,7 +45,8 @@ function init() {
         let plugins = {};
         const general = {
             cacheLastCmd: true,
-            defaultPlugin: ''
+            defaultPlugin: '',
+            customCmd: ''
         };
 
         if (config.general) {
@@ -123,7 +124,7 @@ const appearanceItems = [{
     name: 'themes',
     icon: '/img/themes-icon.png'
 }];
-const defaultPlugins = ['Top Sites', 'Bookmarks', 'Tabs', 'Weather'].map(name => {
+const defaultPlugins = ['Top Sites', 'Bookmarks', 'Tabs', 'Weather', 'Other'].map(name => {
     return {
         label: name,
         value: name
