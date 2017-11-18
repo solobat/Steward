@@ -5,6 +5,7 @@
  */
 
 import Toast from 'toastr'
+import _ from 'underscore'
 
 const extName = '单词小卡片: 查词/收集/背单词';
 const version = 1;
@@ -12,7 +13,6 @@ const name = 'wordcard';
 const key = 'wd';
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/wordcard.png');
-const levelIcon = chrome.extension.getURL('img/exts/wordcard/level.png');
 const tagIcon = chrome.extension.getURL('img/exts/wordcard/tag.png');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
@@ -26,12 +26,13 @@ const commands = [{
 }];
 
 let extID;
+const levelIcons = [0, 1, 2, 3, 4, 5].map(level => chrome.extension.getURL(`img/exts/wordcard/level${level}.png`));
 
 const wordsFormat = (item => {
     return {
         key,
         id: item.id,
-        icon,
+        icon: levelIcons[item.level || 0],
         title: item.name,
         desc: (item.trans || []).join(', '),
         sentence: item.sentence,
@@ -49,11 +50,11 @@ const tagsFormat = (tag => {
     };
 });
 
-const levelsFormat = (level => {
+const levelsFormat = ((level, index) => {
     return {
         key,
         id: level,
-        icon: levelIcon,
+        icon: levelIcons[index],
         title: level,
         desc: 'level'
     };
@@ -79,7 +80,7 @@ function queryByFilter(query) {
             action: 'filter',
             query
         }, ({ data = [] }) => {
-           resolve(data.map(wordsFormat));
+           resolve(_.sortBy(data, 'level').map(wordsFormat));
         });
     });
 }
