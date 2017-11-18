@@ -110,6 +110,14 @@ EasyComplete.prototype = {
         return this.term;
     },
 
+    handleInputResult(results) {
+        if (typeof results === 'string') {
+            this.render(results);
+        } else if (results instanceof Array) {
+            this.showItemList(results);
+        }
+    },
+
     refresh: function () {
         // Process the returned data, or let the user handle it
         const dataList = Reflect.apply(this.opt.onInput, this, [this.getTerm()]);
@@ -117,10 +125,10 @@ EasyComplete.prototype = {
         if (dataList) {
             if (dataList instanceof Promise || typeof dataList.then === 'function') {
                 dataList.then(resp => {
-                    this.showItemList(resp);
+                    this.handleInputResult(resp);
                 });
             } else {
-                this.showItemList(dataList);
+                this.handleInputResult(dataList);
             }
         }
     },

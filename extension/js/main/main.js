@@ -490,6 +490,8 @@ function restoreConfig() {
 export default function(themode, isInContent) {
     inContent = isInContent;
     mode = themode;
+    stewardCache.inContent = isInContent;
+    stewardCache.mode = mode;
 
     return restoreConfig().then(() => {
         init();
