@@ -11,6 +11,7 @@ import changelog from '../../js/info/changelog'
 import storage from '../../js/utils/storage'
 import util from '../../js/common/util'
 import { aboutus } from '../../js/info/about'
+import defaultGeneral from '../../js/conf/general'
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -43,14 +44,15 @@ function init() {
         console.log(config);
 
         let plugins = {};
-        const general = {
-            cacheLastCmd: true,
-            defaultPlugin: '',
-            customCmd: ''
+        let general;
+        const tips = {
+            autoScrollToMiddle: 'autoScrollToMiddle'
         };
 
         if (config.general) {
-            $.extend(general, config.general);
+            general = $.extend({}, defaultGeneral, config.general);
+        } else {
+            general = defaultGeneral;
         }
 
         if (config.plugins) {
@@ -68,7 +70,7 @@ function init() {
             lastVersion: config.version || version
         };
 
-        const i18nTexts = getI18nTexts({general});
+        const i18nTexts = getI18nTexts({general, tips});
 
         ga();
         render(results, i18nTexts);

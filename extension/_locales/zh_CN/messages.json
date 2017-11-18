@@ -206,17 +206,23 @@
     "search_subtitle": {
         "message": "搜索指定内容"
     },
+    "general_useInContentPage": {
+        "message": "在网页中启动"
+    },
     "general_cacheLastCmd": {
         "message": "缓存上一条命令"
+    },
+    "general_defaultPlugin": {
+        "message": "New Tab默认插件"
     },
     "general_customCmd": {
         "message": "New Tab自定义命令"
     },
-    "general_useInContentPage": {
-        "message": "在网页中启动"
+    "general_autoScrollToMiddle": {
+        "message": "列表底部时自动上移"
     },
-    "general_defaultPlugin": {
-        "message": "New Tab默认插件"
+    "tips_autoScrollToMiddle": {
+        "message": "自动将位于列表底部的元素滚动到列表中间"
     },
     "chrome_title": {
         "message": "chrome常用url"

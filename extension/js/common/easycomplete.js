@@ -177,7 +177,11 @@ EasyComplete.prototype = {
         if (cTop < 0) {
             $itemList.scrollTop(pTop + cTop);
         } else if (cTop + cH > pH) {
-            $itemList.scrollTop(pTop + cTop + cH - pH);
+            if (this.opt.autoScroll) {
+                $itemList.scrollTop(pTop + cTop + cH - pH + pH / 2);
+            } else {
+                $itemList.scrollTop(pTop + cTop + cH - pH);
+            }
         }
     },
 

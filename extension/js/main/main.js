@@ -16,6 +16,7 @@ import ga from '../../js/common/ga'
 import KEY from '../constant/keycode'
 import _ from 'underscore'
 import { websitesMap } from '../plugins/website'
+import defaultGeneral from '../../js/conf/general'
 
 const commands = {};
 const regExpCommands = [];
@@ -382,6 +383,7 @@ function init() {
         id: 'cmdbox',
         container: '#list-wrap',
         onInput: handleOnInput,
+        autoScroll: stewardCache.config.general.autoScrollToMiddle,
         createItem
     });
 
@@ -478,9 +480,7 @@ function restoreConfig() {
              stewardCache.config = res.config || {};
 
             if (!stewardCache.config.general) {
-                stewardCache.config.general = {
-                    cacheLastCmd: true
-                }
+                stewardCache.config.general = defaultGeneral;
             }
              resove(stewardCache.config);
         });
