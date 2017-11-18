@@ -2,6 +2,15 @@
 const wordcardUrl = 'https://chrome.google.com/webstore/detail/oegblnjiajbfeegijlnblepdodmnddbk';
 const langZh = [
     {
+        version: 'v2.9.1',
+        detail: `
+            NewTab命令除选择外还可以自定义;
+            <br><a href="${wordcardUrl}" target="_blank">单词小卡片</a>插件新增更多level icon，对应level等级;
+            <br>note命令在页面使用时打上当前页面的标签.
+            <br><a href="http://v.youku.com/v_show/id_XMzE2NzIyNTE2OA==.html?spm=a2h3j.8428770.3416059.1" target="_blank">更新视频</a>
+        `
+    },
+    {
         version: 'v2.9',
         detail: `
             新增扩展类插件架构，使用命令与其它扩展交互
@@ -120,6 +129,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v2.9.1',
+        detail: `
+            The NewTab command can be customized in addition to the options;
+            <br>The note command automatically add tag of the host when used in page.
+            <br><a href="https://youtu.be/_MDInm7q360" target="_blank">video</a>
+        `
+    },
     {
         version: 'v2.9',
         detail: 'Optimize'
