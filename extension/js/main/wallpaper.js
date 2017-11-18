@@ -48,11 +48,41 @@ function saveWallpaperLink() {
     });
 }
 
+function randomBool() {
+    return Boolean(Math.round(Math.random()));
+}
+
+function wallpaperApiHandler(resp, isBing) {
+    console.log(`update from ${isBing ? 'bing' : 'cache'}...`);
+    if (!isBing) {
+        return resp;
+    } else {
+        return api.bing.root + resp.images[0].url;
+    }
+}
+
+function getRandomOne(list) {
+    if (list && list.length) {
+        const index = Math.round(Math.random() * (list.length - 1));
+
+        return list[index];
+    }
+}
+
 export function refreshWallpaper(today) {
     const method = today ? 'today' : 'rand';
 
-    api.bing[method]().then(resp => {
-        updateWallpaper(api.bing.root + resp.images[0].url, true);
+    Promise.all([
+        api.bing[method](),
+        storage.sync.get(STORAGE_KEY, [])
+    ]).then(([bing, cache]) => {
+        const isBing = randomBool();
+
+        if (isBing || cache.length === 0) {
+            updateWallpaper(wallpaperApiHandler(bing, true));
+        } else {
+            updateWallpaper(wallpaperApiHandler(getRandomOne(cache)), true);
+        }
     }).catch(resp => {
         console.log(resp);
     });
