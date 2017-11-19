@@ -4,7 +4,6 @@
  * @email solopea@gmail.com
  */
 
-import request from '../../common/request'
 import Toast from 'toastr'
 
 const version = 2;
@@ -52,6 +51,7 @@ function removeTodo(id) {
             }, () => {
                 Toast.success(`[${todoName}] is done`, 'TodoList', { timeOut: 1000 });
                 this.empty();
+                noticeBg2refresh('removeTodo');
                 resolve(false);
             });
         });
@@ -80,7 +80,7 @@ function addTodo(todo) {
                 todo: todos
             }, () => {
                 this.empty();
-                noticeBg2refresh();
+                noticeBg2refresh('addTodo');
                 Toast.success(`Add todo [${todo}]`, 'TodoList', { timeOut: 1000 });
                 resolve(false);
             });
@@ -88,9 +88,9 @@ function addTodo(todo) {
     });
 }
 
-function noticeBg2refresh() {
-    request.send({
-        action: 'addTodo'
+function noticeBg2refresh(action) {
+    chrome.runtime.sendMessage({
+        action
     });
 }
 

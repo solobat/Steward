@@ -11,11 +11,11 @@ import { getSyncConfig } from '../../js/common/config'
 let config = {};
 
 // handle todos
-function getTodos(callback) {
-    chrome.storage.sync.get(STORAGE.TODO, function (results) {
-        const todos = results.todo;
-
-        callback(todos);
+function getTodos() {
+    return new Promise(resolve => {
+        chrome.storage.sync.get(STORAGE.TODO, function (results) {
+            resolve(results.todo);
+        });
     });
 }
 
@@ -27,42 +27,56 @@ function getTabsByWindows(win) {
     });
 }
 
-function getAllTabs(callback) {
-    chrome.windows.getAll(function (wins) {
-        if (!wins.length) {
-            return;
-        }
-        const tasks = [];
+function getAllTabs() {
+    return new Promise(resolve => {
+        chrome.windows.getAll(function (wins) {
+            if (!wins.length) {
+                return;
+            }
+            const tasks = [];
 
-        for (let i = 0, len = wins.length; i < len; i = i + 1) {
-            tasks.push(getTabsByWindows(wins[i]));
-        }
+            for (let i = 0, len = wins.length; i < len; i = i + 1) {
+                tasks.push(getTabsByWindows(wins[i]));
+            }
 
-        Promise.all(tasks).then(resp => {
-            callback(_.flatten(resp));
+            Promise.all(tasks).then(resp => {
+                resolve(_.flatten(resp).filter(tab => {
+                    return tab.url.indexOf('http' !== -1);
+                }));
+            });
         });
     });
 }
 
+const tabsInfo = {};
+
 function refreshTodo() {
-    getTodos(function (todos) {
-        if (!todos || !todos.length) {
-            return;
-        }
-        getAllTabs(function (tabs) {
-            for (let i = 0, len = todos.length; i < len; i = i + 1) {
-                const tab = tabs[i];
-                const todo = todos[i];
+    Promise.all([
+        getTodos(),
+        getAllTabs()
+    ]).then(([todos = [], tabs = []]) => {
+        for (let i = 0, len = tabs.length; i < len; i = i + 1) {
+            const tab = tabs[i];
+            const todo = todos[i];
 
-                if (!tab) {
-                    return;
+            if (todo) {
+                if (!tabsInfo[tab.id]) {
+                    tabsInfo[tab.id] = {
+                        originalTitle: tab.title
+                    };
                 }
-
                 chrome.tabs.executeScript(tab.id, {
                     code: `document.title = "${todo.title}"`
                 });
+            } else {
+                if (tabsInfo[tab.id]) {
+                    chrome.tabs.executeScript(tab.id, {
+                        code: `document.title = "${tabsInfo[tab.id].originalTitle}"`
+                    });
+                    Reflect.deleteProperty(tabsInfo, tab.id);
+                }
             }
-        });
+        }
     });
 }
 
@@ -81,7 +95,7 @@ function blockUrl (url) {
         return;
     }
 
-    getAllTabs(function (tabs) {
+    getAllTabs().then((tabs = []) => {
         for (let i = 0; i < tabs.length; i = i + 1) {
             if (tabs[i].url.indexOf(url) !== -1) {
                 blockTab(tabs[i]);
@@ -131,20 +145,6 @@ function addEvents() {
         checkTabByUrl(tab);
     });
 
-    chrome.tabs.onRemoved.addListener(function () {
-        refreshTodo();
-    });
-
-    chrome.extension.onRequest.addListener(function (request) {
-        if (request.action === 'addTodo') {
-            refreshTodo();
-        }
-
-        if (request.action === 'blockUrl') {
-            blockUrl(request.data.url);
-        }
-    });
-
     chrome.runtime.onMessage.addListener((req, sender, resp) => {
         switch (req.action) {
             case 'saveConfig':
@@ -155,6 +155,15 @@ function addEvents() {
                     msg: 'get config ok',
                     data: config
                 });
+                break;
+            case 'addTodo':
+                refreshTodo();
+                break;
+            case 'removeTodo':
+                refreshTodo();
+                break;
+            case 'blockUrl':
+                blockUrl(req.data.url);
                 break;
             default:
                 break;

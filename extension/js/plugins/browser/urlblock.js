@@ -4,7 +4,6 @@
  * @email solopea@gmail.com
  */
 
-import request from '../../common/request'
 import util from '../../common/util'
 
 const version = 4;
@@ -85,7 +84,7 @@ function addBlacklist(key, url, cmd) {
 }
 
 function noticeBackground(action, url) {
-    request.send({
+    chrome.runtime.sendMessage({
         action: action,
         data: {
             url: url
