@@ -19,9 +19,13 @@ const pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name')
 });
 
 function getPluginData() {
+    const plugins = {};
+
     pluginModules.forEach(plugin => {
-        mergePluginData(plugin, {});
+        mergePluginData(plugin, plugins);
     });
+
+    return plugins;
 }
 
 function mergePluginData(plugin, plugins) {
@@ -77,5 +81,17 @@ export function getSyncConfig(save, keepVersion) {
         }
 
         return config;
+    });
+}
+
+export function restoreConfig() {
+    const config = {
+        general: defaultGeneral,
+        plugins: getPluginData(),
+        version
+    };
+
+    return browser.storage.sync.set({
+        config
     });
 }

@@ -40,6 +40,7 @@ function onEnter(item, command) {
             action: 'saveConfig',
             data: {
                 general: {
+                    cacheLastCmd: false,
                     defaultPlugin: 'Other',
                     customCmd: query
                 }
