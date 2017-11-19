@@ -12,6 +12,7 @@ import storage from '../../js/utils/storage'
 import util from '../../js/common/util'
 import { aboutus } from '../../js/info/about'
 import defaultGeneral from '../../js/conf/general'
+import CONST from '../../js/constant'
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -35,7 +36,7 @@ let config;
 
 // plugins: { [pname]: { version, commands } }
 function init() {
-    chrome.storage.sync.get('config', function(res) {
+    chrome.storage.sync.get(CONST.STORAGE.CONFIG, function(res) {
         if (res.config) {
             config = res.config;
         } else {
@@ -119,20 +120,6 @@ function mergePluginData(plugin, plugins) {
     }
 }
 
-const appearanceItems = [{
-    name: 'wallpapers',
-    icon: '/img/wallpaper-icon.png'
-}, {
-    name: 'themes',
-    icon: '/img/themes-icon.png'
-}];
-const defaultPlugins = ['Top Sites', 'Bookmarks', 'Tabs', 'Weather', 'Other'].map(name => {
-    return {
-        label: name,
-        value: name
-    }
-});
-
 function render({general, plugins, lastVersion}, i18nTexts) {
     let activeName = 'general';
 
@@ -158,11 +145,11 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                 pluginSearchText: '',
                 currentPlugin: null,
                 curApprItem: null,
-                appearanceItems,
+                appearanceItems: CONST.OPTIONS.APPEARANCE_ITEMS,
                 wallpapers: [],
-                selectedWallpaper: window.localStorage.getItem('wallpaper') || '',
+                selectedWallpaper: window.localStorage.getItem(CONST.STORAGE.WALLPAPER) || '',
                 changelog,
-                defaultPlugins,
+                defaultPlugins: CONST.OPTIONS.DEFAULT_PLUGINS,
                 extType,
                 storeId,
                 aboutus,
@@ -200,7 +187,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                 const newConfig = JSON.parse(JSON.stringify(this.config));
 
                 chrome.storage.sync.set({
-                    config: newConfig
+                    [CONST.STORAGE.CONFIG]: newConfig
                 }, function() {
                     if (silent) {
                         console.log('save successfully');
@@ -243,19 +230,21 @@ function render({general, plugins, lastVersion}, i18nTexts) {
 
             loadWallpapersIfNeeded: function() {
                 if (!this.wallpapers.length) {
-                    storage.sync.get('wallpapers').then(wallpapers => {
+                    storage.sync.get(CONST.STORAGE.WALLPAPERS).then(wallpapers => {
                         this.wallpapers = wallpapers;
                     });
                 }
             },
 
             chooseWallpaper: function(wallpaper) {
+                const KEY = CONST.STORAGE.WALLPAPER;
+
                 if (this.selectedWallpaper === wallpaper) {
                     this.selectedWallpaper = '';
-                    window.localStorage.removeItem('wallpaper');
+                    window.localStorage.removeItem(KEY);
                 } else {
                     this.selectedWallpaper = wallpaper;
-                    window.localStorage.setItem('wallpaper', wallpaper);
+                    window.localStorage.setItem(KEY, wallpaper);
                 }
                 _gaq.push(['_trackEvent', 'options_wallpaper', 'click', 'choose']);
 

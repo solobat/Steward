@@ -4,10 +4,11 @@
  * @email solopea@gmail.com
  */
 import _ from 'underscore'
+import STORAGE from '../../js/constant/storage'
 
 // handle todos
 function getTodos(callback) {
-    chrome.storage.sync.get('todo', function (results) {
+    chrome.storage.sync.get(STORAGE.TODO, function (results) {
         const todos = results.todo;
 
         callback(todos);
@@ -64,7 +65,7 @@ function refreshTodo() {
 // handle url block
 const blockPageUrl = chrome.extension.getURL('urlblock.html');
 function getBlacklist(callback) {
-    chrome.storage.sync.get('url', function (results) {
+    chrome.storage.sync.get(STORAGE.URL, function (results) {
         const blacklist = results.url;
 
         callback(blacklist);

@@ -1,9 +1,10 @@
 import './popup.scss'
 import extension from '../../js/main/main'
 import keyboardJS from 'keyboardjs'
+import { MODE } from '../../js/constant/base'
 
 if (window.parent === window) {
-    extension('popup');
+    extension(MODE.POPUP);
 }
 
 let box;
@@ -49,7 +50,7 @@ function initForContentPage(parentWindow, parentHost) {
     window.parentWindow = parentWindow;
     window.parentHost = parentHost;
 
-    extension('popup', true).then(cmdbox => {
+    extension(MODE.POPUP, true).then(cmdbox => {
         box = cmdbox;
         changeBoxStatus(true);
 

@@ -1,13 +1,12 @@
 /*global _gaq*/
 import $ from 'jquery'
-import { NUMBER } from '../constant/index'
+import CONST from '../constant'
 import * as api from '../api/index'
 import * as date from '../utils/date'
 import _ from 'underscore'
 import storage from '../utils/storage'
 import Toast from 'toastr'
 
-const STORAGE_KEY = 'wallpapers';
 const $body = $('body');
 
 let curUrl = '';
@@ -20,7 +19,7 @@ function updateWallpaper(url, save, isNew) {
     }
 
     if (save) {
-        window.localStorage.setItem('wallpaper', url);
+        window.localStorage.setItem(CONST.STORAGE.WALLPAPER, url);
     }
 
     if (isNew) {
@@ -37,7 +36,7 @@ function updateWallpaper(url, save, isNew) {
 }
 
 function saveWallpaperLink() {
-    storage.sync.get(STORAGE_KEY, []).then(data => {
+    storage.sync.get(CONST.STORAGE.WALLPAPERS, []).then(data => {
         let wallpapers = data;
 
         if (curUrl) {
@@ -48,7 +47,7 @@ function saveWallpaperLink() {
         console.log(wallpapers);
 
         return {
-            [STORAGE_KEY]: wallpapers
+            [CONST.STORAGE.WALLPAPERS]: wallpapers
         };
     }).then(newResults => storage.sync.set(newResults)).then(() => {
         Toast.success('save successfully');
@@ -82,7 +81,7 @@ export function refreshWallpaper(today) {
 
     Promise.all([
         api.bing[method](),
-        storage.sync.get(STORAGE_KEY, [])
+        storage.sync.get(CONST.STORAGE.WALLPAPERS, [])
     ]).then(([bing, cache]) => {
         const isBing = randomBool();
 
@@ -120,12 +119,12 @@ function bindEvents() {
 
 export function init() {
     // restore
-    const lastDate = new Date(window.localStorage.getItem('lastDate') || Number(new Date()));
-    const defaultWallpaper = window.localStorage.getItem('wallpaper');
+    const lastDate = new Date(window.localStorage.getItem(CONST.STORAGE.LASTDATE) || Number(new Date()));
+    const defaultWallpaper = window.localStorage.getItem(CONST.STORAGE.WALLPAPER);
 
     $saveBtn = $('#j-save-wplink');
 
-    window.localStorage.setItem('lastDate', date.format());
+    window.localStorage.setItem(CONST.STORAGE.LASTDATE, date.format());
 
     if (date.isNewDate(new Date(), lastDate)) {
         refreshWallpaper(true);
@@ -138,5 +137,5 @@ export function init() {
     bindEvents();
 
     // set interval
-    intervalTimer = setInterval(refreshWallpaper, NUMBER.WALLPAPER_INTERVAL);
+    intervalTimer = setInterval(refreshWallpaper, CONST.NUMBER.WALLPAPER_INTERVAL);
 }
