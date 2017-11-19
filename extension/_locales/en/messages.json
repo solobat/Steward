@@ -236,6 +236,12 @@
     "steward_subtitle": {
         "message": "Find steward option tabs and open"
     },
+    "custom_title": {
+        "message": "Custom command"
+    },
+    "custom_subtitle": {
+        "message": "Set the default command in the NewTab input box"
+    },
     "github_title": {
         "message": "The most visited github pages"
     },

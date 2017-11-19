@@ -2,7 +2,8 @@
 export const PLUGIN_TYPE = {
     REGEXP: 'regexp',
     KEYWORD: 'keyword',
-    OTHER: 'other'
+    OTHER: 'other',
+    SEARCH: 'search'
 };
 
 export const EMPTY_COMMAND = '_empty_';

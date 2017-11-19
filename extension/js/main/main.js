@@ -414,18 +414,8 @@ function classifyPlugins(pluginsData) {
             }
             if (plugin.commands instanceof Array) {
                 const pname = plugin.name;
-                let pcmds;
+                const pcmds = pluginsData[pname].commands;
 
-                try {
-                    pcmds = pluginsData[pname].commands;
-                    if (plugin.version > (pluginsData[pname].version || 1)) {
-                        pcmds = $.extend(true, plugin.commands, pcmds);
-                    }
-                } catch (e) {
-                    pcmds = plugin.commands;
-                }
-
-                // FIX: if add new plugin, the cache may not have
                 if (pcmds) {
                     pcmds.forEach(command => {
                         const cmd = {
@@ -465,15 +455,7 @@ function classifyPlugins(pluginsData) {
 function restoreConfig() {
     return new Promise(resove => {
         chrome.storage.sync.get(CONST.STORAGE.CONFIG, function(res) {
-            let pluginsData;
-
-            try {
-                pluginsData = res.config.plugins;
-            } catch (e) {
-                console.log('There is no plugins configuration yet');
-            }
-
-            classifyPlugins(pluginsData, inContent);
+            classifyPlugins(res.config.plugins, inContent);
 
              keys = Object.keys(commands).join('|');
              reg = new RegExp(`^((?:${keys}))\\s(?:\\-(\\w+))?\\s?(.*)$`, 'i');

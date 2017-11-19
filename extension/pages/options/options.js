@@ -1,5 +1,4 @@
 /*global EXT_TYPE _gaq*/
-import $ from 'jquery'
 import Vue from 'vue'
 import _ from 'underscore'
 import ElementUI from 'element-ui'
@@ -11,7 +10,6 @@ import changelog from '../../js/info/changelog'
 import storage from '../../js/utils/storage'
 import util from '../../js/common/util'
 import { aboutus } from '../../js/info/about'
-import defaultGeneral from '../../js/conf/general'
 import CONST from '../../js/constant'
 
 const manifest = chrome.runtime.getManifest();
@@ -32,49 +30,21 @@ const pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name')
         icon
     }
 });
-let config;
 
 // plugins: { [pname]: { version, commands } }
 function init() {
     chrome.storage.sync.get(CONST.STORAGE.CONFIG, function(res) {
-        if (res.config) {
-            config = res.config;
-        } else {
-            config = {};
-        }
-        console.log(config);
-
-        let plugins = {};
-        let general;
+        const config = res.config;
         const tips = {
             autoScrollToMiddle: 'autoScrollToMiddle'
         };
 
-        if (config.general) {
-            general = $.extend({}, defaultGeneral, config.general);
-        } else {
-            general = defaultGeneral;
-        }
+        config.lastVersion = config.version || version;
 
-        if (config.plugins) {
-            plugins = config.plugins;
-        }
-
-        // 总是确保数据是最新的
-        pluginModules.forEach(plugin => {
-            mergePluginData(plugin, plugins);
-        });
-
-        const results = {
-            general,
-            plugins,
-            lastVersion: config.version || version
-        };
-
-        const i18nTexts = getI18nTexts({general, tips});
+        const i18nTexts = getI18nTexts({general: config.general, tips});
 
         ga();
-        render(results, i18nTexts);
+        render(config, i18nTexts);
     });
 }
 
@@ -96,28 +66,6 @@ function getI18nTexts(obj) {
     }
 
     return texts;
-}
-
-function mergePluginData(plugin, plugins) {
-    const pname = plugin.name;
-    const cachePlugin = plugins[pname];
-
-    if (!cachePlugin) {
-        plugins[pname] = {
-            version: plugin.version,
-            commands: plugin.commands
-        };
-    } else {
-        if (!cachePlugin.version) {
-            cachePlugin.version = 1;
-        }
-
-        if (plugin.version > cachePlugin.version) {
-            // rough merge
-            cachePlugin.commands = $.extend(true, plugin.commands, cachePlugin.commands);
-            cachePlugin.version = plugin.version;
-        }
-    }
 }
 
 function render({general, plugins, lastVersion}, i18nTexts) {

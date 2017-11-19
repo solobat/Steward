@@ -3,8 +3,12 @@
  * @author tomasy
  * @email solopea@gmail.com
  */
+import $ from 'jquery'
 import _ from 'underscore'
 import STORAGE from '../../js/constant/storage'
+import { getSyncConfig } from '../../js/common/config'
+
+let config = {};
 
 // handle todos
 function getTodos(callback) {
@@ -140,19 +144,62 @@ function addEvents() {
             blockUrl(request.data.url);
         }
     });
+
+    chrome.runtime.onMessage.addListener((req, sender, resp) => {
+        switch (req.action) {
+            case 'saveConfig':
+                saveConfig(req.data, resp);
+                break;
+            case 'getConfig':
+                resp({
+                    msg: 'get config ok',
+                    data: config
+                });
+                break;
+            default:
+                break;
+        }
+    });
+
+    chrome.storage.onChanged.addListener(changes => {
+        if (changes.config) {
+            config = changes.config.newValue;
+            console.log('config has changed...', config);
+        }
+    });
+
+    chrome.commands.onCommand.addListener(function(command) {
+        if (command === 'open-in-content-page') {
+            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+                chrome.tabs.sendMessage(tabs[0].id, {action: "openBox"}, function() {});
+            });
+        }
+    });
+}
+
+function saveConfig(newConfig = {}, resp) {
+    $.extend(true, config, newConfig);
+
+    chrome.storage.sync.set({
+        config
+    }, function() {
+        resp({
+           action: 'configSaved',
+           data: config
+        });
+    });
 }
 
 function init() {
-    addEvents();
-    refreshTodo();
+    getSyncConfig(true, true).then(resp => {
+        config = resp;
+        addEvents();
+        refreshTodo();
+    }).catch(resp => {
+        console.log(resp);
+        addEvents();
+        refreshTodo();
+    });
 }
 
 init();
-
-chrome.commands.onCommand.addListener(function(command) {
-    if (command === 'open-in-content-page') {
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, {action: "openBox"}, function() {});
-        });
-    }
-});

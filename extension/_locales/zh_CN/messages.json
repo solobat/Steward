@@ -236,6 +236,12 @@
     "steward_subtitle": {
         "message": "查找常用steward选项并打开"
     },
+    "custom_title": {
+        "message": "自定义命令"
+    },
+    "custom_subtitle": {
+        "message": "设置在NewTab输入框中的默认命令"
+    },
     "github_title": {
         "message": "github常用页面"
     },
