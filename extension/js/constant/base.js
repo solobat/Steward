@@ -24,3 +24,7 @@ export const EXTENSION = {
     ALFRED: 'alfred',
     STEWARD: 'steward'
 };
+
+export const alfredTabs = ['Alfred', 'Plugins', 'Advanced', 'Help', 'Update', 'About'];
+
+export const stewardTabs = ['Steward', 'General', 'Plugins', 'Appearance', 'Advanced', 'Help', 'Update', 'About'];
