@@ -13,7 +13,7 @@ const version = 2;
 const name = 'pocket';
 const key = 'po';
 const type = 'keyword';
-const icon = 'http://getpocket.com/i/apple-touch-icon/Pocket_AppIcon_57.png';
+const icon = 'https://getpocket.com/i/apple-touch-icon/Pocket_AppIcon_57.png';
 const title = chrome.i18n.getMessage(`${name}_title`);
 const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const commands = [{
@@ -96,7 +96,7 @@ function query(str, callback) {
 
 function onEnter({ id }) {
     chrome.tabs.create({
-        url: `http://getpocket.com/a/read/${id}`
+        url: `https://getpocket.com/a/read/${id}`
     });
 }
 
