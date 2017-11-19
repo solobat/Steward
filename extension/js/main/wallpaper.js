@@ -12,14 +12,21 @@ const $body = $('body');
 
 let curUrl = '';
 let intervalTimer = 0;
+let $saveBtn;
 
-function updateWallpaper(url, save) {
+function updateWallpaper(url, save, isNew) {
     if (!url) {
         return;
     }
 
     if (save) {
         window.localStorage.setItem('wallpaper', url);
+    }
+
+    if (isNew) {
+        $saveBtn.show();
+    } else {
+        $saveBtn.hide();
     }
 
     curUrl = url;
@@ -45,6 +52,7 @@ function saveWallpaperLink() {
         };
     }).then(newResults => storage.sync.set(newResults)).then(() => {
         Toast.success('save successfully');
+        $saveBtn.hide();
     });
 }
 
@@ -79,37 +87,25 @@ export function refreshWallpaper(today) {
         const isBing = randomBool();
 
         if (isBing || cache.length === 0) {
-            updateWallpaper(wallpaperApiHandler(bing, true));
+            const wp = wallpaperApiHandler(bing, true);
+            const isNew = cache.indexOf(wp) === -1;
+
+            updateWallpaper(wp, true, isNew);
         } else {
-            updateWallpaper(wallpaperApiHandler(getRandomOne(cache)), true);
+            updateWallpaper(wallpaperApiHandler(getRandomOne(cache)), true, false);
         }
     }).catch(resp => {
         console.log(resp);
     });
 }
 
-export function init() {
-    // restore
-    const lastDate = new Date(window.localStorage.getItem('lastDate') || Number(new Date()));
-    const defaultWallpaper = window.localStorage.getItem('wallpaper');
-
-    window.localStorage.setItem('lastDate', date.format());
-
-    if (date.isNewDate(new Date(), lastDate)) {
-        refreshWallpaper(true);
-    } else if (!defaultWallpaper) {
-        refreshWallpaper();
-    } else {
-        updateWallpaper(defaultWallpaper);
-    }
-
-    // bind events
+function bindEvents() {
     $('#j-refresh-wp').on('click', function() {
         refreshWallpaper();
         _gaq.push(['_trackEvent', 'wallpaper', 'click', 'refresh']);
     });
 
-    $('#j-save-wplink').on('click', function() {
+    $saveBtn.on('click', function() {
         saveWallpaperLink();
         _gaq.push(['_trackEvent', 'wallpaper', 'click', 'save']);
     });
@@ -120,6 +116,26 @@ export function init() {
             Toast.success('The automatic refresh of the wallpaper has been disabled');
         }
     });
+}
+
+export function init() {
+    // restore
+    const lastDate = new Date(window.localStorage.getItem('lastDate') || Number(new Date()));
+    const defaultWallpaper = window.localStorage.getItem('wallpaper');
+
+    $saveBtn = $('#j-save-wplink');
+
+    window.localStorage.setItem('lastDate', date.format());
+
+    if (date.isNewDate(new Date(), lastDate)) {
+        refreshWallpaper(true);
+    } else if (!defaultWallpaper) {
+        refreshWallpaper();
+    } else {
+        updateWallpaper(defaultWallpaper, false, true);
+    }
+
+    bindEvents();
 
     // set interval
     intervalTimer = setInterval(refreshWallpaper, NUMBER.WALLPAPER_INTERVAL);
