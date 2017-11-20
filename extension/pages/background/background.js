@@ -7,6 +7,7 @@ import $ from 'jquery'
 import _ from 'underscore'
 import STORAGE from '../../js/constant/storage'
 import { getSyncConfig } from '../../js/common/config'
+import util from '../../js/common/util'
 
 let config = {};
 
@@ -90,18 +91,45 @@ function getBlacklist(callback) {
     });
 }
 
-function blockUrl (url) {
-    if (!url) {
-        return;
-    }
+function tryMatchBlockPage(url) {
+    return url.split('urlblock.html');
+}
 
-    getAllTabs().then((tabs = []) => {
-        for (let i = 0; i < tabs.length; i = i + 1) {
-            if (tabs[i].url.indexOf(url) !== -1) {
-                blockTab(tabs[i]);
+const checkTabs = handle => url => {
+    if (url) {
+        getAllTabs().then((tabs = []) => {
+            for (let i = 0; i < tabs.length; i = i + 1) {
+                const match = tryMatchBlockPage(tabs[i].url);
+                handle(url, tabs[i], match);
             }
+        });
+    }
+}
+
+const handleUrlBlock = (url, tab, match) => {
+    if (tab.url.indexOf(url) !== -1 && !match[1]) {
+        blockTab(tab);
+    }
+}
+
+const handleUrlUnBlock = (url, tab, match) => {
+    console.log('unblockUrl', match);
+    if (match[1]) {
+        const original = util.getParameterByName('original', match[1]);
+
+        if (original.indexOf(url) !== -1) {
+            unblockTab(tab);
         }
-    });
+    }
+}
+
+const blockUrl = checkTabs(handleUrlBlock);
+const unblockUrl = checkTabs(handleUrlUnBlock);
+
+function unblockTab(tab) {
+    chrome.tabs.sendMessage(tab.id, {
+        action: 'back'
+    })
 }
 
 function blockTab(tab) {
@@ -116,14 +144,18 @@ function checkTabByUrl(tab) {
     if (!tab.url) {
         return;
     }
-    getBlacklist(function (blacklist) {
-        for (let i = 0; i < blacklist.length; i = i + 1) {
-            if (tab.url.indexOf(blacklist[i].title) !== -1) {
-                blockTab(tab);
-                return;
+    const match = tryMatchBlockPage(tab.url);
+
+    if (!match[1]) {
+        getBlacklist(function (blacklist) {
+            for (let i = 0; i < blacklist.length; i = i + 1) {
+                if (tab.url.indexOf(blacklist[i].title) !== -1) {
+                    blockTab(tab);
+                    return;
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 function addEvents() {
@@ -141,8 +173,12 @@ function addEvents() {
     });
 
     chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-        refreshTodo();
-        checkTabByUrl(tab);
+        if (typeof changeInfo.pinned !== 'undefined') {
+            refreshTodo();
+        }
+        if (changeInfo.url) {
+            checkTabByUrl(tab);
+        }
     });
 
     chrome.runtime.onMessage.addListener((req, sender, resp) => {
@@ -164,6 +200,9 @@ function addEvents() {
                 break;
             case 'blockUrl':
                 blockUrl(req.data.url);
+                break;
+            case 'unblockUrl':
+                unblockUrl(req.data.url);
                 break;
             default:
                 break;

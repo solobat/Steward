@@ -30,25 +30,26 @@ function onEnter(item, command) {
     if (this.query) {
         Reflect.apply(addBlacklist, this, [command.key, this.query, command.orkey]);
     } else {
-        Reflect.apply(removeBlacklist, this, [item.id]);
+        Reflect.apply(removeBlacklist, this, [item]);
     }
 }
 
-function removeBlacklist(id) {
-    if (!String(id).startsWith('bk_') && (Number(new Date()) - id) < BLOCK_EXPIRED) {
+function removeBlacklist(item) {
+    if (!String(item.id).startsWith('bk_') && (Number(new Date()) - item.id) < BLOCK_EXPIRED) {
         console.log('url will be blocked 8 hours...');
         return;
     }
 
     getBlacklist(resp => {
         const blacklist = resp.filter(function (url) {
-            return url.id !== id;
+            return url.id !== item.id;
         });
 
         chrome.storage.sync.set({
             url: blacklist
         }, () => {
                 this.refresh();
+                noticeBackground('unblockUrl', item.title);
             });
     });
 }
@@ -87,7 +88,7 @@ function noticeBackground(action, url) {
     chrome.runtime.sendMessage({
         action: action,
         data: {
-            url: url
+            url
         }
     });
 }
