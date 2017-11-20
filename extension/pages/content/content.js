@@ -5,7 +5,9 @@ import { websitesMap } from '../../js/plugins/website'
 const chrome = window.chrome;
 
 const App = {
+    isInit: false,
     isOpen: false,
+    isLazy: false,
 
     initDom() {
         const popupurl = chrome.extension.getURL('popup.html');
@@ -23,6 +25,7 @@ const App = {
 
             iframeWindow.postMessage({
                 ext_from: 'content',
+                lazy: this.isLazy,
                 host: window.location.host
             }, '*');
         });
@@ -52,7 +55,7 @@ const App = {
 
     handleBoxInited() {
         // don't need to get the focus while inited
-        if (document.activeElement === this.$iframe[0]) {
+        if (!this.isLazy && document.activeElement === this.$iframe[0]) {
             document.activeElement.blur();
         }
     },
@@ -79,16 +82,6 @@ const App = {
             }
         });
 
-        chrome.runtime.onMessage.addListener(req => {
-            if (req.action === 'openBox') {
-                if (this.isOpen) {
-                    this.closeBox();
-                } else {
-                    this.openBox();
-                }
-            }
-        });
-
         $(document).on('click', function(e) {
             if (that.isOpen && e.target.id !== 'steward-main') {
                 that.closeBox();
@@ -96,10 +89,49 @@ const App = {
         });
     },
 
-    init() {
+    init(isLazy) {
+        this.isLazy = isLazy;
         this.initDom();
         this.bindEvents();
+        this.isInit = true;
     }
 };
 
-App.init();
+function toggleBox() {
+    if (App.isOpen) {
+        App.closeBox();
+    } else {
+        App.openBox();
+    }
+}
+
+const initFactory = lazy => () => {
+    if (!lazy) {
+        App.init(lazy);
+    }
+    chrome.runtime.onMessage.addListener(req => {
+        if (req.action === 'openBox') {
+            if (lazy) {
+                if (!App.isInit) {
+                    App.init(lazy);
+                }
+            }
+            toggleBox();
+        }
+    });
+}
+
+const quickInit = initFactory(false);
+const lazyInit = initFactory(true);
+
+chrome.runtime.sendMessage({
+    action: 'getConfig'
+}, resp => {
+    const config = resp.data;
+
+    if (config.general.speedFirst) {
+        quickInit();
+    } else {
+        lazyInit();
+    }
+})

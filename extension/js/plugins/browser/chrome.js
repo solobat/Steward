@@ -4,7 +4,6 @@
  * @mail solopea@gmail.com
  */
 
-import $ from 'jquery'
 import util from '../../common/util'
 
 const version = 1;

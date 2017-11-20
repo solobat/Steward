@@ -6,6 +6,7 @@
 
 /*global EXT_TYPE*/
 import util from '../../common/util'
+import { stewardTabs, alfredTabs } from '../../constant/base'
 
 const version = 1;
 const name = 'steward';
@@ -14,12 +15,12 @@ const icon = chrome.extension.getURL('img/icon.png');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const baseUrl = chrome.extension.getURL('options.html');
 
-let stewardTabs;
+let optionTabs;
 
 if (EXT_TYPE === 'alfred') {
-    stewardTabs = ['Alfred', 'Plugins', 'Help', 'Update', 'About'];
+    optionTabs = alfredTabs;
 } else {
-    stewardTabs = ['Steward', 'General', 'Plugins', 'Appearance', 'Help', 'Update', 'About'];
+    optionTabs = stewardTabs;
 }
 
 function caseFormat(str) {
@@ -38,7 +39,7 @@ function onInput(text) {
         }
     };
 
-    const tabs = filterByName(stewardTabs).map(mapTo('url'));
+    const tabs = filterByName(optionTabs).map(mapTo('url'));
 
     return Promise.resolve(tabs);
 }

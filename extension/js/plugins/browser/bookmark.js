@@ -4,22 +4,19 @@
  * @email solopea@gmail.com
  */
 
+import util from '../../common/util'
+
 const chrome = window.chrome;
-const version = 2;
+const version = 3;
 const name = 'bookmark';
-const key = 'bm';
+const keys = [
+    { key: 'bm' },
+    { key: 'bmd' }
+];
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/bookmark.png');
 const title = chrome.i18n.getMessage(`${name}_title`);
-const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
-const commands = [{
-    key,
-    type,
-    title,
-    subtitle,
-    icon,
-    editable: true
-}];
+const commands = util.genCommands(name, icon, keys, type);
 
 function searchBookmark(query, callback) {
     if (!query) {
@@ -41,7 +38,7 @@ function searchBookmark(query, callback) {
     });
 }
 
-function onInput(query) {
+function onInput(query, command) {
     return new Promise(resolve => {
         searchBookmark(query, bookMarkList => {
             const arr = [];
@@ -51,7 +48,7 @@ function onInput(query) {
                 const item = bookMarkList[i];
 
                 arr.push({
-                    key,
+                    key: command.key,
                     id: item.id,
                     icon,
                     url: item.url,
@@ -66,10 +63,16 @@ function onInput(query) {
     });
 }
 
-function onEnter(item) {
-    chrome.tabs.create({
-        url: item.url
-    });
+function onEnter(item, { orkey }) {
+    if (orkey === 'bm') {
+        chrome.tabs.create({
+            url: item.url
+        });
+    } else if (orkey === 'bmd') {
+        chrome.bookmarks.remove(item.id, () => {
+            this.refresh();
+        });
+    }
 }
 
 export default {

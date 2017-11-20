@@ -14,7 +14,7 @@ const langZh = `
 如果觉得它还不错，希望可以给我<a href="https://chrome.google.com/webstore/detail/${storeId}/reviews?hl=zh-CN'">点赞评论</a>或通过下方的二维码 <span class="notice">请我喝杯咖啡</span>，这是对${extType}的最大鼓励。
 虽然一直在安静地开发，但也希望通过大家的口口相传，让更多的人知道
 <a href="https://chrome.google.com/webstore/detail/${storeId}">${extType}</a>的存在。
-<img src="http://owsjc7iz3.bkt.clouddn.com/IMG_2180.jpg" alt="" class="wx-pay">
+<img src="http://owsjc7iz3.bkt.clouddn.com/IMG_2180.jpg" alt="" class="wx-pay qrcode">
 `;
 
 const langEn = `

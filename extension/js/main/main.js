@@ -9,13 +9,13 @@ import $ from 'jquery'
 import EasyComplete from '../common/easycomplete'
 import util from '../common/util'
 import storage from '../common/storage'
-import CONST from '../common/const'
+import CONST from '../constant'
 import {plugins} from '../plugins/browser'
 import * as Wallpaper from './wallpaper'
 import ga from '../../js/common/ga'
-import KEY from '../constant/keycode'
 import _ from 'underscore'
 import { websitesMap } from '../plugins/website'
+import defaultGeneral from '../../js/conf/general'
 
 const commands = {};
 const regExpCommands = [];
@@ -150,7 +150,7 @@ function commandStage(gothrough) {
         cmdbox.param = param;
         cmdbox.query = key;
 
-        storage.h5.set(CONST.LAST_CMD, str);
+        storage.h5.set(CONST.STORAGE.LAST_CMD, str);
 
         if (cmdbox.lastcmd !== cmdbox.cmd) {
             _gaq.push(['_trackEvent', 'command', 'input', cmdbox.cmd]);
@@ -250,7 +250,7 @@ function handleInit () {
         let cmd;
 
         if (cacheLastCmd) {
-            cmd = storage.h5.get(CONST.LAST_CMD) || 'site ';
+            cmd = storage.h5.get(CONST.STORAGE.LAST_CMD) || 'site ';
         } else if (defaultPlugin && defaultPlugin !== 'Other') {
             const defaultCommand = Object.values(commands).find(command => command.name === defaultPlugin);
 
@@ -273,21 +273,22 @@ function handleEnter (event, elem) {
     const item = this.dataList[$elem.index()];
 
     if (!this.cmd) {
+        const ITEM_TYPE = CONST.BASE.ITEM_TYPE;
         const type = $elem.data('type');
 
-        if (type === 'plugins') {
+        if (type === ITEM_TYPE.PLUGINS) {
             const key = $elem.data('id');
 
             this.render(`${key} `);
-        } else if (type === 'url') {
+        } else if (type === ITEM_TYPE.URL) {
             const url = $elem.data('url');
 
             chrome.tabs.create({
                 url
             });
-        } else if (type === 'copy') {
+        } else if (type === ITEM_TYPE.COPY) {
             util.copyToClipboard($elem.data('url'), true);
-        } else if (type === 'action') {
+        } else if (type === ITEM_TYPE.ACTION) {
             this.trigger('action', {
                 action: 'command',
                 info: item
@@ -296,7 +297,7 @@ function handleEnter (event, elem) {
 
         _gaq.push(['_trackEvent', 'exec', 'enter', type]);
 
-        if (type !== 'plugins') {
+        if (type !== ITEM_TYPE.PLUGINS) {
             this.trigger('shouldCloseBox');
         }
 
@@ -320,7 +321,7 @@ function handleEnter (event, elem) {
 
 function handleEmpty() {
     if (plugin4empty) {
-        this.cmd = '_empty_';
+        this.cmd = CONST.BASE.EMPTY_COMMAND;
         this.command = null;
         this.searchTimer = setTimeout(() => {
             Reflect.apply(plugin4empty.onBoxEmpty, this, []);
@@ -367,7 +368,7 @@ function initWallpaper() {
         const keyType = util.isMac ? 'metaKey' : 'altKey';
         const keyCode = event.keyCode;
 
-        if (event[keyType] && keyCode === KEY.RIGHT) {
+        if (event[keyType] && keyCode === CONST.KEY.RIGHT) {
             $('#main, .ec-itemList').fadeToggle();
 
             cmdbox.ipt.focus();
@@ -382,6 +383,7 @@ function init() {
         id: 'cmdbox',
         container: '#list-wrap',
         onInput: handleOnInput,
+        autoScroll: stewardCache.config.general.autoScrollToMiddle,
         createItem
     });
 
@@ -394,7 +396,7 @@ function init() {
 
     cmdbox.init();
 
-    if (mode === 'newTab') {
+    if (mode === CONST.BASE.MODE.NEWTAB) {
         initWallpaper();
         ga();
     } else if(!inContent) {
@@ -403,6 +405,8 @@ function init() {
 }
 
 function classifyPlugins(pluginsData) {
+    const PLUGIN_TYPE = CONST.BASE.PLUGIN_TYPE;
+
     plugins.forEach(plugin => {
         if (!plugin.invalid) {
             if (typeof plugin.onBoxEmpty === 'function') {
@@ -410,18 +414,8 @@ function classifyPlugins(pluginsData) {
             }
             if (plugin.commands instanceof Array) {
                 const pname = plugin.name;
-                let pcmds;
+                const pcmds = pluginsData[pname].commands;
 
-                try {
-                    pcmds = pluginsData[pname].commands;
-                    if (plugin.version > (pluginsData[pname].version || 1)) {
-                        pcmds = $.extend(true, plugin.commands, pcmds);
-                    }
-                } catch (e) {
-                    pcmds = plugin.commands;
-                }
-
-                // FIX: if add new plugin, the cache may not have
                 if (pcmds) {
                     pcmds.forEach(command => {
                         const cmd = {
@@ -431,13 +425,13 @@ function classifyPlugins(pluginsData) {
                         };
 
                         switch(command.type) {
-                        case 'regexp':
+                        case PLUGIN_TYPE.REGEXP:
                             regExpCommands.push(cmd);
                             break;
-                        case 'other':
+                        case PLUGIN_TYPE.OTHER:
                             otherCommands.push(cmd);
                             break;
-                        case 'keyword':
+                        case PLUGIN_TYPE.KEYWORD:
                             commands[command.key] = cmd;
                             break;
                         default:
@@ -460,16 +454,8 @@ function classifyPlugins(pluginsData) {
 
 function restoreConfig() {
     return new Promise(resove => {
-        chrome.storage.sync.get('config', function(res) {
-            let pluginsData;
-
-            try {
-                pluginsData = res.config.plugins;
-            } catch (e) {
-                console.log('There is no plugins configuration yet');
-            }
-
-            classifyPlugins(pluginsData, inContent);
+        chrome.storage.sync.get(CONST.STORAGE.CONFIG, function(res) {
+            classifyPlugins(res.config.plugins, inContent);
 
              keys = Object.keys(commands).join('|');
              reg = new RegExp(`^((?:${keys}))\\s(?:\\-(\\w+))?\\s?(.*)$`, 'i');
@@ -478,9 +464,7 @@ function restoreConfig() {
              stewardCache.config = res.config || {};
 
             if (!stewardCache.config.general) {
-                stewardCache.config.general = {
-                    cacheLastCmd: true
-                }
+                stewardCache.config.general = defaultGeneral;
             }
              resove(stewardCache.config);
         });

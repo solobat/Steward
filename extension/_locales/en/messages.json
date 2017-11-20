@@ -14,6 +14,18 @@
     "bookmark_subtitle": {
         "message": "find bookmark and open it"
     },
+    "bookmark_bm_title": {
+        "message": "find bookmark"
+    },
+    "bookmark_bm_subtitle": {
+        "message": "find bookmark and open it"
+    },
+    "bookmark_bmd_title": {
+        "message": "find bookmark and delete it"
+    },
+    "bookmark_bmd_subtitle": {
+        "message": "find bookmark and delete it"
+    },
     "topsites_title": {
         "message": "top sites"
     },
@@ -176,9 +188,6 @@
     "youdao_subtitle": {
         "message": "translate a word / phrase by youdao translator..."
     },
-    "general_cacheLastCmd": {
-        "message": "Cache the last command"
-    },
     "weather_title": {
         "message": "weather"
     },
@@ -200,11 +209,23 @@
     "general_useInContentPage": {
         "message": "use in every page"
     },
+    "general_cacheLastCmd": {
+        "message": "Cache the last command"
+    },
     "general_defaultPlugin": {
         "message": "Default plugin for New Tab"
     },
     "general_customCmd": {
         "message": "New Tab custom command"
+    },
+    "general_autoScrollToMiddle": {
+        "message": "Automatically move up when at the bottom of list"
+    },
+    "general_speedFirst": {
+        "message": "Speed first"
+    },
+    "tips_autoScrollToMiddle": {
+        "message": "Scrolls the element at the bottom of the list automatically to the middle of the list"
     },
     "chrome_title": {
         "message": "chrome urls"
@@ -217,6 +238,12 @@
     },
     "steward_subtitle": {
         "message": "Find steward option tabs and open"
+    },
+    "custom_title": {
+        "message": "Custom command"
+    },
+    "custom_subtitle": {
+        "message": "Set the default command in the NewTab input box"
     },
     "github_title": {
         "message": "The most visited github pages"

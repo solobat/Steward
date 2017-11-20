@@ -22,7 +22,8 @@ const commands = [{
     editable: true
 }];
 
-// NOTE: Only get the commands when needed, main.js has been immediately obtained, and then get the object will be empty
+// NOTE: Only get the commands when needed, main.js has been immediately obtained
+// and then get the object will be empty
 function getPlugins() {
     const allcommands = window.stewardCache.commands;
     const helpList = _.uniq(_.values(allcommands)).map(command => {

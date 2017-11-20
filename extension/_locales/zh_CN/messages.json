@@ -14,6 +14,18 @@
     "bookmark_subtitle": {
         "message": "查找书签记录并打开"
     },
+    "bookmark_bm_title": {
+        "message": "查找书签"
+    },
+    "bookmark_bm_subtitle": {
+        "message": "查找书签记录并打开"
+    },
+    "bookmark_bmd_title": {
+        "message": "查找书签并删除"
+    },
+    "bookmark_bmd_subtitle": {
+        "message": "查找书签记录并删除"
+    },
     "topsites_title": {
         "message": "常用网站"
     },
@@ -194,17 +206,26 @@
     "search_subtitle": {
         "message": "搜索指定内容"
     },
+    "general_useInContentPage": {
+        "message": "在网页中启动"
+    },
     "general_cacheLastCmd": {
         "message": "缓存上一条命令"
+    },
+    "general_defaultPlugin": {
+        "message": "New Tab默认插件"
     },
     "general_customCmd": {
         "message": "New Tab自定义命令"
     },
-    "general_useInContentPage": {
-        "message": "在网页中启动"
+    "general_autoScrollToMiddle": {
+        "message": "列表底部时自动上移"
     },
-    "general_defaultPlugin": {
-        "message": "New Tab默认插件"
+    "general_speedFirst": {
+        "message": "速度优先"
+    },
+    "tips_autoScrollToMiddle": {
+        "message": "自动将位于列表底部的元素滚动到列表中间"
     },
     "chrome_title": {
         "message": "chrome常用url"
@@ -217,6 +238,12 @@
     },
     "steward_subtitle": {
         "message": "查找常用steward选项并打开"
+    },
+    "custom_title": {
+        "message": "自定义命令"
+    },
+    "custom_subtitle": {
+        "message": "设置在NewTab输入框中的默认命令"
     },
     "github_title": {
         "message": "github常用页面"

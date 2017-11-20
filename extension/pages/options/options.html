@@ -26,15 +26,15 @@
     </header>
     <div id="app" class="steward" v-cloak>
         <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane v-if="extType === 'steward'" label="General" name="general">
+            <el-tab-pane label="General" name="general">
                 <el-form style="margin: 20px 0; min-height: 150px;" ref="general" :model="config.general">
-                    <el-form-item :label="i18nTexts.general.cacheLastCmd">
+                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.cacheLastCmd">
                         <el-switch
                           v-model="config.general.cacheLastCmd"
                           on-color="#20a0ff">
                         </el-switch>
                     </el-form-item>
-                    <el-form-item :label="i18nTexts.general.defaultPlugin">
+                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.defaultPlugin">
                         <el-select v-model="config.general.defaultPlugin" clearable :disabled="config.general.cacheLastCmd" placeholder="please choose">
                             <el-option
                               v-for="item in defaultPlugins"
@@ -44,9 +44,23 @@
                             </el-option>
                           </el-select>
                     </el-form-item>
-                    <el-form-item :label="i18nTexts.general.customCmd">
+                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.customCmd">
                         <el-input style="width: 200px;" v-model="config.general.customCmd" :disabled="config.general.defaultPlugin !== 'Other'" placeholder="enter your command">
                         </el-input>
+                    </el-form-item>
+                    <el-form-item :label="i18nTexts.general.autoScrollToMiddle">
+                        <el-tooltip class="item" effect="dark" :content="i18nTexts.tips.autoScrollToMiddle" placement="top-start">
+                            <el-switch
+                                v-model="config.general.autoScrollToMiddle"
+                                on-color="#20a0ff">
+                            </el-switch>
+                        </el-tooltip>
+                    </el-form-item>
+                    <el-form-item :label="i18nTexts.general.speedFirst">
+                        <el-switch
+                            v-model="config.general.speedFirst"
+                            on-color="#20a0ff">
+                        </el-switch>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click.native.prevent="handleGeneralSubmit">Save</el-button>
@@ -127,12 +141,12 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
+            <el-tab-pane label="Advanced" name="advanced">
+                <el-button @click="handleResetClick" type="danger" style="margin-top: 12px">Reset</el-button>
+            </el-tab-pane>
             <el-tab-pane label="Help" name="help">
                 <div class="text-panel">
-                    <iframe height="330" width="510" src='http://player.youku.com/embed/XMzEyNDE4MDUzMg==' frameborder="0" allowfullscreen></iframe>
-                    <br>
-                    Please try to upgrade the latest version of the browser, to avoid some of the features can not be used.<br>
-                    If you have any suggestions / problems in the process of using it, you can go <a href="https://github.com/solobat/Steward/issues">Here</a>，or join the <a href="https://t.me/chromesteward" target="_blank">Telegram</a> channel。
+                    <div v-if="activeName === 'help'" v-html="helpInfo"></div>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="Update" name="update">

@@ -22,6 +22,7 @@ import search from './search'
 import extensions from './extensions'
 import chrome from './chrome'
 import steward from './steward'
+import custom from './custom'
 import { extPlugins } from './extension'
 
 const pluginList = [
@@ -49,6 +50,7 @@ const pluginList = [
     extensions,
     chrome,
     steward,
+    custom,
     ...extPlugins
 ]
 

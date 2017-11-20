@@ -1,25 +1,31 @@
 /*global _gaq*/
 import $ from 'jquery'
-import { NUMBER } from '../constant/index'
+import CONST from '../constant'
 import * as api from '../api/index'
 import * as date from '../utils/date'
 import _ from 'underscore'
 import storage from '../utils/storage'
 import Toast from 'toastr'
 
-const STORAGE_KEY = 'wallpapers';
 const $body = $('body');
 
 let curUrl = '';
 let intervalTimer = 0;
+let $saveBtn;
 
-function updateWallpaper(url, save) {
+function updateWallpaper(url, save, isNew) {
     if (!url) {
         return;
     }
 
     if (save) {
-        window.localStorage.setItem('wallpaper', url);
+        window.localStorage.setItem(CONST.STORAGE.WALLPAPER, url);
+    }
+
+    if (isNew) {
+        $saveBtn.show();
+    } else {
+        $saveBtn.hide();
     }
 
     curUrl = url;
@@ -30,7 +36,7 @@ function updateWallpaper(url, save) {
 }
 
 function saveWallpaperLink() {
-    storage.sync.get(STORAGE_KEY, []).then(data => {
+    storage.sync.get(CONST.STORAGE.WALLPAPERS, []).then(data => {
         let wallpapers = data;
 
         if (curUrl) {
@@ -41,45 +47,64 @@ function saveWallpaperLink() {
         console.log(wallpapers);
 
         return {
-            [STORAGE_KEY]: wallpapers
+            [CONST.STORAGE.WALLPAPERS]: wallpapers
         };
     }).then(newResults => storage.sync.set(newResults)).then(() => {
         Toast.success('save successfully');
+        $saveBtn.hide();
     });
+}
+
+function randomBool() {
+    return Boolean(Math.round(Math.random()));
+}
+
+function wallpaperApiHandler(resp, isBing) {
+    console.log(`update from ${isBing ? 'bing' : 'cache'}...`);
+    if (!isBing) {
+        return resp;
+    } else {
+        return api.bing.root + resp.images[0].url;
+    }
+}
+
+function getRandomOne(list) {
+    if (list && list.length) {
+        const index = Math.round(Math.random() * (list.length - 1));
+
+        return list[index];
+    }
 }
 
 export function refreshWallpaper(today) {
     const method = today ? 'today' : 'rand';
 
-    api.bing[method]().then(resp => {
-        updateWallpaper(api.bing.root + resp.images[0].url, true);
+    Promise.all([
+        api.bing[method](),
+        storage.sync.get(CONST.STORAGE.WALLPAPERS, [])
+    ]).then(([bing, cache]) => {
+        const isBing = randomBool();
+
+        if (isBing || cache.length === 0) {
+            const wp = wallpaperApiHandler(bing, true);
+            const isNew = cache.indexOf(wp) === -1;
+
+            updateWallpaper(wp, true, isNew);
+        } else {
+            updateWallpaper(wallpaperApiHandler(getRandomOne(cache)), true, false);
+        }
     }).catch(resp => {
         console.log(resp);
     });
 }
 
-export function init() {
-    // restore
-    const lastDate = new Date(window.localStorage.getItem('lastDate') || Number(new Date()));
-    const defaultWallpaper = window.localStorage.getItem('wallpaper');
-
-    window.localStorage.setItem('lastDate', date.format());
-
-    if (date.isNewDate(new Date(), lastDate)) {
-        refreshWallpaper(true);
-    } else if (!defaultWallpaper) {
-        refreshWallpaper();
-    } else {
-        updateWallpaper(defaultWallpaper);
-    }
-
-    // bind events
+function bindEvents() {
     $('#j-refresh-wp').on('click', function() {
         refreshWallpaper();
         _gaq.push(['_trackEvent', 'wallpaper', 'click', 'refresh']);
     });
 
-    $('#j-save-wplink').on('click', function() {
+    $saveBtn.on('click', function() {
         saveWallpaperLink();
         _gaq.push(['_trackEvent', 'wallpaper', 'click', 'save']);
     });
@@ -90,7 +115,27 @@ export function init() {
             Toast.success('The automatic refresh of the wallpaper has been disabled');
         }
     });
+}
+
+export function init() {
+    // restore
+    const lastDate = new Date(window.localStorage.getItem(CONST.STORAGE.LASTDATE) || Number(new Date()));
+    const defaultWallpaper = window.localStorage.getItem(CONST.STORAGE.WALLPAPER);
+
+    $saveBtn = $('#j-save-wplink');
+
+    window.localStorage.setItem(CONST.STORAGE.LASTDATE, date.format());
+
+    if (date.isNewDate(new Date(), lastDate)) {
+        refreshWallpaper(true);
+    } else if (!defaultWallpaper) {
+        refreshWallpaper();
+    } else {
+        updateWallpaper(defaultWallpaper, false, true);
+    }
+
+    bindEvents();
 
     // set interval
-    intervalTimer = setInterval(refreshWallpaper, NUMBER.WALLPAPER_INTERVAL);
+    intervalTimer = setInterval(refreshWallpaper, CONST.NUMBER.WALLPAPER_INTERVAL);
 }
