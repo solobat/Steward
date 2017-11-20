@@ -73,10 +73,6 @@ function getI18nTexts(obj) {
 function render({general, plugins, lastVersion}, i18nTexts) {
     let activeName = 'general';
 
-    if (EXT_TYPE === 'alfred') {
-        activeName = 'plugins';
-    }
-
     if (lastVersion < version) {
         activeName = 'update';
     }

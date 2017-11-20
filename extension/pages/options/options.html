@@ -26,15 +26,15 @@
     </header>
     <div id="app" class="steward" v-cloak>
         <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane v-if="extType === 'steward'" label="General" name="general">
+            <el-tab-pane label="General" name="general">
                 <el-form style="margin: 20px 0; min-height: 150px;" ref="general" :model="config.general">
-                    <el-form-item :label="i18nTexts.general.cacheLastCmd">
+                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.cacheLastCmd">
                         <el-switch
                           v-model="config.general.cacheLastCmd"
                           on-color="#20a0ff">
                         </el-switch>
                     </el-form-item>
-                    <el-form-item :label="i18nTexts.general.defaultPlugin">
+                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.defaultPlugin">
                         <el-select v-model="config.general.defaultPlugin" clearable :disabled="config.general.cacheLastCmd" placeholder="please choose">
                             <el-option
                               v-for="item in defaultPlugins"
@@ -44,7 +44,7 @@
                             </el-option>
                           </el-select>
                     </el-form-item>
-                    <el-form-item :label="i18nTexts.general.customCmd">
+                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.customCmd">
                         <el-input style="width: 200px;" v-model="config.general.customCmd" :disabled="config.general.defaultPlugin !== 'Other'" placeholder="enter your command">
                         </el-input>
                     </el-form-item>
@@ -146,7 +146,7 @@
             </el-tab-pane>
             <el-tab-pane label="Help" name="help">
                 <div class="text-panel">
-                    <div v-html="helpInfo"></div>
+                    <div v-if="activeName === 'help'" v-html="helpInfo"></div>
                 </div>
             </el-tab-pane>
             <el-tab-pane label="Update" name="update">
