@@ -10,6 +10,7 @@ import changelog from '../../js/info/changelog'
 import storage from '../../js/utils/storage'
 import util from '../../js/common/util'
 import { aboutus } from '../../js/info/about'
+import { helpInfo } from '../../js/info/help'
 import CONST from '../../js/constant'
 import { restoreConfig } from '../../js/common/config'
 
@@ -101,6 +102,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                 defaultPlugins: CONST.OPTIONS.DEFAULT_PLUGINS,
                 extType,
                 storeId,
+                helpInfo,
                 aboutus,
                 config: {
                     general,
