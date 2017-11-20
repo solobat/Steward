@@ -81,7 +81,7 @@ function queryNotesByTag(query) {
             getTags()
         ]).then(res => {
             const notes = res[0];
-            const tags = res[1];
+            const tags = res[1] || {};
 
             if (!tags[query]) {
                 resolve({

@@ -113,7 +113,6 @@ const handleUrlBlock = (url, tab, match) => {
 }
 
 const handleUrlUnBlock = (url, tab, match) => {
-    console.log('unblockUrl', match);
     if (match[1]) {
         const original = util.getParameterByName('original', match[1]);
 
@@ -147,7 +146,7 @@ function checkTabByUrl(tab) {
     const match = tryMatchBlockPage(tab.url);
 
     if (!match[1]) {
-        getBlacklist(function (blacklist) {
+        getBlacklist(function (blacklist = []) {
             for (let i = 0; i < blacklist.length; i = i + 1) {
                 if (tab.url.indexOf(blacklist[i].title) !== -1) {
                     blockTab(tab);
