@@ -14,7 +14,7 @@ window.addEventListener('message', function(event) {
         if (event.data.action === 'show') {
             changeBoxStatus(false);
         } else {
-            initForContentPage(event.source, event.data.host);
+            initForContentPage(event.source, event.data.lazy, event.data.host);
         }
     }
 });
@@ -45,14 +45,15 @@ function handleAction(event, obj) {
     window.parentWindow.postMessage(obj, '*');
 }
 
-function initForContentPage(parentWindow, parentHost) {
+function initForContentPage(parentWindow, lazy, parentHost) {
     document.documentElement.className += ' content-page';
     window.parentWindow = parentWindow;
     window.parentHost = parentHost;
 
     extension(MODE.POPUP, true).then(cmdbox => {
         box = cmdbox;
-        changeBoxStatus(true);
+        // if lazy, inputbox should get the focus when init
+        changeBoxStatus(!lazy);
 
         box.bind('shouldCloseBox', closeBox);
         box.bind('action', handleAction);

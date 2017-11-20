@@ -3,5 +3,6 @@ export default {
     cacheLastCmd: true,
     defaultPlugin: '',
     customCmd: '',
-    autoScrollToMiddle: false
+    autoScrollToMiddle: false,
+    speedFirst: true
 }

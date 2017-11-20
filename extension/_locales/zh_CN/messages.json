@@ -221,6 +221,9 @@
     "general_autoScrollToMiddle": {
         "message": "列表底部时自动上移"
     },
+    "general_speedFirst": {
+        "message": "速度优先"
+    },
     "tips_autoScrollToMiddle": {
         "message": "自动将位于列表底部的元素滚动到列表中间"
     },

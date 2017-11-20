@@ -221,6 +221,9 @@
     "general_autoScrollToMiddle": {
         "message": "Automatically move up when at the bottom of list"
     },
+    "general_speedFirst": {
+        "message": "Speed first"
+    },
     "tips_autoScrollToMiddle": {
         "message": "Scrolls the element at the bottom of the list automatically to the middle of the list"
     },
