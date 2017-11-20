@@ -2,6 +2,20 @@
 const wordcardUrl = 'https://chrome.google.com/webstore/detail/oegblnjiajbfeegijlnblepdodmnddbk';
 const langZh = [
     {
+        version: 'v3.0',
+        detail: `
+            新增恢复初始化设置;<br>
+            可设置newTab滚动到底部后自动往上到中间位置;<br>
+            书签删除命令 - branch: bmd;<br>
+            custom插件，自定义输入框中的默认命令;<br>
+            unblock后恢复页面;<br>
+            remove todo后恢复title;<br>
+            壁纸从bing或收藏里随机选取，并自动隐藏save按钮;<br>
+            性能优化.<br>
+            <a href="http://v.youku.com/v_show/id_XMzE3MTExMDMyMA==.html?spm=a2h3j.8428770.3416059.1" target="_blank">更新视频</a>
+        `
+    },
+    {
         version: 'v2.9.1',
         detail: `
             NewTab命令除选择外还可以自定义;
@@ -129,6 +143,20 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.0',
+        detail: `
+            Added restore initialization settings; <br>
+            Can set newTab scroll to the bottom automatically to the middle position; <br>
+            Bookmark delete command - trigger: bmd; <br>
+            Add custom plugin, which can custom default command of the newTab input box; <br>
+            Unblock url and then restore the page; <br>
+            Remove todo then restore the title; <br>
+            Random wallpaper from bing or collection, and automatically hide the save button; <br>
+            Performance optimization. <br>
+            <a href="https://youtu.be/aoMtCPvlvCM" target="_blank">video</a>
+        `
+    },
     {
         version: 'v2.9.1',
         detail: `
