@@ -77,12 +77,12 @@ EasyComplete.prototype = {
         keyboardJS.bind('enter', function(event) {
             event.preventDefault();
             if (that.isVisible()) {
-                that.exec();
+                that.exec(event);
             }
         });
 
-        $(document).on('click', '.ec-item', function () {
-            that.select($(this).data('index'));
+        $(document).on('click', '.ec-item', function (event) {
+            that.select($(this).data('index'), event);
         });
     },
 
@@ -92,12 +92,12 @@ EasyComplete.prototype = {
         this.refresh();
     },
 
-    select: function (index) {
+    select: function (index, event) {
         const itemNum = $('.ec-item').length;
 
         if (index >= 0 && index <= itemNum - 1) {
             this.selectItemByIndex(index);
-            this.exec();
+            this.exec(event);
             this.refresh();
         }
     },
@@ -133,7 +133,8 @@ EasyComplete.prototype = {
         }
     },
 
-    exec: function () {
+    exec: function (event) {
+        this.shiftKey = event.shiftKey;
         this.trigger('enter', $('.ec-item-select').get(0));
     },
 
