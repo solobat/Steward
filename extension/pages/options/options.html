@@ -28,26 +28,46 @@
         <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="General" name="general">
                 <el-form style="margin: 20px 0; min-height: 150px;" ref="general" :model="config.general">
-                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.cacheLastCmd">
-                        <el-switch
-                          v-model="config.general.cacheLastCmd"
-                          on-color="#20a0ff">
-                        </el-switch>
-                    </el-form-item>
-                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.defaultPlugin">
-                        <el-select v-model="config.general.defaultPlugin" clearable :disabled="config.general.cacheLastCmd" placeholder="please choose">
-                            <el-option
-                              v-for="item in defaultPlugins"
-                              :key="item.value"
-                              :label="item.label"
-                              :value="item.value">
-                            </el-option>
-                          </el-select>
-                    </el-form-item>
-                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.customCmd">
-                        <el-input style="width: 200px;" v-model="config.general.customCmd" :disabled="config.general.defaultPlugin !== 'Other'" placeholder="enter your command">
-                        </el-input>
-                    </el-form-item>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.cacheLastCmd">
+                                <el-switch
+                                    v-model="config.general.cacheLastCmd"
+                                    on-color="#20a0ff">
+                                </el-switch>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.autoHideCmd">
+                                <el-tooltip class="item" effect="dark" :content="i18nTexts.tips.autoHideCmd" placement="top-start">
+                                    <el-switch
+                                        v-model="config.general.autoHideCmd"
+                                        on-color="#20a0ff">
+                                    </el-switch>
+                                </el-tooltip>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.defaultPlugin">
+                                <el-select v-model="config.general.defaultPlugin" clearable :disabled="config.general.cacheLastCmd" placeholder="please choose">
+                                    <el-option
+                                        v-for="item in defaultPlugins"
+                                        :key="item.value"
+                                        :label="item.label"
+                                        :value="item.value">
+                                    </el-option>
+                                    </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.customCmd">
+                                <el-input style="width: 200px;" v-model="config.general.customCmd" :disabled="config.general.cacheLastCmd || config.general.defaultPlugin !== 'Other'" placeholder="enter your command">
+                                </el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
                     <el-form-item :label="i18nTexts.general.autoScrollToMiddle">
                         <el-tooltip class="item" effect="dark" :content="i18nTexts.tips.autoScrollToMiddle" placement="top-start">
                             <el-switch
@@ -61,14 +81,6 @@
                             v-model="config.general.speedFirst"
                             on-color="#20a0ff">
                         </el-switch>
-                    </el-form-item>
-                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.autoHideCmd">
-                        <el-tooltip class="item" effect="dark" :content="i18nTexts.tips.autoHideCmd" placement="top-start">
-                            <el-switch
-                                v-model="config.general.autoHideCmd"
-                                on-color="#20a0ff">
-                            </el-switch>
-                        </el-tooltip>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click.native.prevent="handleGeneralSubmit">Save</el-button>
