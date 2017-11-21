@@ -224,8 +224,14 @@
     "general_speedFirst": {
         "message": "Speed first"
     },
+    "general_autoHideCmd": {
+        "message": "auto hide the command"
+    },
     "tips_autoScrollToMiddle": {
         "message": "Scrolls the element at the bottom of the list automatically to the middle of the list"
+    },
+    "tips_autoHideCmd": {
+        "message": "Hides the command automatically when the new tab's input box loses focus"
     },
     "chrome_title": {
         "message": "chrome urls"

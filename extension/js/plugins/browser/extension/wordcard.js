@@ -60,6 +60,22 @@ const levelsFormat = ((level, index) => {
     };
 });
 
+function highlightWord(sentence, word) {
+    if (sentence && word) {
+        const theword = word.toLowerCase();
+
+        return sentence.split(' ').map(item => {
+            if (item.toLowerCase().indexOf(theword) !== -1) {
+                return `<em>${item}</em>`;
+            } else {
+                return item;
+            }
+        }).join(' ');
+    } else {
+        return sentence;
+    }
+}
+
 function getTagsAndLevels() {
     const levels = [0, 1, 2, 3, 4, 5].map(levelsFormat);
 
@@ -93,15 +109,32 @@ function queryFromExt(query) {
     }
 }
 
+function reviewWord(id, gotit, word) {
+    chrome.runtime.sendMessage(extID, {
+        action: 'review',
+        data: { id, gotit, word }
+    }, resp => {
+        console.log(resp);
+    });
+}
+
 function onInput(query) {
     return queryFromExt(query.trim());
 }
 
-function onEnter(item, command, query) {
+function onEnter(item, command, query, shiftKey) {
     const str = query.trim();
 
     if (str) {
-        Toast.success(item.sentence, item.title, { timeOut: 12000 });
+        Toast.clear();
+
+        if (shiftKey) {
+            reviewWord(item.id, true, item.title);
+            Toast.success(item.title);
+        } else {
+            reviewWord(item.id, false, item.title);
+            Toast.info(highlightWord(item.sentence, item.title), item.title, { timeOut: 12000 });
+        }
 
         return Promise.resolve(true);
     } else {

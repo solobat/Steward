@@ -312,7 +312,7 @@ function handleEnter (event, elem) {
         plugin = plugin4empty;
     }
     const index = $elem.index();
-    const result = Reflect.apply(plugin.onEnter, this, [this.dataList[index], this.command, this.query]);
+    const result = Reflect.apply(plugin.onEnter, this, [this.dataList[index], this.command, this.query, this.shiftKey]);
 
     handleEnterResult(result);
 
@@ -358,6 +358,11 @@ function prepareBox() {
         $cmdbox.blur(function() {
             $cmdbox.focus();
         });
+    }
+
+    if (mode === CONST.BASE.MODE.NEWTAB &&
+         window.stewardCache.config.general.autoHideCmd) {
+        $cmdbox.addClass('autohide');
     }
 }
 

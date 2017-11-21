@@ -1,3 +1,5 @@
+@import '../../scss/main.scss';
+
 body {
     margin: 0;
     padding: 0;
@@ -69,6 +71,14 @@ a {
     border: 4px solid rgba(0, 0, 0, 0.8);
     font-size: 26px;
     background-color: rgba(255,255,255, .5);
+
+    &.autohide {
+        color: transparent;
+
+        &:focus {
+            color: #000;
+        }
+    }
 }
 
 .cmdbox:focus {
