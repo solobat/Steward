@@ -109,10 +109,10 @@ function queryFromExt(query) {
     }
 }
 
-function reviewWord(id, gogit, word) {
+function reviewWord(id, gotit, word) {
     chrome.runtime.sendMessage(extID, {
         action: 'review',
-        data: { id, gogit, word }
+        data: { id, gotit, word }
     }, resp => {
         console.log(resp);
     });
@@ -122,13 +122,19 @@ function onInput(query) {
     return queryFromExt(query.trim());
 }
 
-function onEnter(item, command, query) {
+function onEnter(item, command, query, shiftKey) {
     const str = query.trim();
 
     if (str) {
-        reviewWord(item.id, false, item.title);
         Toast.clear();
-        Toast.info(highlightWord(item.sentence, item.title), item.title, { timeOut: 12000 });
+
+        if (shiftKey) {
+            reviewWord(item.id, true, item.title);
+            Toast.success(item.title);
+        } else {
+            reviewWord(item.id, false, item.title);
+            Toast.info(highlightWord(item.sentence, item.title), item.title, { timeOut: 12000 });
+        }
 
         return Promise.resolve(true);
     } else {
