@@ -60,6 +60,22 @@ const levelsFormat = ((level, index) => {
     };
 });
 
+function highlightWord(sentence, word) {
+    if (sentence && word) {
+        const theword = word.toLowerCase();
+
+        return sentence.split(' ').map(item => {
+            if (item.toLowerCase().indexOf(theword) !== -1) {
+                return `<em>${item}</em>`;
+            } else {
+                return item;
+            }
+        }).join(' ');
+    } else {
+        return sentence;
+    }
+}
+
 function getTagsAndLevels() {
     const levels = [0, 1, 2, 3, 4, 5].map(levelsFormat);
 
@@ -110,8 +126,9 @@ function onEnter(item, command, query) {
     const str = query.trim();
 
     if (str) {
-        Toast.info(item.sentence, item.title, { timeOut: 12000 });
         reviewWord(item.id, false, item.title);
+        Toast.clear();
+        Toast.info(highlightWord(item.sentence, item.title), item.title, { timeOut: 12000 });
 
         return Promise.resolve(true);
     } else {
