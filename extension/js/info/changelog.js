@@ -2,6 +2,14 @@
 const wordcardUrl = 'https://chrome.google.com/webstore/detail/oegblnjiajbfeegijlnblepdodmnddbk';
 const langZh = [
     {
+        version: 'v3.0.1',
+        detail: `
+            修复因urlblock导致的crash问题(todo改变标签标题的功能暂时去掉);<br>
+            新增new Tab输入框失去焦点时字体透明不显示的设置项;<br>
+            优化单词小卡片扩展插件；<br>
+        `
+    },
+    {
         version: 'v3.0',
         detail: `
             新增恢复初始化设置;<br>
@@ -143,6 +151,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.0.1',
+        detail: `
+            Fix for crash caused by urlblock (todo change tag caption temporarily removed);<br>
+            Some other optimization.
+        `
+    },
     {
         version: 'v3.0',
         detail: `
