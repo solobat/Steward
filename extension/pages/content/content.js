@@ -2,7 +2,10 @@ import $ from 'jquery'
 import keyboardJS from 'keyboardjs'
 import './content.scss'
 import { websitesMap } from '../../js/plugins/website'
+import PluginHelper from '../../js/helper/pluginHelper'
+
 const chrome = window.chrome;
+const pluginHelper = new PluginHelper();
 
 const App = {
     isInit: false,
@@ -125,9 +128,11 @@ const quickInit = initFactory(false);
 const lazyInit = initFactory(true);
 
 chrome.runtime.sendMessage({
-    action: 'getConfig'
+    action: 'getData'
 }, resp => {
-    const config = resp.data;
+    const config = resp.data.config;
+
+    pluginHelper.init(resp.data.blockedUrls);
 
     if (config.general.speedFirst) {
         quickInit();

@@ -4,186 +4,28 @@
  * @email solopea@gmail.com
  */
 import $ from 'jquery'
-import _ from 'underscore'
 import STORAGE from '../../js/constant/storage'
 import { getSyncConfig } from '../../js/common/config'
-import util from '../../js/common/util'
 
 let config = {};
-
-// handle todos
-function getTodos() {
-    return new Promise(resolve => {
-        chrome.storage.sync.get(STORAGE.TODO, function (results) {
-            resolve(results.todo);
-        });
-    });
-}
-
-function getTabsByWindows(win) {
-    return new Promise(resolve => {
-        chrome.tabs.getAllInWindow(win.id, function (tabs) {
-            resolve(tabs);
-        });
-    });
-}
-
-function getAllTabs() {
-    return new Promise(resolve => {
-        chrome.windows.getAll(function (wins) {
-            if (!wins.length) {
-                return;
-            }
-            const tasks = [];
-
-            for (let i = 0, len = wins.length; i < len; i = i + 1) {
-                tasks.push(getTabsByWindows(wins[i]));
-            }
-
-            Promise.all(tasks).then(resp => {
-                resolve(_.flatten(resp).filter(tab => {
-                    return tab.url.indexOf('http' !== -1);
-                }));
-            });
-        });
-    });
-}
-
-const tabsInfo = {};
-
-function refreshTodo() {
-    Promise.all([
-        getTodos(),
-        getAllTabs()
-    ]).then(([todos = [], tabs = []]) => {
-        for (let i = 0, len = tabs.length; i < len; i = i + 1) {
-            const tab = tabs[i];
-            const todo = todos[i];
-
-            if (todo) {
-                if (!tabsInfo[tab.id]) {
-                    tabsInfo[tab.id] = {
-                        originalTitle: tab.title
-                    };
-                }
-                chrome.tabs.executeScript(tab.id, {
-                    code: `document.title = "${todo.title}"`
-                });
-            } else {
-                if (tabsInfo[tab.id]) {
-                    chrome.tabs.executeScript(tab.id, {
-                        code: `document.title = "${tabsInfo[tab.id].originalTitle}"`
-                    });
-                    Reflect.deleteProperty(tabsInfo, tab.id);
-                }
-            }
-        }
-    });
-}
-
-// handle url block
-const blockPageUrl = chrome.extension.getURL('urlblock.html');
-function getBlacklist(callback) {
-    chrome.storage.sync.get(STORAGE.URL, function (results) {
-        const blacklist = results.url;
-
-        callback(blacklist);
-    });
-}
-
-function tryMatchBlockPage(url) {
-    return url.split('urlblock.html');
-}
-
-const checkTabs = handle => url => {
-    if (url) {
-        getAllTabs().then((tabs = []) => {
-            for (let i = 0; i < tabs.length; i = i + 1) {
-                const match = tryMatchBlockPage(tabs[i].url);
-                handle(url, tabs[i], match);
-            }
-        });
-    }
-}
-
-const handleUrlBlock = (url, tab, match) => {
-    if (tab.url.indexOf(url) !== -1 && !match[1]) {
-        blockTab(tab);
-    }
-}
-
-const handleUrlUnBlock = (url, tab, match) => {
-    if (match[1]) {
-        const original = util.getParameterByName('original', match[1]);
-
-        if (original.indexOf(url) !== -1) {
-            unblockTab(tab);
-        }
-    }
-}
-
-const blockUrl = checkTabs(handleUrlBlock);
-const unblockUrl = checkTabs(handleUrlUnBlock);
-
-function unblockTab(tab) {
-    chrome.tabs.sendMessage(tab.id, {
-        action: 'back'
-    })
-}
-
-function blockTab(tab) {
-    chrome.tabs.executeScript(tab.id, {
-        code: `
-            window.history.pushState({}, "${tab.title}", "${tab.url}");
-            window.location.href = "${blockPageUrl}?original=${tab.url}"
-        `
-    });
-}
-function checkTabByUrl(tab) {
-    if (!tab.url) {
-        return;
-    }
-    const match = tryMatchBlockPage(tab.url);
-
-    if (!match[1]) {
-        getBlacklist(function (blacklist = []) {
-            for (let i = 0; i < blacklist.length; i = i + 1) {
-                if (tab.url.indexOf(blacklist[i].title) !== -1) {
-                    blockTab(tab);
-                    return;
-                }
-            }
-        });
-    }
-}
+let todos = [];
+let blockedUrls = [];
 
 function addEvents() {
-    chrome.tabs.onRemoved.addListener(function () {
-        refreshTodo();
-    });
-
-    chrome.windows.onCreated.addListener(function () {
-        refreshTodo();
-    });
-
-    chrome.tabs.onCreated.addListener(function (tab) {
-        refreshTodo();
-        checkTabByUrl(tab);
-    });
-
-    chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-        if (typeof changeInfo.pinned !== 'undefined') {
-            refreshTodo();
-        }
-        if (changeInfo.url) {
-            checkTabByUrl(tab);
-        }
-    });
-
     chrome.runtime.onMessage.addListener((req, sender, resp) => {
         switch (req.action) {
             case 'saveConfig':
                 saveConfig(req.data, resp);
+                break;
+            case 'getData':
+                resp({
+                    msg: 'get data',
+                    data: {
+                        config,
+                        todos,
+                        blockedUrls
+                    }
+                });
                 break;
             case 'getConfig':
                 resp({
@@ -191,17 +33,17 @@ function addEvents() {
                     data: config
                 });
                 break;
-            case 'addTodo':
-                refreshTodo();
+            case 'getTodos':
+                resp({
+                    msg: 'get todos ok',
+                    data: todos
+                });
                 break;
-            case 'removeTodo':
-                refreshTodo();
-                break;
-            case 'blockUrl':
-                blockUrl(req.data.url);
-                break;
-            case 'unblockUrl':
-                unblockUrl(req.data.url);
+            case 'getblockedUrls':
+                resp({
+                    msg: 'get urls ok',
+                    data: blockedUrls
+                });
                 break;
             default:
                 break;
@@ -212,6 +54,14 @@ function addEvents() {
         if (changes.config) {
             config = changes.config.newValue;
             console.log('config has changed...', config);
+        }
+        if (changes.todo) {
+            todos = changes.todo.newValue;
+            console.log('todo has changed...', todos);
+        }
+        if (changes.url) {
+            blockedUrls = changes.url.newValue;
+            console.log('url has changed...', blockedUrls);
         }
     });
 
@@ -237,15 +87,36 @@ function saveConfig(newConfig = {}, resp) {
     });
 }
 
+function getTodos() {
+    return new Promise(resolve => {
+        chrome.storage.sync.get(STORAGE.TODO, resp => {
+            resolve(resp.todo || []);
+        })
+    });
+}
+
+function getblockedUrls() {
+    return new Promise(resolve => {
+        chrome.storage.sync.get(STORAGE.URL, resp => {
+            resolve(resp.url || []);
+        });
+    });
+}
+
 function init() {
-    getSyncConfig(true, true).then(resp => {
-        config = resp;
+    Promise.all([
+        getSyncConfig(true, true),
+        getTodos(),
+        getblockedUrls()
+    ]).then(resp => {
+        console.log(resp);
+        config = resp[0];
+        todos = resp[1];
+        blockedUrls = resp[2];
         addEvents();
-        refreshTodo();
     }).catch(resp => {
         console.log(resp);
         addEvents();
-        refreshTodo();
     });
 }
 
