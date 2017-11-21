@@ -38,7 +38,8 @@ function init() {
     chrome.storage.sync.get(CONST.STORAGE.CONFIG, function(res) {
         const config = res.config;
         const tips = {
-            autoScrollToMiddle: 'autoScrollToMiddle'
+            autoScrollToMiddle: 'autoScrollToMiddle',
+            autoHideCmd: 'autoHideCmd'
         };
 
         config.lastVersion = config.version || version;

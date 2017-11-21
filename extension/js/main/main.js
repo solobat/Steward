@@ -359,6 +359,11 @@ function prepareBox() {
             $cmdbox.focus();
         });
     }
+
+    if (mode === CONST.BASE.MODE.NEWTAB &&
+         window.stewardCache.config.general.autoHideCmd) {
+        $cmdbox.addClass('autohide');
+    }
 }
 
 function initWallpaper() {

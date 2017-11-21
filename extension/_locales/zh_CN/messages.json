@@ -224,8 +224,14 @@
     "general_speedFirst": {
         "message": "速度优先"
     },
+    "general_autoHideCmd": {
+        "message": "自动隐藏命令"
+    },
     "tips_autoScrollToMiddle": {
         "message": "自动将位于列表底部的元素滚动到列表中间"
+    },
+    "tips_autoHideCmd": {
+        "message": "在New Tab输入框失去焦点时自动隐藏命令"
     },
     "chrome_title": {
         "message": "chrome常用url"

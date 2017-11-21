@@ -4,5 +4,6 @@ export default {
     defaultPlugin: '',
     customCmd: '',
     autoScrollToMiddle: false,
-    speedFirst: true
+    speedFirst: true,
+    autoHideCmd: false
 }
