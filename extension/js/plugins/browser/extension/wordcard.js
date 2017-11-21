@@ -93,10 +93,10 @@ function queryFromExt(query) {
     }
 }
 
-function reviewWord(id, gogit) {
+function reviewWord(id, gogit, word) {
     chrome.runtime.sendMessage(extID, {
         action: 'review',
-        data: { id, gogit }
+        data: { id, gogit, word }
     }, resp => {
         console.log(resp);
     });
@@ -110,8 +110,9 @@ function onEnter(item, command, query) {
     const str = query.trim();
 
     if (str) {
-        Toast.info(item.sentence, item.title, { timeOut: 120000 });
-        reviewWord(item.id, false);
+        Toast.info(item.sentence, item.title, { timeOut: 12000 });
+        reviewWord(item.id, false, item.title);
+
         return Promise.resolve(true);
     } else {
         return Promise.resolve(`${command.key} ${item.id}`);
