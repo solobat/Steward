@@ -4,6 +4,8 @@
  * @email solopea@gmail.com
  */
 
+import util from '../../common/util'
+
 const chrome = window.chrome;
 const version = 2;
 const name = 'topsites';
@@ -22,30 +24,46 @@ const commands = [{
 }];
 
 function onInput() {
-    chrome.topSites.get(sites => {
-        const arr = [];
-        let i;
+    return new Promise(resolve => {
+        chrome.topSites.get(sites => {
+            const arr = [];
+            const wrapDesc = util.wrapWithMaxNumIfNeeded('url');
+            let i;
 
-        for (i in sites) {
-            const item = sites[i];
-            arr.push({
-                key,
-                id: item.id,
-                icon: icon,
-                url: item.url,
-                title: item.title,
-                desc: item.url,
-                isWarn: false
-            });
-        }
-        this.showItemList(arr);
+            for (i in sites) {
+                const item = sites[i];
+                const desc = wrapDesc(item, i);
+                arr.push({
+                    key,
+                    id: item.id,
+                    icon: icon,
+                    url: item.url,
+                    title: item.title,
+                    desc,
+                    isWarn: false
+                });
+            }
+
+            resolve(arr);
+        });
     });
 }
 
-function onEnter({ url }) {
-    chrome.tabs.create({
-        url
-    });
+function onEnter({ url }, command, query, shiftKey, list) {
+    if (shiftKey) {
+        const maxOperandsNum = window.stewardCache.config.general.maxOperandsNum;
+
+        list.slice(0, maxOperandsNum).forEach(topsite => {
+            chrome.tabs.create({
+                url: topsite.url,
+                active: false
+            });
+        });
+    } else {
+        chrome.tabs.create({
+            url
+        });
+    }
 }
 
 export default {
