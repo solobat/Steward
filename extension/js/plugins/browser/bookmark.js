@@ -41,11 +41,13 @@ function searchBookmark(query, callback) {
 function onInput(query, command) {
     return new Promise(resolve => {
         searchBookmark(query, bookMarkList => {
+            const wrapDesc = util.wrapWithMaxNumIfNeeded('url');
             const arr = [];
             let i;
 
             for (i in bookMarkList) {
                 const item = bookMarkList[i];
+                const desc = wrapDesc(item, i);
 
                 arr.push({
                     key: command.key,
@@ -53,7 +55,7 @@ function onInput(query, command) {
                     icon,
                     url: item.url,
                     title: item.title,
-                    desc: item.url,
+                    desc,
                     isWarn: false
                 });
             }
@@ -63,11 +65,22 @@ function onInput(query, command) {
     });
 }
 
-function onEnter(item, { orkey }) {
+function onEnter(item, { orkey }, query, shiftKey, list) {
+    const maxOperandsNum = window.stewardCache.config.general.maxOperandsNum;
+
     if (orkey === 'bm') {
-        chrome.tabs.create({
-            url: item.url
-        });
+        if (shiftKey) {
+            list.slice(0, maxOperandsNum).forEach(bookmark => {
+                chrome.tabs.create({
+                    url: bookmark.url,
+                    active: false
+                });
+            });
+        } else {
+            chrome.tabs.create({
+                url: item.url
+            });
+        }
     } else if (orkey === 'bmd') {
         chrome.bookmarks.remove(item.id, () => {
             this.refresh();

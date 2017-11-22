@@ -102,6 +102,17 @@ const array2map = (keyField, valField) => arr => {
 
 const options2map = array2map('value', 'label');
 
+const wrapWithMaxNumIfNeeded = (field,
+     maxOperandsNum = window.stewardCache.config.general.maxOperandsNum) => (item, index) => {
+    let ret = item[field];
+
+    if (index < maxOperandsNum) {
+        ret = `⇧: ${ret}`;
+    }
+
+    return ret;
+}
+
 export default {
     matchText,
     isMac,
@@ -111,5 +122,6 @@ export default {
     getMatches,
     getParameterByName,
     array2map,
-    options2map
+    options2map,
+    wrapWithMaxNumIfNeeded
 };
