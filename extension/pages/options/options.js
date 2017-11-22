@@ -39,7 +39,8 @@ function init() {
         const config = res.config;
         const tips = {
             autoScrollToMiddle: 'autoScrollToMiddle',
-            autoHideCmd: 'autoHideCmd'
+            autoHideCmd: 'autoHideCmd',
+            maxOperandsNum: 'maxOperandsNum'
         };
 
         config.lastVersion = config.version || version;

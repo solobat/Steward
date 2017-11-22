@@ -230,6 +230,9 @@
     "general_customCmd": {
         "message": "New Tab自定义命令"
     },
+    "general_maxOperandsNum": {
+        "message": "最大批量操作条目数"
+    },
     "general_autoScrollToMiddle": {
         "message": "列表底部时自动上移"
     },
@@ -238,6 +241,9 @@
     },
     "general_autoHideCmd": {
         "message": "自动隐藏命令"
+    },
+    "tips_maxOperandsNum": {
+        "message": "设置某些插件在shift + enter/click操作时所处理的最大条目数"
     },
     "tips_autoScrollToMiddle": {
         "message": "自动将位于列表底部的元素滚动到列表中间"
