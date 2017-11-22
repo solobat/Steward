@@ -7,7 +7,7 @@
 import util from '../../common/util'
 
 const chrome = window.chrome;
-const version = 2;
+const version = 3;
 const name = 'topsites';
 const key = 'site';
 const type = 'keyword';
@@ -20,6 +20,7 @@ const commands = [{
     title,
     subtitle,
     icon,
+    shiftKey: true,
     editable: true
 }];
 
