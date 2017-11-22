@@ -168,7 +168,7 @@
         "message": "close one tab"
     },
     "locateTab_tabc_subtitle": {
-        "message": "close all matched tab when shift keypress"
+        "message": "find and close tab(s)"
     },
     "todolist_title": {
         "message": "add todo item"

@@ -168,7 +168,7 @@
         "message": "关闭一个标签页"
     },
     "locateTab_tabc_subtitle": {
-        "message": "按下shift时关闭所有匹配的标签页"
+        "message": "查找并关闭一(多)个标签页"
     },
     "todolist_title": {
         "message": "添加todo"

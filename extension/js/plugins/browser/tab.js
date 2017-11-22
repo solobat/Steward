@@ -7,11 +7,11 @@
 import util from '../../common/util'
 import _ from 'underscore'
 
-const version = 3;
+const version = 4;
 const name = 'locateTab';
 const keys = [
     { key: 'tab' },
-    { key: 'tabc' }
+    { key: 'tabc', shiftKey: true }
 ];
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/tab.png');
@@ -48,13 +48,20 @@ function getAllTabs(query, callback) {
 }
 
 function dataFormat(rawList, command) {
-    return _.sortBy(rawList, 'active').map(function (item) {
+    const wrapDesc = util.wrapWithMaxNumIfNeeded('', 20);
+    return _.sortBy(rawList, 'active').map(function (item, index) {
+        let desc = command.subtitle;
+
+        if (command.shiftKey && !item.active) {
+            desc = wrapDesc(command.subtitle, index);
+        }
+
         return {
             key: command.key,
             id: item.id,
             icon: item.favIconUrl || icon,
             title: item.title,
-            desc: command.subtitle,
+            desc,
             isWarn: item.active
         };
     });
@@ -89,7 +96,7 @@ function onEnter({ id }, {key, orkey}, query, shiftKey, list) {
         let ids = [id];
 
         if (shiftKey) {
-            ids = list.map(item => item.id);
+            ids = list.filter(item => !item.isWarn).map(item => item.id);
         }
 
         return removeTabs(ids).then(() => {
