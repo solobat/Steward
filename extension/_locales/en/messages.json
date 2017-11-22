@@ -251,6 +251,21 @@
     "tips_autoHideCmd": {
         "message": "Hides the command automatically when the new tab's input box loses focus"
     },
+    "tips_bm_shift": {
+        "message": "While holding shift, items marked with ⇧ are opened in batches"
+    },
+    "tips_his_shift": {
+        "message": "While holding shift, items marked with ⇧ are opened in batches"
+    },
+    "tips_site_shift": {
+        "message": "While holding shift, items marked with ⇧ are opened in batches"
+    },
+    "tips_tabc_shift": {
+        "message": "While holding shift, items marked with ⇧ are opened in batches"
+    },
+    "tips_wd_shift": {
+        "message": "Holding shift means knowing the word"
+    },
     "chrome_title": {
         "message": "chrome urls"
     },

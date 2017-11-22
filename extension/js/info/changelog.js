@@ -2,6 +2,15 @@
 const wordcardUrl = 'https://chrome.google.com/webstore/detail/oegblnjiajbfeegijlnblepdodmnddbk';
 const langZh = [
     {
+        version: 'v3.0.2',
+        detail: `
+            新增<em>tabc</em>命令，关闭一个或多个匹配的tab;<br>
+            bm/site/his命令，新增<em>shift</em> keypress，可以同时打开一组tab;<br> 
+            ext命令的shift keypress打开扩展的homepage.
+            <a href="http://v.youku.com/v_show/id_XMzE3NzQ5NjEzMg==.html?spm=a2h3j.8428770.3416059.1" target="_blank">更新视频</a>
+        `
+    },
+    {
         version: 'v3.0.1',
         detail: `
             修复因urlblock导致的crash问题(todo改变标签标题的功能暂时去掉);<br>
@@ -151,6 +160,15 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.0.2',
+        detail: `
+            Added <em>tabc</em> command to close one or more matching tabs; <br>
+            bm / site / his command, can open a group of tab with <em>shift</em> keypress; <br>
+            ext command with Shift keypress  to open the extended homepage. 
+            <a href="https://www.youtube.com/watch?v=9k6xxDQJBOY&feature=youtu.be" target="_blank">video</a>
+        `
+    },
     {
         version: 'v3.0.1',
         detail: `
