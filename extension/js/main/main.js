@@ -177,7 +177,11 @@ function handleEnterResult(result) {
     if (result && result instanceof Promise) {
         result.then(data => {
             if (typeof data === 'string') {
-                cmdbox.render(data);
+                if (data) {
+                    cmdbox.render(data);
+                } else {
+                    cmdbox.refresh();
+                }
             } else {
                 const isRetain = data === true;
 
