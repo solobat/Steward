@@ -4,7 +4,9 @@
  * @email solopea@gmail.com
  */
 
-const version = 2;
+import util from '../../common/util'
+
+const version = 3;
 const name = 'history';
 const key = 'his';
 const type = 'keyword';
@@ -17,6 +19,7 @@ const commands = [{
     title,
     subtitle,
     icon,
+    shiftKey: true,
     editable: true
 }];
 
@@ -34,32 +37,53 @@ function searchHistory(query, callback) {
         });
 }
 
-function dataFormat(rawList) {
-    return rawList.map(function (item) {
+function dataFormat(rawList, command) {
+    let wrapDesc;
+
+    if (command.shiftKey) {
+        wrapDesc = util.wrapWithMaxNumIfNeeded('url');
+    }
+
+    return rawList.map(function (item, i) {
+        let desc = item.url;
+
+        if (wrapDesc) {
+            desc = wrapDesc(item, i);
+        }
         return {
             key: key,
             id: item.id,
             icon: icon,
             title: item.title,
-            desc: item.url,
+            desc,
             url: item.url
-
         };
     });
 }
 
-function onInput(query) {
+function onInput(query, command) {
     return new Promise(resolve => {
         searchHistory(query, function (matchUrls) {
-            resolve(dataFormat(matchUrls));
+            resolve(dataFormat(matchUrls, command));
         });
     });
 }
 
-function onEnter(item) {
-    chrome.tabs.create({
-        url: item.url
-    });
+function onEnter(item, command, query, shiftKey, list) {
+    const maxOperandsNum = window.stewardCache.config.general.maxOperandsNum;
+
+    if (shiftKey) {
+        list.slice(0, maxOperandsNum).forEach(history => {
+            chrome.tabs.create({
+                url: history.url,
+                active: false
+            });
+        });
+    } else {
+        chrome.tabs.create({
+            url: item.url
+        });
+    }
 }
 
 export default {
