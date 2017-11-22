@@ -41,7 +41,12 @@ function searchBookmark(query, callback) {
 function onInput(query, command) {
     return new Promise(resolve => {
         searchBookmark(query, bookMarkList => {
-            const wrapDesc = util.wrapWithMaxNumIfNeeded('url');
+            let wrapDesc;
+
+            if (command.shiftKey) {
+                wrapDesc = util.wrapWithMaxNumIfNeeded('url');
+            }
+
             const arr = [];
             let i;
 
@@ -49,7 +54,7 @@ function onInput(query, command) {
                 const item = bookMarkList[i];
                 let desc = item.url;
 
-                if (command.shiftKey) {
+                if (wrapDesc) {
                     desc = wrapDesc(item, i);
                 }
 
