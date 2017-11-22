@@ -8,7 +8,7 @@ import Toast from 'toastr'
 import _ from 'underscore'
 
 const extName = '单词小卡片: 查词/收集/背单词';
-const version = 1;
+const version = 2;
 const name = 'wordcard';
 const key = 'wd';
 const type = 'keyword';
@@ -22,6 +22,7 @@ const commands = [{
     title,
     subtitle,
     icon,
+    shiftKey: true,
     editable: true
 }];
 
@@ -34,7 +35,7 @@ const wordsFormat = (item => {
         id: item.id,
         icon: levelIcons[item.level || 0],
         title: item.name,
-        desc: (item.trans || []).join(', '),
+        desc: `⇧: ${(item.trans || []).join(', ')}`,
         sentence: item.sentence,
         lazyDesc: true
     }

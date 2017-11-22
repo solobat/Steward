@@ -37,15 +37,12 @@ const pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name')
 function init() {
     chrome.storage.sync.get(CONST.STORAGE.CONFIG, function(res) {
         const config = res.config;
-        const tips = {
-            autoScrollToMiddle: 'autoScrollToMiddle',
-            autoHideCmd: 'autoHideCmd',
-            maxOperandsNum: 'maxOperandsNum'
-        };
+        const tips = CONST.I18N.TIPS;
 
         config.lastVersion = config.version || version;
 
         const i18nTexts = getI18nTexts({general: config.general, tips});
+        console.log(i18nTexts);
 
         ga();
         render(config, i18nTexts);

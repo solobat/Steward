@@ -125,7 +125,13 @@
                                 <div class="plugin-editor-config" v-if="currentPlugin.commands[0].type === 'keyword'">
                                     <el-form style="margin: 20px;padding: 12px; background: #e6e6e6; min-height: 150px;" ref="form" :model="config.plugins" label-width="200px">
                                         <el-form-item :label="command.title" v-for="(command, index) in currentPlugin.commands" :key="index">
-                                            <input type="text" :disabled="!config.plugins[currentPlugin.name].commands[index].editable" v-model="config.plugins[currentPlugin.name].commands[index].key">
+                                            <el-input type="text" style="width: 100px;"
+                                                :disabled="!config.plugins[currentPlugin.name].commands[index].editable"
+                                                v-model="config.plugins[currentPlugin.name].commands[index].key">
+                                            </el-input>
+                                            <el-tooltip v-if="command.shiftKey" class="item" effect="dark" :content="i18nTexts.tips[command.orkey + '_shift']" placement="top-start">
+                                                <span style="color: #878d99">⇧</span>
+                                            </el-tooltip>
                                         </el-form-item>
                                         <el-form-item>
                                             <el-button type="primary" @click.native.prevent="handlePluginsSubmit">Save</el-button>

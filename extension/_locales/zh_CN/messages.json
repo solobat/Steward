@@ -251,6 +251,21 @@
     "tips_autoHideCmd": {
         "message": "在New Tab输入框失去焦点时自动隐藏命令"
     },
+    "tips_bm_shift": {
+        "message": "按住shift时将批量打开带⇧标识的项"
+    },
+    "tips_his_shift": {
+        "message": "按住shift时将批量打开带⇧标识的项"
+    },
+    "tips_site_shift": {
+        "message": "按住shift时将批量打开带⇧标识的项"
+    },
+    "tips_tabc_shift": {
+        "message": "按住shift时将批量打开带⇧标识的项"
+    },
+    "tips_wd_shift": {
+        "message": "按住shift时表示认识此单词"
+    },
     "chrome_title": {
         "message": "chrome常用url"
     },
