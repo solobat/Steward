@@ -7,10 +7,10 @@
 import util from '../../common/util'
 
 const chrome = window.chrome;
-const version = 3;
+const version = 4;
 const name = 'bookmark';
 const keys = [
-    { key: 'bm' },
+    { key: 'bm', shiftKey: true },
     { key: 'bmd' }
 ];
 const type = 'keyword';
@@ -47,7 +47,11 @@ function onInput(query, command) {
 
             for (i in bookMarkList) {
                 const item = bookMarkList[i];
-                const desc = wrapDesc(item, i);
+                let desc = item.url;
+
+                if (command.shiftKey) {
+                    desc = wrapDesc(item, i);
+                }
 
                 arr.push({
                     key: command.key,
