@@ -177,7 +177,11 @@ function handleEnterResult(result) {
     if (result && result instanceof Promise) {
         result.then(data => {
             if (typeof data === 'string') {
-                cmdbox.render(data);
+                if (data) {
+                    cmdbox.render(data);
+                } else {
+                    cmdbox.refresh();
+                }
             } else {
                 const isRetain = data === true;
 
@@ -312,7 +316,7 @@ function handleEnter (event, elem) {
         plugin = plugin4empty;
     }
     const index = $elem.index();
-    const result = Reflect.apply(plugin.onEnter, this, [this.dataList[index], this.command, this.query, this.shiftKey]);
+    const result = Reflect.apply(plugin.onEnter, this, [this.dataList[index], this.command, this.query, this.shiftKey, this.dataList]);
 
     handleEnterResult(result);
 

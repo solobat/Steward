@@ -32,9 +32,7 @@ function onInput() {
     }];
 }
 
-function onEnter(item, command) {
-    const query = this.query;
-
+function onEnter(item, command, query) {
     if (query) {
         chrome.runtime.sendMessage({
             action: 'saveConfig',
@@ -46,7 +44,7 @@ function onEnter(item, command) {
                 }
             }
         });
-        this.render(`${command.key} `);
+        this.render(query);
         Toast.success('Save successfully!');
     } else {
         Toast.warning('The command cannot be empty!');

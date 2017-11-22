@@ -7,10 +7,10 @@
 import util from '../../common/util'
 
 const chrome = window.chrome;
-const version = 3;
+const version = 4;
 const name = 'bookmark';
 const keys = [
-    { key: 'bm' },
+    { key: 'bm', shiftKey: true },
     { key: 'bmd' }
 ];
 const type = 'keyword';
@@ -41,11 +41,22 @@ function searchBookmark(query, callback) {
 function onInput(query, command) {
     return new Promise(resolve => {
         searchBookmark(query, bookMarkList => {
+            let wrapDesc;
+
+            if (command.shiftKey) {
+                wrapDesc = util.wrapWithMaxNumIfNeeded('url');
+            }
+
             const arr = [];
             let i;
 
             for (i in bookMarkList) {
                 const item = bookMarkList[i];
+                let desc = item.url;
+
+                if (wrapDesc) {
+                    desc = wrapDesc(item, i);
+                }
 
                 arr.push({
                     key: command.key,
@@ -53,7 +64,7 @@ function onInput(query, command) {
                     icon,
                     url: item.url,
                     title: item.title,
-                    desc: item.url,
+                    desc,
                     isWarn: false
                 });
             }
@@ -63,11 +74,9 @@ function onInput(query, command) {
     });
 }
 
-function onEnter(item, { orkey }) {
+function onEnter(item, { orkey }, query, shiftKey, list) {
     if (orkey === 'bm') {
-        chrome.tabs.create({
-            url: item.url
-        });
+        util.batchExecutionIfNeeded(shiftKey, util.tabCreateExecs, [list, item]);
     } else if (orkey === 'bmd') {
         chrome.bookmarks.remove(item.id, () => {
             this.refresh();

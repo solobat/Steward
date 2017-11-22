@@ -5,5 +5,6 @@ export default {
     customCmd: '',
     autoScrollToMiddle: false,
     speedFirst: true,
-    autoHideCmd: false
+    autoHideCmd: false,
+    maxOperandsNum: 5
 }

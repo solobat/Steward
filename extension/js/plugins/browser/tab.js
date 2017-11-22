@@ -7,27 +7,22 @@
 import util from '../../common/util'
 import _ from 'underscore'
 
-const version = 2;
+const version = 4;
 const name = 'locateTab';
-const key = 'tab';
+const keys = [
+    { key: 'tab' },
+    { key: 'tabc', shiftKey: true }
+];
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/tab.png');
 const title = chrome.i18n.getMessage(`${name}_title`);
-const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
-const commands = [{
-    key,
-    type,
-    title,
-    subtitle,
-    icon,
-    editable: true
-}];
+const commands = util.genCommands(name, icon, keys, type);
 
 function getTabsByWindows(query, win) {
     return new Promise(resolve => {
         chrome.tabs.getAllInWindow(win.id, function (tabs) {
             const tabList = tabs.filter(function (tab) {
-                return util.matchText(query, tab.title);
+                return util.matchText(query, `${tab.title}${tab.url}`);
             });
 
             resolve(tabList);
@@ -52,30 +47,71 @@ function getAllTabs(query, callback) {
     });
 }
 
-function dataFormat(rawList) {
-    return rawList.map(function (item) {
+function dataFormat(rawList, command) {
+    const wrapDesc = util.wrapWithMaxNumIfNeeded('', 20);
+    return _.sortBy(rawList, 'active').map(function (item, index) {
+        let desc = command.subtitle;
+
+        if (command.shiftKey && !item.active) {
+            desc = wrapDesc(command.subtitle, index);
+        }
+
         return {
-            key: key,
+            key: command.key,
             id: item.id,
             icon: item.favIconUrl || icon,
             title: item.title,
-            desc: subtitle
+            desc,
+            isWarn: item.active
         };
     });
 }
 
-function onInput(query) {
+function onInput(query, command) {
     return new Promise(resolve => {
         getAllTabs(query, function (data) {
-            resolve(dataFormat(data));
+            resolve(dataFormat(data, command));
         });
     });
 }
 
-function onEnter({ id }) {
+function locateTab(id) {
     chrome.tabs.update(id, {
         active: true
     });
+}
+
+function removeTabs(ids) {
+    return new Promise(resolve => {
+        chrome.tabs.remove(ids, () => {
+            resolve(true);
+        });
+    });
+}
+
+function onEnter({ id }, {key, orkey}, query, shiftKey, list) {
+    if (orkey === 'tab') {
+        locateTab(id);
+    } else if (orkey === 'tabc') {
+        let ids = [id];
+
+        if (shiftKey) {
+            ids = list.filter(item => !item.isWarn).map(item => item.id);
+        }
+
+        return removeTabs(ids).then(() => {
+            return new Promise(resolve => {
+                // Tab interface update is not very timely
+                setTimeout(() => {
+                    if (query) {
+                        resolve(`${key} `);
+                    } else {
+                        resolve('');
+                    }
+                }, 200);
+            });
+        });
+    }
 }
 
 export default {

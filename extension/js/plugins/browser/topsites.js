@@ -4,8 +4,10 @@
  * @email solopea@gmail.com
  */
 
+import util from '../../common/util'
+
 const chrome = window.chrome;
-const version = 2;
+const version = 3;
 const name = 'topsites';
 const key = 'site';
 const type = 'keyword';
@@ -18,34 +20,38 @@ const commands = [{
     title,
     subtitle,
     icon,
+    shiftKey: true,
     editable: true
 }];
 
 function onInput() {
-    chrome.topSites.get(sites => {
-        const arr = [];
-        let i;
+    return new Promise(resolve => {
+        chrome.topSites.get(sites => {
+            const arr = [];
+            const wrapDesc = util.wrapWithMaxNumIfNeeded('url');
+            let i;
 
-        for (i in sites) {
-            const item = sites[i];
-            arr.push({
-                key,
-                id: item.id,
-                icon: icon,
-                url: item.url,
-                title: item.title,
-                desc: item.url,
-                isWarn: false
-            });
-        }
-        this.showItemList(arr);
+            for (i in sites) {
+                const item = sites[i];
+                const desc = wrapDesc(item, i);
+                arr.push({
+                    key,
+                    id: item.id,
+                    icon: icon,
+                    url: item.url,
+                    title: item.title,
+                    desc,
+                    isWarn: false
+                });
+            }
+
+            resolve(arr);
+        });
     });
 }
 
-function onEnter({ url }) {
-    chrome.tabs.create({
-        url
-    });
+function onEnter(item, command, query, shiftKey, list) {
+    util.batchExecutionIfNeeded(shiftKey, util.tabCreateExecs, [list, item]);
 }
 
 export default {

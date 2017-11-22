@@ -6,7 +6,7 @@
 
 import util from '../../common/util'
 
-const version = 1;
+const version = 2;
 const name = 'viewExtension';
 const key = 'ext';
 const type = 'keyword';
@@ -19,6 +19,7 @@ const commands = [{
     title,
     subtitle,
     icon,
+    shiftKey: true,
     editable: true
 }];
 
@@ -32,34 +33,52 @@ function getExtensions(query, callback) {
     });
 }
 
-function dataFormat(rawList) {
-    return rawList.map(function (item) {
+function dataFormat(rawList, command) {
+    let wrapDesc;
+
+    if (command.shiftKey) {
+        wrapDesc = util.wrapWithMaxNumIfNeeded('description', 1000);
+    }
+
+    return rawList.map(function (item, i) {
         const url = item.icons instanceof Array ? item.icons[0].url : '';
         const isWarn = item.installType === 'development';
+        let desc = item.description;
+
+        if (wrapDesc) {
+            desc = wrapDesc(item, i);
+        }
 
         return {
             key: key,
             id: item.id,
             icon: url,
             title: item.name,
-            desc: item.description,
+            desc,
+            homepage: item.homepageUrl,
             isWarn: isWarn
         };
     });
 }
 
-function onInput(query) {
+function onInput(query, command) {
     return new Promise(resolve => {
         getExtensions(query.toLowerCase(), function (data) {
-            resolve(dataFormat(data));
+            resolve(dataFormat(data, command));
         });
     });
 }
 
-function onEnter({ id }) {
-    chrome.tabs.create({
-        url: `chrome://extensions/?id=${id}`
-    });
+function onEnter({ id, homepage }, command, query, shiftKey) {
+    if (shiftKey && homepage) {
+        chrome.tabs.create({
+            url: homepage
+        });
+    } else {
+        chrome.tabs.create({
+            url: `chrome://extensions/?id=${id}`
+        });
+    }
 }
 
 export default {

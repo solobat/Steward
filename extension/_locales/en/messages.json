@@ -158,6 +158,18 @@
     "locateTab_subtitle": {
         "message": "find tab and goto it"
     },
+    "locateTab_tab_title": {
+        "message": "goto tab"
+    },
+    "locateTab_tab_subtitle": {
+        "message": "find tab and goto it"
+    },
+    "locateTab_tabc_title": {
+        "message": "close one tab"
+    },
+    "locateTab_tabc_subtitle": {
+        "message": "find and close tab(s)"
+    },
     "todolist_title": {
         "message": "add todo item"
     },
@@ -218,6 +230,9 @@
     "general_customCmd": {
         "message": "New Tab custom command"
     },
+    "general_maxOperandsNum": {
+        "message": "Max operands number"
+    },
     "general_autoScrollToMiddle": {
         "message": "Automatically move up when at the bottom of list"
     },
@@ -227,11 +242,29 @@
     "general_autoHideCmd": {
         "message": "auto hide the command"
     },
+    "tips_maxOperandsNum": {
+        "message": "Sets the maximum number of entries processed by some plugins for shift + enter / click operations"
+    },
     "tips_autoScrollToMiddle": {
         "message": "Scrolls the element at the bottom of the list automatically to the middle of the list"
     },
     "tips_autoHideCmd": {
         "message": "Hides the command automatically when the new tab's input box loses focus"
+    },
+    "tips_bm_shift": {
+        "message": "While holding shift, items marked with ⇧ are opened in batches"
+    },
+    "tips_his_shift": {
+        "message": "While holding shift, items marked with ⇧ are opened in batches"
+    },
+    "tips_site_shift": {
+        "message": "While holding shift, items marked with ⇧ are opened in batches"
+    },
+    "tips_tabc_shift": {
+        "message": "While holding shift, items marked with ⇧ are opened in batches"
+    },
+    "tips_wd_shift": {
+        "message": "Holding shift means knowing the word"
     },
     "chrome_title": {
         "message": "chrome urls"
