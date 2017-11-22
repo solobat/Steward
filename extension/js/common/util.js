@@ -47,7 +47,7 @@ function guid() {
 
 function genCommands(name, icon, items, type) {
     return items.map(item => {
-        const {key, editable, keyname} = item;
+        const {key, editable, keyname, shiftKey} = item;
 
         return {
             key: item.key,
@@ -56,6 +56,7 @@ function genCommands(name, icon, items, type) {
             title: chrome.i18n.getMessage(`${name}_${(keyname || key)}_title`),
             subtitle: chrome.i18n.getMessage(`${name}_${(keyname || key)}_subtitle`),
             icon,
+            shiftKey,
             editable: editable !== false
         };
     });
@@ -104,7 +105,7 @@ const options2map = array2map('value', 'label');
 
 const wrapWithMaxNumIfNeeded = (field,
      maxOperandsNum = window.stewardCache.config.general.maxOperandsNum) => (item, index) => {
-    let ret = item[field];
+    let ret = field ? item[field] : item;
 
     if (index < maxOperandsNum) {
         ret = `⇧: ${ret}`;
