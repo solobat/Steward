@@ -75,7 +75,11 @@ function locateTab(id) {
 }
 
 function removeTabs(ids) {
-    chrome.tabs.remove(ids);
+    return new Promise(resolve => {
+        chrome.tabs.remove(ids, () => {
+            resolve(true);
+        });
+    });
 }
 
 function onEnter({ id }, {key, orkey}, query, shiftKey, list) {
@@ -88,9 +92,18 @@ function onEnter({ id }, {key, orkey}, query, shiftKey, list) {
             ids = list.map(item => item.id);
         }
 
-        removeTabs(ids);
-
-        return Promise.resolve(`${key} `);
+        return removeTabs(ids).then(() => {
+            return new Promise(resolve => {
+                // Tab interface update is not very timely
+                setTimeout(() => {
+                    if (query) {
+                        resolve(`${key} `);
+                    } else {
+                        resolve('');
+                    }
+                }, 200);
+            });
+        });
     }
 }
 
