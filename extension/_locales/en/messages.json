@@ -158,6 +158,18 @@
     "locateTab_subtitle": {
         "message": "find tab and goto it"
     },
+    "locateTab_tab_title": {
+        "message": "goto tab"
+    },
+    "locateTab_tab_subtitle": {
+        "message": "find tab and goto it"
+    },
+    "locateTab_tabc_title": {
+        "message": "close one tab"
+    },
+    "locateTab_tabc_subtitle": {
+        "message": "close all matched tab when shift keypress"
+    },
     "todolist_title": {
         "message": "add todo item"
     },
