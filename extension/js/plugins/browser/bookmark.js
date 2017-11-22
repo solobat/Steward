@@ -75,21 +75,8 @@ function onInput(query, command) {
 }
 
 function onEnter(item, { orkey }, query, shiftKey, list) {
-    const maxOperandsNum = window.stewardCache.config.general.maxOperandsNum;
-
     if (orkey === 'bm') {
-        if (shiftKey) {
-            list.slice(0, maxOperandsNum).forEach(bookmark => {
-                chrome.tabs.create({
-                    url: bookmark.url,
-                    active: false
-                });
-            });
-        } else {
-            chrome.tabs.create({
-                url: item.url
-            });
-        }
+        util.batchExecutionIfNeeded(shiftKey, util.tabCreateExecs, [list, item]);
     } else if (orkey === 'bmd') {
         chrome.bookmarks.remove(item.id, () => {
             this.refresh();

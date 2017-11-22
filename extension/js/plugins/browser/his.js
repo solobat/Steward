@@ -70,20 +70,7 @@ function onInput(query, command) {
 }
 
 function onEnter(item, command, query, shiftKey, list) {
-    const maxOperandsNum = window.stewardCache.config.general.maxOperandsNum;
-
-    if (shiftKey) {
-        list.slice(0, maxOperandsNum).forEach(history => {
-            chrome.tabs.create({
-                url: history.url,
-                active: false
-            });
-        });
-    } else {
-        chrome.tabs.create({
-            url: item.url
-        });
-    }
+    util.batchExecutionIfNeeded(shiftKey, util.tabCreateExecs, [list, item]);
 }
 
 export default {

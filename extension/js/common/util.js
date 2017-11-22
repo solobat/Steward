@@ -114,6 +114,20 @@ const wrapWithMaxNumIfNeeded = (field,
     return ret;
 }
 
+const batchExecutionIfNeeded = (predicate, [exec4batch, exec], [list, item],
+    maxOperandsNum = window.stewardCache.config.general.maxOperandsNum) => {
+    if (predicate) {
+        list.slice(0, maxOperandsNum).forEach(exec4batch);
+    } else {
+        exec(item);
+    }
+}
+
+const tabCreateExecs = [
+    item => chrome.tabs.create({ url: item.url, active: false }),
+    item => chrome.tabs.create({ url: item.url })
+];
+
 export default {
     matchText,
     isMac,
@@ -124,5 +138,7 @@ export default {
     getParameterByName,
     array2map,
     options2map,
-    wrapWithMaxNumIfNeeded
+    wrapWithMaxNumIfNeeded,
+    batchExecutionIfNeeded,
+    tabCreateExecs
 };

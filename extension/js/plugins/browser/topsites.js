@@ -50,21 +50,8 @@ function onInput() {
     });
 }
 
-function onEnter({ url }, command, query, shiftKey, list) {
-    if (shiftKey) {
-        const maxOperandsNum = window.stewardCache.config.general.maxOperandsNum;
-
-        list.slice(0, maxOperandsNum).forEach(topsite => {
-            chrome.tabs.create({
-                url: topsite.url,
-                active: false
-            });
-        });
-    } else {
-        chrome.tabs.create({
-            url
-        });
-    }
+function onEnter(item, command, query, shiftKey, list) {
+    util.batchExecutionIfNeeded(shiftKey, util.tabCreateExecs, [list, item]);
 }
 
 export default {
