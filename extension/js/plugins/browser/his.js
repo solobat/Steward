@@ -6,7 +6,7 @@
 
 import util from '../../common/util'
 
-const version = 3;
+const version = 4;
 const name = 'history';
 const key = 'his';
 const type = 'keyword';
@@ -19,6 +19,7 @@ const commands = [{
     title,
     subtitle,
     icon,
+    allowBatch: true,
     shiftKey: true,
     editable: true
 }];
@@ -71,6 +72,7 @@ function onInput(query, command) {
 
 function onEnter(item, command, query, shiftKey, list) {
     util.batchExecutionIfNeeded(shiftKey, util.tabCreateExecs, [list, item]);
+    return Promise.resolve('');
 }
 
 export default {

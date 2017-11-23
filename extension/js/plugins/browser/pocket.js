@@ -7,9 +7,10 @@
 import $ from 'jquery'
 import Auth from '../../common/auth'
 import conf from '../../conf/pocket_conf'
+import util from '../../common/util'
 
 const auth = new Auth(conf);
-const version = 2;
+const version = 3;
 const name = 'pocket';
 const key = 'po';
 const type = 'keyword';
@@ -22,6 +23,7 @@ const commands = [{
     title,
     subtitle,
     icon,
+    allowBatch: true,
     editable: true
 }];
 
@@ -94,10 +96,17 @@ function query(str, callback) {
     });
 }
 
-function onEnter({ id }) {
-    chrome.tabs.create({
-        url: `https://getpocket.com/a/read/${id}`
-    });
+function onEnter(item, command, q, shiftKey, list) {
+    util.batchExecutionIfNeeded(false, [
+        it => {
+            chrome.tabs.create({ url: `https://getpocket.com/a/read/${it.id}`, active: false });
+            window.slogs.push(`open pocket ${it.title}`);
+        },
+        it => {
+            chrome.tabs.create({ url: `https://getpocket.com/a/read/${it.id}` });
+            window.slogs.push(`open pocket ${it.title}`);
+        }
+    ], [list, item]);
 }
 
 export default {
