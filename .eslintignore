@@ -1,4 +1,5 @@
 !/*.js
+/extension/lib/
 /output/
 /config/
 /extension/js/common/ga.js
