@@ -45,6 +45,13 @@ function guid() {
     return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
 }
 
+const simpleCommand = ({key, orkey}) => {
+    return {
+        key,
+        orkey
+    };
+}
+
 function genCommands(name, icon, items, type) {
     return items.map(item => {
         const {key, editable, keyname, shiftKey} = item;
@@ -132,6 +139,7 @@ export default {
     matchText,
     isMac,
     guid,
+    simpleCommand,
     genCommands,
     copyToClipboard,
     getMatches,

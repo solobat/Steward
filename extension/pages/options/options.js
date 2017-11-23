@@ -42,7 +42,6 @@ function init() {
         config.lastVersion = config.version || version;
 
         const i18nTexts = getI18nTexts({general: config.general, tips});
-        console.log(i18nTexts);
 
         ga();
         render(config, i18nTexts);

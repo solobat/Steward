@@ -3,6 +3,7 @@ import $ from 'jquery'
 import { plugins as pluginList } from '../plugins/browser'
 import _ from 'underscore'
 import defaultGeneral from '../conf/general'
+import util from './util'
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -12,7 +13,7 @@ const pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name')
     return {
         name,
         version: plugin.version,
-        commands,
+        commands: commands.map(util.simpleCommand),
         title,
         icon
     }
@@ -48,6 +49,9 @@ function mergePluginData(plugin, plugins) {
             cachePlugin.version = plugin.version;
         }
     }
+
+    // Reduce the cache usage
+    cachePlugin.commands = cachePlugin.commands.map(util.simpleCommand);
 }
 
 // get merged config && save if needed

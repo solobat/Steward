@@ -426,7 +426,10 @@ function classifyPlugins(pluginsData) {
                 const pcmds = pluginsData[pname].commands;
 
                 if (pcmds) {
-                    pcmds.forEach(command => {
+                    // commands in cache is simple version
+                    const realCommands = $.extend(true, plugin.commands, pcmds);
+
+                    realCommands.forEach(command => {
                         const cmd = {
                             ...command,
                             name: pname,
