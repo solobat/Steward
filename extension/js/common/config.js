@@ -34,32 +34,41 @@ function getPluginData() {
     return plugins;
 }
 
-function mergePluginData(plugin, plugins) {
-    const pname = plugin.name;
-    let cachePlugin = plugins[pname];
+function mergePluginData(plugin, cachePlugins) {
+    const name = plugin.name;
+    let cachePlugin = cachePlugins[name];
 
-    if (!cachePlugin) {
-        plugins[pname] = {
-            version: plugin.version,
-            commands: plugin.commands
-        };
-        cachePlugin = plugins[pname];
-    } else {
+    if (cachePlugin) {
         if (!cachePlugin.version) {
             cachePlugin.version = 1;
         }
 
+        // if you change the meta data of a plugin, increasing its version is required
         if (plugin.version > cachePlugin.version) {
             // rough merge
             cachePlugin.commands = $.extend(true, plugin.commands, cachePlugin.commands);
             cachePlugin.version = plugin.version;
         }
+    } else {
+        cachePlugins[name] = {
+            version: plugin.version,
+            commands: plugin.commands
+        };
+        cachePlugin = cachePlugins[name];
     }
 
-    // Reduce the cache usage
+    // Reduce the cache usage because of the limitation of chrome.storage.sync api
     if (cachePlugin && cachePlugin.commands) {
         cachePlugin.commands = cachePlugin.commands.map(util.simpleCommand);
     }
+}
+
+function getDefaultConfig() {
+    return {
+        general: defaultGeneral,
+        plugins: getPluginData(),
+        version
+    };
 }
 
 // get merged config && save if needed
@@ -70,19 +79,17 @@ export function getSyncConfig(save, keepVersion) {
         if (res.config) {
             config = res.config;
             config.general = $.extend({}, defaultGeneral, config.general);
-            // 总是确保数据是最新的
+
             pluginModules.forEach(plugin => {
                 mergePluginData(plugin, config.plugins);
             });
+
+            // because of update tab
             if (!keepVersion) {
                 config.version = version;
             }
         } else {
-            config = {
-                general: defaultGeneral,
-                plugins: getPluginData(),
-                version
-            };
+            config = getDefaultConfig();
         }
         console.log(config);
 
@@ -97,11 +104,7 @@ export function getSyncConfig(save, keepVersion) {
 }
 
 export function restoreConfig() {
-    const config = {
-        general: defaultGeneral,
-        plugins: getPluginData(),
-        version
-    };
+    const config = getDefaultConfig();
 
     return browser.storage.sync.set({
         config
