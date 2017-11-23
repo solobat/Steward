@@ -6,10 +6,51 @@
 import $ from 'jquery'
 import STORAGE from '../../js/constant/storage'
 import { getSyncConfig } from '../../js/common/config'
+import { WorkflowList } from '../../js/collection/workflow'
 
+const Workflows = new WorkflowList();
 let config = {};
 let todos = [];
 let blockedUrls = [];
+
+const workflowHelper = {
+    create: function(info) {
+        if (info.title && info.content) {
+            const workflow = Workflows.create({
+                ...info
+            });
+
+            return workflow;
+        } else {
+            return 'no title or content';
+        }
+    },
+
+    remove: function(id) {
+        const model = Workflows.remove(id);
+        console.log(model);
+        return model;
+    },
+
+    update: function(attrs) {
+        const workflow = Workflows.set(attrs, {
+            add: false,
+            remove: false
+        });
+
+        workflow.save();
+
+        return workflow;
+    },
+
+    getWorkflows: function() {
+        return Workflows.toJSON();
+    },
+
+    init: function() {
+        return Workflows.fetch();
+    }
+};
 
 function addEvents() {
     chrome.runtime.onMessage.addListener((req, sender, resp) => {
@@ -44,6 +85,18 @@ function addEvents() {
                     msg: 'get urls ok',
                     data: blockedUrls
                 });
+                break;
+            case 'getWorkflows':
+                resp({ msg: 'getWorkflows', data: workflowHelper.getWorkflows() });
+                break;
+            case 'createWorkflow':
+                resp({ msg: 'createWorkflow', data: workflowHelper.create(req.data) });
+                break;
+            case 'updateWorkflow':
+                resp({ msg: 'updateWorkflow', data: workflowHelper.update(req.data) });
+                break;
+            case 'removeWorkflow':
+                resp({ msg: 'removeWorkflow', data: workflowHelper.remove(req.data) });
                 break;
             default:
                 break;
@@ -107,7 +160,8 @@ function init() {
     Promise.all([
         getSyncConfig(true, true),
         getTodos(),
-        getblockedUrls()
+        getblockedUrls(),
+        workflowHelper.init()
     ]).then(resp => {
         config = resp[0];
         todos = resp[1];
