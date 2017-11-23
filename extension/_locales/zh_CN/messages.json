@@ -218,6 +218,12 @@
     "search_subtitle": {
         "message": "搜索指定内容"
     },
+    "workflow_title": {
+        "message": "工作流"
+    },
+    "workflow_subtitle": {
+        "message": "执行自定义的系列命令"
+    },
     "general_useInContentPage": {
         "message": "在网页中启动"
     },

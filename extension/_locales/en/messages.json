@@ -218,6 +218,12 @@
     "search_subtitle": {
         "message": "Search for"
     },
+    "workflow_title": {
+        "message": "workflows"
+    },
+    "workflow_subtitle": {
+        "message": "exec the commands in workflow"
+    },
     "general_useInContentPage": {
         "message": "use in every page"
     },

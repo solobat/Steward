@@ -23,6 +23,7 @@ import extensions from './extensions'
 import chrome from './chrome'
 import steward from './steward'
 import custom from './custom'
+import workflow from './workflow'
 import { extPlugins } from './extension'
 
 const pluginList = [
@@ -51,6 +52,7 @@ const pluginList = [
     chrome,
     steward,
     custom,
+    workflow,
     ...extPlugins
 ]
 
