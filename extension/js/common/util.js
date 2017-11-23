@@ -54,7 +54,7 @@ const simpleCommand = ({key, orkey}) => {
 
 function genCommands(name, icon, items, type) {
     return items.map(item => {
-        const {key, editable, keyname, shiftKey} = item;
+        const {key, editable, keyname, allowBatch, shiftKey} = item;
 
         return {
             key: item.key,
@@ -63,6 +63,7 @@ function genCommands(name, icon, items, type) {
             title: chrome.i18n.getMessage(`${name}_${(keyname || key)}_title`),
             subtitle: chrome.i18n.getMessage(`${name}_${(keyname || key)}_subtitle`),
             icon,
+            allowBatch,
             shiftKey,
             editable: editable !== false
         };
@@ -123,16 +124,24 @@ const wrapWithMaxNumIfNeeded = (field,
 
 const batchExecutionIfNeeded = (predicate, [exec4batch, exec], [list, item],
     maxOperandsNum = window.stewardCache.config.general.maxOperandsNum) => {
-    if (predicate) {
-        list.slice(0, maxOperandsNum).forEach(exec4batch);
+    if (predicate || item instanceof Array) {
+        const num = predicate ? maxOperandsNum : item.length;
+
+        list.slice(0, num).forEach(exec4batch);
     } else {
         exec(item);
     }
 }
 
 const tabCreateExecs = [
-    item => chrome.tabs.create({ url: item.url, active: false }),
-    item => chrome.tabs.create({ url: item.url })
+    item => {
+        chrome.tabs.create({ url: item.url, active: false });
+        window.slogs.push(`open ${item.url}`);
+    },
+    item => {
+        chrome.tabs.create({ url: item.url });
+        window.slogs.push(`open ${item.url}`);
+    }
 ];
 
 export default {
