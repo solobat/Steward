@@ -109,7 +109,6 @@ function init() {
         getTodos(),
         getblockedUrls()
     ]).then(resp => {
-        console.log(resp);
         config = resp[0];
         todos = resp[1];
         blockedUrls = resp[2];

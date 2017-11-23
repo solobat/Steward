@@ -9,11 +9,16 @@ const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
 const pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name').map(plugin => {
     const {name, icon, commands, title} = plugin;
+    let simpleCommand;
+
+    if (commands) {
+        simpleCommand = commands.map(util.simpleCommand);
+    }
 
     return {
         name,
         version: plugin.version,
-        commands: commands.map(util.simpleCommand),
+        commands: simpleCommand,
         title,
         icon
     }
@@ -31,13 +36,14 @@ function getPluginData() {
 
 function mergePluginData(plugin, plugins) {
     const pname = plugin.name;
-    const cachePlugin = plugins[pname];
+    let cachePlugin = plugins[pname];
 
     if (!cachePlugin) {
         plugins[pname] = {
             version: plugin.version,
             commands: plugin.commands
         };
+        cachePlugin = plugins[pname];
     } else {
         if (!cachePlugin.version) {
             cachePlugin.version = 1;
@@ -51,7 +57,9 @@ function mergePluginData(plugin, plugins) {
     }
 
     // Reduce the cache usage
-    cachePlugin.commands = cachePlugin.commands.map(util.simpleCommand);
+    if (cachePlugin && cachePlugin.commands) {
+        cachePlugin.commands = cachePlugin.commands.map(util.simpleCommand);
+    }
 }
 
 // get merged config && save if needed
