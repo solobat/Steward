@@ -19,7 +19,6 @@ const commands = [{
     subtitle,
     icon,
     workflow: true,
-    shiftKey: true,
     editable: true
 }];
 
