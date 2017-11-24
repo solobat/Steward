@@ -25,6 +25,6 @@ export const EXTENSION = {
     STEWARD: 'steward'
 };
 
-export const alfredTabs = ['Alfred', 'General', 'Plugins', 'Advanced', 'Help', 'Update', 'About'];
+export const alfredTabs = ['Alfred', 'General', 'Plugins', 'Workflows', 'Advanced', 'Help', 'Update', 'About'];
 
-export const stewardTabs = ['Steward', 'General', 'Plugins', 'Appearance', 'Advanced', 'Help', 'Update', 'About'];
+export const stewardTabs = ['Steward', 'General', 'Plugins', 'Workflows', 'Appearance', 'Advanced', 'Help', 'Update', 'About'];
