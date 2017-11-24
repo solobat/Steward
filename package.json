@@ -34,6 +34,7 @@
     "pinyin": "^2.8.3",
     "toastr": "^2.1.2",
     "underscore": "^1.8.3",
+    "url-regex": "^4.1.1",
     "vue": "^2.4.4"
   },
   "devDependencies": {
