@@ -3,6 +3,7 @@
  * @author tomasy
  * @email solopea@gmail.com
  */
+import util from '../../common/util'
 
 const chrome = window.chrome;
 const version = 1;
@@ -22,12 +23,14 @@ const commands = [{
     editable: true
 }];
 
-function getWorkflows() {
+function getWorkflows(query) {
     return new Promise(resolve => {
         chrome.runtime.sendMessage({
             action: 'getWorkflows'
         }, ({ data = [] }) => {
-            resolve(data);
+            resolve(data.filter(workflow => {
+                return util.matchText(query, workflow.title);
+            }));
         });
     });
 }
@@ -43,8 +46,8 @@ const dataFormat = (item, index) => {
     }
 };
 
-function onInput() {
-    return getWorkflows().then(list => {
+function onInput(query) {
+    return getWorkflows(query).then(list => {
         return list.map(dataFormat);
     });
 }
