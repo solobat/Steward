@@ -4,14 +4,16 @@
  * @mail solopea@gmail.com
  */
 
-const version = 2;
+import urlRegex from 'url-regex'
+
+const version = 3;
 const name = 'openurl';
 const key = 'open';
 const type = 'regexp';
 const icon = chrome.extension.getURL('img/openurl.png');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
-const regExp = /^(https?:\/\/)?(www\.)?(\w+\.)+\w{2,5}$/gi;
+const regExp = urlRegex({exact: true, strict: false});
 const commands = [{
     key,
     title,

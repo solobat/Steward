@@ -16,6 +16,7 @@ import ga from '../../js/common/ga'
 import _ from 'underscore'
 import { websitesMap } from '../plugins/website'
 import defaultGeneral from '../../js/conf/general'
+import Toast from 'toastr'
 
 const commands = {};
 const regExpCommands = [];
@@ -29,6 +30,7 @@ let mode;
 let inContent;
 
 window.stewardCache = {};
+window.slogs = [];
 
 function findMatchedPlugins(query) {
     const items = [];
@@ -206,12 +208,16 @@ function handleOnInput(str) {
         return;
     }
 
-    this.str = str;
-    this.cmd = '';
-    this.param = '';
-    this.query = '';
+    return queryByInput(this, str);
+}
 
-    return regexpStage(this)
+function queryByInput(box, str) {
+    box.str = str;
+    box.cmd = '';
+    box.param = '';
+    box.query = '';
+
+    return regexpStage(box)
         .then(searchStage)
         .then(commandStage)
         .then(defaultStage)
@@ -272,28 +278,25 @@ function handleInit () {
     }
 }
 
-function handleEnter (event, elem) {
-    const $elem = $(elem);
-    const item = this.dataList[$elem.index()];
-
-    if (!this.cmd) {
+function execCommand(box, dataList = [], item, fromWorkflow) {
+    if (!box.cmd) {
         const ITEM_TYPE = CONST.BASE.ITEM_TYPE;
-        const type = $elem.data('type');
+        const type = item.key;
 
         if (type === ITEM_TYPE.PLUGINS) {
-            const key = $elem.data('id');
+            const key = item.id;
 
-            this.render(`${key} `);
+            box.render(`${key} `);
         } else if (type === ITEM_TYPE.URL) {
-            const url = $elem.data('url');
+            const url = item.url;
 
             chrome.tabs.create({
                 url
             });
         } else if (type === ITEM_TYPE.COPY) {
-            util.copyToClipboard($elem.data('url'), true);
+            util.copyToClipboard(item.url, true);
         } else if (type === ITEM_TYPE.ACTION) {
-            this.trigger('action', {
+            box.trigger('action', {
                 action: 'command',
                 info: item
             });
@@ -302,7 +305,7 @@ function handleEnter (event, elem) {
         _gaq.push(['_trackEvent', 'exec', 'enter', type]);
 
         if (type !== ITEM_TYPE.PLUGINS) {
-            this.trigger('shouldCloseBox');
+            box.trigger('shouldCloseBox');
         }
 
         return;
@@ -310,17 +313,134 @@ function handleEnter (event, elem) {
 
     let plugin;
 
-    if (this.command) {
-        plugin = this.command.plugin
+    if (box.command) {
+        plugin = box.command.plugin
     } else if (plugin4empty) {
         plugin = plugin4empty;
     }
-    const index = $elem.index();
-    const result = Reflect.apply(plugin.onEnter, this, [this.dataList[index], this.command, this.query, this.shiftKey, this.dataList]);
 
-    handleEnterResult(result);
+    if (item && item.key === 'workflow') {
+        execWorkflow(item);
+    } else {
+        let partial = item;
 
-    _gaq.push(['_trackEvent', 'exec', 'enter', plugin.name]);
+        if (box.command && !box.command.allowBatch && item instanceof Array) {
+            partial = item[0];
+        }
+
+        const result = Reflect.apply(plugin.onEnter, box, [partial, box.command, box.query, box.shiftKey, dataList]);
+
+        if (!fromWorkflow) {
+            handleEnterResult(result);
+            _gaq.push(['_trackEvent', 'exec', 'enter', plugin.name]);
+        } else {
+            return result;
+        }
+    }
+}
+
+function handleEnter (event, elem) {
+    const $elem = $(elem);
+
+    execCommand(cmdbox, this.dataList, this.dataList[$elem.index()]);
+}
+
+// should cache
+const numberReg = /(^[\d]+-[\d]+$)|(^[\d]+$)|^all$/;
+
+function parseNumbers(part) {
+    const matched = part.match(numberReg)[0];
+
+    if (matched.indexOf('-') !== -1) {
+        const sp = matched.split('-');
+
+        return [sp[0], sp[1]].sort();
+    } else if (matched === 'all') {
+        return -1;
+    } else {
+        return matched;
+    }
+}
+
+function parseLine(line) {
+    const realLine = line.replace(/^[\s\t]+/, '');
+    const parts = realLine.split(/[|,，]/).slice(0, 3);
+    let input, numbers, withShift;
+
+    parts.forEach(part => {
+        if (part.match(numberReg)) {
+            numbers = parseNumbers(part);
+        } else if (part.toLowerCase() === 'shift') {
+            withShift = true;
+        } else {
+            input = part;
+        }
+    });
+
+    return {
+        input,
+        numbers,
+        withShift
+    };
+}
+
+function parseWorkflow(content) {
+    return content.split('\n')
+        .filter(line => line && !line.match(/^[\s\t]+$/))
+        .map(parseLine)
+        .filter(cmd => cmd.input);
+}
+
+function fixNumbers(numbers) {
+    return numbers.map(fixNumber);
+}
+
+function fixNumber(number) {
+    if (number <= 0 || !number) {
+        return 0;
+    } else {
+        return number - 1;
+    }
+}
+
+const NUM_ALL = -1;
+function execWorkflow(item) {
+    if (item.content) {
+        window.slogs = [`Workflow ${item.title}`];
+        const cmds = parseWorkflow(item.content);
+        const fromWorkflow = true;
+        let task = Promise.resolve();
+
+        console.log(cmds);
+        cmds.forEach(cmd => {
+            task = task.then(() => {
+                return queryByInput(cmdbox, cmd.input);
+            }).then(resp => {
+                const { numbers } = cmd;
+
+                cmdbox.shiftKey = cmd.withShift;
+
+                if (resp && resp.length) {
+                    if (numbers === NUM_ALL) {
+                        return execCommand(cmdbox, resp, resp, fromWorkflow);
+                    } else if (numbers instanceof Array) {
+                        const {from, to} = fixNumbers(numbers);
+
+                        return execCommand(cmdbox, resp, resp.slice(from, to), fromWorkflow);
+                    } else {
+                        return execCommand(cmdbox, resp, resp[fixNumber(numbers)], fromWorkflow);
+                    }
+                } else {
+                    return execCommand(cmdbox, resp, false, fromWorkflow);
+                }
+            });
+        });
+
+        task.then(() => {
+            Toast.success(window.slogs.join('<br>'));
+            window.slogs = [];
+        });
+    }
 }
 
 function handleEmpty() {
@@ -426,7 +546,10 @@ function classifyPlugins(pluginsData) {
                 const pcmds = pluginsData[pname].commands;
 
                 if (pcmds) {
-                    pcmds.forEach(command => {
+                    // commands in cache is simple version
+                    const realCommands = $.extend(true, plugin.commands, pcmds);
+
+                    realCommands.forEach(command => {
                         const cmd = {
                             ...command,
                             name: pname,

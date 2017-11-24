@@ -7,11 +7,11 @@
 import util from '../../common/util'
 import _ from 'underscore'
 
-const version = 4;
+const version = 5;
 const name = 'locateTab';
 const keys = [
     { key: 'tab' },
-    { key: 'tabc', shiftKey: true }
+    { key: 'tabc', shiftKey: true, allowBatch: true }
 ];
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/tab.png');
@@ -89,15 +89,24 @@ function removeTabs(ids) {
     });
 }
 
-function onEnter({ id }, {key, orkey}, query, shiftKey, list) {
+function onEnter(item, {key, orkey}, query, shiftKey, list) {
     if (orkey === 'tab') {
-        locateTab(id);
+        locateTab(item.id);
     } else if (orkey === 'tabc') {
-        let ids = [id];
+        let items;
 
         if (shiftKey) {
-            ids = list.filter(item => !item.isWarn).map(item => item.id);
+            items = list;
+        } else if (item instanceof Array) {
+            items = item;
+        } else {
+            items = [item];
         }
+
+        const ids = items.filter(it => !it.isWarn).map(it => {
+            window.slogs.push(`close tab: ${it.title}`);
+            return it.id;
+        });
 
         return removeTabs(ids).then(() => {
             return new Promise(resolve => {

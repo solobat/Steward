@@ -7,10 +7,10 @@
 import util from '../../common/util'
 
 const chrome = window.chrome;
-const version = 4;
+const version = 5;
 const name = 'bookmark';
 const keys = [
-    { key: 'bm', shiftKey: true },
+    { key: 'bm', shiftKey: true, allowBatch: true },
     { key: 'bmd' }
 ];
 const type = 'keyword';
@@ -78,8 +78,11 @@ function onEnter(item, { orkey }, query, shiftKey, list) {
     if (orkey === 'bm') {
         util.batchExecutionIfNeeded(shiftKey, util.tabCreateExecs, [list, item]);
     } else if (orkey === 'bmd') {
-        chrome.bookmarks.remove(item.id, () => {
-            this.refresh();
+        return new Promise(resolve => {
+            chrome.bookmarks.remove(item.id, () => {
+                resolve('');
+                window.slogs.push(`delete bookmark: ${item.url}`);
+            });
         });
     }
 }

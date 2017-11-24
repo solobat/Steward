@@ -7,7 +7,7 @@
 import util from '../../common/util'
 
 const chrome = window.chrome;
-const version = 3;
+const version = 4;
 const name = 'topsites';
 const key = 'site';
 const type = 'keyword';
@@ -20,6 +20,7 @@ const commands = [{
     title,
     subtitle,
     icon,
+    allowBatch: true,
     shiftKey: true,
     editable: true
 }];
@@ -52,6 +53,7 @@ function onInput() {
 
 function onEnter(item, command, query, shiftKey, list) {
     util.batchExecutionIfNeeded(shiftKey, util.tabCreateExecs, [list, item]);
+    return Promise.resolve('');
 }
 
 export default {

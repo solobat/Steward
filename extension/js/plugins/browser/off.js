@@ -63,10 +63,13 @@ function onInput(query) {
     });
 }
 
-function onEnter({ id }) {
-    setEnabled(id, false);
-    this.refresh();
-    addRecord('ext', this.query, id);
+function onEnter(item) {
+    if (item && item.id) {
+        setEnabled(item.id, false);
+        this.refresh();
+        window.slogs.push(`Disable: ${item.title}`);
+        addRecord('ext', this.query, item.id);
+    }
 }
 
 function sortExtFn(a, b) {

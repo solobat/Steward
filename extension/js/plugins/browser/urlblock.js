@@ -6,9 +6,9 @@
 
 import util from '../../common/util'
 
-const version = 4;
+const version = 5;
 const name = 'urlblock';
-const keys = [{ key: 'bk' }, { key: 'bk8' }];
+const keys = [{ key: 'bk', allowBatch: true }, { key: 'bk8', allowBatch: true }];
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/urlblock.png');
 const title = chrome.i18n.getMessage(`${name}_title`);
@@ -28,58 +28,81 @@ function onInput(key, command, inContent) {
 
 function onEnter(item, command) {
     if (this.query) {
-        Reflect.apply(addBlacklist, this, [command.key, this.query, command.orkey]);
+        return Reflect.apply(addBlacklist, this, [command.key, this.query, command.orkey]);
     } else {
-        Reflect.apply(removeBlacklist, this, [item]);
+        return Reflect.apply(removeBlacklist, this, [item]);
     }
 }
 
-function removeBlacklist(item) {
-    if (!String(item.id).startsWith('bk_') && (Number(new Date()) - item.id) < BLOCK_EXPIRED) {
-        console.log('url will be blocked 8 hours...');
-        return;
+function removeBlacklist(data) {
+    let list;
+
+    if (data instanceof Array) {
+        list = data;
+    } else {
+        list = [data];
     }
 
-    getBlacklist(resp => {
-        const blacklist = resp.filter(function (url) {
-            return url.id !== item.id;
-        });
+    const validList = list.filter(item => {
+        if (!String(item.id).startsWith('bk_') && (Number(new Date()) - item.id) < BLOCK_EXPIRED) {
+            window.slogs.push(`${item.title} will be blocked 8 hours...`);
+            return false
+        } else {
+            return true;
+        }
+    });
 
-        chrome.storage.sync.set({
-            url: blacklist
-        }, () => {
-                this.refresh();
-                noticeBackground('unblockUrl', item.title);
+    return new Promise(resolve => {
+        getBlacklist(resp => {
+            const ids = validList.map(item => item.id);
+            const blacklist = resp.filter(function (url) {
+                if (ids.indexOf(url.id) === -1) {
+                    return true;
+                } else {
+                    window.slogs.push(`unblock: ${url.title}`);
+                    return false;
+                }
             });
+
+            chrome.storage.sync.set({
+                url: blacklist
+            }, () => {
+                    resolve('');
+                    noticeBackground('unblockUrl', validList.map(item => item.title));
+                });
+        });
     });
 }
 
 function addBlacklist(key, url, cmd) {
-    getBlacklist(data => {
-        let blacklist = data;
-        if (!blacklist || !blacklist.length) {
-            blacklist = [];
-        }
-        let id;
-        const datetime = Number(new Date());
+    return new Promise(resolve => {
+        getBlacklist(data => {
+            let blacklist = data;
+            if (!blacklist || !blacklist.length) {
+                blacklist = [];
+            }
+            let id;
+            const datetime = Number(new Date());
 
-        if (cmd === 'bk8') {
-            id = datetime;
-        } else {
-            id = `bk_${datetime}`;
-        }
+            if (cmd === 'bk8') {
+                id = datetime;
+            } else {
+                id = `bk_${datetime}`;
+            }
 
-        blacklist.push({
-            id,
-            type: cmd,
-            title: url
-        });
+            blacklist.push({
+                id,
+                type: cmd,
+                title: url
+            });
 
-        chrome.storage.sync.set({
-            url: blacklist
-        }, () => {
-            this.render(`${key} `);
-            noticeBackground('blockUrl', url);
+            chrome.storage.sync.set({
+                url: blacklist
+            }, () => {
+                resolve(`${key} `);
+                window.slogs.push(`block: ${url}`);
+                noticeBackground('blockUrl', url);
+            });
         });
     });
 }

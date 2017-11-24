@@ -34,18 +34,31 @@ const pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name')
 });
 
 // plugins: { [pname]: { version, commands } }
+const getData = field => () => {
+    return new Promise(resolve => {
+        chrome.runtime.sendMessage({
+            action: field
+        }, resp => {
+            resolve(resp.data);
+        });
+    });
+}
+const getConfig = getData('getConfig');
+const getWorkflows = getData('getWorkflows');
+
 function init() {
-    chrome.storage.sync.get(CONST.STORAGE.CONFIG, function(res) {
-        const config = res.config;
+    Promise.all([
+        getConfig(),
+        getWorkflows()
+    ]).then(([config, workflows]) => {
         const tips = CONST.I18N.TIPS;
 
         config.lastVersion = config.version || version;
 
         const i18nTexts = getI18nTexts({general: config.general, tips});
-        console.log(i18nTexts);
 
         ga();
-        render(config, i18nTexts);
+        render(config, workflows, i18nTexts);
     });
 }
 
@@ -69,7 +82,7 @@ function getI18nTexts(obj) {
     return texts;
 }
 
-function render({general, plugins, lastVersion}, i18nTexts) {
+function render({general, plugins, lastVersion}, workflows, i18nTexts) {
     let activeName = 'general';
 
     if (lastVersion < version) {
@@ -88,7 +101,9 @@ function render({general, plugins, lastVersion}, i18nTexts) {
             return {
                 activeName,
                 pluginSearchText: '',
+                workflowSearchText: '',
                 currentPlugin: null,
+                currentWorkflow: null,
                 curApprItem: null,
                 appearanceItems: CONST.OPTIONS.APPEARANCE_ITEMS,
                 wallpapers: [],
@@ -104,6 +119,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                     plugins,
                     version
                 },
+                workflows,
                 i18nTexts
             }
         },
@@ -113,6 +129,13 @@ function render({general, plugins, lastVersion}, i18nTexts) {
 
                 return pluginModules.filter(plugin => {
                     return plugin.name.toLowerCase().indexOf(text) > -1;
+                });
+            },
+            filteredWorkflows() {
+                const text = this.workflowSearchText.toLowerCase();
+
+                return this.workflows.filter(workflow => {
+                    return workflow.title.toLowerCase().indexOf(text) > -1;
                 });
             }
         },
@@ -158,6 +181,52 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                 this.saveConfig();
 
                 _gaq.push(['_trackEvent', 'options_plugins', 'save', this.currentPlugin.name]);
+            },
+
+            handleNewWorkflowClick() {
+                this.currentWorkflow = {
+                    title: 'New Workflow',
+                    desc: '',
+                    content: ''
+                };
+            },
+
+            handleWorkflowClick(workflow) {
+                this.currentWorkflow = workflow;
+                _gaq.push(['_trackEvent', 'options_workflows', 'click', workflow.title]);
+            },
+
+            reloadWorkflows() {
+                getWorkflows().then(results => {
+                    this.workflows = results;
+                });
+            },
+
+            handleWorkflowsSubmit() {
+                const { title, content, id } = this.currentWorkflow;
+
+                if (title && content) {
+                    if (id) {
+                        chrome.runtime.sendMessage({
+                            action: 'updateWorkflow',
+                            data: this.currentWorkflow
+                        }, () => {
+                            this.reloadWorkflows();
+                            this.$message('Update workflow successfully');
+                        });
+                    } else {
+                        chrome.runtime.sendMessage({
+                            action: 'createWorkflow',
+                            data: this.currentWorkflow
+                        }, resp => {
+                            this.reloadWorkflows();
+                            this.currentWorkflow = resp.data;
+                            this.$message('Create workflow successfully');
+                        });
+                    }
+                } else {
+                    this.$message.warning('Title and content are required!');
+                }
             },
 
             handleApprItemClick: function(apprItem) {

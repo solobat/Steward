@@ -218,6 +218,12 @@
     "search_subtitle": {
         "message": "搜索指定内容"
     },
+    "workflow_title": {
+        "message": "工作流"
+    },
+    "workflow_subtitle": {
+        "message": "执行自定义的系列命令"
+    },
     "general_useInContentPage": {
         "message": "在网页中启动"
     },
@@ -265,6 +271,9 @@
     },
     "tips_wd_shift": {
         "message": "按住shift时表示认识此单词"
+    },
+    "tips_allowBatch": {
+        "message": "允许批量执行，用于workflows中，形式为`1-n | all | n | `"
     },
     "chrome_title": {
         "message": "chrome常用url"
