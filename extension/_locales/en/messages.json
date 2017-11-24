@@ -272,6 +272,9 @@
     "tips_wd_shift": {
         "message": "Holding shift means knowing the word"
     },
+    "tips_allowBatch": {
+        "message": "Allow batch execution for use in workflow，format: `1-n | all | n | `"
+    },
     "chrome_title": {
         "message": "chrome urls"
     },

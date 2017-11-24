@@ -272,6 +272,9 @@
     "tips_wd_shift": {
         "message": "按住shift时表示认识此单词"
     },
+    "tips_allowBatch": {
+        "message": "允许批量执行，用于workflows中，形式为`1-n | all | n | `"
+    },
     "chrome_title": {
         "message": "chrome常用url"
     },
