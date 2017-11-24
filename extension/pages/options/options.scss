@@ -55,7 +55,8 @@ a {
     margin-bottom: 0;
 }
 
-.plugin-searchbar {
+.plugin-searchbar,
+.button-bar {
     padding: 10px;
 }
 
@@ -76,6 +77,11 @@ a {
     position: relative;
 }
 
+.workflow-item {
+    display: flex;
+    align-items: center;
+}
+
 .plugin-icon {
     width: 20px;
     height: 20px;
@@ -87,6 +93,13 @@ a {
     font-size: 14px;
     line-height: 1.4;
     font-weight: 100;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+    &:hover {
+        color: #20a0ff;
+    }
 }
 
 /* editor */
@@ -116,6 +129,11 @@ a {
 .plugin-editor-title {
     font-size: 12px;
     color: #999;
+}
+
+.icon-batch {
+    width: 17px;
+    vertical-align: -3px;
 }
 
 .appearance-item {
