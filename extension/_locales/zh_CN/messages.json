@@ -254,6 +254,9 @@
     "general_autoHideCmd": {
         "message": "自动隐藏命令"
     },
+    "general_autoResizeBoxFontSize": {
+        "message": "自动调整输入框字体大小"
+    },
     "tips_maxOperandsNum": {
         "message": "设置某些插件在shift + enter/click操作时所处理的最大条目数"
     },

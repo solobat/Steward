@@ -45,6 +45,37 @@ EasyComplete.prototype = {
         return this.ipt.is(':visible');
     },
 
+    inputExceeded($input) {
+        const $span = $(`<span >${$input.val()}</span>`);
+        const defaultInputFontSize = '26px';
+
+        $span.css({
+           position: 'absolute',
+           left: -9999,
+           top: -9999,
+           'font-family': $input.css('font-family'),
+           'font-size': defaultInputFontSize,
+           'font-weight': $input.css('font-weight'),
+           'font-style': $input.css('font-style')
+        });
+
+        $('body').append($span);
+        const result = $span.width() > $input.width();
+        $span.remove();
+
+        return result;
+    },
+
+    resizeUI(input) {
+        const isExceeded = this.inputExceeded(input);
+
+        if (isExceeded) {
+            $(input).addClass('exceeded');
+        } else {
+            $(input).removeClass('exceeded');
+        }
+    },
+
     bindEvent: function () {
         const that = this;
 
@@ -57,8 +88,13 @@ EasyComplete.prototype = {
             }
 
             that.searchTimer = setTimeout(() => {
-                that.setTerm($(this).val());
+                const $input = $(this);
+
+                that.setTerm($input.val());
                 that.refresh();
+                if (that.opt.autoResizeBoxFontSize) {
+                    that.resizeUI($input);
+                }
             }, 0);
         });
 

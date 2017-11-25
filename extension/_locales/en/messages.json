@@ -263,6 +263,9 @@
     "tips_autoHideCmd": {
         "message": "Hides the command automatically when the new tab's input box loses focus"
     },
+    "general_autoResizeBoxFontSize": {
+        "message": "Auto resize the input box's fontsize"
+    },
     "tips_bm_shift": {
         "message": "While holding shift, items marked with ⇧ are opened in batches"
     },

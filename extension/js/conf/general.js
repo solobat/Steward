@@ -6,5 +6,6 @@ export default {
     autoScrollToMiddle: false,
     speedFirst: true,
     autoHideCmd: false,
-    maxOperandsNum: 5
+    maxOperandsNum: 5,
+    autoResizeBoxFontSize: false
 }
