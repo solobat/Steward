@@ -6,7 +6,7 @@
 
 import Toast from 'toastr'
 
-const version = 2;
+const version = 3;
 const name = 'todolist';
 const key = 'todo';
 const type = 'keyword';
@@ -22,12 +22,27 @@ const commands = [{
     editable: true
 }];
 
-function onInput() {
+const defaultResult = [{
+    icon,
+    title,
+    desc: subtitle
+}];
+
+function onInput(query) {
+    if (!query) {
+        return new Promise(resolve => {
+            getTodos(todos => {
+                resolve(dataFormat(todos || []));
+            });
+        });
+    } else {
+        return Promise.resolve(defaultResult);
+    }
 }
 
-function onEnter(item) {
-    if (!item || item.key === 'plugins') {
-        return Reflect.apply(addTodo, this, [this.query]);
+function onEnter(item, command, query) {
+    if (query) {
+        return Reflect.apply(addTodo, this, [this.query, command]);
     } else {
         return Reflect.apply(removeTodo, this, [item.id]);
     }
@@ -50,15 +65,13 @@ function removeTodo(id) {
                 todo: todos
             }, () => {
                 Toast.success(`[${todoName}] is done`, 'TodoList', { timeOut: 1000 });
-                this.empty();
-                noticeBg2refresh('removeTodo');
-                resolve(false);
+                resolve('');
             });
         });
     });
 }
 
-function addTodo(todo) {
+function addTodo(todo, command) {
     if (!todo) {
         return;
     }
@@ -79,18 +92,10 @@ function addTodo(todo) {
             chrome.storage.sync.set({
                 todo: todos
             }, () => {
-                this.empty();
-                noticeBg2refresh('addTodo');
                 Toast.success(`Add todo [${todo}]`, 'TodoList', { timeOut: 1000 });
-                resolve(false);
+                resolve(`${command.orkey} `);
             });
         });
-    });
-}
-
-function noticeBg2refresh(action) {
-    chrome.runtime.sendMessage({
-        action
     });
 }
 
@@ -127,6 +132,5 @@ export default {
     commands,
     showTodos,
     onInput,
-    onBoxEmpty: showTodos,
     onEnter
 };
