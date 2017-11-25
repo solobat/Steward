@@ -170,6 +170,12 @@
     "locateTab_tabc_subtitle": {
         "message": "find and close tab(s)"
     },
+    "locateTab_tabm_title": {
+        "message": "move the selected tab"
+    },
+    "locateTab_tabm_subtitle": {
+        "message": "To move the selected tab, enter a number from> = 1, while 0 moves to the end of the window"
+    },
     "todolist_title": {
         "message": "add todo item"
     },

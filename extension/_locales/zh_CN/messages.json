@@ -170,6 +170,12 @@
     "locateTab_tabc_subtitle": {
         "message": "查找并关闭一(多)个标签页"
     },
+    "locateTab_tabm_title": {
+        "message": "移动选中的tab"
+    },
+    "locateTab_tabm_subtitle": {
+        "message": "请输入从 >=1 的数字，0则移动到window末尾"
+    },
     "todolist_title": {
         "message": "添加todo"
     },
