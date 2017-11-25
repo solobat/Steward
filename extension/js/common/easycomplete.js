@@ -197,44 +197,45 @@ EasyComplete.prototype = {
     showItemList: function (dataList, fn) {
         if (!dataList || !dataList.length) {
             this.clearList();
-            return;
-        }
-        this.dataList = dataList;
+        } else if (JSON.stringify(dataList) === JSON.stringify(this.dataList)) {
+            console.log('datalist is same...');
+        } else {
+            this.dataList = dataList;
 
-        const createItemFn = fn || this.opt.createItem;
-        const html = [
-            '<div class="ec-itemList">'
-        ];
+            const createItemFn = fn || this.opt.createItem;
+            const html = [
+                '<div class="ec-itemList">'
+            ];
 
-        for (let i = 0, len = dataList.length; i < len; i = i + 1) {
-            if (createItemFn) {
-                html.push(Reflect.apply(createItemFn, this, [i, dataList[i]]));
-                continue;
+            for (let i = 0, len = dataList.length; i < len; i = i + 1) {
+                if (createItemFn) {
+                    html.push(Reflect.apply(createItemFn, this, [i, dataList[i]]));
+                    continue;
+                }
             }
+
+            html.push('</div>');
+
+            const $itemList = $(html.join(''));
+
+            const iptOffset = this.ipt.offset;
+            const left = iptOffset.left;
+            const top = iptOffset.top + this.ipt.css('height');
+
+            $itemList.css({
+                left: left,
+                top: top
+            });
+            $itemList.find('.ec-item')
+                .first()
+                .addClass('ec-item-select');
+
+            if (this.opt.container) {
+                $(this.opt.container).html($itemList);
+            }
+            this.trigger('show');
         }
-
-        html.push('</div>');
-
-        const $itemList = $(html.join(''));
-
-        const iptOffset = this.ipt.offset;
-        const left = iptOffset.left;
-        const top = iptOffset.top + this.ipt.css('height');
-
-        $itemList.css({
-            left: left,
-            top: top
-        });
-        $itemList.find('.ec-item')
-            .first()
-            .addClass('ec-item-select');
-
-        if (this.opt.container) {
-            $(this.opt.container).html($itemList);
-        }
-        this.trigger('show');
     }
-
 };
 
 export default EasyComplete;
