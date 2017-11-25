@@ -143,13 +143,11 @@ function commandStage(gothrough) {
     const str = cmdbox.str;
     const mArr = str.match(reg) || [];
     const cmd = mArr[1];
-    const param = mArr[2];
-    const key = mArr[3];
+    const key = mArr[2];
 
     // search in context && handle other commands
     if (cmd) {
         cmdbox.cmd = cmd;
-        cmdbox.param = param;
         cmdbox.query = key;
 
         storage.h5.set(CONST.STORAGE.LAST_CMD, str);
@@ -214,7 +212,6 @@ function handleOnInput(str) {
 function queryByInput(box, str) {
     box.str = str;
     box.cmd = '';
-    box.param = '';
     box.query = '';
 
     return regexpStage(box)
@@ -590,7 +587,7 @@ function restoreConfig() {
             classifyPlugins(res.config.plugins, inContent);
 
              keys = Object.keys(commands).join('|');
-             reg = new RegExp(`^((?:${keys}))\\s(?:\\-(\\w+))?\\s?(.*)$`, 'i');
+             reg = new RegExp(`^((?:${keys}))\\s(.*)$`, 'i');
 
              stewardCache.commands = commands;
              stewardCache.config = res.config || {};
