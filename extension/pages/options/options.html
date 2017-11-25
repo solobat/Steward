@@ -189,6 +189,7 @@
                                         </el-form-item>
                                         <el-form-item>
                                             <el-button type="primary" @click.native.prevent="handleWorkflowsSubmit">Save</el-button>
+                                            <el-button v-if="currentWorkflow.id" type="warning" @click.native.prevent="handleWorkflowsDelete">Delete</el-button>
                                         </el-form-item>
                                     </el-form>
                                 </div>

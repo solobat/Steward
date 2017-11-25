@@ -229,6 +229,39 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 }
             },
 
+            deleteWorkflow(workflow) {
+                if (workflow && workflow.id) {
+                    return new Promise(resolve => {
+                        chrome.runtime.sendMessage({
+                            action: 'removeWorkflow',
+                            data: workflow.id
+                        }, resp => {
+                            console.log(resp);
+                            resolve(resp);
+                        });
+                    });
+                } else {
+                    return Promise.reject('no workflow to delete');
+                }
+            },
+
+            handleWorkflowsDelete() {
+                this.$confirm('This operation will permanently delete the workflow, whether to continue?', 'Prompt', {
+                        confirmButtonText: 'Delete',
+                        cancelButtonText: 'Cancel',
+                        type: 'warning'
+                    }).then(() => {
+                        this.deleteWorkflow(this.currentWorkflow).then(() => {
+                            this.currentWorkflow = null;
+                            this.reloadWorkflows();
+                        }).catch(resp => {
+                            this.$message.error(resp);
+                        });
+                    }).catch(() => {
+
+                    });
+            },
+
             handleApprItemClick: function(apprItem) {
                 this.curApprItem = apprItem;
 
