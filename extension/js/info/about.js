@@ -10,7 +10,7 @@ const version = manifest.version;
 const stat = {
     '3.1.1': {
         star: 24,
-        comment: 15,
+        comment: 23,
         pay: 3,
         user: 683
     }
