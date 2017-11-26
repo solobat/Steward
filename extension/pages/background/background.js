@@ -28,7 +28,8 @@ const workflowHelper = {
 
     remove: function(id) {
         const model = Workflows.remove(id);
-        console.log(model);
+        Workflows.chromeStorage.destroy(model);
+
         return model;
     },
 
