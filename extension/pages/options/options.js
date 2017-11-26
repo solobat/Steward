@@ -137,6 +137,13 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 return this.workflows.filter(workflow => {
                     return workflow.title.toLowerCase().indexOf(text) > -1;
                 });
+            },
+            hasKeywordCommands() {
+                if (this.currentPlugin && this.currentPlugin.commands) {
+                    return this.currentPlugin.commands.filter(cmd => cmd.type === 'keyword').length > 0;
+                } else {
+                    return false;
+                }
             }
         },
         mounted: function() {
