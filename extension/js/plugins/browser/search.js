@@ -24,8 +24,8 @@ const commands = [{
 }, {
     key: 'se',
     type: 'keyword',
-    title,
-    subtitle,
+    title: chrome.i18n.getMessage(`${name}_se_title`),
+    subtitle: chrome.i18n.getMessage(`${name}_se_subtitle`),
     icon,
     editable: true
 }];

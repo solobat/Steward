@@ -224,6 +224,12 @@
     "search_subtitle": {
         "message": "Search for"
     },
+    "search_se_title": {
+        "message": "Custom search engines"
+    },
+    "search_se_subtitle": {
+        "message": "The query format is `Name | URL | Icon`. When empty, the selected engine can be deleted"
+    },
     "workflow_title": {
         "message": "workflows"
     },

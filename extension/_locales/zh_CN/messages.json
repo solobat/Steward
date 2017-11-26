@@ -224,6 +224,12 @@
     "search_subtitle": {
         "message": "搜索指定内容"
     },
+    "search_se_title": {
+        "message": "自定义搜索引擎"
+    },
+    "search_se_subtitle": {
+        "message": "query格式为`Name|URL|Icon`, 为空时可删除选中的引擎"
+    },
     "workflow_title": {
         "message": "工作流"
     },
