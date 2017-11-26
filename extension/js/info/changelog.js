@@ -2,6 +2,15 @@
 const wordcardUrl = 'https://chrome.google.com/webstore/detail/oegblnjiajbfeegijlnblepdodmnddbk';
 const langZh = [
     {
+        version: 'v3.1.1',
+        detail: `
+            新增workflow的删除功能;<br>
+            调整todo的功能; <br>
+            新增<em>tabm</em>命令，用来移动选中的标签；<br>
+            搜索引擎可以自定义<a href="https://github.com/solobat/Steward/issues/11" target="_blank">#11</a>;<br>
+        `
+    },
+    {
         version: 'v3.1',
         detail: `
             新增<a href="https://github.com/solobat/Steward/wiki/workflow" target="_blank">workflow</a>面板，创建、编辑workflow，以及新增执行workflow的插件，trigger为<em>wf</em>;<br>
@@ -168,6 +177,15 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.1.1',
+        detail: `
+            Add workflow delete button;<br>
+            Update todo plugin; <br>
+            Added <em>tabm</em> command to move the selected tab；<br>
+            Search engines can be customized<a href="https://github.com/solobat/Steward/issues/11" target="_blank">#11</a>;<br>
+        `
+    },
     {
         version: 'v3.1',
         detail: `
