@@ -170,6 +170,12 @@
     "locateTab_tabc_subtitle": {
         "message": "find and close tab(s)"
     },
+    "locateTab_tabm_title": {
+        "message": "move the selected tab"
+    },
+    "locateTab_tabm_subtitle": {
+        "message": "To move the selected tab, enter a number from> = 1, while 0 moves to the end of the window"
+    },
     "todolist_title": {
         "message": "add todo item"
     },
@@ -218,6 +224,12 @@
     "search_subtitle": {
         "message": "Search for"
     },
+    "search_se_title": {
+        "message": "Custom search engines"
+    },
+    "search_se_subtitle": {
+        "message": "The query format is `Name | URL | Icon`. When empty, the selected engine can be deleted"
+    },
     "workflow_title": {
         "message": "workflows"
     },
@@ -256,6 +268,9 @@
     },
     "tips_autoHideCmd": {
         "message": "Hides the command automatically when the new tab's input box loses focus"
+    },
+    "general_autoResizeBoxFontSize": {
+        "message": "Auto resize the input box's fontsize"
     },
     "tips_bm_shift": {
         "message": "While holding shift, items marked with ⇧ are opened in batches"

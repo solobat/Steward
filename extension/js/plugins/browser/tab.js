@@ -5,13 +5,15 @@
  */
 
 import util from '../../common/util'
+import Toast from 'toastr'
 import _ from 'underscore'
 
-const version = 5;
+const version = 6;
 const name = 'locateTab';
 const keys = [
     { key: 'tab' },
-    { key: 'tabc', shiftKey: true, allowBatch: true }
+    { key: 'tabc', shiftKey: true, allowBatch: true },
+    { key: 'tabm' }
 ];
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/tab.png');
@@ -47,9 +49,23 @@ function getAllTabs(query, callback) {
     });
 }
 
+function getListByCommand(rawList, command) {
+    let list;
+
+    if (command.orkey === 'tabm') {
+        list = _.sortBy(rawList, 'active').reverse();
+    } else {
+        list = _.sortBy(rawList, 'active');
+    }
+
+    return list;
+}
+
 function dataFormat(rawList, command) {
     const wrapDesc = util.wrapWithMaxNumIfNeeded('', 20);
-    return _.sortBy(rawList, 'active').map(function (item, index) {
+    const list = getListByCommand(rawList, command);
+
+    return list.map(function (item, index) {
         let desc = command.subtitle;
 
         if (command.shiftKey && !item.active) {
@@ -67,12 +83,20 @@ function dataFormat(rawList, command) {
     });
 }
 
-function onInput(query, command) {
+function queryTabs(query, command) {
     return new Promise(resolve => {
         getAllTabs(query, function (data) {
             resolve(dataFormat(data, command));
         });
     });
+}
+
+function onInput(query, command) {
+    if (command.orkey === 'tabm') {
+        return queryTabs('', command);
+    } else {
+        return queryTabs(query, command);
+    }
 }
 
 function locateTab(id) {
@@ -87,6 +111,22 @@ function removeTabs(ids) {
             resolve(true);
         });
     });
+}
+
+function moveTab(tabId, query) {
+    const index = parseInt(query, 10) - 1;
+
+    if (index >= -1) {
+        return new Promise(resolve => {
+            chrome.tabs.move(tabId, { index }, resp => {
+                console.log(resp);
+                resolve('');
+            });
+        });
+    } else {
+        Toast.warning('The input is not a valid index');
+        return Promise.resolve();
+    }
 }
 
 function onEnter(item, {key, orkey}, query, shiftKey, list) {
@@ -120,6 +160,8 @@ function onEnter(item, {key, orkey}, query, shiftKey, list) {
                 }, 200);
             });
         });
+    } else if (orkey === 'tabm') {
+        return moveTab(item.id, query);
     }
 }
 

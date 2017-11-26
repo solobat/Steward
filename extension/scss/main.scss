@@ -2,3 +2,9 @@
     color: #d4237a;
     font-style: normal;
 }
+
+.cmdbox {
+    &.exceeded {
+        font-size: 16px;
+    }
+}
