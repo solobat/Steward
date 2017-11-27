@@ -308,6 +308,12 @@
     "custom_subtitle": {
         "message": "设置在NewTab输入框中的默认命令"
     },
+    "random_title": {
+        "message": "随机应用命令"
+    },
+    "random_subtitle": {
+        "message": "设置在NewTab随机应用的命令"
+    },
     "github_title": {
         "message": "github常用页面"
     },

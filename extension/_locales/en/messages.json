@@ -308,6 +308,12 @@
     "custom_subtitle": {
         "message": "Set the default command in the NewTab input box"
     },
+    "random_title": {
+        "message": "Apply commands randomly"
+    },
+    "random_subtitle": {
+        "message": "Set the commands applyed randomly in new tab"
+    },
     "github_title": {
         "message": "The most visited github pages"
     },

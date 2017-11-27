@@ -23,6 +23,7 @@ const regExpCommands = [];
 const otherCommands = [];
 const searchContexts = [];
 let plugin4empty;
+let randomPlugin;
 let keys;
 let reg;
 let cmdbox;
@@ -249,6 +250,13 @@ function createItem (index, item) {
     return html;
 }
 
+function applyCmd(cmd) {
+    if (cmd) {
+        cmdbox.ipt.val(cmd);
+        cmdbox.render(cmd);
+    }
+}
+
 function handleInit () {
     const config = stewardCache.config;
 
@@ -258,19 +266,21 @@ function handleInit () {
 
         if (cacheLastCmd) {
             cmd = storage.h5.get(CONST.STORAGE.LAST_CMD) || 'site ';
-        } else if (defaultPlugin && defaultPlugin !== 'Other') {
-            const defaultCommand = Object.values(commands).find(command => command.name === defaultPlugin);
+            applyCmd(cmd);
+        } else if (defaultPlugin) {
+            if (defaultPlugin === 'Other') {
+                if (customCmd) {
+                    applyCmd(config.general.customCmd);
+                }
+            } else if (defaultPlugin === 'Random') {
+                randomPlugin.getOneCommand().then(applyCmd);
+            } else {
+                const defaultCommand = Object.values(commands).find(command => command.name === defaultPlugin);
 
-            if (defaultCommand) {
-                cmd = `${defaultCommand.key} `;
+                if (defaultCommand) {
+                    applyCmd(`${defaultCommand.key} `);
+                }
             }
-        } else if (customCmd) {
-            cmd = config.general.customCmd;
-        }
-
-        if (cmd) {
-            this.ipt.val(cmd);
-            this.render(cmd);
         }
     }
 }
@@ -540,6 +550,11 @@ function classifyPlugins(pluginsData) {
             if (typeof plugin.onBoxEmpty === 'function') {
                 plugin4empty = plugin;
             }
+
+            if (plugin.name === 'Random Commands') {
+                randomPlugin = plugin;
+            }
+
             if (plugin.commands instanceof Array) {
                 const pname = plugin.name;
                 const pcmds = pluginsData[pname].commands;
