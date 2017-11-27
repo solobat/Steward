@@ -2,6 +2,12 @@
 const wordcardUrl = 'https://chrome.google.com/webstore/detail/oegblnjiajbfeegijlnblepdodmnddbk';
 const langZh = [
     {
+        version: 'v3.1.2',
+        detail: `
+            新增random功能，在标签页随机使用通过trigger: <em>random</em>添加的命令
+        `
+    },
+    {
         version: 'v3.1.1',
         detail: `
             新增workflow的删除功能;<br>
@@ -177,6 +183,12 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.1.2',
+        detail: `
+        Add random feature, random use of the tab command to add the command by trigger: <em>random</ em>
+        `
+    },
     {
         version: 'v3.1.1',
         detail: `
