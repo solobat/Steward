@@ -56,7 +56,7 @@
 <div>
 <h4>PayPal:</h4> Please click <a href="https://paypal.me/tomasy/5" target="_blank">Payment Link</a>
 </div>
-***
+
 
 ---
 #### License:
