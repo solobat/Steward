@@ -40,6 +40,24 @@
     - Windows and Linux: <kbd>Ctrl</kbd> + <kbd>J</kbd>
 - Alternatively, in Google Chrome, you can go to the URL `chrome://extensions` and scroll to the bottom and click **Keyboard shortcuts**
 
+#### Sponsor:
+
+***
+<div style="display: flex;justify-content: space-around;">
+    <div>
+        <h4>WeChat</h4>
+        <img src="http://owsjc7iz3.bkt.clouddn.com/IMG_2180.jpg" width = "250" alt="微信" />
+    </div>
+    <div>
+        <h4>Alipay</h4>
+        <img src="http://owsjc7iz3.bkt.clouddn.com/alipay3.jpg" width = "250" alt="微信" />
+    </div>
+</div>
+<div>
+<h4>PayPal:</h4> Please click <a href="https://paypal.me/tomasy/5" target="_blank">Payment Link</a>
+</div>
+***
+
 ---
 #### License:
 [![license-badge]][license-link]
