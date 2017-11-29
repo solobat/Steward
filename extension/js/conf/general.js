@@ -4,7 +4,7 @@ export default {
     defaultPlugin: '',
     customCmd: '',
     autoScrollToMiddle: false,
-    speedFirst: true,
+    speedFirst: false,
     autoHideCmd: false,
     maxOperandsNum: 5,
     autoResizeBoxFontSize: false
