@@ -179,6 +179,10 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 _gaq.push(['_trackEvent', 'options_general', 'save']);
             },
 
+            getDocumentURL: function(plugin) {
+                return util.getDocumentURL(plugin.name);
+            },
+
             handlePluginClick: function(plugin) {
                 this.currentPlugin = plugin;
                 _gaq.push(['_trackEvent', 'options_plugins', 'click', plugin.name]);

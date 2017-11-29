@@ -5,6 +5,7 @@
  */
 
 import _ from 'underscore'
+import util from '../../common/util'
 
 const version = 3;
 const name = 'help';
@@ -23,17 +24,6 @@ const commands = [{
     editable: true
 }];
 
-function getDocumentURL(item) {
-    const baseUrl = 'https://steward-extension.gitbooks.io/steward/content/plugins';
-    const exts = ['wd'];
-
-    if (exts.indexOf(item.orkey) === -1) {
-        return `${baseUrl}/browser/${item.name}.html`;
-    } else {
-        return `${baseUrl}/browser/extension/${item.name}.html`;
-    }
-}
-
 // NOTE: Only get the commands when needed, main.js has been immediately obtained
 // and then get the object will be empty
 function getPlugins() {
@@ -42,7 +32,6 @@ function getPlugins() {
         return {
             icon: command.icon,
             id: command.key,
-            orkey: command.orkey,
             name: command.name,
             title: `${command.key}: ${command.title}`,
             desc: `⇧: ${command.subtitle}`,
@@ -60,7 +49,7 @@ function onInput() {
 function onEnter(item, command, query, shiftKey) {
     if (shiftKey) {
         chrome.tabs.create({
-            url: getDocumentURL(item)
+            url: util.getDocumentURL(item.name)
         });
     } else {
         return Promise.resolve(String(item.id.split(',')[0]));

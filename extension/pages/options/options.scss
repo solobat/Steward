@@ -102,6 +102,15 @@ a {
     }
 }
 
+.plugin-doc {
+    margin-left: 12px;
+    color: #20a0ff;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
 /* editor */
 .plugin-editor-header {
     display: flex;

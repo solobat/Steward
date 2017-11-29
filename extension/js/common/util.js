@@ -144,6 +144,17 @@ const tabCreateExecs = [
     }
 ];
 
+function getDocumentURL(name) {
+    const baseUrl = 'https://steward-extension.gitbooks.io/steward/content/plugins';
+    const exts = ['wordcard'];
+
+    if (exts.indexOf(name) === -1) {
+        return `${baseUrl}/browser/${name}.html`;
+    } else {
+        return `${baseUrl}/browser/extension/${name}.html`;
+    }
+}
+
 export default {
     matchText,
     isMac,
@@ -157,5 +168,6 @@ export default {
     options2map,
     wrapWithMaxNumIfNeeded,
     batchExecutionIfNeeded,
-    tabCreateExecs
+    tabCreateExecs,
+    getDocumentURL
 };
