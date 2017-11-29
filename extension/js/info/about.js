@@ -3,24 +3,12 @@
  */
 /*global EXT_TYPE*/
 
+import stat from './stat'
+
 const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'steward';
 const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jglmompgeddkbcdamdknmebaimldkkbl';
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
-const stat = {
-    '3.1.2': {
-        star: 26,
-        comment: 23,
-        pay: 3,
-        user: 664
-    },
-    '3.1.1': {
-        star: 24,
-        comment: 23,
-        pay: 3,
-        user: 683
-    }
-};
 const langZh = `
 <a href="https://chrome.google.com/webstore/detail/${storeId}">${extType}</a>
 最早开发于2014年底，初衷是作为一个Chrome扩展爱好者，居然找不到一个方便管理它们的方式。于是花了一个晚上写了${extType}的第一版。
