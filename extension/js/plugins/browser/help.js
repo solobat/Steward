@@ -6,7 +6,7 @@
 
 import _ from 'underscore'
 
-const version = 2;
+const version = 3;
 const name = 'help';
 const key = 'help';
 const type = 'keyword';
@@ -19,8 +19,20 @@ const commands = [{
     title,
     subtitle,
     icon,
+    shiftKey: true,
     editable: true
 }];
+
+function getDocumentURL(item) {
+    const baseUrl = 'https://steward-extension.gitbooks.io/steward/content/plugins';
+    const exts = ['wd'];
+
+    if (exts.indexOf(item.orkey) === -1) {
+        return `${baseUrl}/browser/${item.name}.html`;
+    } else {
+        return `${baseUrl}/browser/extension/${item.name}.html`;
+    }
+}
 
 // NOTE: Only get the commands when needed, main.js has been immediately obtained
 // and then get the object will be empty
@@ -30,8 +42,10 @@ function getPlugins() {
         return {
             icon: command.icon,
             id: command.key,
+            orkey: command.orkey,
+            name: command.name,
             title: `${command.key}: ${command.title}`,
-            desc: command.subtitle,
+            desc: `⇧: ${command.subtitle}`,
             type: command.type
         }
     }).filter(item => item.type === 'keyword');
@@ -43,8 +57,14 @@ function onInput() {
     return getPlugins();
 }
 
-function onEnter(item) {
-    return Promise.resolve(String(item.id.split(',')[0]));
+function onEnter(item, command, query, shiftKey) {
+    if (shiftKey) {
+        chrome.tabs.create({
+            url: getDocumentURL(item)
+        });
+    } else {
+        return Promise.resolve(String(item.id.split(',')[0]));
+    }
 }
 
 export default {
