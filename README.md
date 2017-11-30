@@ -16,7 +16,7 @@
 ### Usage
 > Use the commands to complete most of the operation in the browser
 
-[Document](https://steward-extension.gitbooks.io/steward/content/)
+[Document](https://steward-extension.github.io/Steward-Wiki-Zh/)
 
 ---
 #### Screenshots:
