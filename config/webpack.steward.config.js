@@ -117,6 +117,7 @@ const config = {
     new CopyWebpackPlugin([
       {from: 'extension/img', to: 'img'},
       {from: 'extension/css', to: 'css'},
+      {from: 'extension/scripts', to: 'scripts'},
       {from: 'extension/_locales', to: '_locales'},
       {from: 'extension/manifest.json'}
     ]),

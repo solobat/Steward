@@ -1,8 +1,15 @@
 @import '../../scss/main.scss';
 
+.box-invisible {
+    .main {
+        display: none;
+    }
+}
+
 body {
     margin: 0;
     padding: 0;
+    height: 100vh;
 
     user-select: none;
     box-sizing: border-box;
