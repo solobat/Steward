@@ -145,7 +145,7 @@ const tabCreateExecs = [
 ];
 
 function getDocumentURL(name) {
-    const baseUrl = 'https://steward-extension.gitbooks.io/steward/content/plugins';
+    const baseUrl = 'http://oksteward.com/steward-document-zh/plugins';
     const exts = ['wordcard'];
 
     if (exts.indexOf(name) === -1) {
