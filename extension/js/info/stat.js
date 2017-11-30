@@ -3,11 +3,12 @@
 // The pace of development is not affected
 export default {
     '3.1.3': {
-        star: 32,
-        comment: 23,
+        star: 34,
+        // steward + alfred + jianshu + ssp
+        comment: 15 + 8 + 3 + 13,
         pay: 3,
         user: 702,
-        points: 210
+        points: 530
     },
     '3.1.2': {
         star: 26,
