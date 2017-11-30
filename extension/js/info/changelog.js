@@ -2,6 +2,13 @@
 const wordcardUrl = 'https://chrome.google.com/webstore/detail/oegblnjiajbfeegijlnblepdodmnddbk';
 const langZh = [
     {
+        version: 'v3.1.3',
+        detail: `
+            命令框里打完字按 <em>ESC</em> 可以全消除;<br>
+            更丰富的文档说明：使用 <em>help</em> 命令时，<em>Shift + Enter/Click</em>可以打开选中命令的<em>帮助文档<em>.
+        `
+    },
+    {
         version: 'v3.1.2',
         detail: `
             新增random功能，在标签页随机使用通过trigger: <em>random</em>添加的命令
@@ -183,6 +190,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.1.3',
+        detail: `
+            Command box can be completely eliminated when press the ESC ;<br>
+            Richer documentation：use <em>help</em> command，press <em>Shift + Enter/Click</em> can open the <em>document<em> of one command.
+        `
+    },
     {
         version: 'v3.1.2',
         detail: `

@@ -3,28 +3,16 @@
  */
 /*global EXT_TYPE*/
 
-const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'steward';
+import stat from './stat'
+
+const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'Steward';
 const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jglmompgeddkbcdamdknmebaimldkkbl';
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
-const stat = {
-    '3.1.2': {
-        star: 26,
-        comment: 23,
-        pay: 3,
-        user: 664
-    },
-    '3.1.1': {
-        star: 24,
-        comment: 23,
-        pay: 3,
-        user: 683
-    }
-};
 const langZh = `
 <a href="https://chrome.google.com/webstore/detail/${storeId}">${extType}</a>
-最早开发于2014年底，初衷是作为一个Chrome扩展爱好者，居然找不到一个方便管理它们的方式。于是花了一个晚上写了${extType}的第一版。
-虽然没怎么推广，用户也不是很多，但一有空闲就会维护<em title="辞职后开发了一段时间，工作以后精力有限，计划是：(新赞 + 新star + 新打赏) * 20 + (新增用户 * 5) >= 500，就更新一版">[?]</em>，毕竟${extType}几乎已经成为我使用频率最高的扩展了。<br>
+最早开发于2014年底，初衷是作为一个 Chrome 扩展爱好者，居然找不到一个方便管理它们的方式。于是花了一个晚上写了 ${extType} 的第一版。
+虽然没怎么推广，用户也不是很多，但一有空闲就会维护<em title="辞职后开发了一段时间，工作以后精力有限，计划是：(新赞 + 新star + 新打赏) * 20 + (新增用户 * 5) >= 500，就更新一版">[?]</em>，毕竟 ${extType} 几乎已经成为我使用频率最高的扩展了。<br>
 <br>
 如果觉得它还不错，希望可以给我<a href="https://chrome.google.com/webstore/detail/${storeId}/reviews?hl=zh-CN'">点赞评论</a><em>[${stat[version].comment}]</em>、
 <a href="https://github.com/solobat/Steward" target="_blank">star</a><em>[${stat[version].star}]</em>

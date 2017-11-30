@@ -16,9 +16,6 @@
             <a href="https://www.zhihu.com/people/woodpea" class="zhihu" target="_blank">
                 <img src="/img/zhihu-icon.png" alt="">
             </a>
-            <a href="https://twitter.com/fmlycls" class="twitter" target="_blank">
-                <img src="/img/twitter.png" alt="">
-            </a>
             <a href="https://github.com/solobat/steward" class="github" target="_blank">
                 <img src="/img/github.png" alt="">
             </a>
@@ -130,7 +127,10 @@
                                 <div class="plugin-editor-header">
                                     <img :src="currentPlugin.icon" class="plugin-editor-icon" alt="">
                                     <div class="plugin-editor-text">
-                                        <p class="plugin-editor-name">{{currentPlugin.name}} - v{{currentPlugin.version}}</p>
+                                        <p class="plugin-editor-name">
+                                            {{currentPlugin.name}} - v{{currentPlugin.version}}
+                                            <a class="plugin-doc" :href="getDocumentURL(currentPlugin)" target="_blank">Document</a>
+                                        </p>
                                         <p class="plugin-editor-title">{{currentPlugin.title}}</p>
                                     </div>
                                 </div>
@@ -196,7 +196,7 @@
                                             <el-input autocorrect="off" autocapitalize="off" spellcheck="false" type="textarea" style="width: 300px;" :autosize="{ minRows: 5, maxRows: 12 }" placeholder="Please input your commands" v-model="currentWorkflow.content">
                                             </el-input>
                                             <el-tooltip class="item" effect="dark" content="Workflow Document" placement="top-start">
-                                                <a href="https://github.com/solobat/Steward/wiki/workflow" target="_blank"><i class="el-icon-document"></i></a>
+                                                <a href="https://steward-extension.gitbooks.io/steward/content/Workflows.html" target="_blank"><i class="el-icon-document"></i></a>
                                             </el-tooltip>
                                         </el-form-item>
                                         <el-form-item>
@@ -264,7 +264,7 @@
                     </section>
                     <div style="margin-top: 12px;">
                         <a href="http://list.youku.com/albumlist/show/id_51350050" target="_blank">Videos</a> 
-                        <a style="margin-left: 12px;" :href="'http://owsjc7iz3.bkt.clouddn.com/' + extType + '-' + config.version + '.crx'">download crx</a>
+                        <a style="margin-left: 12px;" :href="'http://owsjc7iz3.bkt.clouddn.com/' + extType + '-' + config.version + '.crx'">Download crx</a>
                     </div>
                 </div>
             </el-tab-pane>

@@ -116,6 +116,9 @@ EasyComplete.prototype = {
                 that.exec(event);
             }
         });
+        keyboardJS.bind('esc', function() {
+            that.empty();
+        });
 
         $(document).on('click', '.ec-item', function (event) {
             that.select($(this).data('index'), event);

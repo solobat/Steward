@@ -5,8 +5,9 @@
  */
 
 import _ from 'underscore'
+import util from '../../common/util'
 
-const version = 2;
+const version = 3;
 const name = 'help';
 const key = 'help';
 const type = 'keyword';
@@ -19,6 +20,7 @@ const commands = [{
     title,
     subtitle,
     icon,
+    shiftKey: true,
     editable: true
 }];
 
@@ -30,8 +32,9 @@ function getPlugins() {
         return {
             icon: command.icon,
             id: command.key,
+            name: command.name,
             title: `${command.key}: ${command.title}`,
-            desc: command.subtitle,
+            desc: `⇧: ${command.subtitle}`,
             type: command.type
         }
     }).filter(item => item.type === 'keyword');
@@ -43,8 +46,14 @@ function onInput() {
     return getPlugins();
 }
 
-function onEnter(item) {
-    return Promise.resolve(String(item.id.split(',')[0]));
+function onEnter(item, command, query, shiftKey) {
+    if (shiftKey) {
+        chrome.tabs.create({
+            url: util.getDocumentURL(item.name)
+        });
+    } else {
+        return Promise.resolve(String(item.id.split(',')[0]));
+    }
 }
 
 export default {
