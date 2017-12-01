@@ -52,7 +52,7 @@ function onEnter(item, command, query, shiftKey) {
             url: util.getDocumentURL(item.name)
         });
     } else {
-        return Promise.resolve(String(item.id.split(',')[0]));
+        return Promise.resolve(`${String(item.id.split(',')[0])} `);
     }
 }
 
