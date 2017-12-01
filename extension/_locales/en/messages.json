@@ -200,6 +200,12 @@
     "urlblock_bk8_subtitle": {
         "message": "Block the specified URL for 8 hours"
     },
+    "urlblock_unbk_subtitle": {
+        "message": "Press Enter or Return to unblock"
+    },
+    "urlblock_unbk8_subtitle": {
+        "message": "Press Enter or Return after 8 hours of shielding to unblock"
+    },
     "youdao_title": {
         "message": "youdao translator"
     },

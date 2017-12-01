@@ -200,6 +200,12 @@
     "urlblock_bk8_subtitle": {
         "message": "屏蔽指定网址8小时"
     },
+    "urlblock_unbk_subtitle": {
+        "message": "按 Enter 键或 Return 键可以解除屏蔽"
+    },
+    "urlblock_unbk8_subtitle": {
+        "message": "屏蔽8小时后按 Enter 键或 Return 键可以解除屏蔽"
+    },
     "youdao_title": {
         "message": "有道翻译"
     },
