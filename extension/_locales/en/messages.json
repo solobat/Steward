@@ -302,6 +302,24 @@
     "steward_subtitle": {
         "message": "Find steward option tabs and open"
     },
+    "about_title": {
+        "message": "Steward related"
+    },
+    "about_subtitle": {
+        "message": "Steward related links"
+    },
+    "about_about_title": {
+        "message": "Steward related"
+    },
+    "about_about_subtitle": {
+        "message": "Steward related links"
+    },
+    "about_up_title": {
+        "message": "Support Steward"
+    },
+    "about_up_subtitle": {
+        "message": "Steward needs constant attention and support from everyone"
+    },
     "custom_title": {
         "message": "Custom command"
     },

@@ -25,9 +25,11 @@ import steward from './steward'
 import custom from './custom'
 import random from './random'
 import workflow from './workflow'
+import about from './about'
 import { extPlugins } from './extension'
 
 const pluginList = [
+    about,
     jenkins,
     note,
     tab,
