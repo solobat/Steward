@@ -3,6 +3,13 @@
 // The pace of development is not affected
 // comment: steward + alfred + jianshu + ssp
 export default {
+    '3.1.5': {
+        star: 35,
+        comment: 15 + 8 + 6 + 14,
+        pay: 3,
+        user: 702,
+        points: (1) * 20 + (0) * 5
+    },
     '3.1.4': {
         star: 35,
         comment: 15 + 8 + 6 + 14,
@@ -16,17 +23,5 @@ export default {
         pay: 3,
         user: 702,
         points: 530
-    },
-    '3.1.2': {
-        star: 26,
-        comment: 23,
-        pay: 3,
-        user: 664
-    },
-    '3.1.1': {
-        star: 24,
-        comment: 23,
-        pay: 3,
-        user: 683
     }
 }
