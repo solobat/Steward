@@ -341,6 +341,9 @@
     "random_subtitle": {
         "message": "设置在NewTab随机应用的命令"
     },
+    "random_remove_subtitle": {
+        "message": "按 Enter 或 Return 键移除此命令"
+    },
     "github_title": {
         "message": "github常用页面"
     },
