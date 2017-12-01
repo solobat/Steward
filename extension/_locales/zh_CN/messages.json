@@ -239,6 +239,9 @@
     "search_se_subtitle": {
         "message": "query格式为`Name|URL|Icon`, 为空时可删除选中的引擎"
     },
+    "search_removese_subtitle": {
+        "message": "按 Enter 或 Retur 移动此搜索引擎"
+    },
     "workflow_title": {
         "message": "工作流"
     },

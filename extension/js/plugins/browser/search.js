@@ -89,6 +89,8 @@ function getSearchLinks(query) {
 }
 
 function getSearchEngines() {
+    const desc = chrome.i18n.getMessage('search_removese_subtitle');
+
     return getSyncEngines().then(engines => {
         return Object.keys(engines).map(engine => {
             const info = engines[engine];
@@ -97,7 +99,7 @@ function getSearchEngines() {
                 key: 'plugin',
                 icon: info.icon,
                 title: engine,
-                desc: info.url
+                desc
             };
         });
     });
