@@ -141,7 +141,7 @@
                                                 :disabled="!command.editable"
                                                 v-model="config.plugins[currentPlugin.name].commands[index].key">
                                             </el-input>
-                                            <el-tooltip v-if="command.shiftKey" class="item" effect="dark" :content="i18nTexts.tips[command.orkey + '_shift']" placement="top-start">
+                                            <el-tooltip v-if="command.shiftKey" class="item" effect="dark" :content="i18nTexts.tips[command.orkey + '_shift'] || 'support shiftKey'" placement="top-start">
                                                 <span style="color: #878d99">⇧</span>
                                             </el-tooltip>
                                             <el-tooltip v-if="command.allowBatch" class="item" effect="dark" :content="i18nTexts.tips.allowBatch" placement="top-start">

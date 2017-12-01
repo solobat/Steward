@@ -302,6 +302,24 @@
     "steward_subtitle": {
         "message": "查找常用steward选项并打开"
     },
+    "about_title": {
+        "message": "Steward 相关"
+    },
+    "about_subtitle": {
+        "message": "Steward 相关链接"
+    },
+    "about_about_title": {
+        "message": "Steward 相关"
+    },
+    "about_about_subtitle": {
+        "message": "Steward 相关链接"
+    },
+    "about_up_title": {
+        "message": "支持 Steward"
+    },
+    "about_up_subtitle": {
+        "message": "Steward 需要大家的持续的关注与支持"
+    },
     "custom_title": {
         "message": "自定义命令"
     },
