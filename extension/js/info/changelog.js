@@ -2,6 +2,14 @@
 const wordcardUrl = 'https://chrome.google.com/webstore/detail/oegblnjiajbfeegijlnblepdodmnddbk';
 const langZh = [
     {
+        version: 'v3.1.4',
+        detail: `
+            更新文档链接;<br>
+            修复背景图显示的问题;<br>
+            其它一些改进. 
+        `
+    },
+    {
         version: 'v3.1.3',
         detail: `
             命令框里打完字按 <em>ESC</em> 可以全消除;<br>
@@ -190,6 +198,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.1.4',
+        detail: `
+            Update document link;<br>
+            Fix the problem of the background image;<br>
+            Some other improvements. 
+        `
+    },
     {
         version: 'v3.1.3',
         detail: `
