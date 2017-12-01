@@ -182,6 +182,9 @@
     "todolist_subtitle": {
         "message": "添加todo，单击todo选项消除"
     },
+    "todolist_done_subtitle": {
+        "message": "按 Enter 或 Return 键完成此项"
+    },
     "urlblock_title": {
         "message": "屏蔽网址"
     },

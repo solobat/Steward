@@ -182,6 +182,9 @@
     "todolist_subtitle": {
         "message": "add todo item, delete one by click it..."
     },
+    "todolist_done_subtitle": {
+        "message": "Press Enter or Return to done this item"
+    },
     "urlblock_title": {
         "message": "Block URL"
     },
