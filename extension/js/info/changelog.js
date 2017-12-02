@@ -2,6 +2,13 @@
 const wordcardUrl = 'https://chrome.google.com/webstore/detail/oegblnjiajbfeegijlnblepdodmnddbk';
 const langZh = [
     {
+        version: 'v3.1.6',
+        detail: `
+            解决 New Tab 的壁纸适配问题;<br>
+            更新 About 信息。 
+        `
+    },
+    {
         version: 'v3.1.5',
         detail: `
             更友好的命令提示；<br>
@@ -205,6 +212,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.1.6',
+        detail: `
+            Solve the New Tab wallpaper adaptation problem;<br>
+            Update the About information。 
+        `
+    },
     {
         version: 'v3.1.5',
         detail: `
