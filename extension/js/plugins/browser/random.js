@@ -52,13 +52,15 @@ function onEnter(item, command, query) {
 }
 
 function dataFormat(rawList = []) {
+    const desc = chrome.i18n.getMessage('random_remove_subtitle');
+
     return rawList.map(function (item) {
         return {
             key: key,
             id: item,
             icon: icon,
             title: item,
-            desc: subtitle
+            desc
         };
     });
 }

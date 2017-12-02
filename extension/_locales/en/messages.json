@@ -182,6 +182,9 @@
     "todolist_subtitle": {
         "message": "add todo item, delete one by click it..."
     },
+    "todolist_done_subtitle": {
+        "message": "Press Enter or Return to done this item"
+    },
     "urlblock_title": {
         "message": "Block URL"
     },
@@ -199,6 +202,12 @@
     },
     "urlblock_bk8_subtitle": {
         "message": "Block the specified URL for 8 hours"
+    },
+    "urlblock_unbk_subtitle": {
+        "message": "Press Enter or Return to unblock"
+    },
+    "urlblock_unbk8_subtitle": {
+        "message": "Press Enter or Return after 8 hours of shielding to unblock"
     },
     "youdao_title": {
         "message": "youdao translator"

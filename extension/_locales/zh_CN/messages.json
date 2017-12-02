@@ -182,6 +182,9 @@
     "todolist_subtitle": {
         "message": "添加todo，单击todo选项消除"
     },
+    "todolist_done_subtitle": {
+        "message": "按 Enter 或 Return 键完成此项"
+    },
     "urlblock_title": {
         "message": "屏蔽网址"
     },
@@ -199,6 +202,12 @@
     },
     "urlblock_bk8_subtitle": {
         "message": "屏蔽指定网址8小时"
+    },
+    "urlblock_unbk_subtitle": {
+        "message": "按 Enter 键或 Return 键可以解除屏蔽"
+    },
+    "urlblock_unbk8_subtitle": {
+        "message": "屏蔽8小时后按 Enter 键或 Return 键可以解除屏蔽"
     },
     "youdao_title": {
         "message": "有道翻译"
@@ -229,6 +238,9 @@
     },
     "search_se_subtitle": {
         "message": "query格式为`Name|URL|Icon`, 为空时可删除选中的引擎"
+    },
+    "search_removese_subtitle": {
+        "message": "按 Enter 或 Retur 移动此搜索引擎"
     },
     "workflow_title": {
         "message": "工作流"
@@ -331,6 +343,9 @@
     },
     "random_subtitle": {
         "message": "设置在NewTab随机应用的命令"
+    },
+    "random_remove_subtitle": {
+        "message": "按 Enter 或 Return 键移除此命令"
     },
     "github_title": {
         "message": "github常用页面"

@@ -108,13 +108,15 @@ function getTodos(callback) {
 }
 
 function dataFormat(rawList) {
+    const doneDesc = chrome.i18n.getMessage('todolist_done_subtitle');
+
     return rawList.map(function (item) {
         return {
             key: key,
             id: item.id,
             icon: icon,
             title: item.title,
-            desc: subtitle
+            desc: doneDesc
         };
     });
 }

@@ -124,14 +124,16 @@ function getBlacklist(callback) {
     });
 }
 
-function dataFormat(rawList) {
+function dataFormat(rawList, cmd) {
+    const desc = chrome.i18n.getMessage(`urlblock_un${cmd}_subtitle`);
+
     return rawList.map(function (item) {
         return {
             key: name,
             id: item.id,
             icon: icon,
             title: item.title,
-            desc: subtitle
+            desc
         };
     });
 }
@@ -145,7 +147,7 @@ function showBlacklist(cmd) {
                     return cmd === (item.type || 'bk8');
                 }) || [];
             }
-            resolve(dataFormat(data));
+            resolve(dataFormat(data, cmd));
         });
     });
 }
