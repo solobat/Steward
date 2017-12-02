@@ -30,7 +30,7 @@ function updateWallpaper(url, save, isNew) {
 
     curUrl = url;
     $body.css({
-        'background-image': `url(${url})`,
+        'background': `url(${url}) no-repeat center center fixed`,
         'background-size': 'cover'
     });
 }
