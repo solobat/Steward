@@ -221,7 +221,8 @@ const langEn = [
     {
         version: 'v3.1.7',
         detail: `
-            Optimize UI of new tab.
+            Optimize UI of new tab.<br>
+            Document is available on <em>http://oksteward.com/steward-document-en/</em>
         `
     },
     {
