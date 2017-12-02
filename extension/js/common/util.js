@@ -144,8 +144,17 @@ const tabCreateExecs = [
     }
 ];
 
+function getLang() {
+    if (chrome.i18n.getUILanguage().indexOf('zh') > -1) {
+        return 'zh';
+    } else {
+        return 'en';
+    }
+}
+
 function getDocumentURL(name) {
-    const baseUrl = 'http://oksteward.com/steward-document-zh/plugins';
+    const lang = getLang();
+    const baseUrl = `http://oksteward.com/steward-document-${lang}/plugins`;
     const exts = ['wordcard'];
 
     if (exts.indexOf(name) === -1) {
