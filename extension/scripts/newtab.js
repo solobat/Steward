@@ -16,4 +16,11 @@
         window.addEventListener('focus', removeClass, false);
         window.addEventListener('blur', addClass, false);
     }
+
+    const boxSize = window.localStorage.boxSize;
+    const optionalSize = ['normal', 'large'];
+
+    if (optionalSize.indexOf(boxSize) !== -1) {
+        document.documentElement.className += ` size-${boxSize}`
+    }
 })();

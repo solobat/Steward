@@ -31,10 +31,24 @@ a {
     height: 80px;
 }
 #main {
-    width: 60%;
-    max-width: 800px;
-    min-width: 600px;
+    width: 560px;
     margin: 40px auto 0;
+}
+
+.size-large {
+    #main {
+        width: 60%;
+
+        .cmdbox {
+            border: 4px solid rgba(0, 0, 0, 0.8);
+            height: 80px;
+        }
+
+        .ec-itemList {
+            border: 4px solid rgba(0, 0, 0, 0.8);
+            border-top: 0;
+        }
+    }
 }
 
 .fixed-tools {
@@ -74,8 +88,9 @@ a {
 
 .cmdbox {
     width: 100%;
-    height: 80px;
-    border: 4px solid rgba(0, 0, 0, 0.8);
+    height: 65px;
+    padding: 0 8px;
+    border: 3px solid rgba(0, 0, 0, 0.8);
     font-size: 26px;
     background-color: rgba(255,255,255, .5);
 
@@ -85,6 +100,12 @@ a {
         &:focus {
             color: #000;
         }
+    }
+
+    &.has-icon {
+        background: url(../../img/icon.png) no-repeat 97% 50%;
+        background-size: 40px 40px;
+        padding: 0 60px 0 8px;
     }
 }
 
@@ -100,7 +121,7 @@ a {
     height: 400px;
 
     background: rgba(0, 0, 0, .4);
-    border: 4px solid rgba(0, 0, 0, 0.8);
+    border: 3px solid rgba(0, 0, 0, 0.8);
     border-top: 0;
 }
 
@@ -125,6 +146,7 @@ a {
 .ec-item .ec-item-icon {
     display: block;
     width: 25px;
+    min-width: 25px;
     height: 25px;
     margin-right: 8px;
 }
