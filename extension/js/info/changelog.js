@@ -2,6 +2,15 @@
 const wordcardUrl = 'https://chrome.google.com/webstore/detail/oegblnjiajbfeegijlnblepdodmnddbk';
 const langZh = [
     {
+        version: 'v3.1.8',
+        detail: `
+            插件图标更换；<br>
+            note 插件添加 notes 命令，显示所有的 note，按 Shift + Enter 时删除单条 note; <br>
+            note / todo 插件 storage 使用限制提醒;<br>
+            workflow 最大只能创建 20 条。
+        `
+    },
+    {
         version: 'v3.1.7',
         detail: `
             优化 New Tab 的样式. 
@@ -218,6 +227,16 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.1.8',
+        detail: `
+            Plugin icon replacement; <br>
+            note plugin add notes command to display all the notes, 
+            press SHIFT + ENTER to delete a single note; <br>
+            note / todo plugin storage usage alert; <br>
+            Set max workflows num to 20. 
+        `
+    },
     {
         version: 'v3.1.7',
         detail: `
