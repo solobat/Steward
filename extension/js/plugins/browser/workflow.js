@@ -7,7 +7,7 @@ import util from '../../common/util'
 import _ from 'underscore'
 
 const chrome = window.chrome;
-const version = 1;
+const version = 2;
 const name = 'workflow';
 const key = 'wf';
 const type = 'keyword';
