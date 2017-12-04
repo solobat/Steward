@@ -8,6 +8,7 @@ import pinyin from 'pinyin'
 import Toast from 'toastr'
 import fuzzaldrinPlus from 'fuzzaldrin-plus'
 import '../../../node_modules/toastr/toastr.scss'
+import { QUOTA_BYTES_PER_ITEM } from '../constant/number'
 
 function getPinyin(name) {
     return pinyin(name, {
@@ -164,6 +165,32 @@ function getDocumentURL(name) {
     }
 }
 
+function getBytesInUse(key) {
+    return new Promise(resolve => {
+        chrome.storage.sync.getBytesInUse(key, resp => {
+            console.log(resp);
+            resolve(resp);
+        });
+    });
+}
+
+function isStorageSafe(key) {
+    if (!key) {
+        return Promise.reject();
+    } else {
+        return getBytesInUse(key).then(size => {
+            const safetyFactor = 0.85;
+            console.log(`${key} size: ${size}`);
+
+            if (size > (QUOTA_BYTES_PER_ITEM * safetyFactor)) {
+                return Promise.reject();
+            } else {
+                return true;
+            }
+        });
+    }
+}
+
 export default {
     matchText,
     isMac,
@@ -178,5 +205,6 @@ export default {
     wrapWithMaxNumIfNeeded,
     batchExecutionIfNeeded,
     tabCreateExecs,
-    getDocumentURL
+    getDocumentURL,
+    isStorageSafe
 };
