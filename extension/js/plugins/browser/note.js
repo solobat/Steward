@@ -9,7 +9,7 @@ import Toast from 'toastr'
 import STORAGE from '../../constant/storage'
 import browser from 'webextension-polyfill'
 
-const version = 2;
+const version = 3;
 const name = 'note';
 const keys = [
     { key: 'note' },
