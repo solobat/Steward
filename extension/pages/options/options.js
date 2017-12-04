@@ -195,11 +195,17 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
             },
 
             handleNewWorkflowClick() {
-                this.currentWorkflow = {
-                    title: 'New Workflow',
-                    desc: '',
-                    content: ''
-                };
+                const maxNum = CONST.NUMBER.MAX_WORKFLOW_NUM;
+
+                if (this.workflows.length < maxNum) {
+                    this.currentWorkflow = {
+                        title: 'New Workflow',
+                        desc: '',
+                        content: ''
+                    };
+                } else {
+                    this.$message.warning(`You can not create more than ${maxNum} workflows`);
+                }
             },
 
             handleWorkflowClick(workflow) {
