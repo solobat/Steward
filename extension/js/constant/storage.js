@@ -6,5 +6,7 @@ export default {
     WALLPAPERS: 'wallpapers',
     TODO: 'todo',
     URL: 'url',
-    CONFIG: 'config'
+    CONFIG: 'config',
+    NOTES: 'notes',
+    TAGS: 'tags'
 };

@@ -6,10 +6,16 @@
 
 import util from '../../common/util'
 import Toast from 'toastr'
+import STORAGE from '../../constant/storage'
+import browser from 'webextension-polyfill'
 
 const version = 2;
 const name = 'note';
-const keys = [{key: 'note'}, {key: '#', keyname: 'notetag', editable: false}];
+const keys = [
+    { key: 'note' },
+    { key: '#', keyname: 'notetag', editable: false },
+    { key: 'notes', shiftKey: true }
+];
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/note.png')
 const title = chrome.i18n.getMessage(`${name}_title`);
@@ -25,8 +31,10 @@ function createNote(...args) {
     }
 }
 
-function onInput(key) {
-    if (this.cmd === '#') {
+function onInput(key, command) {
+    const { orkey } = command;
+
+    if (orkey === '#') {
         const { inContent } = window.stewardCache;
 
         if (inContent && key === '/') {
@@ -34,7 +42,7 @@ function onInput(key) {
         } else {
             return handleTagQuery(key);
         }
-    } else {
+    } else if (orkey === 'note') {
         return [
             {
                 icon: icon,
@@ -42,7 +50,29 @@ function onInput(key) {
                 desc: subtitle
             }
         ];
+    } else {
+        return getNotes().then(notes => dataFormat(notes, command));
     }
+}
+
+function dataFormat(notes = [], command) {
+    let desc;
+
+    if (command && command.shiftKey) {
+        desc = '⇧: Press Enter to copy the note to your clipboard, press Shift + Enter to delete the note.'
+    } else {
+        desc = 'Press Enter to copy the note to your clipboard';
+    }
+
+    return notes.filter(item => Boolean(item)).map(note => {
+        return {
+            key: 'plugin',
+            icon: icon,
+            id: note._id,
+            title: note.text,
+            desc
+        }
+    });
 }
 
 function handleTagQuery(key) {
@@ -60,14 +90,7 @@ function handleTagQuery(key) {
                 }
             })
         } else {
-            data = res.data.map(note => {
-                return {
-                    key: key,
-                    icon: icon,
-                    title: note.text,
-                    desc: 'Copy note to your clipboard'
-                }
-            })
+            data = dataFormat(res.data);
         }
 
         return data;
@@ -98,88 +121,153 @@ function queryNotesByTag(query) {
     })
 }
 
-
 function findNoteById(notes, id) {
     return notes.filter(note => note._id === id)[0]
 }
 
-function onEnter(item) {
-    if (this.cmd === '#') {
-        if (item.key === 'tag') {
-            return Promise.resolve(`# ${item.id}`);
-        } else {
-            util.copyToClipboard(item.title, true);
-            return Promise.resolve(false);
-        }
+function copyNote(note, ret = false) {
+    util.copyToClipboard(note.title, true);
+
+    return Promise.resolve(ret);
+}
+
+function handleTagEnter(item) {
+    if (item.key === 'tag') {
+        return Promise.resolve(`# ${item.id}`);
     } else {
-        const { inContent } = window.stewardCache;
-        const query = this.query;
-        const matches = query.match(tagReg) || [];
-        const tags = matches.map(match => match.substr(1))
+        return copyNote(item);
+    }
+}
 
-        if (inContent && window.parentHost) {
-            tags.push(window.parentHost);
-        }
+function handleNoteEnter(query, orkey) {
+    const { inContent } = window.stewardCache;
+    const matches = query.match(tagReg) || [];
+    const tags = matches.map(match => match.substr(1))
 
-        if (!tags.length) {
-            Toast.warning('Label can not be empty');
-            return Promise.resolve(true);
-        }
+    if (inContent && window.parentHost) {
+        tags.push(window.parentHost);
+    }
 
-        const noteText = query.replace(/[#]+/g, '')
-        const note = createNote(noteText, tags)
+    if (!tags.length) {
+        Toast.warning('Label can not be empty');
 
-        saveNote(note)
-        this.clearQuery()
+        return Promise.resolve(true);
+    }
+
+    const noteText = query.replace(/[#]+/g, '')
+    const note = createNote(noteText, tags)
+
+    return saveNote(note).then(() => {
+        Toast.success('Add note successfully!');
+
+        return Promise.resolve(`${orkey} `);
+    }).catch(() => {
+        console.log('save note error');
+    });
+}
+
+function handleNotesEnter(item, shiftKey) {
+    if (shiftKey) {
+        return deleteNote(item.id).then(() => {
+            Toast.success('Add note successfully!');
+
+            return copyNote(item, '');
+        });
+    } else {
+        return copyNote(item);
+    }
+}
+
+function onEnter(item, { orkey }, query, shiftKey) {
+    if (orkey === '#') {
+        return handleTagEnter(item);
+    } else if (orkey === 'note') {
+        return handleNoteEnter(query, orkey);
+    } else {
+        return handleNotesEnter(item, shiftKey);
     }
 }
 
 function saveNote(note) {
     if (!note || !note.text) {
-        return
+        return Promise.reject();
     }
 
-    Promise.all([
-        getNotes(),
-        getTags()
-    ]).then(function(res) {
-        // push note
-        const notes = res[0] = res[0] || [];
+    return util.isStorageSafe(STORAGE.NOTES).then(() => {
+        return Promise.all([
+            getNotes(),
+            getTags()
+        ]).then(function(res) {
+            // push note
+            const notes = res[0] = res[0] || [];
 
-        notes.push(note)
+            notes.push(note)
 
-        // push tags
-        const tags = res[1] || {};
+            // push tags
+            const tags = res[1] || {};
 
-        note.tags.forEach(tag => {
-            if (!tags[tag]) {
-                tags[tag] = []
-            }
+            note.tags.forEach(tag => {
+                if (!tags[tag]) {
+                    tags[tag] = []
+                }
 
-            tags[tag].push(note._id)
+                tags[tag].push(note._id)
+            })
+
+            res[1] = tags;
+
+            return res;
+        }).then(res => {
+            browser.storage.sync.set({
+                notes: res[0],
+                tags: res[1]
+            });
         })
+    }).catch(() => {
+        Toast.warning('Storage is full, can not be added!');
 
-        res[1] = tags;
-
-        return res;
-    }).then(res => {
-        chrome.storage.sync.set({
-            notes: res[0],
-            tags: res[1]
-        }, () => {})
-    })
-}
-
-function getNotes() {
-    return new Promise(function(resolve) {
-        chrome.storage.sync.get('notes', results => resolve(results.notes))
+        return Promise.reject();
     });
 }
 
+function deleteNote(id) {
+    return getNotes().then(notes => {
+        return notes.filter(note => note._id !== id);
+    }).then(newNotes => {
+        browser.storage.sync.set({
+            [STORAGE.NOTES]: newNotes
+        });
+    }).then(() => {
+        refreshTags(id);
+    });
+}
+
+function refreshTags(deletedId) {
+    return getTags().then(tags => {
+        const newTags = {};
+
+        for (const tag in tags) {
+            const ids = tags[tag].filter(id => id !== deletedId);
+
+            if (ids.length > 0) {
+                newTags[tag] = ids;
+            }
+        }
+
+        return newTags;
+    }).then(newTags => {
+        browser.storage.sync.set({
+            [STORAGE.TAGS]: newTags
+        });
+    });
+}
+
+function getNotes() {
+    return browser.storage.sync.get(STORAGE.NOTES).then(results => results.notes);
+}
+
 function getTags() {
-    return new Promise(resolve => {
-        chrome.storage.sync.get('tags', results => resolve(results.tags))
-    })
+    return browser.storage.sync.get(STORAGE.TAGS).then(results => results.tags);
 }
 
 export default {

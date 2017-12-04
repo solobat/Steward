@@ -122,6 +122,12 @@
     "note_notetag_subtitle": {
         "message": "Find note by the tag"
     },
+    "note_notes_title": {
+        "message": "all notes"
+    },
+    "note_notes_subtitle": {
+        "message": "Show your all notes, press Enter to copy，and press Shift + Enter to delete."
+    },
     "offExtension_title": {
         "message": "disable extension / app"
     },

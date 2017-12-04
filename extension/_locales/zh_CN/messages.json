@@ -122,6 +122,12 @@
     "note_notetag_subtitle": {
         "message": "根据标签查找note"
     },
+    "note_notes_title": {
+        "message": "笔记列表"
+    },
+    "note_notes_subtitle": {
+        "message": "查看所有笔记，Enter 复制，Shift + Enter 删除"
+    },
     "offExtension_title": {
         "message": "禁用扩展/App"
     },
