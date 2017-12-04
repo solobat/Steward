@@ -4,9 +4,12 @@
  * @email solopea@gmail.com
  */
 
+import util from '../../common/util'
 import Toast from 'toastr'
+import STORAGE from '../../constant/storage'
+import browser from 'webextension-polyfill'
 
-const version = 3;
+const version = 4;
 const name = 'todolist';
 const key = 'todo';
 const type = 'keyword';
@@ -30,10 +33,8 @@ const defaultResult = [{
 
 function onInput(query) {
     if (!query) {
-        return new Promise(resolve => {
-            getTodos(todos => {
-                resolve(dataFormat(todos || []));
-            });
+        return getTodos().then(todos => {
+            return dataFormat(todos || []);
         });
     } else {
         return Promise.resolve(defaultResult);
@@ -49,35 +50,34 @@ function onEnter(item, command, query) {
 }
 
 function removeTodo(id) {
-    return new Promise(resolve => {
-        getTodos(resp => {
-            let todoName;
+    return getTodos().then(resp => {
+        let todoName;
 
-            const todos = resp.filter(function (todo) {
-                if (todo.id === id) {
-                    todoName = todo.title;
-                }
+        const todos = resp.filter(function (todo) {
+            if (todo.id === id) {
+                todoName = todo.title;
+            }
 
-                return todo.id !== id;
-            });
+            return todo.id !== id;
+        });
 
-            chrome.storage.sync.set({
-                todo: todos
-            }, () => {
-                Toast.success(`[${todoName}] is done`, 'TodoList', { timeOut: 1000 });
-                resolve('');
-            });
+        return browser.storage.sync.set({
+            [STORAGE.TODO]: todos
+        }).then(() => {
+            Toast.success(`[${todoName}] is done`, 'TodoList', { timeOut: 1000 });
+
+            return '';
         });
     });
 }
 
 function addTodo(todo, command) {
     if (!todo) {
-        return;
+        return Promise.resolve();
     }
 
-    return new Promise(resolve => {
-        getTodos(resp => {
+    return util.isStorageSafe(STORAGE.TODO).then(() => {
+        return getTodos().then(resp => {
             let todos = resp;
 
             if (!todos || !todos.length) {
@@ -89,22 +89,23 @@ function addTodo(todo, command) {
                 title: todo
             });
 
-            chrome.storage.sync.set({
+            return browser.storage.sync.set({
                 todo: todos
-            }, () => {
+            }).then(() => {
                 Toast.success(`Add todo [${todo}]`, 'TodoList', { timeOut: 1000 });
-                resolve(`${command.orkey} `);
+
+                return `${command.orkey} `;
             });
         });
+    }).catch(() => {
+        Toast.warning('Storage is full, can not be added!');
+
+        return Promise.reject();
     });
 }
 
-function getTodos(callback) {
-    chrome.storage.sync.get('todo', function (results) {
-        const todos = results.todo;
-
-        callback(todos);
-    });
+function getTodos() {
+    return browser.storage.sync.get(STORAGE.TODO).then(results => results.todo);
 }
 
 function dataFormat(rawList) {
@@ -121,7 +122,7 @@ function dataFormat(rawList) {
     });
 }
 function showTodos() {
-    getTodos(todos => {
+    getTodos().then(todos => {
         this.showItemList(dataFormat(todos || []));
     });
 }
