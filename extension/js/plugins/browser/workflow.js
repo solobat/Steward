@@ -4,6 +4,7 @@
  * @email solopea@gmail.com
  */
 import util from '../../common/util'
+import _ from 'underscore'
 
 const chrome = window.chrome;
 const version = 1;
@@ -39,7 +40,9 @@ const dataFormat = (item, index) => {
     return {
         key: 'workflow',
         id: index,
+        wid: item.id,
         icon,
+        times: item.times || 0,
         title: item.title,
         desc: item.desc,
         content: item.content
@@ -47,13 +50,19 @@ const dataFormat = (item, index) => {
 };
 
 function onInput(query) {
-    return getWorkflows(query).then(list => {
-        return list.map(dataFormat);
+    return getWorkflows(query).then((list = []) => {
+        return _.sortBy(list.map(dataFormat), 'times').reverse();
     });
 }
 
 function onEnter(item) {
-    console.log(item);
+    chrome.runtime.sendMessage({
+        action: 'updateWorkflow',
+        data: {
+            id: item.wid,
+            times: item.times + 1
+        }
+    });
 }
 
 export default {

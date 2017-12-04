@@ -328,6 +328,7 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
 
     if (item && item.key === 'workflow') {
         execWorkflow(item);
+        Reflect.apply(plugin.onEnter, box, [item, box.command, box.query, box.shiftKey, dataList]);
     } else {
         let partial = item;
 
