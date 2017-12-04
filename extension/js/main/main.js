@@ -194,7 +194,7 @@ function handleEnterResult(result) {
                     }, delay);
                 }
             }
-        });
+        }).catch(() => {});
     } else {
         cmdbox.trigger('shouldCloseBox');
     }
