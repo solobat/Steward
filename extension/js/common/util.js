@@ -176,7 +176,7 @@ function getBytesInUse(key) {
 
 function isStorageSafe(key) {
     if (!key) {
-        return Promise.reject();
+        return Promise.reject('Storage is full, can not be added!');
     } else {
         return getBytesInUse(key).then(size => {
             const safetyFactor = 0.85;
