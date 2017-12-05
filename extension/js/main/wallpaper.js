@@ -3,9 +3,9 @@ import $ from 'jquery'
 import CONST from '../constant'
 import * as api from '../api/index'
 import * as date from '../utils/date'
-import _ from 'underscore'
 import storage from '../utils/storage'
 import Toast from 'toastr'
+import { saveWallpaperLink } from '../helper/wallpaper'
 
 const $body = $('body');
 
@@ -32,26 +32,6 @@ function updateWallpaper(url, save, isNew) {
     $body.css({
         'background': `url(${url}) no-repeat center center fixed`,
         'background-size': 'cover'
-    });
-}
-
-function saveWallpaperLink() {
-    storage.sync.get(CONST.STORAGE.WALLPAPERS, []).then(data => {
-        let wallpapers = data;
-
-        if (curUrl) {
-            wallpapers.push(curUrl);
-            wallpapers = _.uniq(wallpapers);
-        }
-
-        console.log(wallpapers);
-
-        return {
-            [CONST.STORAGE.WALLPAPERS]: wallpapers
-        };
-    }).then(newResults => storage.sync.set(newResults)).then(() => {
-        Toast.success('save successfully');
-        $saveBtn.hide();
     });
 }
 
@@ -105,7 +85,12 @@ function bindEvents() {
     });
 
     $saveBtn.on('click', function() {
-        saveWallpaperLink();
+        saveWallpaperLink(curUrl).then(() => {
+            Toast.success('save successfully');
+            $saveBtn.hide();
+        }).catch(msg => {
+            Toast.warning(msg);
+        });
         _gaq.push(['_trackEvent', 'wallpaper', 'click', 'save']);
     });
 

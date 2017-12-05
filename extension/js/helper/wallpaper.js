@@ -1,5 +1,6 @@
 import STORAGE from '../constant/storage'
 import browser from 'webextension-polyfill'
+import util from '../common/util'
 import _ from 'underscore'
 
 export function initBgImg() {
@@ -11,23 +12,25 @@ export function initBgImg() {
 }
 
 export function saveWallpaperLink(url) {
-    return browser.storage.sync.get(STORAGE.WALLPAPERS).then(resp => {
-        let wallpapers = resp[STORAGE.WALLPAPERS] || [];
+    return util.isStorageSafe(STORAGE.WALLPAPERS).then(() => {
+        return browser.storage.sync.get(STORAGE.WALLPAPERS).then(resp => {
+            let wallpapers = resp[STORAGE.WALLPAPERS] || [];
 
-        if (url) {
-            if (wallpapers.indexOf(url) === -1) {
-                wallpapers.push(url);
-                wallpapers = _.uniq(wallpapers);
+            if (url) {
+                if (wallpapers.indexOf(url) === -1) {
+                    wallpapers.push(url);
+                    wallpapers = _.uniq(wallpapers);
 
-                return {
-                    [STORAGE.WALLPAPERS]: wallpapers
-                };
+                    return {
+                        [STORAGE.WALLPAPERS]: wallpapers
+                    };
+                } else {
+                    return Promise.reject('Duplicate wallpaper!');
+                }
             } else {
-                return Promise.reject('Duplicate wallpaper!');
+                return Promise.reject('Url is empty!');
             }
-        } else {
-            return Promise.reject('Url is empty!');
-        }
-    })
-    .then(newResults => browser.storage.sync.set(newResults));
+        })
+        .then(newResults => browser.storage.sync.set(newResults));
+    });
 }
