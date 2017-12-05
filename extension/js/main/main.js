@@ -327,8 +327,9 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
     }
 
     if (item && item.key === 'workflow') {
-        execWorkflow(item);
-        Reflect.apply(plugin.onEnter, box, [item, box.command, box.query, box.shiftKey, dataList]);
+        execWorkflow(item).then(() => {
+            Reflect.apply(plugin.onEnter, box, [item, box.command, box.query, box.shiftKey, dataList]);
+        });
     } else {
         let partial = item;
 
@@ -444,10 +445,12 @@ function execWorkflow(item) {
             });
         });
 
-        task.then(() => {
+        return task.then(() => {
             Toast.success(window.slogs.join('<br>'));
             window.slogs = [];
         });
+    } else {
+        return Promise.reject();
     }
 }
 

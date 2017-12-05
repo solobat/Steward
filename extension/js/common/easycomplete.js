@@ -121,6 +121,7 @@ EasyComplete.prototype = {
         });
 
         $(document).on('click', '.ec-item', function (event) {
+            event.preventDefault();
             that.select($(this).data('index'), event);
         });
     },
@@ -137,7 +138,6 @@ EasyComplete.prototype = {
         if (index >= 0 && index <= itemNum - 1) {
             this.selectItemByIndex(index);
             this.exec(event);
-            this.refresh();
         }
     },
 
