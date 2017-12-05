@@ -5,6 +5,7 @@
  */
 
 import $ from 'jquery'
+import browser from 'webextension-polyfill'
 import Auth from '../../common/auth'
 import conf from '../../conf/pocket_conf'
 import util from '../../common/util'
@@ -57,10 +58,33 @@ function onInput(queryString) {
         return;
     }
 
+    if (!queryString) {
+        getCachedList().then(resp => {
+            if (resp.pocket_list) {
+                this.showItemList(resp.pocket_list);
+            }
+        });
+    }
+
     return new Promise(resolve => {
         query(queryString, function (data) {
-            resolve(dataFormat(data));
+            const list = dataFormat(data);
+
+            resolve(list);
+            if (!queryString) {
+                cacheList(list);
+            }
         });
+    });
+}
+
+function getCachedList() {
+    return browser.storage.local.get('pocket_list');
+}
+
+function cacheList(pocket_list) {
+    return browser.storage.local.set({
+        pocket_list
     });
 }
 
@@ -70,7 +94,8 @@ function query(str, callback) {
     }
     const params = {
         consumer_key: auth.consumer_key,
-        access_token: auth.get(auth.accessTokenName)
+        access_token: auth.get(auth.accessTokenName),
+        count: 20
     };
 
     if (str) {
