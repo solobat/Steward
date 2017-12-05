@@ -264,7 +264,10 @@ function handleInit () {
         const { cacheLastCmd, defaultPlugin, customCmd } = config.general;
         let cmd;
 
-        if (cacheLastCmd) {
+        if (util.shouldSupportMe()) {
+            cmd = 'up ';
+            applyCmd(cmd);
+        } else if (cacheLastCmd) {
             cmd = storage.h5.get(CONST.STORAGE.LAST_CMD) || 'site ';
             applyCmd(cmd);
         } else if (defaultPlugin) {

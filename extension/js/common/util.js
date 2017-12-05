@@ -191,6 +191,18 @@ function isStorageSafe(key) {
     }
 }
 
+function shouldSupportMe() {
+    const nums = [6, 66, 233, 666];
+    const random = Math.floor(Math.random() * 999);
+    console.log(random);
+
+    if (nums.indexOf(random) !== -1) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 export default {
     matchText,
     isMac,
@@ -206,5 +218,6 @@ export default {
     batchExecutionIfNeeded,
     tabCreateExecs,
     getDocumentURL,
-    isStorageSafe
+    isStorageSafe,
+    shouldSupportMe
 };
