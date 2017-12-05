@@ -2,6 +2,12 @@
 const wordcardUrl = 'https://chrome.google.com/webstore/detail/oegblnjiajbfeegijlnblepdodmnddbk';
 const langZh = [
     {
+        version: 'v3.1.9',
+        detail: `
+            修复 workflow 的 bug。 
+        `
+    },
+    {
         version: 'v3.1.8',
         detail: `
             插件图标更换；<br>
@@ -227,6 +233,12 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.1.9',
+        detail: `
+            fix bug of workflow. 
+        `
+    },
     {
         version: 'v3.1.8',
         detail: `
