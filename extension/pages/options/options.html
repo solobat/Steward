@@ -225,6 +225,11 @@
                         <div class="appearance-item-panel bg-black">
                             <template v-if="curApprItem">
                                 <div class="wallpapers-container" v-if="curApprItem.name === 'wallpapers'">
+                                    <div class="wallpaper-box">
+                                        <div class="wallpaper-add-btn" @click="handleAddWallpaperClick">
+                                            <img src="/img/plus.png" alt="">
+                                        </div>
+                                    </div>
                                     <div v-for="wallpaper in wallpapers" @click="chooseWallpaper(wallpaper)"
                                         :class="['wallpaper-box', {'is-selected': selectedWallpaper === wallpaper}]">
                                         <img class="wallpaper-img" :src="wallpaper" alt="">

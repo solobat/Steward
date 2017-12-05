@@ -13,6 +13,7 @@ import { aboutus } from '../../js/info/about'
 import { helpInfo } from '../../js/info/help'
 import CONST from '../../js/constant'
 import { restoreConfig } from '../../js/common/config'
+import { saveWallpaperLink } from '../../js/helper/wallpaper'
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -299,6 +300,29 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                         this.wallpapers = wallpapers;
                     });
                 }
+            },
+
+            handleAddWallpaperClick() {
+                this.$prompt('Please enter your wallpaper link', 'prompt', {
+                    confirmButtonText: 'Confirm',
+                    cancelButtonText: 'Cancel',
+                    inputPattern: /(https?:\/\/.*\.(?:png|jpg))/i,
+                    inputErrorMessage: 'Image format is incorrect'
+                }).then(({ value }) => {
+                    console.log(value);
+                    this.saveWallpaper(value);
+                }).catch(() => {
+                    console.log('user cancel');
+                });
+            },
+
+            saveWallpaper(url) {
+                saveWallpaperLink(url).then(() => {
+                    this.wallpapers.push(url);
+                    this.$message.success('Add new wallpaper successfully!');
+                }).catch(msg => {
+                    this.$message.warning(msg);
+                });
             },
 
             chooseWallpaper: function(wallpaper) {
