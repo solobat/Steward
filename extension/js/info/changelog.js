@@ -2,6 +2,14 @@
 const wordcardUrl = 'https://chrome.google.com/webstore/detail/oegblnjiajbfeegijlnblepdodmnddbk';
 const langZh = [
     {
+        version: 'v3.1.10',
+        detail: `
+            使用 random 命令时自动切换到 random 模式；<br> 
+            修复 workflow 的 bug;<br>
+            优化 New Tab 使用体验，避免误操作。
+        `
+    },
+    {
         version: 'v3.1.9',
         detail: `
             修复 workflow 的 bug。 
@@ -233,6 +241,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.1.10',
+        detail: `
+            auto switch to random mode when using random command;<br>
+            fix bug of workflow;<br>
+            optimize new tab.
+        `
+    },
     {
         version: 'v3.1.9',
         detail: `
