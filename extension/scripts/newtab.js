@@ -23,4 +23,8 @@
     if (optionalSize.indexOf(boxSize) !== -1) {
         document.documentElement.className += ` size-${boxSize}`
     }
+
+    window.addEventListener('beforeunload', function () {
+        document.querySelector('#main').style.display = 'none';
+    });
 })();
