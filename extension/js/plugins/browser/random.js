@@ -29,8 +29,22 @@ const defaultResult = [{
     desc: subtitle
 }];
 
+function switch2randomMode() {
+    chrome.runtime.sendMessage({
+        action: 'saveConfig',
+        data: {
+            general: {
+                cacheLastCmd: false,
+                defaultPlugin: 'Random'
+            }
+        }
+    });
+}
+
 function onInput(query) {
     if (!query) {
+        switch2randomMode();
+
         return randomStorage.getItems().then((resp = []) => {
             return dataFormat(resp);
         });
