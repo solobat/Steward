@@ -319,6 +319,7 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
     }
 
     let plugin;
+    const command = box.command;
 
     if (box.command) {
         plugin = box.command.plugin
@@ -328,7 +329,8 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
 
     if (item && item.key === 'workflow') {
         execWorkflow(item).then(() => {
-            Reflect.apply(plugin.onEnter, box, [item, box.command, box.query, box.shiftKey, dataList]);
+            box.command = command;
+            Reflect.apply(plugin.onEnter, box, [item, command, box.query, box.shiftKey, dataList]);
         });
     } else {
         let partial = item;
