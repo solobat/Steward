@@ -20,6 +20,11 @@ const aboutLinks = {
             url: 'http://oksteward.com/steward-document-zh/'
         },
         {
+            title: '攻略',
+            desc: '看了攻略，才能更好的了解 Steward 的精髓所在',
+            url: 'http://oksteward.com/steward-document-zh/%E6%94%BB%E7%95%A5.html'
+        },
+        {
             title: '项目',
             desc: 'Steward 是 Github 上的开源项目',
             url: 'https://github.com/solobat/Steward'
@@ -71,6 +76,18 @@ const upLinks = {
             desc: 'Stars 是程序员的通行证',
             icon: chrome.extension.getURL('img/github.png'),
             url: 'https://github.com/solobat/Steward'
+        },
+        {
+            title: '其它作品：单词小卡片扩展',
+            desc: 'tomasy 的作品，必是灵感之作 - 网页查词、例句收集、单词背诵、与Steward 结合以及导出',
+            icon: chrome.extension.getURL('img/wordcard.png'),
+            url: 'https://chrome.google.com/webstore/detail/oegblnjiajbfeegijlnblepdodmnddbk'
+        },
+        {
+            title: '其它作品：单词小卡片微信小程序',
+            desc: 'tomasy 的作品，必是灵感之作 - 随心制作小卡片，云端保存，分享+1，传递+1',
+            icon: chrome.extension.getURL('img/wxcard.jpg'),
+            url: 'https://minapp.com/miniapp/4333/'
         },
         {
             title: '点赞评论: 少数派文章',
