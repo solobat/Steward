@@ -4,6 +4,7 @@
  * @mail solopea@gmail.com
  */
 
+import util from '../../common/util'
 import browser from 'webextension-polyfill'
 import Toast from 'toastr'
 
@@ -99,6 +100,7 @@ function getSearchEngines() {
                 key: 'plugin',
                 icon: info.icon,
                 title: engine,
+                url: info.url,
                 desc
             };
         });
@@ -149,12 +151,15 @@ function addNewEngine(str, command) {
 }
 
 function deleteEngine(item) {
-    Reflect.deleteProperty(searchEngines, item.title);
+    if (window.confirm('This operation will permanently delete the search engine, whether to continue?')) {
+        Reflect.deleteProperty(searchEngines, item.title);
+        util.copyToClipboard(`${item.title}|${item.url}|${item.icon}`, true);
 
-    return browser.storage.sync.set({ engines: searchEngines }).then(() => {
-        Toast.success('Delete search engine success');
-        return '';
-    });
+        return browser.storage.sync.set({ engines: searchEngines }).then(() => {
+            Toast.success('Delete search engine success');
+            return '';
+        });
+    }
 }
 
 function handleEnginesUpdate(item, query, command) {
