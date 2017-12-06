@@ -189,10 +189,41 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 _gaq.push(['_trackEvent', 'options_plugins', 'click', plugin.name]);
             },
 
-            handlePluginsSubmit: function() {
-                this.saveConfig();
+            checkTriggerRepetition() {
+                const curName = this.currentPlugin.name;
+                const allplugins = this.config.plugins;
+                const triggers = allplugins[curName].commands.map(item => item.key);
+                const info = [];
 
-                _gaq.push(['_trackEvent', 'options_plugins', 'save', this.currentPlugin.name]);
+                for (const name in allplugins) {
+                    const plugin = allplugins[name];
+
+                    if (plugin.commands && name !== curName) {
+                        plugin.commands.forEach(({ key }) => {
+                            if (triggers.indexOf(key) !== -1) {
+                                info.push({
+                                    name,
+                                    trigger: key
+                                });
+                            }
+                        });
+                    }
+                }
+
+                return info;
+            },
+
+            handlePluginsSubmit: function() {
+                const checkInfo = this.checkTriggerRepetition();
+                const tipsFn = ({ trigger, name }) => `「${trigger}」-- plugin 「${name}」`;
+
+                if (checkInfo.length > 0) {
+                    this.$message.warning(`trigger conflict: ${checkInfo.map(tipsFn).join('; ')}`);
+                } else {
+                    this.saveConfig();
+
+                    _gaq.push(['_trackEvent', 'options_plugins', 'save', this.currentPlugin.name]);
+                }
             },
 
             handleNewWorkflowClick() {
