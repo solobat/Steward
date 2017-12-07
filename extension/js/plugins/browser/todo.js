@@ -38,10 +38,14 @@ function handleDoneInput(query, command) {
     return getDones().then((dones = []) => {
         return dones.filter(todo => util.matchText(query, todo.title));
     }).then(todos => {
-        if (todos && todos.length) {
+        if (query) {
             return dataFormat(todos || [], command);
         } else {
-            return util.getDefaultResult(command);
+            if (todos && todos.length) {
+                return dataFormat(todos, command);
+            } else {
+                return util.getDefaultResult(command);
+            }
         }
     });
 }
@@ -65,19 +69,21 @@ function handleTodoEnter(item, command, query) {
 }
 
 function handleDoneEnter(item, command, query, shiftKey) {
-    const todo = {
-        id: item.id,
-        title: item.title
-    };
+    if (item) {
+        const todo = {
+            id: item.id,
+            title: item.title
+        };
 
-    if (shiftKey) {
-        return deleteDone(todo).then(() => {
-            Toast.success(`Delete ${todo.title} successfully`);
+        if (shiftKey) {
+            return deleteDone(todo).then(() => {
+                Toast.success(`Delete ${todo.title} successfully`);
 
-            return '';
-        });
-    } else {
-        return deleteDone(todo).then(addTodo);
+                return '';
+            });
+        } else {
+            return deleteDone(todo).then(addTodo);
+        }
     }
 }
 
