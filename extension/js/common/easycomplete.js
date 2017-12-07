@@ -124,6 +124,11 @@ EasyComplete.prototype = {
             event.preventDefault();
             that.select($(this).data('index'), event);
         });
+
+        $(document).on('mouseover', '.ec-item', function(event) {
+            event.preventDefault();
+            that.selectItemByIndex($(this).data('index'));
+        });
     },
 
     render: function (str) {
