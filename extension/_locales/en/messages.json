@@ -233,6 +233,12 @@
     "openurl_subtitle": {
         "message": "Open the typed url"
     },
+    "wallpaper_title": {
+        "message": "New Tab operations"
+    },
+    "wallpaper_subtitle": {
+        "message": "If query empty，you can save or refresh; If no empty, press Enter will add the query as a wallpaper link into your library"
+    },
     "search_title": {
         "message": "Search for"
     },

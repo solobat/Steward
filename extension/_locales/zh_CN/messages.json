@@ -233,6 +233,12 @@
     "openurl_subtitle": {
         "message": "打开输入的网址"
     },
+    "wallpaper_title": {
+        "message": "New Tab 壁纸快捷操作"
+    },
+    "wallpaper_subtitle": {
+        "message": "query 为空时，可以保存、刷新，不为空时可以将 query 作为新的壁纸添加到库中"
+    },
     "search_title": {
         "message": "搜索指定内容"
     },
