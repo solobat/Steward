@@ -288,67 +288,71 @@ function handleInit () {
     }
 }
 
-function execCommand(box, dataList = [], item, fromWorkflow) {
-    if (!box.cmd) {
-        const ITEM_TYPE = CONST.BASE.ITEM_TYPE;
-        const type = item.key;
+function handleNormalItem(box, dataList, item) {
+    const ITEM_TYPE = CONST.BASE.ITEM_TYPE;
+    const type = item.key;
 
-        if (type === ITEM_TYPE.PLUGINS) {
-            const key = item.id;
+    if (type === ITEM_TYPE.PLUGINS) {
+        const key = item.id;
 
-            box.render(`${key} `);
-        } else if (type === ITEM_TYPE.URL) {
-            const url = item.url;
+        box.render(`${key} `);
+    } else if (type === ITEM_TYPE.URL) {
+        const url = item.url;
 
-            chrome.tabs.create({
-                url
-            });
-        } else if (type === ITEM_TYPE.COPY) {
-            util.copyToClipboard(item.url, true);
-        } else if (type === ITEM_TYPE.ACTION) {
-            box.trigger('action', {
-                action: 'command',
-                info: item
-            });
-        }
-
-        _gaq.push(['_trackEvent', 'exec', 'enter', type]);
-
-        if (type !== ITEM_TYPE.PLUGINS) {
-            box.trigger('shouldCloseBox');
-        }
-
-        return;
-    }
-
-    let plugin;
-    const command = box.command;
-
-    if (box.command) {
-        plugin = box.command.plugin
-    } else if (plugin4empty) {
-        plugin = plugin4empty;
-    }
-
-    if (item && item.key === 'workflow') {
-        execWorkflow(item).then(() => {
-            box.command = command;
-            Reflect.apply(plugin.onEnter, box, [item, command, box.query, box.shiftKey, dataList]);
+        chrome.tabs.create({
+            url
         });
-    } else {
-        let partial = item;
+    } else if (type === ITEM_TYPE.COPY) {
+        util.copyToClipboard(item.url, true);
+    } else if (type === ITEM_TYPE.ACTION) {
+        box.trigger('action', {
+            action: 'command',
+            info: item
+        });
+    }
 
-        if (box.command && !box.command.allowBatch && item instanceof Array) {
-            partial = item[0];
+    _gaq.push(['_trackEvent', 'exec', 'enter', type]);
+
+    if (type !== ITEM_TYPE.PLUGINS) {
+        box.trigger('shouldCloseBox');
+    }
+}
+
+function execCommand(box, dataList = [], item, fromWorkflow) {
+    if (item && item.isDefault) {
+        return;
+    } else if (!box.cmd) {
+        return handleNormalItem(box, dataList, item);
+    } else {
+        let plugin;
+        const command = box.command;
+
+        if (box.command) {
+            plugin = box.command.plugin
+        } else if (plugin4empty) {
+            plugin = plugin4empty;
         }
 
-        const result = Reflect.apply(plugin.onEnter, box, [partial, box.command, box.query, box.shiftKey, dataList]);
-
-        if (!fromWorkflow) {
-            handleEnterResult(result);
-            _gaq.push(['_trackEvent', 'exec', 'enter', plugin.name]);
+        if (item && item.key === 'workflow') {
+            execWorkflow(item).then(() => {
+                box.command = command;
+                Reflect.apply(plugin.onEnter, box, [item, command, box.query, box.shiftKey, dataList]);
+            });
         } else {
-            return result;
+            let partial = item;
+
+            if (box.command && !box.command.allowBatch && item instanceof Array) {
+                partial = item[0];
+            }
+
+            const result = Reflect.apply(plugin.onEnter, box, [partial, box.command, box.query, box.shiftKey, dataList]);
+
+            if (!fromWorkflow) {
+                handleEnterResult(result);
+                _gaq.push(['_trackEvent', 'exec', 'enter', plugin.name]);
+            } else {
+                return result;
+            }
         }
     }
 }

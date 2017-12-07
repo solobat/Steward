@@ -20,19 +20,15 @@ function getPinyin(name) {
 function matchText(key, str) {
     const text = getPinyin(str.toLowerCase());
 
-    if (!key) {
+    if (!key || str.indexOf(key) > -1 || text.indexOf(key) > -1) {
         return true;
+    } else {
+        const plainKey = key.replace(/\s/g, '');
+        const keys = plainKey.split('').join('.*');
+        const reg = new RegExp(`.*${keys}.*`);
+
+        return reg.test(text);
     }
-
-    if (text.indexOf(key) > -1) {
-        return true;
-    }
-
-    const plainKey = key.replace(/\s/g, '');
-    const keys = plainKey.split('').join('.*');
-    const reg = new RegExp(`.*${keys}.*`);
-
-    return reg.test(text);
 }
 
 const isMac = navigator.platform === 'MacIntel';
@@ -69,6 +65,15 @@ function genCommands(name, icon, items, type) {
             editable: editable !== false
         };
     });
+}
+
+function getDefaultResult(command) {
+    return [{
+        isDefault: true,
+        icon: command.icon,
+        title: command.title,
+        desc: command.subtitle
+    }];
 }
 
 function copyToClipboard(text, showMsg) {
@@ -213,6 +218,7 @@ export default {
     guid,
     simpleCommand,
     genCommands,
+    getDefaultResult,
     copyToClipboard,
     getMatches,
     getParameterByName,
