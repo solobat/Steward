@@ -24,7 +24,7 @@ const commands = [{
     icon,
     editable: true
 }];
-const actions = [
+let actions = [
     {
         icon: chrome.extension.getURL('img/save-red.png'),
         title: 'Save',
@@ -44,9 +44,18 @@ const tips = [{
     desc: 'Press Enter to add the link to your collections'
 }];
 
+function setup() {
+    $('body').on('wallpaper:refreshed', () => {
+        console.log('wallpaper:refreshed');
+        actions = actions.filter(action => $(action.selector).is(':visible'));
+    });
+}
+
+setup();
+
 function onInput(query) {
     if (!query && window.stewardCache.mode === MODE.NEWTAB) {
-        return Promise.resolve(actions.filter(action => $(action.selector).is(':visible')));
+        return Promise.resolve(actions);
     } else {
         return Promise.resolve(tips);
     }

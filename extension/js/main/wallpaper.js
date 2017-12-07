@@ -6,6 +6,7 @@ import * as date from '../utils/date'
 import storage from '../utils/storage'
 import Toast from 'toastr'
 import { saveWallpaperLink } from '../helper/wallpaper'
+import browser from 'webextension-polyfill'
 
 const $body = $('body');
 
@@ -33,6 +34,7 @@ function updateWallpaper(url, save, isNew) {
         'background': `url(${url}) no-repeat center center fixed`,
         'background-size': 'cover'
     });
+    $body.trigger('wallpaper:refreshed');
 }
 
 
@@ -119,8 +121,6 @@ function bindEvents() {
     });
 }
 
-
-
 export function init() {
     // restore
     const lastDate = new Date(window.localStorage.getItem(CONST.STORAGE.LASTDATE) || Number(new Date()));
@@ -135,7 +135,12 @@ export function init() {
     } else if (!defaultWallpaper) {
         refreshWallpaper();
     } else {
-        updateWallpaper(defaultWallpaper, false, true);
+        browser.storage.sync.get(CONST.STORAGE.WALLPAPERS).then(resp => {
+            const list = resp[CONST.STORAGE.WALLPAPERS] || [];
+            const isNew = list.indexOf(defaultWallpaper) === -1;
+
+            updateWallpaper(defaultWallpaper, false, isNew);
+        });
     }
 
     bindEvents();
