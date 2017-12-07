@@ -370,5 +370,8 @@
     },
     "wordcard_subtitle": {
         "message": "Need Wordcard extension is enabled"
+    },
+    "STORAGE_WARNING": {
+        "message": "Storage is full, can not be added!"
     }
 }

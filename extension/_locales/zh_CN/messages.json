@@ -376,5 +376,8 @@
     },
     "wordcard_subtitle": {
         "message": "需要单词小卡片扩展处于启用状态，且版本 >= v2.2.1"
+    },
+    "STORAGE_WARNING": {
+        "message": "存储空间不足，不能继续添加了！"
     }
 }
