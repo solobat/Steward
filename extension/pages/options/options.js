@@ -337,7 +337,7 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 this.$prompt('Please enter your wallpaper link', 'prompt', {
                     confirmButtonText: 'Confirm',
                     cancelButtonText: 'Cancel',
-                    inputPattern: /(https?:\/\/.*\.(?:png|jpg))/i,
+                    inputPattern: /(https?:\/\/.*\.(?:png|jpg|jpeg))/i,
                     inputErrorMessage: 'Image format is incorrect'
                 }).then(({ value }) => {
                     console.log(value);

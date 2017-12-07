@@ -75,7 +75,7 @@ function handleWallpaperAction(action) {
 }
 
 function saveWallpaper(link, command) {
-    const reg = /(https?:\/\/.*\.(?:png|jpg))/i;
+    const reg = /(https?:\/\/.*\.(?:png|jpg|jpeg))/i;
 
     if (link.match(reg)) {
         return saveWallpaperLink(link).then(() => `${command.key} `).catch(msg => {
