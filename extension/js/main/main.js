@@ -319,7 +319,7 @@ function handleNormalItem(box, dataList, item) {
 }
 
 function execCommand(box, dataList = [], item, fromWorkflow) {
-    if (item && item.isDefault) {
+    if (item && item.isDefault && !box.query) {
         return;
     } else if (!box.cmd) {
         return handleNormalItem(box, dataList, item);
