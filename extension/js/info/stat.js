@@ -3,8 +3,8 @@
 // The pace of development is not affected
 // comment: steward + alfred + ssp
 export default {
-    '3.1.12': {
-        star: 136
+    '3.2': {
+        star: 137
     },
     '3.1.11': {
         star: 133
