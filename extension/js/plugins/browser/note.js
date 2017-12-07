@@ -43,13 +43,7 @@ function onInput(key, command) {
             return handleTagQuery(key);
         }
     } else if (orkey === 'note') {
-        return [
-            {
-                icon: icon,
-                title,
-                desc: subtitle
-            }
-        ];
+        return util.getDefaultResult(command);
     } else {
         return getNotes().then(notes => dataFormat(notes, command));
     }
