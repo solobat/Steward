@@ -12,13 +12,12 @@ const keys = [{ key: 'bk', allowBatch: true }, { key: 'bk8', allowBatch: true }]
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/urlblock.png');
 const title = chrome.i18n.getMessage(`${name}_title`);
-const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const BLOCK_EXPIRED = 8 * 60 * 60 * 1000;
 const commands = util.genCommands(name, icon, keys, type);
 
 function onInput(key, command, inContent) {
     if (!key) {
-        return Reflect.apply(showBlacklist, this, [command.orkey]);
+        return Reflect.apply(showBlacklist, this, [command]);
     } else {
         if (key === '/' && inContent) {
             this.render(`${command.key} ${window.parentHost}`);
@@ -138,7 +137,9 @@ function dataFormat(rawList, cmd) {
     });
 }
 
-function showBlacklist(cmd) {
+function showBlacklist(command) {
+    const cmd = command.orkey;
+
     return new Promise(resolve => {
         getBlacklist(function (blacklist) {
             let data = [];
@@ -147,7 +148,12 @@ function showBlacklist(cmd) {
                     return cmd === (item.type || 'bk8');
                 }) || [];
             }
-            resolve(dataFormat(data, cmd));
+
+            if (data && data.length) {
+                resolve(dataFormat(data, cmd));
+            } else {
+                resolve(util.getDefaultResult(command));
+            }
         });
     });
 }
