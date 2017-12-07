@@ -235,6 +235,8 @@ function createItem (index, item) {
         'ec-item-title',
         item.isWarn ? 'ec-item-warn' : ''
     ].join(' ');
+    const enterIconUrl = mode === CONST.BASE.MODE.NEWTAB ? chrome.extension.getURL('img/enter.png') :
+        chrome.extension.getURL('img/enter-white.png');
     const descStr = item.desc ? `<span class="ec-item-desc ${item.lazyDesc ? 'lazy' : ''}">${item.desc}</span>` : ''
 
     const html = `
@@ -243,7 +245,8 @@ function createItem (index, item) {
             <div class="${contentClass}">
                 <span class="${titleClass}">${item.title}</span>
                 ${descStr}
-            </div> 
+            </div>
+            <img class="ec-item-icon icon-enter" src="${enterIconUrl}">
         </div>
         `;
 
