@@ -20,11 +20,16 @@ const commands = [{
     title,
     subtitle,
     icon,
+    allowBatch: true,
     editable: true
 }];
 
 function setEnabled(id, enabled) {
-    chrome.management.setEnabled(id, enabled, function () {});
+    return new Promise(resolve => {
+        chrome.management.setEnabled(id, enabled, function () {
+            resolve('done');
+        });
+    });
 }
 
 function getExtensions(query, enabled, callback) {
@@ -56,106 +61,52 @@ function dataFormat(rawList) {
 function onInput(query) {
     return new Promise(resolve => {
         getExtensions(query.toLowerCase(), true, function (matchExts) {
-            sortExtensions(matchExts, query, function (data) {
-                resolve(dataFormat(data));
-            });
+            resolve(dataFormat(matchExts));
         });
     });
 }
 
-function onEnter(item) {
-    if (item && item.id) {
-        setEnabled(item.id, false);
-        this.refresh();
+const disableExecs = [
+    item => {
+        const result = setEnabled(item.id, false);
+
         window.slogs.push(`Disable: ${item.title}`);
-        addRecord('ext', this.query, item.id);
+
+        return result;
+    },
+    item => {
+        const result = setEnabled(item.id, false);
+
+        window.slogs.push(`Disable: ${item.title}`);
+
+        return result;
     }
+];
+
+const extId = chrome.runtime.id;
+
+function getSortedList(list) {
+    const extIndex = list.findIndex(item => item.id === extId);
+    const ext = list.splice(extIndex, 1);
+
+    list.push(ext[0]);
+
+    return list;
 }
 
-function sortExtFn(a, b) {
-    return a.num === b.num ? b.update - a.upate : b.num - a.num;
-}
+function onEnter(item, command, query, shiftKey, list) {
+    let items;
 
-function sortExtensions(data, query, callback) {
-    let matchExts = data;
+    if (item instanceof Array) {
+        items = getSortedList(item);
+    } else {
+        items = item;
+    }
 
-    chrome.storage.sync.get('ext', function (data) {
-        const sExts = data.ext;
-
-        if (!sExts) {
-            callback(matchExts);
-            return;
-        }
-
-        // sExts: {id: {id: '', querys: {'key': {num: 0, update: ''}}}}
-        matchExts = matchExts.map(function (extObj) {
-            const id = extObj.id;
-
-            if (!sExts[id] || !sExts[id].querys[query]) {
-                extObj.num = 0;
-                extObj.upate = 0;
-
-                return extObj;
-            }
-
-            extObj.num = sExts[id].querys[query].num;
-            extObj.update = sExts[id].querys[query].update;
-
-            return extObj;
-        });
-
-        matchExts.sort(sortExtFn);
-
-        callback(matchExts);
+    const tasks = util.batchExecutionIfNeeded(shiftKey, disableExecs, [list, items]);
+    return Promise.all(tasks).then(() => {
+        return '';
     });
-}
-
-function addRecord(recordKey, query, id) {
-    chrome.storage.sync.get(recordKey, function (data) {
-        // data = {ext: {}}
-        const extObj = data;
-        // info = {id: {}};
-        let info = extObj[recordKey];
-
-        if ($.isEmptyObject(extObj)) {
-            info = extObj[recordKey] = {};
-        }
-
-        let obj;
-
-        if (!info[id]) {
-            obj = info[id] = createObj4Storage(id, query);
-        } else {
-            obj = info[id];
-
-            if (obj.querys[query]) {
-                obj.querys[query].num += 1;
-            } else {
-                obj.querys[query] = {
-                    num: 1,
-                    update: Number(new Date())
-
-                };
-            }
-        }
-
-        chrome.storage.sync.set(extObj, function () {});
-    });
-}
-
-function createObj4Storage(id, query) {
-    const obj = {
-        id: id,
-        querys: {}
-    };
-
-    obj.querys[query] = {
-        num: 1,
-        update: Number(new Date())
-
-    };
-
-    return obj;
 }
 
 export default {
