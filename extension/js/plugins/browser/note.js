@@ -218,7 +218,7 @@ function saveNote(note) {
             });
         })
     }).catch(() => {
-        Toast.warning('Storage is full, can not be added!');
+        Toast.warning(chrome.i18n.getMessage('STORAGE_WARNING'));
 
         return Promise.reject();
     });
