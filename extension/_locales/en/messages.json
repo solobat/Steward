@@ -248,6 +248,18 @@
     "wallpaper_subtitle": {
         "message": "If query empty，you can save or refresh; If no empty, press Enter will add the query as a wallpaper link into your library"
     },
+    "wallpaper_action_save_title": {
+        "message": "Save"
+    },
+    "wallpaper_action_save_subtitle": {
+        "message": "Save current wallpaper to your collections"
+    },
+    "wallpaper_action_refresh_title": {
+        "message": "Refresh"
+    },
+    "wallpaper_action_refresh_subtitle": {
+        "message": "Refresh wallpaper from sources which include bing.com / collections / picsum.photos"
+    },
     "search_title": {
         "message": "Search for"
     },

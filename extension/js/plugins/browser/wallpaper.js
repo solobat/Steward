@@ -24,36 +24,45 @@ const commands = [{
     icon,
     editable: true
 }];
-let actions = [
+const allActions = [
     {
         icon: chrome.extension.getURL('img/save-red.png'),
-        title: 'Save',
-        desc: 'Save current wallpaper to your collections',
+        title: chrome.i18n.getMessage('wallpaper_action_save_title'),
+        desc: chrome.i18n.getMessage('wallpaper_action_save_subtitle'),
         selector: '#j-save-wplink'
     },
     {
         icon: chrome.extension.getURL('img/refresh-red.png'),
-        title: 'Refresh',
-        desc: 'Refresh wallpaper',
+        title: chrome.i18n.getMessage('wallpaper_action_refresh_title'),
+        desc: chrome.i18n.getMessage('wallpaper_action_refresh_subtitle'),
         selector: '#j-refresh-wp'
     }
 ];
+let actions = allActions;
 const tips = [{
     icon,
     title: 'Please enter a wallpaper link ending with jpg or png',
     desc: 'Press Enter to add the link to your collections'
 }];
 
+let that;
+
 function setup() {
     $('body').on('wallpaper:refreshed', () => {
         console.log('wallpaper:refreshed');
-        actions = actions.filter(action => $(action.selector).is(':visible'));
+        actions = allActions.filter(action => $(action.selector).is(':visible'));
+
+        if (that) {
+            that.showItemList(actions);
+        }
     });
 }
 
 setup();
 
 function onInput(query) {
+    that = this;
+
     if (!query && window.stewardCache.mode === MODE.NEWTAB) {
         return Promise.resolve(actions);
     } else {
