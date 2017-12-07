@@ -125,13 +125,17 @@ const wrapWithMaxNumIfNeeded = (field,
 
 const batchExecutionIfNeeded = (predicate, [exec4batch, exec], [list, item],
     maxOperandsNum = window.stewardCache.config.general.maxOperandsNum) => {
+    const results = [];
+
     if (predicate || item instanceof Array) {
         const num = predicate ? maxOperandsNum : item.length;
 
-        list.slice(0, num).forEach(exec4batch);
+        results.push(list.slice(0, num).forEach(exec4batch));
     } else {
-        exec(item);
+        results.push(exec(item));
     }
+
+    return results;
 }
 
 const tabCreateExecs = [
