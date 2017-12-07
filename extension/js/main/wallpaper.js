@@ -35,8 +35,18 @@ function updateWallpaper(url, save, isNew) {
     });
 }
 
-function randomBool() {
-    return Boolean(Math.round(Math.random()));
+
+function randomIndex() {
+    const sourceWeights = [1, 2, 2];
+    const list = [];
+
+    sourceWeights.forEach((weight, index) => {
+        for (let windex = 0; windex < weight; windex += 1) {
+            list.push(index);
+        }
+    });
+
+    return getRandomOne(list);
 }
 
 function wallpaperApiHandler(resp, isBing) {
@@ -61,17 +71,24 @@ export function refreshWallpaper(today) {
 
     Promise.all([
         api.bing[method](),
-        storage.sync.get(CONST.STORAGE.WALLPAPERS, [])
-    ]).then(([bing, cache]) => {
-        const isBing = randomBool();
+        storage.sync.get(CONST.STORAGE.WALLPAPERS, []),
+        api.picsum.getRandomImage()
+    ]).then(source => {
+        const index = randomIndex();
+        const [bing, cache, picsum] = source;
 
-        if (isBing || cache.length === 0) {
+        if (index === 2) {
+            const isNew = cache.indexOf(picsum) === -1;
+
+            updateWallpaper(picsum, true, isNew);
+            console.log('update from picsum');
+        } else if (index === 1 && source[index].length > 0) {
+            updateWallpaper(wallpaperApiHandler(getRandomOne(cache)), true, false);
+        } else {
             const wp = wallpaperApiHandler(bing, true);
             const isNew = cache.indexOf(wp) === -1;
 
             updateWallpaper(wp, true, isNew);
-        } else {
-            updateWallpaper(wallpaperApiHandler(getRandomOne(cache)), true, false);
         }
     }).catch(resp => {
         console.log(resp);
@@ -102,6 +119,8 @@ function bindEvents() {
     });
 }
 
+
+
 export function init() {
     // restore
     const lastDate = new Date(window.localStorage.getItem(CONST.STORAGE.LASTDATE) || Number(new Date()));
@@ -120,6 +139,8 @@ export function init() {
     }
 
     bindEvents();
+
+    api.picsum.refreshPicsumList();
 
     // set interval
     intervalTimer = setInterval(refreshWallpaper, CONST.NUMBER.WALLPAPER_INTERVAL);
