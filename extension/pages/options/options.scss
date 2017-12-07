@@ -67,7 +67,7 @@ a {
 }
 
 .bg-black {
-    background: #303030;
+    background: #333;
 }
 
 .plugin-item {
@@ -111,12 +111,23 @@ a {
     }
 }
 
+.plugin-editor-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 /* editor */
 .plugin-editor-header {
     display: flex;
-    background: #212121;
+    background: #333;
     height: 40px;
     padding: 12px;
+}
+
+.plugin-editor-config {
+    flex: 1;
+    background: rgb(230, 230, 230);
 }
 
 .plugin-editor-icon {

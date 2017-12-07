@@ -135,7 +135,7 @@
                                     </div>
                                 </div>
                                 <div class="plugin-editor-config" v-if="hasKeywordCommands">
-                                    <el-form style="margin: 20px;padding: 12px; background: #e6e6e6; min-height: 150px;" ref="form" :model="config.plugins" label-width="200px">
+                                    <el-form style="margin: 20px;padding: 12px; min-height: 150px;" ref="form" :model="config.plugins" label-width="200px">
                                         <el-form-item :label="command.title" v-for="(command, index) in currentPlugin.commands" v-if="command.type === 'keyword'" :key="index">
                                             <el-input type="text" style="width: 100px;"
                                                 :disabled="!command.editable"
@@ -183,7 +183,7 @@
                                     </div>
                                 </div>
                                 <div class="plugin-editor-config">
-                                    <el-form style="margin: 20px;padding: 12px; background: #e6e6e6; min-height: 150px;" ref="form" :model="currentWorkflow" label-width="200px">
+                                    <el-form style="margin: 20px;padding: 12px; min-height: 150px;" ref="form" :model="currentWorkflow" label-width="200px">
                                         <el-form-item label="Title">
                                             <el-input type="text" style="width: 300px;" v-model="currentWorkflow.title">
                                             </el-input>
