@@ -9,56 +9,98 @@ import Toast from 'toastr'
 import STORAGE from '../../constant/storage'
 import browser from 'webextension-polyfill'
 
-const version = 4;
+const version = 5;
 const name = 'todolist';
-const key = 'todo';
+const keys = [
+    { key: 'todo' },
+    { key: 'done', shiftKey: true }
+];
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/todo.png');
 const title = chrome.i18n.getMessage(`${name}_title`);
-const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
-const commands = [{
-    key,
-    type,
-    title,
-    subtitle,
-    icon,
-    editable: true
-}];
+const commands = util.genCommands(name, icon, keys, type);
 
-const defaultResult = [{
-    icon,
-    title,
-    desc: subtitle
-}];
-
-function onInput(query) {
+function handleTodoInput(query, command) {
     if (!query) {
         return getTodos().then(todos => {
-            return dataFormat(todos || []);
+            if (todos && todos.length) {
+                return dataFormat(todos || [], command);
+            } else {
+                return util.getDefaultResult(command);
+            }
         });
     } else {
-        return Promise.resolve(defaultResult);
+        return util.getDefaultResult(command);
     }
 }
 
-function onEnter(item, command, query) {
+function handleDoneInput(query, command) {
+    return getDones().then((dones = []) => {
+        return dones.filter(todo => util.matchText(query, todo.title));
+    }).then(todos => {
+        if (todos && todos.length) {
+            return dataFormat(todos || [], command);
+        } else {
+            return util.getDefaultResult(command);
+        }
+    });
+}
+
+function onInput(query, command) {
+    const orkey = command.orkey;
+
+    if (orkey === 'todo') {
+        return handleTodoInput(query, command);
+    } else if (orkey === 'done') {
+        return handleDoneInput(query, command);
+    }
+}
+
+function handleTodoEnter(item, command, query) {
     if (query) {
-        return Reflect.apply(addTodo, this, [this.query, command]);
+        return addTodo(query, command);
     } else {
-        return Reflect.apply(removeTodo, this, [item.id]);
+        return removeTodo({ id: item.id, title: item.title });
     }
 }
 
-function removeTodo(id) {
+function handleDoneEnter(item, command, query, shiftKey) {
+    const todo = {
+        id: item.id,
+        title: item.title
+    };
+
+    if (shiftKey) {
+        return deleteDone(todo).then(() => {
+            Toast.success(`Delete ${todo.title} successfully`);
+
+            return '';
+        });
+    } else {
+        return deleteDone(todo).then(addTodo);
+    }
+}
+
+function onEnter(item, command, query, shiftKey) {
+    const orkey = command.orkey;
+
+    if (orkey === 'todo') {
+        return handleTodoEnter(item, command, query);
+    } else if (orkey === 'done') {
+        return handleDoneEnter(item, command, query, shiftKey);
+    }
+}
+
+function removeTodo(item) {
     return getTodos().then(resp => {
         let todoName;
 
         const todos = resp.filter(function (todo) {
-            if (todo.id === id) {
+            if (todo.id === item.id) {
                 todoName = todo.title;
             }
 
-            return todo.id !== id;
+            return todo.id !== item.id;
         });
 
         return browser.storage.sync.set({
@@ -66,7 +108,21 @@ function removeTodo(id) {
         }).then(() => {
             Toast.success(`[${todoName}] is done`, 'TodoList', { timeOut: 1000 });
 
+            return addDoneTodoToLocal(item);
+        }).then(() => {
             return '';
+        });
+    });
+}
+
+function addDoneTodoToLocal(todo) {
+    return getDones().then((dones = []) => {
+        dones.unshift(todo);
+
+        return dones;
+    }).then(dones => {
+        return browser.storage.local.set({
+            [STORAGE.DONE]: dones
         });
     });
 }
@@ -79,22 +135,33 @@ function addTodo(todo, command) {
     return util.isStorageSafe(STORAGE.TODO).then(() => {
         return getTodos().then(resp => {
             let todos = resp;
+            let todoText;
 
             if (!todos || !todos.length) {
                 todos = [];
             }
 
-            todos.push({
-                id: Number(new Date()),
-                title: todo
-            });
+            if (todo.id) {
+                todos.push(todo);
+                todoText = todo.title;
+            } else {
+                todoText = todo;
+                todos.push({
+                    id: Number(new Date()),
+                    title: todo
+                });
+            }
 
             return browser.storage.sync.set({
                 todo: todos
             }).then(() => {
-                Toast.success(`Add todo [${todo}]`, 'TodoList', { timeOut: 1000 });
+                Toast.success(`Add todo [${todoText}]`, 'TodoList', { timeOut: 1000 });
 
-                return `${command.orkey} `;
+                if (command) {
+                    return `${command.orkey} `;
+                } else {
+                    return '';
+                }
             });
         });
     }).catch(() => {
@@ -104,20 +171,34 @@ function addTodo(todo, command) {
     });
 }
 
-function getTodos() {
-    return browser.storage.sync.get(STORAGE.TODO).then(results => results.todo);
+function deleteDone(todo) {
+    return getDones().then((dones = []) => {
+        const newDones = dones.filter(item => item.id !== todo.id);
+
+        return browser.storage.local.set({
+            [STORAGE.DONE]: newDones
+        }).then(() => {
+            return todo;
+        });
+    });
 }
 
-function dataFormat(rawList) {
-    const doneDesc = chrome.i18n.getMessage('todolist_done_subtitle');
+function getDones() {
+    return browser.storage.local.get(STORAGE.DONE).then(results => results[STORAGE.DONE]);
+}
 
+function getTodos() {
+    return browser.storage.sync.get(STORAGE.TODO).then(results => results[STORAGE.TODO]);
+}
+
+function dataFormat(rawList, command) {
     return rawList.map(function (item) {
         return {
-            key: key,
+            key: 'plugin',
             id: item.id,
             icon: icon,
             title: item.title,
-            desc: doneDesc
+            desc: command.subtitle
         };
     });
 }

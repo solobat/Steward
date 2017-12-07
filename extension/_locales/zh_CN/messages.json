@@ -188,8 +188,17 @@
     "todolist_subtitle": {
         "message": "添加todo，单击todo选项消除"
     },
+    "todolist_todo_title": {
+        "message": "添加todo"
+    },
+    "todolist_todo_subtitle": {
+        "message": "添加todo，单击todo选项消除"
+    },
+    "todolist_done_title": {
+        "message": "查询已完成待办事项"
+    },
     "todolist_done_subtitle": {
-        "message": "按 Enter 或 Return 键完成此项"
+        "message": "按 Enter 再次添加到 Todolist, 按 Shift + Enter 直接删除此项"
     },
     "urlblock_title": {
         "message": "屏蔽网址"

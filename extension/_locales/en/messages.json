@@ -188,8 +188,17 @@
     "todolist_subtitle": {
         "message": "add todo item, delete one by click it..."
     },
+    "todolist_todo_title": {
+        "message": "add todo item"
+    },
+    "todolist_todo_subtitle": {
+        "message": "add todo item, delete one by click it..."
+    },
+    "todolist_done_title": {
+        "message": "Show all completed todo"
+    },
     "todolist_done_subtitle": {
-        "message": "Press Enter or Return to done this item"
+        "message": "Press Enter to add selected item to todolist again; press Shift + Enter to remove directly"
     },
     "urlblock_title": {
         "message": "Block URL"
