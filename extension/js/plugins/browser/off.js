@@ -87,9 +87,8 @@ const extId = chrome.runtime.id;
 
 function getSortedList(list) {
     const extIndex = list.findIndex(item => item.id === extId);
-    const ext = list.splice(extIndex, 1);
 
-    list.push(ext[0]);
+    list.splice(extIndex, 1);
 
     return list;
 }
