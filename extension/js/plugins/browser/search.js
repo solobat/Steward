@@ -111,7 +111,17 @@ function onInput(query, command) {
     if (command.orkey === 'search') {
         return getSearchLinks(query);
     } else {
-        return getSearchEngines();
+        if (query) {
+            return util.getDefaultResult(command);
+        } else {
+            return getSearchEngines().then(engines => {
+                if (engines && Object.keys(engines).length) {
+                    return engines;
+                } else {
+                    return util.getDefaultResult(command);
+                }
+            });
+        }
     }
 }
 

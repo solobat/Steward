@@ -49,9 +49,13 @@ const dataFormat = (item, index) => {
     }
 };
 
-function onInput(query) {
+function onInput(query, command) {
     return getWorkflows(query).then((list = []) => {
-        return _.sortBy(list.map(dataFormat), 'times').reverse();
+        if (list.length) {
+            return _.sortBy(list.map(dataFormat), 'times').reverse();
+        } else {
+            return util.getDefaultResult(command);
+        }
     });
 }
 
