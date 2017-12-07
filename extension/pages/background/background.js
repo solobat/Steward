@@ -44,12 +44,16 @@ const workflowHelper = {
         return workflow;
     },
 
+    refresh() {
+        return Workflows.fetch();
+    },
+
     getWorkflows: function() {
         return Workflows.toJSON();
     },
 
     init: function() {
-        return Workflows.fetch();
+        return workflowHelper.refresh();
     }
 };
 
@@ -116,6 +120,9 @@ function addEvents() {
         if (changes.url) {
             blockedUrls = changes.url.newValue;
             console.log('url has changed...', blockedUrls);
+        }
+        if (changes.workflows) {
+            workflowHelper.refresh();
         }
     });
 
