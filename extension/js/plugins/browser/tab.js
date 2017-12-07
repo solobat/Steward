@@ -71,12 +71,13 @@ function dataFormat(rawList, command) {
         if (command.shiftKey && !item.active) {
             desc = wrapDesc(command.subtitle, index);
         }
+        const tabTitle = item.active ? `Active: ${item.title}` : item.title;
 
         return {
             key: command.key,
             id: item.id,
             icon: item.favIconUrl || icon,
-            title: item.title,
+            title: tabTitle,
             desc,
             isWarn: item.active
         };
