@@ -1,5 +1,15 @@
 const langZh = [
     {
+        version: 'v3.1.12',
+        detail: `
+            在壁纸来源中添加 <em>picsum.photos</em>，目前已有1000来张; <br>
+            新增壁纸插件, 命令 <em>trigger: wp</em>，提供刷新、保存、添加壁纸链接功能；<br>
+            todo 完成后自动加入 done 列表，使用 <em>done</em> 命令查看；<br>
+            off 命令允许批量操作；<br>
+            修复某些命令中文汉字搜索不支持的问题。
+        `
+    },
+    {
         version: 'v3.1.11',
         detail: `
             pocket 空查询缓存优化，以后可以加入 Random 列表了;<br>
@@ -123,6 +133,15 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.1.12',
+        detail: `
+            Add wallpaper source from <em>picsum.photos</em>;<br>
+            Add wallpaper plugin, the command's <em>trigger: wp</em>，you can save/refresh/input wallpaer link with it;<br>
+            Auto add the todo which is done to the done list, use command: <em>done</em> to view;<br>
+            Now off command can use in bulk;<br>.
+        `
+    },
     {
         version: 'v3.1.11',
         detail: `
