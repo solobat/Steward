@@ -4,7 +4,6 @@
  * @email solopea@gmail.com
  */
 
-import $ from 'jquery'
 import util from '../../common/util'
 
 const version = 2;
@@ -56,9 +55,7 @@ function dataFormat(rawList) {
 function onInput(query) {
     return new Promise(resolve => {
         getExtensions(query.toLowerCase(), false, function (matchExts) {
-            sortExtensions(matchExts, query, function (data) {
-                resolve(dataFormat(data));
-            });
+            resolve(dataFormat(matchExts));
         });
     });
 }
@@ -68,93 +65,7 @@ function onEnter(item) {
         setEnabled(item.id, true);
         this.refresh();
         window.slogs.push(`Enable: ${item.title}`);
-        addRecord('ext', this.query, item.id);
     }
-}
-
-function sortExtFn(a, b) {
-    return a.num === b.num ? b.update - a.upate : b.num - a.num;
-}
-
-function sortExtensions(data, query, callback) {
-    let matchExts = data;
-
-    chrome.storage.sync.get('ext', function (data) {
-        const sExts = data.ext;
-
-        if (!sExts) {
-            callback(matchExts);
-            return;
-        }
-
-        // sExts: {id: {id: '', querys: {'key': {num: 0, update: ''}}}}
-        matchExts = matchExts.map(function (extObj) {
-            const id = extObj.id;
-
-            if (!sExts[id] || !sExts[id].querys[query]) {
-                extObj.num = 0;
-                extObj.upate = 0;
-
-                return extObj;
-            }
-
-            extObj.num = sExts[id].querys[query].num;
-            extObj.update = sExts[id].querys[query].update;
-
-            return extObj;
-        });
-
-        matchExts.sort(sortExtFn);
-
-        callback(matchExts);
-    });
-}
-
-function addRecord(recordKey, query, id) {
-    chrome.storage.sync.get(recordKey, function (data) {
-        // data = {ext: {}}
-        const extObj = data;
-        // info = {id: {}};
-        let info = extObj[recordKey];
-
-        if ($.isEmptyObject(extObj)) {
-            info = extObj[recordKey] = {};
-        }
-
-        let obj;
-
-        if (!info[id]) {
-            obj = info[id] = createObj4Storage(id, query);
-        } else {
-            obj = info[id];
-
-            if (obj.querys[query]) {
-                obj.querys[query].num += 1;
-            } else {
-                obj.querys[query] = {
-                    num: 1,
-                    update: Number(new Date())
-
-                };
-            }
-        }
-
-        chrome.storage.sync.set(extObj, function () {});
-    });
-}
-
-function createObj4Storage(id, query) {
-    const obj = {
-        id: id,
-        querys: {}
-    };
-
-    obj.querys[query] = {
-        num: 1,
-        update: Number(new Date())
-    };
-
-    return obj;
 }
 
 export default {

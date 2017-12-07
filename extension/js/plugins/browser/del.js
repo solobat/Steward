@@ -54,58 +54,18 @@ function dataFormat(rawList) {
         };
     });
 }
+
 function onInput(query) {
     return new Promise(resolve => {
         getExtensions(query.toLowerCase(), false, function (matchExts) {
-            sortExtensions(matchExts, query, function (data) {
-                resolve(dataFormat(data));
-            });
+            resolve(dataFormat(matchExts));
         });
     });
 }
 
 function onEnter(item) {
-    uninstall(item.id, function () {
-        // cb
-    });
-    this.refresh();
-}
-
-function sortExtFn(a, b) {
-    return a.num === b.num ? b.update - a.upate : b.num - a.num;
-}
-
-function sortExtensions(exts, query, callback) {
-    let matchExts = exts;
-
-    chrome.storage.sync.get('ext', function (data) {
-        const sExts = data.ext;
-
-        if (!sExts) {
-            callback(matchExts);
-            return;
-        }
-
-        // sExts: {id: {id: '', querys: {'key': {num: 0, update: ''}}}}
-        matchExts = matchExts.map(function (extObj) {
-            const id = extObj.id;
-
-            if (!sExts[id] || !sExts[id].querys[query]) {
-                extObj.num = 0;
-                extObj.upate = 0;
-
-                return extObj;
-            }
-
-            extObj.num = sExts[id].querys[query].num;
-            extObj.update = sExts[id].querys[query].update;
-
-            return extObj;
-        });
-
-        matchExts.sort(sortExtFn);
-
-        callback(matchExts);
+    uninstall(item.id, () => {
+        this.refresh();
     });
 }
 
