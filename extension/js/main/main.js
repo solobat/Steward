@@ -552,6 +552,7 @@ function init() {
 
     if (mode === CONST.BASE.MODE.NEWTAB) {
         initWallpaper();
+        $('body').fadeIn(100);
         ga();
     } else if(!inContent) {
         setTimeout(ga, 200);

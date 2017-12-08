@@ -27,6 +27,12 @@ a {
     text-decoration: none;
 }
 
+[data-page="newtab"] {
+    body {
+        display: none;
+    }
+}
+
 #header {
     height: 80px;
 }
@@ -93,7 +99,7 @@ a {
     border: 0;
     font-size: 26px;
     color: #fafafa;
-    background-color: rgba(0, 0, 0, .45);
+    background-color: rgba(0, 0, 0, .4);
 
     &.autohide {
         color: transparent;
@@ -121,7 +127,7 @@ a {
 
     height: 432px;
 
-    background: rgba(0, 0, 0, .45);
+    background: rgba(0, 0, 0, .4);
     border: 0;
 }
 
@@ -250,7 +256,7 @@ a {
 
     -webkit-border-radius: 8px;
     outline: 1px solid #ccc;
-    background-color: rgba(0, 0, 0, .6);
+    background-color: rgba(0, 0, 0, .5);
 }
 
 ::-webkit-scrollbar-thumb:hover {
