@@ -76,7 +76,7 @@ function dataFormat(rawList, command) {
         return {
             key: command.key,
             id: item.id,
-            icon: item.favIconUrl || icon,
+            icon: item.favIconUrl || chrome.extension.getURL('img/icon.png'),
             title: tabTitle,
             desc,
             isWarn: item.active
