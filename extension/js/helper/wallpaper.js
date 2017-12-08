@@ -7,7 +7,7 @@ export function initBgImg() {
     const wallpaper = localStorage.getItem(STORAGE.WALLPAPER);
 
     if (wallpaper) {
-        document.body.style.background = `url(${wallpaper})`;
+        document.body.style.background = `url(${wallpaper}) center center / cover no-repeat fixed`;
     }
 }
 
