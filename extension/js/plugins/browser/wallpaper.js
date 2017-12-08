@@ -52,7 +52,7 @@ function setup() {
         console.log('wallpaper:refreshed');
         actions = allActions.filter(action => $(action.selector).is(':visible'));
 
-        if (that) {
+        if (that && that.command && that.command.orkey === 'wp') {
             that.showItemList(actions);
         }
     });
