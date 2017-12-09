@@ -26,7 +26,7 @@ const commands = [{
 
 // NOTE: Only get the commands when needed, main.js has been immediately obtained
 // and then get the object will be empty
-function getPlugins() {
+function getPlugins(query) {
     const allcommands = window.stewardCache.commands;
     const helpList = _.uniq(_.values(allcommands)).map(command => {
         return {
@@ -37,13 +37,17 @@ function getPlugins() {
             desc: `⇧: ${command.subtitle}`,
             type: command.type
         }
-    }).filter(item => item.type === 'keyword');
+    })
+    .filter(item => item.type === 'keyword')
+    .filter(function (command) {
+        return util.matchText(query, `${command.name}${command.title}${command.key}`);
+    });
 
     return _.sortBy(helpList, 'id');
 }
 
-function onInput() {
-    return getPlugins();
+function onInput(query) {
+    return getPlugins(query);
 }
 
 function onEnter(item, command, query, shiftKey) {
