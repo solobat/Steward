@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.2.1',
+        detail: `
+            在 workflow 中可以包含别的 workflow;<br>
+            workflow 优化；<br>
+            help 命令支持搜索。
+        `
+    },
+    {
         version: 'v3.2',
         detail: `
             在壁纸来源中添加 <em>picsum.photos</em>，目前已有1000来张; <br>
@@ -134,6 +142,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.2.1',
+        detail: `
+            Workflow can include other workflow;<br>
+            Optimize workflow;<br>
+            Add search support for help command。
+        `
+    },
     {
         version: 'v3.2',
         detail: `
