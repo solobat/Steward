@@ -210,10 +210,14 @@ function handleOnInput(str) {
     return queryByInput(this, str);
 }
 
-function queryByInput(box, str) {
+function queryByInput(box, str, background) {
     box.str = str;
     box.cmd = '';
     box.query = '';
+
+    if (background) {
+        box.background = true;
+    }
 
     return regexpStage(box)
         .then(searchStage)
@@ -339,6 +343,7 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
         if (item && item.key === 'workflow') {
             execWorkflow(item).then(() => {
                 box.command = command;
+                box.background = false;
                 Reflect.apply(plugin.onEnter, box, [item, command, box.query, box.shiftKey, dataList]);
             });
         } else {
@@ -435,7 +440,7 @@ function execWorkflow(item) {
         console.log(cmds);
         cmds.forEach(cmd => {
             task = task.then(() => {
-                return queryByInput(cmdbox, cmd.input);
+                return queryByInput(cmdbox, cmd.input, true);
             }).then(resp => {
                 const { numbers } = cmd;
 
