@@ -230,14 +230,11 @@
                                             <img src="/img/plus.png" alt="">
                                         </div>
                                     </div>
-                                    <div v-for="wallpaper in wallpapers" @click="chooseWallpaper(wallpaper)"
+                                    <div v-for="(wallpaper, index) in wallpapers" @click="chooseWallpaper(wallpaper)"
                                         :class="['wallpaper-box', {'is-selected': selectedWallpaper === wallpaper}]">
-                                        <img class="wallpaper-img" :src="wallpaper" alt="">
+                                        <img class="wallpaper-img" :ref="`wp${index}`" :src="wallpaper" alt="">
                                         <img v-if="selectedWallpaper === wallpaper" class="selected-icon" src="/img/selected-icon.png" alt="">
                                         <img src="/img/delete-icon.png" alt="" class="delete-wp icon" @click.stop="confirmDeleteWallpaper(wallpaper)">
-                                        <a href="#" :download="wallpaper" class="download-wp icon" @click.stop="handleWallpaperDownload">
-                                            <img src="/img/download-icon.png" alt="">
-                                        </a>
                                     </div>
                                 </div>
                                 <div class="themes-container" v-if="curApprItem.name === 'themes'">

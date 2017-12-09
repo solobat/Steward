@@ -371,10 +371,6 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 this.$message('set successfully!');
             },
 
-            handleWallpaperDownload: function() {
-                _gaq.push(['_trackEvent', 'options_wallpaper', 'click', 'download']);
-            },
-
             confirmDeleteWallpaper: function(wallpaper) {
                 this.$confirm('This operation will permanently delete the wallpaper, whether to continue?',
                     'Prompt', {
