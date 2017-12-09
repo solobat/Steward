@@ -73,7 +73,7 @@ function dataFormat(rawList = []) {
             key: key,
             id: item,
             icon: icon,
-            title: item,
+            title: `[${item}]`,
             desc
         };
     });
