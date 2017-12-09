@@ -176,7 +176,7 @@ function handleEnterResult(result) {
     const delay4close = 1000;
 
     if (result && result instanceof Promise) {
-        result.then(data => {
+        return result.then(data => {
             if (typeof data === 'string') {
                 if (data) {
                     cmdbox.render(data);
@@ -341,11 +341,17 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
         }
 
         if (item && item.key === 'workflow') {
-            execWorkflow(item).then(() => {
-                box.command = command;
-                box.background = false;
-                Reflect.apply(plugin.onEnter, box, [item, command, box.query, box.shiftKey, dataList]);
-            });
+            if (cmdbox.workflowStack.indexOf(item.wid) === -1) {
+                return execWorkflow(item).then(() => {
+                    box.command = command;
+                    box.background = false;
+
+                    return Reflect.apply(plugin.onEnter, box, [item, command, box.query, box.shiftKey, dataList]);
+                });
+            } else {
+                console.log('Avoid recursive execution of the same workflow');
+                return;
+            }
         } else {
             let partial = item;
 
@@ -356,8 +362,10 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
             const result = Reflect.apply(plugin.onEnter, box, [partial, box.command, box.query, box.shiftKey, dataList]);
 
             if (!fromWorkflow) {
-                handleEnterResult(result);
+                const enterResult = handleEnterResult(result);
                 _gaq.push(['_trackEvent', 'exec', 'enter', plugin.name]);
+
+                return enterResult;
             } else {
                 return result;
             }
@@ -367,6 +375,7 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
 
 function handleEnter (event, elem) {
     const $elem = $(elem);
+    cmdbox.workflowStack = [];
 
     execCommand(cmdbox, this.dataList, this.dataList[$elem.index()]);
 }
@@ -432,7 +441,9 @@ function fixNumber(number) {
 const NUM_ALL = -1;
 function execWorkflow(item) {
     if (item.content) {
+        cmdbox.workflowStack.push(item.wid);
         window.slogs = [`Workflow ${item.title}`];
+
         const cmds = parseWorkflow(item.content);
         const fromWorkflow = true;
         let task = Promise.resolve();

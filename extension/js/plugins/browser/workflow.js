@@ -60,12 +60,16 @@ function onInput(query, command) {
 }
 
 function onEnter(item) {
-    chrome.runtime.sendMessage({
-        action: 'updateWorkflow',
-        data: {
-            id: item.wid,
-            times: item.times + 1
-        }
+    return new Promise(resolve => {
+        chrome.runtime.sendMessage({
+            action: 'updateWorkflow',
+            data: {
+                id: item.wid,
+                times: item.times + 1
+            }
+        }, () => {
+            resolve('');
+        });
     });
 }
 
