@@ -568,7 +568,9 @@ function init() {
 
     if (mode === CONST.BASE.MODE.NEWTAB) {
         initWallpaper();
-        $('body').fadeIn(100);
+        $('body').fadeIn(100, function() {
+            cmdbox.ipt.focus();
+        });
         ga();
     } else if(!inContent) {
         setTimeout(ga, 200);
