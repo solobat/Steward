@@ -445,9 +445,9 @@ function execWorkflow(item) {
                     if (numbers === NUM_ALL) {
                         return execCommand(cmdbox, resp, resp, fromWorkflow);
                     } else if (numbers instanceof Array) {
-                        const {from, to} = fixNumbers(numbers);
+                        const [from, to] = fixNumbers(numbers);
 
-                        return execCommand(cmdbox, resp, resp.slice(from, to), fromWorkflow);
+                        return execCommand(cmdbox, resp, resp.slice(from, to + 1), fromWorkflow);
                     } else {
                         return execCommand(cmdbox, resp, resp[fixNumber(numbers)], fromWorkflow);
                     }
