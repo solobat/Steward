@@ -7,6 +7,7 @@
 import util from '../../common/util'
 import browser from 'webextension-polyfill'
 import Toast from 'toastr'
+import _ from 'underscore'
 
 const name = 'search';
 const key = 'search';
@@ -32,19 +33,19 @@ const commands = [{
 }];
 const defaultSearchEngines = {
     'Google': {
-        url: 'https://www.google.com/search?q=',
+        url: 'https://www.google.com/search?q=%s',
         icon: chrome.extension.getURL('img/google.png')
     },
     'Baidu': {
-        url: 'https://www.baidu.com/s?wd=',
+        url: 'https://www.baidu.com/s?wd=%s',
         icon: chrome.extension.getURL('img/baidu.png')
     },
     'Bing': {
-        url: 'https://bing.com/search?q=',
+        url: 'https://bing.com/search?q=%s',
         icon: chrome.extension.getURL('img/bing.png')
     },
     'Stack Overflow': {
-        url: 'https://stackoverflow.com/search?q=',
+        url: 'https://stackoverflow.com/search?q=%s',
         icon: chrome.extension.getURL('img/stackoverflow.png')
     }
 };
@@ -82,6 +83,7 @@ function getSearchLinks(query) {
                 key: 'search',
                 query,
                 engine,
+                count: engines[engine].count || 0,
                 icon: engines[engine].icon,
                 title: `Search ${engine} for: ${query}`
             };
@@ -109,7 +111,7 @@ function getSearchEngines() {
 
 function onInput(query, command) {
     if (command.orkey === 'search') {
-        return getSearchLinks(query);
+        return getSearchLinks(query).then(links => _.sortBy(links, 'count').reverse());
     } else {
         if (query) {
             return util.getDefaultResult(command);
@@ -125,12 +127,31 @@ function onInput(query, command) {
     }
 }
 
+function updateEngineStat(engine) {
+    const oldCount = searchEngines[engine].count || 0;
+
+    searchEngines[engine].count = oldCount + 1;
+
+    console.log(searchEngines);
+    return browser.storage.sync.set({ engines: searchEngines });
+}
+
 function gotoSearch(item, query) {
-    const url = searchEngines[item.engine].url + query.split(' ').join('+');
+    const searchUrl = searchEngines[item.engine].url;
+    const fixedQuery = query.split(' ').join('+');
+    let url;
+
+    if (searchUrl.indexOf('%s') !== -1) {
+        url = searchUrl.replace('%s', fixedQuery);
+    } else {
+        url = searchUrl + fixedQuery;
+    }
 
     chrome.tabs.create({
         url
     });
+
+    updateEngineStat(item.engine);
 }
 
 function addNewEngine(str, command) {
