@@ -115,6 +115,7 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 storeId,
                 helpInfo,
                 aboutus,
+                wallpaperSources: CONST.OPTIONS.WALLPAPER_SOURCES,
                 config: {
                     general,
                     plugins,

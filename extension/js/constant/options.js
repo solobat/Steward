@@ -13,3 +13,13 @@ export const DEFAULT_PLUGINS = ['Top Sites', 'Bookmarks', 'Tabs', 'Weather', 'Ot
         value: name
     }
 })
+
+export const WALLPAPER_SOURCES = [{
+    label: 'Bing',
+    value: 'bing',
+    tips: 'faster, but less'
+}, {
+    label: 'Unsplash',
+    value: 'picsum',
+    tips: 'lower, but more'
+}];

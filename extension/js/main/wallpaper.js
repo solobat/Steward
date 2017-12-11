@@ -38,8 +38,7 @@ function updateWallpaper(url, save, isNew) {
 }
 
 
-function randomIndex() {
-    const sourceWeights = [1, 2, 2];
+function randomIndex(sourceWeights) {
     const list = [];
 
     sourceWeights.forEach((weight, index) => {
@@ -68,26 +67,73 @@ function getRandomOne(list) {
     }
 }
 
+const sourcesInfo = {
+    bing: {
+        api: method => () => api.bing[method](),
+        weight: 1
+    },
+    cache: {
+        api: () => storage.sync.get(CONST.STORAGE.WALLPAPERS, []),
+        weight: 2
+    },
+    picsum: {
+        api: () => api.picsum.getRandomImage(),
+        weight: 2
+    }
+};
+
+function getSources(method) {
+    let sources = window.stewardCache.config.general.wallpaperSources.slice(0);
+
+    if (sources && sources.length > 0) {
+        sources.push('cache');
+    } else {
+        sources = ['bing', 'cache'];
+    }
+
+    console.log(sources);
+
+    const sourceWeights = sources.map(item => sourcesInfo[item].weight);
+    const index = randomIndex(sourceWeights);
+    const sourceName = sources[index];
+    const source = sourcesInfo[sourceName];
+    const tasks = [];
+
+    console.log(sourceName);
+
+    if (sourceName === 'bing') {
+        tasks.push(source.api(method));
+        tasks.push(sourcesInfo.cache.api);
+    } else if (sourceName === 'cache') {
+        tasks.push(sourcesInfo.bing.api(method));
+        tasks.push(source.api);
+    } else {
+        tasks.push(source.api);
+        tasks.push(sourcesInfo.cache.api);
+    }
+
+    return {
+        name: sourceName,
+        tasks
+    };
+}
+
 export function refreshWallpaper(today) {
     const method = today ? 'today' : 'rand';
+    const server = getSources(method);
 
-    Promise.all([
-        api.bing[method](),
-        storage.sync.get(CONST.STORAGE.WALLPAPERS, []),
-        api.picsum.getRandomImage()
-    ]).then(source => {
-        const index = randomIndex();
-        const [bing, cache, picsum] = source;
+    Promise.all(server.tasks.map(task => task())).then(sources => {
+        const [result, cache] = sources;
 
-        if (index === 2) {
-            const isNew = cache.indexOf(picsum) === -1;
+        if (server.name === 'picsum') {
+            const isNew = cache.indexOf(result) === -1;
 
-            updateWallpaper(picsum, true, isNew);
+            updateWallpaper(result, true, isNew);
             console.log('update from picsum');
-        } else if (index === 1 && source[index].length > 0) {
+        } else if (server.name === 'cache' && cache.length > 0) {
             updateWallpaper(wallpaperApiHandler(getRandomOne(cache)), true, false);
         } else {
-            const wp = wallpaperApiHandler(bing, true);
+            const wp = wallpaperApiHandler(result, true);
             const isNew = cache.indexOf(wp) === -1;
 
             updateWallpaper(wp, true, isNew);

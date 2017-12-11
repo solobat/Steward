@@ -7,5 +7,6 @@ export default {
     speedFirst: false,
     autoHideCmd: false,
     maxOperandsNum: 5,
-    autoResizeBoxFontSize: false
+    autoResizeBoxFontSize: false,
+    wallpaperSources: ['bing']
 }

@@ -302,6 +302,9 @@
     "general_autoHideCmd": {
         "message": "auto hide the command"
     },
+    "general_wallpaperSources": {
+        "message": "Wallpaper sources"
+    },
     "tips_maxOperandsNum": {
         "message": "Sets the maximum number of entries processed by some plugins for shift + enter / click operations"
     },
