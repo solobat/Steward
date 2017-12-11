@@ -242,6 +242,24 @@
     "openurl_subtitle": {
         "message": "Open the typed url"
     },
+    "newtab_title": {
+        "message": "Some settings for New Tab"
+    },
+    "newtab_subtitle": {
+        "message": "Only applies to Steward's New Tab mode"
+    },
+    "newtab_visibleOnlyFocued_title": {
+        "message": "The panel is shown / hidden by default"
+    },
+    "newtab_visibleOnlyFocued_subtitle": {
+        "message": "The panel is displayed only when the page has the focus"
+    },
+    "newtab_newTabTitle_title": {
+        "message": "Set the title of a new tab"
+    },
+    "newtab_newTabTitle_subtitle": {
+        "message": "Enter the title you want in the popup box"
+    },
     "wallpaper_title": {
         "message": "New Tab operations"
     },

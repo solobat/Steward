@@ -17,6 +17,12 @@
         window.addEventListener('blur', addClass, false);
     }
 
+    const newTabTitle = window.localStorage.newTabTitle;
+
+    if (typeof newTabTitle !== 'undefined') {
+        document.title = newTabTitle;
+    }
+
     const boxSize = window.localStorage.boxSize;
     const optionalSize = ['normal', 'large'];
 

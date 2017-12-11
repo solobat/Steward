@@ -18,6 +18,7 @@ import help from './help'
 import topsites from './topsites'
 import weather from './weather'
 import openurl from './openurl'
+import newtab from './newtab'
 import wallpaper from './wallpaper'
 import search from './search'
 import extensions from './extensions'
@@ -51,6 +52,7 @@ const pluginList = [
     topsites,
     weather,
     openurl,
+    newtab,
     wallpaper,
     search,
     extensions,
