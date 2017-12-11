@@ -1,5 +1,14 @@
 const langZh = [
     {
+        version: 'v3.2.2',
+        detail: `
+            壁纸源可以在「设置 -> Genenral -> 壁纸来源」 里选择;<br>
+            newtab 插件，trigger 为 <em>nt</em>，用于 Steward 新标签页的一些设置;<br>
+            搜索引擎应该根据使用次数排序;<br>
+            搜索引擎格式优化，可以使用 <em>%s</em> 做为占位符。
+        `
+    },
+    {
         version: 'v3.2.1',
         detail: `
             在 workflow 中可以包含别的 workflow;<br>
@@ -142,6 +151,15 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.2.2',
+        detail: `
+            Wallpaper sources can be set in Settings -> Genenral; <br>
+            newtab plugin, trigger: <em>nt</ em> , some settings for Steward's new tabs;
+            Search results should be sorted according to usage; <br>
+            Search engine format optimization, you can use <em>%s</em> as a placeholder.
+        `
+    },
     {
         version: 'v3.2.1',
         detail: `
