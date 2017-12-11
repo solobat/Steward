@@ -6,7 +6,7 @@
 
 import $ from 'jquery'
 import Toast from 'toastr'
-import { saveWallpaperLink } from '../../helper/wallpaper'
+import { saveWallpaperLink, getDataURI } from '../../helper/wallpaper'
 import { MODE } from '../../constant/base'
 
 const name = 'wallpaper';
@@ -36,6 +36,12 @@ const allActions = [
         title: chrome.i18n.getMessage('wallpaper_action_refresh_title'),
         desc: chrome.i18n.getMessage('wallpaper_action_refresh_subtitle'),
         selector: '#j-refresh-wp'
+    },
+    {
+        icon: chrome.extension.getURL('img/download-red.png'),
+        title: '下载',
+        desc: '下载背景图片',
+        type: 'download'
     }
 ];
 let actions = allActions;
@@ -50,7 +56,13 @@ let that;
 function setup() {
     $('body').on('wallpaper:refreshed', () => {
         console.log('wallpaper:refreshed');
-        actions = allActions.filter(action => $(action.selector).is(':visible'));
+        actions = allActions.filter(action => {
+            if (action.selector) {
+                return $(action.selector).is(':visible')
+            } else {
+                return true;
+            }
+        });
 
         if (that && that.command && that.command.orkey === 'wp') {
             that.showItemList(actions);
@@ -71,7 +83,25 @@ function onInput(query) {
 }
 
 function handleWallpaperAction(action) {
-    $(action.selector).click();
+    if (action.selector) {
+        $(action.selector).click();
+    } else if(action.type === 'download') {
+        downloadImage();
+    }
+}
+
+function downloadImage() {
+    getDataURI(window.localStorage.wallpaper).then(result => {
+        const a = $('<a>')
+            .hide()
+            .attr('href', result)
+            .attr('download', `stewardImage${Number(new Date())}.jpg`)
+            .appendTo('body');
+
+        a[0].click();
+
+        a.remove();
+    })
 }
 
 function saveWallpaper(link, command) {

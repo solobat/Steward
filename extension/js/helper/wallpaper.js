@@ -34,3 +34,39 @@ export function saveWallpaperLink(url) {
         .then(newResults => browser.storage.sync.set(newResults));
     });
 }
+
+export function getDataURI(url) {
+    return new Promise((resolve, reject) => {
+        let img = new Image();
+
+        img.onload = onLoad;
+        img.onerror = onError;
+        img.onabort = onError;
+        img.crossOrigin = '*';
+        img.src = url;
+
+        function onLoad() {
+            unbindEvent();
+
+            let canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            canvas.getContext('2d').drawImage(img, 0, 0);
+
+            resolve(canvas.toDataURL("image/jpeg"));
+            canvas = null;
+            img = null;
+        }
+
+        function onError(error) {
+            unbindEvent();
+            reject(error);
+        }
+
+        function unbindEvent() {
+            img.onload = null;
+            img.onerror = null;
+            img.onabort = null;
+        }
+    });
+}
