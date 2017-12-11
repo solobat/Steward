@@ -599,26 +599,30 @@ function classifyPlugins(pluginsData) {
                     const realCommands = $.extend(true, plugin.commands, pcmds);
 
                     realCommands.forEach(command => {
-                        const cmd = {
-                            ...command,
-                            name: pname,
-                            plugin
-                        };
-
-                        switch(command.type) {
-                        case PLUGIN_TYPE.REGEXP:
-                            regExpCommands.push(cmd);
-                            break;
-                        case PLUGIN_TYPE.OTHER:
-                            otherCommands.push(cmd);
-                            break;
-                        case PLUGIN_TYPE.KEYWORD:
-                            commands[command.key] = cmd;
-                            break;
-                        default:
-                            // bugfix
-                            commands[command.key] = cmd;
-                            break;
+                        if (!command.mode || (command.mode && command.mode === mode)) {
+                            const cmd = {
+                                ...command,
+                                name: pname,
+                                plugin
+                            };
+    
+                            switch(command.type) {
+                            case PLUGIN_TYPE.REGEXP:
+                                regExpCommands.push(cmd);
+                                break;
+                            case PLUGIN_TYPE.OTHER:
+                                otherCommands.push(cmd);
+                                break;
+                            case PLUGIN_TYPE.KEYWORD:
+                                commands[command.key] = cmd;
+                                break;
+                            default:
+                                // bugfix
+                                commands[command.key] = cmd;
+                                break;
+                            }
+                        } else {
+                            console.log('not avaiable command: ', command);
                         }
                     });
                 }
