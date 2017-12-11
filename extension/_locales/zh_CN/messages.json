@@ -252,7 +252,7 @@
         "message": "功能区默认显示/隐藏"
     },
     "newtab_visibleOnlyFocued_subtitle": {
-        "message": "只当页面获取到焦点时才显示功能区"
+        "message": "切换是否只当页面获取到焦点时才显示功能区"
     },
     "newtab_newTabTitle_title": {
         "message": "设置新标签页的标题"
