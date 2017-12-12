@@ -605,7 +605,7 @@ function classifyPlugins(pluginsData) {
                                 name: pname,
                                 plugin
                             };
-    
+
                             switch(command.type) {
                             case PLUGIN_TYPE.REGEXP:
                                 regExpCommands.push(cmd);
