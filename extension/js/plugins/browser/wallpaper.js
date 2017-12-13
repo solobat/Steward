@@ -11,7 +11,7 @@ import { MODE } from '../../constant/base'
 
 const name = 'wallpaper';
 const key = 'wp';
-const version = 1;
+const version = 2;
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/wallpaper-icon.png');
 const title = chrome.i18n.getMessage(`${name}_title`);
@@ -39,8 +39,8 @@ const allActions = [
     },
     {
         icon: chrome.extension.getURL('img/download-red.png'),
-        title: '下载',
-        desc: '下载背景图片',
+        title: chrome.i18n.getMessage('wallpaper_action_download_title'),
+        desc: chrome.i18n.getMessage('wallpaper_action_download_subtitle'),
         type: 'download'
     }
 ];

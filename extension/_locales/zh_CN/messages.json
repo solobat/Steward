@@ -278,6 +278,12 @@
     "wallpaper_action_refresh_subtitle": {
         "message": "刷新壁纸，来源包括 bing.com / 收藏 / picsum.photos，随机权重为 1 / 2 / 2"
     },
+    "wallpaper_action_download_title": {
+        "message": "下载"
+    },
+    "wallpaper_action_download_subtitle": {
+        "message": "格式为 jpg，下载完成后可自行上传到图床，将 URL 通过 wp 命令添加到收藏里"
+    },
     "search_title": {
         "message": "搜索指定内容"
     },

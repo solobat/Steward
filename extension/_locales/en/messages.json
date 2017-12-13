@@ -278,6 +278,12 @@
     "wallpaper_action_refresh_subtitle": {
         "message": "Refresh wallpaper from sources which include bing.com / collections / picsum.photos"
     },
+    "wallpaper_action_download_title": {
+        "message": "Download"
+    },
+    "wallpaper_action_download_subtitle": {
+        "message": "The format is jpg"
+    },
     "search_title": {
         "message": "Search for"
     },
