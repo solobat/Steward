@@ -248,6 +248,18 @@
     "newtab_subtitle": {
         "message": "只适用于 Steward 的 New Tab 模式"
     },
+    "newtab_nt_title": {
+        "message": "New Tab 的一些本地设置"
+    },
+    "newtab_nt_subtitle": {
+        "message": "只适用于 Steward 的 New Tab 模式"
+    },
+    "newtab_ntm_title": {
+        "message": "New Tab 可选标题列表"
+    },
+    "newtab_ntm_subtitle": {
+        "message": "按 Enter 或 Return 键将移除此项"
+    },
     "newtab_visibleOnlyFocued_title": {
         "message": "功能区默认显示/隐藏"
     },

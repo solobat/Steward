@@ -248,6 +248,18 @@
     "newtab_subtitle": {
         "message": "Only applies to Steward's New Tab mode"
     },
+    "newtab_nt_title": {
+        "message": "Some settings for New Tab"
+    },
+    "newtab_nt_subtitle": {
+        "message": "Only applies to Steward's New Tab mode"
+    },
+    "newtab_ntm_title": {
+        "message": "Optional list of titles for New Tab"
+    },
+    "newtab_ntm_subtitle": {
+        "message": "The texts in this list will be used randomly as the title of New Tab"
+    },
     "newtab_visibleOnlyFocued_title": {
         "message": "The panel is shown / hidden by default"
     },

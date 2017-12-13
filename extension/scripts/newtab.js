@@ -17,10 +17,20 @@
         window.addEventListener('blur', addClass, false);
     }
 
-    const newTabTitle = window.localStorage.newTabTitle;
+    if (window.localStorage.titleType === 'random') {
+        chrome.storage.local.get('titleNotes', function(resp) {
+            const notes = resp.titleNotes;
 
-    if (typeof newTabTitle !== 'undefined') {
-        document.title = newTabTitle;
+            if (notes && notes.length) {
+                document.title = notes[Math.floor(Math.random() * notes.length)];
+            }
+        });
+    } else {
+        const newTabTitle = window.localStorage.newTabTitle;
+
+        if (typeof newTabTitle !== 'undefined') {
+            document.title = newTabTitle;
+        }
     }
 
     const boxSize = window.localStorage.boxSize;
