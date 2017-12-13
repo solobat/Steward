@@ -201,8 +201,8 @@ function isStorageSafe(key) {
 }
 
 function shouldSupportMe() {
-    const nums = [6, 66];
-    const random = Math.floor(Math.random() * 100);
+    const nums = [6, 66, 666];
+    const random = Math.floor(Math.random() * 1000);
     console.log(random);
 
     if (nums.indexOf(random) !== -1) {
