@@ -375,9 +375,11 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
 
 function handleEnter (event, elem) {
     const $elem = $(elem);
+    const index = $elem.length ? $elem.index() : 0;
+
     cmdbox.workflowStack = [];
 
-    execCommand(cmdbox, this.dataList, this.dataList[$elem.index()]);
+    execCommand(cmdbox, this.dataList, this.dataList[index]);
 }
 
 // should cache
