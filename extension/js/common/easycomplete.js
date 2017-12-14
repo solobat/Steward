@@ -126,10 +126,12 @@ EasyComplete.prototype = {
             that.select($(this).data('index'), event);
         });
 
-        $(document).on('mouseover', '.ec-item', function(event) {
-            event.preventDefault();
-            that.selectItemByIndex($(this).data('index'));
-        });
+        if (this.opt.autoSelectByMouse) {
+            $(document).on('mouseover', '.ec-item', function(event) {
+                event.preventDefault();
+                that.selectItemByIndex($(this).data('index'));
+            });
+        }
     },
 
     render: function (str) {

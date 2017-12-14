@@ -353,6 +353,9 @@
     "general_autoResizeBoxFontSize": {
         "message": "Auto resize the input box's fontsize"
     },
+    "general_autoSelectByMouse": {
+        "message": "Select the item by mouse"
+    },
     "tips_bm_shift": {
         "message": "While holding shift, items marked with ⇧ are opened in batches"
     },

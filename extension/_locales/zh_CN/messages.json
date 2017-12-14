@@ -344,6 +344,9 @@
     "general_autoResizeBoxFontSize": {
         "message": "自动调整输入框字体大小"
     },
+    "general_autoSelectByMouse": {
+        "message": "鼠标 hover 时选中下拉项"
+    },
     "general_wallpaperSources": {
         "message": "壁纸来源"
     },

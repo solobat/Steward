@@ -549,13 +549,14 @@ function initWallpaper() {
 function init() {
     prepareBox();
 
-    const { autoScrollToMiddle, autoResizeBoxFontSize } = stewardCache.config.general;
+    const { autoScrollToMiddle, autoResizeBoxFontSize, autoSelectByMouse } = stewardCache.config.general;
     cmdbox = new EasyComplete({
         id: 'cmdbox',
         container: '#list-wrap',
         onInput: handleOnInput,
         autoScroll: autoScrollToMiddle,
         autoResizeBoxFontSize,
+        autoSelectByMouse,
         createItem
     });
 

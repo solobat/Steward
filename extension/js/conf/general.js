@@ -8,5 +8,6 @@ export default {
     autoHideCmd: false,
     maxOperandsNum: 5,
     autoResizeBoxFontSize: false,
-    wallpaperSources: ['bing']
+    wallpaperSources: ['bing'],
+    autoSelectByMouse: false
 }
