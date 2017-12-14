@@ -10,9 +10,9 @@ const aboutLinks = {
             url: 'http://oksteward.com'
         },
         {
-            title: '知识星球 - Steward 之家',
-            desc: '让 Steward 在大家的帮助下不断成长',
-            url: 'https://t.xiaomiquan.com/zFAyniY'
+            title: '开发者网站',
+            desc: 'tomasy 的博客',
+            url: 'http://tomasy.me'
         },
         {
             title: '帮助文档',
@@ -65,11 +65,6 @@ const upLinks = {
             title: '赞助: Steward 开发者',
             desc: '如果你觉得 Steward 还不错，确实提高了你的效率的话......',
             url: 'http://oksteward.com'
-        },
-        {
-            title: '知识星球 - Steward 之家',
-            desc: '让 Steward 在大家的帮助下不断成长',
-            url: 'https://t.xiaomiquan.com/zFAyniY'
         },
         {
             title: 'Star: Steward on Github',

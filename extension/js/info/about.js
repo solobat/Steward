@@ -11,8 +11,7 @@ const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
 const langZh = `
 <a href="https://chrome.google.com/webstore/detail/${storeId}">${extType}</a>
-最早开发于2014年底，初衷是作为一个 Chrome 扩展爱好者，居然找不到一个方便管理它们的方式。于是花了一个晚上写了 ${extType} 的第一版。
-虽然没怎么推广，用户也不是很多，但一有空闲就会维护<em title="没收入地开发两个月了...">[?]</em>，毕竟 ${extType} 几乎已经成为我使用频率最高的扩展了。<br>
+最早开发于 2014 年底，初衷是作为一个 Chrome 扩展爱好者，居然找不到一个方便管理它们的方式。于是花了一个晚上写了 ${extType} 的第一版，而 Steward 能以现在的面貌跟大家见面，不止是开发者 <em>三年</em> 以来空闲时间的开发积累，更是 2017 年辞职两个月专注开发的成果。<br>
 <br>
 如果觉得它还不错，希望可以给我<a href="https://chrome.google.com/webstore/detail/${storeId}/reviews?hl=zh-CN'">点赞评论</a>、
 <a href="https://github.com/solobat/Steward" target="_blank">star</a><em>[${stat[version].star}]</em>
@@ -20,10 +19,6 @@ const langZh = `
 虽然一直在安静地开发，但也希望通过大家的口口相传，让更多的人知道
 <a href="https://chrome.google.com/webstore/detail/${storeId}">${extType}</a>的存在。
 <div class="qrcodes">
-    <div>
-        <h3>知识星球</h3>
-        <img src="http://owsjc7iz3.bkt.clouddn.com/steward-planet.JPG" alt="" class="steward-plante qrcode">
-    </div>
     <div>
         <h3>微信</h3>
         <img src="http://owsjc7iz3.bkt.clouddn.com/IMG_2180.jpg" alt="" class="wx-pay qrcode">
