@@ -20,7 +20,7 @@ const App = {
             </div>
         `;
 
-        $('body').append(html);
+        $('html').append(html);
         this.$el = $('#steward-main');
         this.$iframe = $('#steward-iframe');
         this.$iframe.load(() => {
