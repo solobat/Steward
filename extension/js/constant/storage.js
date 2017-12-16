@@ -9,5 +9,6 @@ export default {
     URL: 'url',
     CONFIG: 'config',
     NOTES: 'notes',
-    TAGS: 'tags'
+    TAGS: 'tags',
+    TIMES: 'times'
 };

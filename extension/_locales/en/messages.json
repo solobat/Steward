@@ -200,6 +200,36 @@
     "todolist_done_subtitle": {
         "message": "Press Enter to add selected item to todolist again; press Shift + Enter to remove directly"
     },
+    "times_title": {
+        "message": "Add times"
+    },
+    "times_subtitle": {
+        "message": "Add times, the format is: {task}/{m|w|d}/{times}，Enter times +1，Shift + Enter times -1"
+    },
+    "times_ts_title": {
+        "message": "Add times"
+    },
+    "times_ts_subtitle": {
+        "message": "Add times，the format is: {task}/{m|w|d}/{times}, Enter times +1，Shift + Enter times -1"
+    },
+    "times_tsd_title": {
+        "message": "Delete times"
+    },
+    "times_tsd_subtitle": {
+        "message": "Delete the selected times"
+    },
+    "times_ts_warn_format": {
+        "message": "The format of times is incorrect，the right is: {task}/{m|w|d}/{times}/{+|-}"
+    },
+    "times_ts_tpl_title": {
+        "message": "{{task}} / {{interval}} / {{curCount}}"
+    },
+    "times_ts_tpl_subtitle_more": {
+        "message": "Count: {{count}}, type: more is better"
+    },
+    "times_ts_tpl_subtitle_less": {
+        "message": "Count: {{count}}, type: less is better"
+    },
     "urlblock_title": {
         "message": "Block URL"
     },
@@ -282,7 +312,7 @@
         "message": "Save"
     },
     "wallpaper_action_save_subtitle": {
-        "message": "Save current wallpaper to your collections"
+        "message": "Save current wallpaper [ source ] to your collections"
     },
     "wallpaper_action_refresh_title": {
         "message": "Refresh"

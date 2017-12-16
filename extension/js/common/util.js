@@ -212,6 +212,12 @@ function shouldSupportMe() {
     }
 }
 
+function simTemplate(tpl, data) {
+    return tpl.replace(/\{\{([A-Za-z0-9_]+)\}\}/g, function(m, $1) {
+        return typeof data[$1] !== 'undefined' ? data[$1] : '';
+    });
+}
+
 export default {
     matchText,
     isMac,
@@ -229,5 +235,6 @@ export default {
     tabCreateExecs,
     getDocumentURL,
     isStorageSafe,
-    shouldSupportMe
+    shouldSupportMe,
+    simTemplate
 };

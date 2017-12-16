@@ -10,6 +10,7 @@ import his from './his'
 import bookmark from './bookmark'
 import yd from './yd'
 import todo from './todo'
+import times from './times'
 import pocket from './pocket'
 import calculate from './calculate'
 import urlblock from './urlblock'
@@ -44,6 +45,7 @@ const pluginList = [
     bookmark,
     yd,
     todo,
+    times,
     pocket,
     calculate,
     urlblock,

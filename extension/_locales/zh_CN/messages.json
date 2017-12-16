@@ -200,6 +200,36 @@
     "todolist_done_subtitle": {
         "message": "按 Enter 再次添加到 Todolist, 按 Shift + Enter 直接删除此项"
     },
+    "times_title": {
+        "message": "添加 times"
+    },
+    "times_subtitle": {
+        "message": "添加 times, 格式为 {task}/{m|w|d}/{times}，Enter 次数 +1，Shift + Enter 次数 -1"
+    },
+    "times_ts_title": {
+        "message": "添加 times"
+    },
+    "times_ts_subtitle": {
+        "message": "添加 times，格式为 {task}/{m|w|d}/{times}, Enter 次数 +1，Shift + Enter 次数 -1"
+    },
+    "times_tsd_title": {
+        "message": "删除 times"
+    },
+    "times_tsd_subtitle": {
+        "message": "删除选中的 times"
+    },
+    "times_ts_warn_format": {
+        "message": "times 格式有误，正确的为 {task}/{m|w|d}/{times}/{+|-}"
+    },
+    "times_ts_tpl_title": {
+        "message": "{{task}} / {{interval}} / {{curCount}}"
+    },
+    "times_ts_tpl_subtitle_more": {
+        "message": "设定次数: {{count}}, 类型: 多多益善"
+    },
+    "times_ts_tpl_subtitle_less": {
+        "message": "设定次数: {{count}}, 类型: 越少越好"
+    },
     "urlblock_title": {
         "message": "屏蔽网址"
     },
@@ -282,7 +312,7 @@
         "message": "保存"
     },
     "wallpaper_action_save_subtitle": {
-        "message": "保存当前壁纸到你的收藏中"
+        "message": "保存当前壁纸 [ source ] 到你的收藏中"
     },
     "wallpaper_action_refresh_title": {
         "message": "刷新"

@@ -30,6 +30,7 @@
     "keyboardjs": "^2.3.4",
     "lodash.sortby": "^4.7.0",
     "math-expression-evaluator": "^1.2.17",
+    "moment": "^2.19.4",
     "normalize.css": "^7.0.0",
     "pinyin": "^2.8.3",
     "toastr": "^2.1.2",
