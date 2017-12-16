@@ -4,7 +4,7 @@
 // comment: steward + alfred + ssp
 export default {
     '3.2.3': {
-        star: 176
+        star: 190
     },
     '3.2.2': {
         star: 141

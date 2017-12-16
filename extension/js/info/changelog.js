@@ -1,5 +1,15 @@
 const langZh = [
     {
+        version: 'v3.2.3',
+        detail: `
+            wp 命令提供壁纸下载操作;<br>
+            设置 new tab 标题源: <em>ntm</em> 命令;<br>
+            times插件, trigger: <em>ts</em> | <em>tsd</em>;<br>
+            新增「 鼠标 hover 时选中下拉项 」，默认关闭;<br>
+            壁纸命令显示来源.
+        `
+    },
+    {
         version: 'v3.2.2',
         detail: `
             壁纸源可以在「设置 -> Genenral -> 壁纸来源」 里选择;<br>
@@ -151,6 +161,16 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.2.3',
+        detail: `
+            wp command to provide wallpaper download operation; <br>
+            Set the new tab title source: <em>ntm</ em> command; <br>
+            Add times plugin, trigger: <em>ts</ em> | <em>tsd</ em>; <br>
+            New "mouse hover selected drop-down", off by default; <br>
+            The wallpaper command shows the source.
+        `
+    },
     {
         version: 'v3.2.2',
         detail: `

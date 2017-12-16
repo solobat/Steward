@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Browser Alfred - a command launcher",
     "short_name": "Alfred",
-    "version": "3.2.2",
+    "version": "3.2.3",
     "description": "__MSG_extDesc__",
     "default_locale": "en",
     "background": {
