@@ -43,12 +43,9 @@ function mergePluginData(plugin, cachePlugins) {
             cachePlugin.version = 1;
         }
 
-        // if you change the meta data of a plugin, increasing its version is required
-        if (plugin.version > cachePlugin.version) {
-            // rough merge
-            cachePlugin.commands = $.extend(true, plugin.commands, cachePlugin.commands);
-            cachePlugin.version = plugin.version;
-        }
+        // rough merge
+        cachePlugin.commands = $.extend(true, plugin.commands, cachePlugin.commands);
+        cachePlugin.version = plugin.version;
     } else {
         cachePlugins[name] = {
             version: plugin.version,
