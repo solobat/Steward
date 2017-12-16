@@ -210,6 +210,10 @@ a {
 
 .ec-itemList .ec-item-select .ec-item-title {
     color: #fff;
+
+    &.ec-item-warn {
+        color: #fabb2d;
+    }
 }
 
 .ec-itemList .ec-item-select .ec-item-desc {
