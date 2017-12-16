@@ -9,7 +9,7 @@ import browser from 'webextension-polyfill'
 import Toast from 'toastr'
 
 const name = 'newtab';
-const version = 1;
+const version = 2;
 const type = 'keyword';
 const keys = [
     { key: 'nt' },
