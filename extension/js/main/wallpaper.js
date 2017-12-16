@@ -118,6 +118,10 @@ function getSources(method) {
     };
 }
 
+function recordSource(source) {
+    window.localStorage.setItem('wallpaper_source', source);
+}
+
 export function refreshWallpaper(today) {
     const method = today ? 'today' : 'rand';
     const server = getSources(method);
@@ -128,14 +132,17 @@ export function refreshWallpaper(today) {
         if (server.name === 'picsum') {
             const isNew = cache.indexOf(result) === -1;
 
+            recordSource('picsum');
             updateWallpaper(result, true, isNew);
             console.log('update from picsum');
         } else if (server.name === 'cache' && cache.length > 0) {
+            recordSource('cache');
             updateWallpaper(wallpaperApiHandler(getRandomOne(cache)), true, false);
         } else {
             const wp = wallpaperApiHandler(result, true);
             const isNew = cache.indexOf(wp) === -1;
 
+            recordSource('bing');
             updateWallpaper(wp, true, isNew);
         }
     }).catch(resp => {

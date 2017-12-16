@@ -53,21 +53,32 @@ const tips = [{
 
 let that;
 
+function updateActions() {
+    actions = allActions.filter(action => {
+        if (action.selector) {
+            return $(action.selector).is(':visible')
+        } else {
+            return true;
+        }
+    });
+
+    actions.forEach(action => {
+        if (action.selector === '#j-save-wplink') {
+            action.desc = action.desc.replace('source', window.localStorage.getItem('wallpaper_source'));
+        }
+    });
+}
+
 function setup() {
     $('body').on('wallpaper:refreshed', () => {
         console.log('wallpaper:refreshed');
-        actions = allActions.filter(action => {
-            if (action.selector) {
-                return $(action.selector).is(':visible')
-            } else {
-                return true;
-            }
-        });
+        updateActions();
 
         if (that && that.command && that.command.orkey === 'wp') {
             that.showItemList(actions);
         }
     });
+    updateActions();
 }
 
 setup();
@@ -108,7 +119,11 @@ function saveWallpaper(link, command) {
     const reg = /(https?:\/\/.*\.(?:png|jpg|jpeg))/i;
 
     if (link.match(reg)) {
-        return saveWallpaperLink(link).then(() => `${command.key} `).catch(msg => {
+        return saveWallpaperLink(link).then(() => {
+            updateActions();
+
+            return `${command.key} `;
+        }).catch(msg => {
             Toast.warning(msg);
         });
     } else {
