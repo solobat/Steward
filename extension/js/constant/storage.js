@@ -10,5 +10,6 @@ export default {
     CONFIG: 'config',
     NOTES: 'notes',
     TAGS: 'tags',
-    TIMES: 'times'
+    TIMES: 'times',
+    DIARY: 'diary'
 };

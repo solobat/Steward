@@ -128,6 +128,24 @@
     "note_notes_subtitle": {
         "message": "Show your all notes, press Enter to copy，and press Shift + Enter to delete."
     },
+    "diary_title": {
+        "message": "Chat diary"
+    },
+    "diary_subtitle": {
+        "message": "One sentence at a time, automatically filed by date"
+    },
+    "diary_say_title": {
+        "message": "Just say it"
+    },
+    "diary_say_subtitle": {
+        "message": "Write a diary like a chat, press Enter to add one, press Shift + Enter to delete the selected entry"
+    },
+    "diary_diary_title": {
+        "message": "Diary list"
+    },
+    "diary_diary_subtitle": {
+        "message": "Press Enter to download the diary, press Shift + Enter to download the diary and delete it"
+    },
     "offExtension_title": {
         "message": "disable extension / app"
     },

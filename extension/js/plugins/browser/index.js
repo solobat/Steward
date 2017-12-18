@@ -1,5 +1,6 @@
 import jenkins from './jenkins'
 import note from './note'
+import diary from './diary'
 import tab from './tab'
 import on from './on'
 import off from './off'
@@ -35,6 +36,7 @@ const pluginList = [
     about,
     jenkins,
     note,
+    diary,
     tab,
     on,
     off,

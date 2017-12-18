@@ -128,6 +128,24 @@
     "note_notes_subtitle": {
         "message": "查看所有笔记，Enter 复制，Shift + Enter 删除"
     },
+    "diary_title": {
+        "message": "聊天式日记"
+    },
+    "diary_subtitle": {
+        "message": "一次一句，自动按日期归档"
+    },
+    "diary_say_title": {
+        "message": "写日记"
+    },
+    "diary_say_subtitle": {
+        "message": "像聊天一样记日记，按 Enter 添加一条，按 Shift + Enter 删除选中的条目"
+    },
+    "diary_diary_title": {
+        "message": "日记列表"
+    },
+    "diary_diary_subtitle": {
+        "message": "按 Enter 下载日记，按 Shift + Enter 下载日记并删除"
+    },
     "offExtension_title": {
         "message": "禁用扩展/App"
     },
