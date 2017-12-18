@@ -252,7 +252,7 @@
         "message": "按 Enter 键或 Return 键可以解除屏蔽"
     },
     "urlblock_unbk8_subtitle": {
-        "message": "屏蔽8小时后按 Enter 键或 Return 键可以解除屏蔽"
+        "message": "屏蔽8小时后按 Enter 键或 Return 键才能解除屏蔽"
     },
     "youdao_title": {
         "message": "有道翻译"
