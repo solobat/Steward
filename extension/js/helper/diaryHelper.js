@@ -69,7 +69,6 @@ export default {
 
             diary.save();
         }
-        console.log(diary);
 
         return this.refresh();
     },
@@ -105,8 +104,6 @@ export default {
     init() {
         return this.refresh().then(() => {
             const list = this.getDiaryList();
-
-            console.log(list);
 
             return list;
         });
