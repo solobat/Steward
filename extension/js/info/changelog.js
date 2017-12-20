@@ -1,5 +1,12 @@
 const langZh = [
     {
+        version: 'v3.2.4',
+        detail: `
+            新增日记插件，像聊天一样的写日记, trigger: <em>: </em>, 下载日记 trigger: <em>diary</em><br>
+            更好的文案.
+        `
+    },
+    {
         version: 'v3.2.3',
         detail: `
             wp 命令提供壁纸下载操作;<br>
@@ -161,6 +168,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.2.4',
+        detail: `
+            Add diary plugin, write diary like chat, trigger: <em>: </em>, download diary trigger: <em>diary</em><br>
+            Better copywriting.
+        `
+    },
     {
         version: 'v3.2.3',
         detail: `
