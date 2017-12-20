@@ -92,7 +92,7 @@ export default {
 
         const text = _.reduce(diary.get('content'), (memo, session) => {
             const next = _.reduce(session, (submemo, msg) => {
-                return `${submemo}\n${msg.text}`;
+                return `${submemo}\n${msg && msg.text}`;
             }, '');
 
             return `${memo}\n${next}`;

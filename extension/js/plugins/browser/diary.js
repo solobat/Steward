@@ -13,7 +13,7 @@ const version = 1;
 const name = 'diary';
 const keys = [
     { key: 'diary' },
-    { key: ':', keyname: 'say' }
+    { key: ':', keyname: 'say', shiftKey: true }
 ];
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/diary.png')
@@ -95,7 +95,7 @@ function handleNewMsgEnter(query) {
     if (newMsg) {
         return updateMessages(newMsg);
     } else {
-        Toast.warning('Message cannot be empty.');
+        Toast.warning(chrome.i18n.getMessage('diary_warning_notempty'));
 
         return Promise.reject('');
     }
@@ -127,10 +127,10 @@ function saveMessages(data) {
     });
 }
 
-function handleSayEnter(query, item, command, box) {
+function handleSayEnter(query, item, command, shiftKey, box) {
     let task;
 
-    if (!command.shiftKey) {
+    if (!shiftKey) {
         task = handleNewMsgEnter(query);
     } else {
         task = updateMessages(item.raw);
@@ -164,7 +164,7 @@ function onEnter(item, command, query, shiftKey) {
     const { orkey } = command;
 
     if (orkey === ':') {
-        return handleSayEnter(query, item, command, this);
+        return handleSayEnter(query, item, command, shiftKey, this);
     } else if (orkey === 'diary') {
         return handleDiaryEnter(item, shiftKey);
     }
