@@ -45,9 +45,9 @@ function onEnter(item, command, query) {
             }
         });
         this.render(query);
-        Toast.success('Save successfully!');
+        Toast.success(chrome.i18n.getMessage('save_ok'));
     } else {
-        Toast.warning('The command cannot be empty!');
+        Toast.warning(chrome.i18n.getMessage('custom_warning_notempty'));
     }
 }
 

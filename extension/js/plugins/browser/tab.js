@@ -125,7 +125,7 @@ function moveTab(tabId, query) {
             });
         });
     } else {
-        Toast.warning('The input is not a valid index');
+        Toast.warning(chrome.i18n.getMessage('tab_warning_invalidindex'));
         return Promise.resolve();
     }
 }

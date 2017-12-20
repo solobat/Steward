@@ -158,15 +158,12 @@ function addNewEngine(str, command) {
     const parts = str.split(/[|]/);
 
     if (parts.length !== 3) {
-        Toast.warning(`
-            The format of the new engine is wrong, <br>
-            it should be like this: Name|Url|Icon,<br>
-        `);
+        Toast.warning(chrome.i18n.getMessage('search_warning_format'));
     } else {
         const [ename, eurl, eicon] = parts;
 
         if (searchEngines[ename]) {
-            Toast.warning('Can not be added repeatedly');
+            Toast.warning(chrome.i18n.getMessage('not_add_repeatedly'));
         } else {
             searchEngines[ename] = {
                 url: eurl,
@@ -175,19 +172,19 @@ function addNewEngine(str, command) {
         }
 
         return browser.storage.sync.set({ engines: searchEngines }).then(() => {
-            Toast.success('Add search engine success');
+            Toast.success(chrome.i18n.getMessage('add_ok'));
             return `${command.key} `;
         });
     }
 }
 
 function deleteEngine(item) {
-    if (window.confirm('This operation will permanently delete the search engine, whether to continue?')) {
+    if (window.confirm(chrome.i18n.getMessage('search_warning_del'))) {
         Reflect.deleteProperty(searchEngines, item.title);
         util.copyToClipboard(`${item.title}|${item.url}|${item.icon}`, true);
 
         return browser.storage.sync.set({ engines: searchEngines }).then(() => {
-            Toast.success('Delete search engine success');
+            Toast.success(chrome.i18n.getMessage('delete_ok'));
             return '';
         });
     }

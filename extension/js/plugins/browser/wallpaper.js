@@ -127,7 +127,7 @@ function saveWallpaper(link, command) {
             Toast.warning(msg);
         });
     } else {
-        Toast.warning('Image format is incorrect');
+        Toast.warning(chrome.i18n.getMessage('wallpaper_warning_format'));
 
         return Promise.resolve(true);
     }

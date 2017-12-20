@@ -140,7 +140,9 @@ function toggleAction(item) {
 
     window.localStorage.setItem(item.key, newValue);
 
-    Toast.success(`Toggle ${item.title} successfully!`);
+    Toast.success(util.simTemplate(chrome.i18n.getMessage('toggle_ok'), {
+        text: item.title
+    }));
 }
 
 function setNewValueFromUserInput(item) {
@@ -150,7 +152,7 @@ function setNewValueFromUserInput(item) {
 
     window.localStorage.setItem(item.key, result || 'New Tab');
     window.localStorage.setItem('titleType', 'fixed');
-    Toast.success('Set successfully');
+    Toast.success(chrome.i18n.getMessage('set_ok'));
 }
 
 export default {

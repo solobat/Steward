@@ -8,6 +8,27 @@
     "pageboxDesc": {
         "message": "Open launcher in page"
     },
+    "save_ok": {
+        "message": "Save successfully!"
+    },
+    "add_ok": {
+        "message": "Add successfully!"
+    },
+    "delete_ok": {
+        "message": "Delete successfully!"
+    },
+    "delete_ok_tpl": {
+        "message": "Delete {{text}} successfully!"
+    },
+    "set_ok": {
+        "message": "Set successfully!"
+    },
+    "toggle_ok": {
+        "message": "Toggle {{text}} successfully!"
+    },
+    "not_add_repeatedly": {
+        "message": "Can not be added repeatedly!"
+    },
     "bookmark_title": {
         "message": "find bookmark"
     },
@@ -146,6 +167,9 @@
     "diary_diary_subtitle": {
         "message": "Press Enter to download the diary, press Shift + Enter to download the diary and delete it"
     },
+    "diary_warning_notempty": {
+        "message": "Message cannot be empty!"
+    },
     "offExtension_title": {
         "message": "disable extension / app"
     },
@@ -199,6 +223,9 @@
     },
     "locateTab_tabm_subtitle": {
         "message": "To move the selected tab, enter a number from> = 1, while 0 moves to the end of the window"
+    },
+    "tab_warning_invalidindex": {
+        "message": "Invalid index!"
     },
     "todolist_title": {
         "message": "add todo item"
@@ -344,6 +371,9 @@
     "wallpaper_action_download_subtitle": {
         "message": "The format is jpg"
     },
+    "wallpaper_warning_format": {
+        "message": "Image format is incorrect"
+    },
     "search_title": {
         "message": "Search for"
     },
@@ -355,6 +385,12 @@
     },
     "search_se_subtitle": {
         "message": "The query format is `Name | URL | Icon`. When empty, the selected engine can be deleted"
+    },
+    "search_warning_format": {
+        "message": "The format of the new engine is wrong, <br> it should be like this: Name|Url|Icon,<br>"
+    },
+    "search_warning_del": {
+        "message": "This operation will permanently delete the search engine, whether to continue?"
     },
     "workflow_title": {
         "message": "workflows"
@@ -457,6 +493,9 @@
     },
     "custom_subtitle": {
         "message": "Set the default command in the NewTab input box"
+    },
+    "custom_warning_notempty": {
+        "message": "The command cannot be empty!"
     },
     "random_title": {
         "message": "Apply commands randomly"

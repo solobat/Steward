@@ -8,6 +8,27 @@
     "pageboxDesc": {
         "message": "在页面上启用"
     },
+    "save_ok": {
+        "message": "保存成功!"
+    },
+    "add_ok": {
+        "message": "添加成功!"
+    },
+    "delete_ok": {
+        "message": "删除成功!"
+    },
+    "delete_ok_tpl": {
+        "message": "删除 {{text}} 成功!"
+    },
+    "set_ok": {
+        "message": "设置成功!"
+    },
+    "toggle_ok": {
+        "message": "切换 {{text}} 成功!"
+    },
+    "not_add_repeatedly": {
+        "message": "不能重复添加!"
+    },
     "bookmark_title": {
         "message": "查找书签"
     },
@@ -146,6 +167,9 @@
     "diary_diary_subtitle": {
         "message": "按 Enter 下载日记，按 Shift + Enter 下载日记并删除"
     },
+    "diary_warning_notempty": {
+        "message": "总得写点儿什么!"
+    },
     "offExtension_title": {
         "message": "禁用扩展/App"
     },
@@ -199,6 +223,9 @@
     },
     "locateTab_tabm_subtitle": {
         "message": "请输入从 >=1 的数字，0则移动到window末尾"
+    },
+    "tab_warning_invalidindex": {
+        "message": "无效的数字"
     },
     "todolist_title": {
         "message": "添加todo"
@@ -344,6 +371,9 @@
     "wallpaper_action_download_subtitle": {
         "message": "格式为 jpg，下载完成后可自行上传到图床，将 URL 通过 wp 命令添加到收藏里"
     },
+    "wallpaper_warning_format": {
+        "message": "图片格式错误"
+    },
     "search_title": {
         "message": "搜索指定内容"
     },
@@ -357,7 +387,13 @@
         "message": "query格式为`Name|URL|Icon`, 为空时可删除选中的引擎"
     },
     "search_removese_subtitle": {
-        "message": "按 Enter 或 Retur 移动此搜索引擎"
+        "message": "按 Enter 或 Return 移除此搜索引擎"
+    },
+    "search_warning_format": {
+        "message": "搜索引擎的格式错误, <br> 正确的格式为: Name|Url|Icon,<br>"
+    },
+    "search_warning_del": {
+        "message": "是否删除选中的搜索引擎?"
     },
     "workflow_title": {
         "message": "工作流"
@@ -460,6 +496,9 @@
     },
     "custom_subtitle": {
         "message": "设置在NewTab输入框中的默认命令"
+    },
+    "custom_warning_notempty": {
+        "message": "命令不能为空!"
     },
     "random_title": {
         "message": "随机应用命令"

@@ -40,7 +40,7 @@ function onInput(key, command) {
         if (inContent && key === '/') {
             return `# ${window.parentHost}`;
         } else {
-            return handleTagQuery(key);
+            return handleTagQuery(key, command);
         }
     } else if (orkey === 'note') {
         return util.getDefaultResult(command);
@@ -50,26 +50,18 @@ function onInput(key, command) {
 }
 
 function dataFormat(notes = [], command) {
-    let desc;
-
-    if (command && command.shiftKey) {
-        desc = '⇧: Press Enter to copy the note to your clipboard, press Shift + Enter to delete the note.'
-    } else {
-        desc = 'Press Enter to copy the note to your clipboard';
-    }
-
     return notes.filter(item => Boolean(item)).map(note => {
         return {
             key: 'plugin',
             icon: icon,
             id: note._id,
             title: note.text,
-            desc
+            desc: command.subtitle
         }
     });
 }
 
-function handleTagQuery(key) {
+function handleTagQuery(key, command) {
     return queryNotesByTag(key).then(res => {
         let data;
 
@@ -84,7 +76,7 @@ function handleTagQuery(key) {
                 }
             })
         } else {
-            data = dataFormat(res.data);
+            data = dataFormat(res.data, command);
         }
 
         return data;

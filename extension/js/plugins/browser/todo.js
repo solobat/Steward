@@ -77,7 +77,9 @@ function handleDoneEnter(item, command, query, shiftKey) {
 
         if (shiftKey) {
             return deleteDone(todo).then(() => {
-                Toast.success(`Delete ${todo.title} successfully`);
+                Toast.success(util.simTemplate(chrome.i18n.getMessage('delete_ok_tpl'), {
+                    text: todo.title
+                }));
 
                 return '';
             });
