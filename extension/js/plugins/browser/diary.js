@@ -39,7 +39,7 @@ function handleDiaryInput(command) {
         const list = diaryHelper.getDiaryList();
 
         if (list && list.length) {
-            return list.map(diary => {
+            return list.reverse().map(diary => {
                 return {
                     icon: command.icon,
                     title: `diary: ${diary.date}`,
@@ -64,14 +64,14 @@ function onInput(key, command) {
     }
 }
 
-function dataFormat(list = [], command) {
+function dataFormat(list = []) {
     return list.map(message => {
         return {
             key: 'plugin',
             icon,
             id: message.id,
             title: message.text,
-            desc: command.subtitle,
+            desc: moment(message.time).format('YYYY/MM/DD HH:mm:SS'),
             raw: message
         }
     }).reverse();
