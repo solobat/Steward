@@ -6,7 +6,9 @@
 const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'steward';
 
 const langZh = `
-<a href="http://oksteward.com/steward-document-zh/" target="_blank">帮助文档</a><br>
+<a href="http://oksteward.com/steward-document-zh/" target="_blank">帮助文档</a>
+<a href="http://bbs.oksteward.com" target="_blank" style="margin-left: 12px;">论坛</a>
+<br>
 <hr>
 <iframe v-if="activeName === 'help'" height="330" width="510" src='http://player.youku.com/embed/XMzEyNDE4MDUzMg==' frameborder="0" allowfullscreen></iframe> <br>
 请尝试更新至最新版的浏览器，以免有些功能用不了。<br>

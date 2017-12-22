@@ -18,6 +18,7 @@
 
 - [Document](http://oksteward.com/steward-document-en/)
 - [中文版文档](http://oksteward.com/steward-document-zh/)
+- [论坛](http://bbs.oksteward.com)
 ---
 #### Screenshots:
 ![help](https://i.imgur.com/r0zZGR0.png)
@@ -44,11 +45,11 @@
 <div style="display: flex;justify-content: space-around;">
     <div>
         <h4>WeChat</h4>
-        <img src="http://owsjc7iz3.bkt.clouddn.com/IMG_2180.jpg" width = "250" alt="微信" />
+        <img src="http://owsjc7iz3.bkt.clouddn.com/IMG_2180.jpg" width="250" alt="WeChat" />
     </div>
     <div>
         <h4>Alipay</h4>
-        <img src="http://owsjc7iz3.bkt.clouddn.com/alipay3.jpg" width = "250" alt="微信" />
+        <img src="http://owsjc7iz3.bkt.clouddn.com/alipay3.jpg" width="250" alt="Alipay" />
     </div>
 </div>
 <div>

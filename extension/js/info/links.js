@@ -10,6 +10,11 @@ const aboutLinks = {
             url: 'http://oksteward.com'
         },
         {
+            title: '论坛',
+            desc: 'Steward 论坛: 有问题或建议可以上这里交流',
+            url: 'http://bbs.oksteward.com'
+        },
+        {
             title: '开发者网站',
             desc: 'tomasy 的博客',
             url: 'http://tomasy.me'
