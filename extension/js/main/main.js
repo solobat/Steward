@@ -272,7 +272,7 @@ function handleInit () {
         let cmd;
 
         if (util.shouldSupportMe()) {
-            cmd = 'up ';
+            cmd = 'about ';
             applyCmd(cmd);
         } else if (cacheLastCmd) {
             cmd = storage.h5.get(CONST.STORAGE.LAST_CMD) || 'site ';
