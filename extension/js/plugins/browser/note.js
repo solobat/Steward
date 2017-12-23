@@ -45,7 +45,9 @@ function onInput(key, command) {
     } else if (orkey === 'note') {
         return util.getDefaultResult(command);
     } else {
-        return getNotes().then(notes => dataFormat(notes, command));
+        return getNotes().then(notes => dataFormat(notes.filter(function (note) {
+            return util.matchText(key, note.text);
+        }), command));
     }
 }
 
@@ -132,12 +134,6 @@ function handleNoteEnter(query, orkey) {
 
     if (inContent && window.parentHost) {
         tags.push(window.parentHost);
-    }
-
-    if (!tags.length) {
-        Toast.warning('Label can not be empty');
-
-        return Promise.resolve(true);
     }
 
     const noteText = query.replace(/[#]+/g, '')
