@@ -140,7 +140,7 @@ const batchExecutionIfNeeded = (predicate, [exec4batch, exec], [list, item],
         results.push(exec(item));
     }
 
-    return results;
+    return Promise.all(results);
 }
 
 const tabCreateExecs = [
