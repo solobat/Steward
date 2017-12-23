@@ -9,7 +9,6 @@ import { plugins as pluginList } from '../../js/plugins/browser'
 import changelog from '../../js/info/changelog'
 import storage from '../../js/utils/storage'
 import util from '../../js/common/util'
-import { aboutus } from '../../js/info/about'
 import { helpInfo } from '../../js/info/help'
 import CONST from '../../js/constant'
 import { restoreConfig } from '../../js/common/config'
@@ -114,7 +113,6 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 extType,
                 storeId,
                 helpInfo,
-                aboutus,
                 wallpaperSources: CONST.OPTIONS.WALLPAPER_SOURCES,
                 config: {
                     general,
