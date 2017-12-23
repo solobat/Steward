@@ -168,7 +168,7 @@ function onEnter(item, {key, orkey}, query, shiftKey, list) {
             tab => updateTab(tab.id, { pinned: !tab.raw.pinned }),
             tab => updateTab(tab.id, { pinned: !tab.raw.pinned })
         ];
-        return util.batchExecutionIfNeeded(shiftKey, exces, [list, item]);
+        return util.batchExecutionIfNeeded(shiftKey, exces, [list, item]).then(() => '');
     }
 }
 
