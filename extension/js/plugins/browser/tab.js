@@ -7,13 +7,15 @@
 import util from '../../common/util'
 import Toast from 'toastr'
 import _ from 'underscore'
+import browser from 'webextension-polyfill'
 
 const version = 6;
-const name = 'locateTab';
+const name = 'tabs';
 const keys = [
     { key: 'tab' },
     { key: 'tabc', shiftKey: true, allowBatch: true },
-    { key: 'tabm' }
+    { key: 'tabm' },
+    { key: 'tabp', allowBatch: true }
 ];
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/tab.png');
@@ -51,8 +53,9 @@ function getAllTabs(query, callback) {
 
 function getListByCommand(rawList, command) {
     let list;
+    const { orkey } = command;
 
-    if (command.orkey === 'tabm') {
+    if (orkey === 'tabm' || orkey === 'tabp') {
         list = _.sortBy(rawList, 'active').reverse();
     } else {
         list = _.sortBy(rawList, 'active');
@@ -79,7 +82,8 @@ function dataFormat(rawList, command) {
             icon: item.favIconUrl || chrome.extension.getURL('img/icon.png'),
             title: tabTitle,
             desc,
-            isWarn: item.active
+            isWarn: item.active,
+            raw: item
         };
     });
 }
@@ -98,12 +102,6 @@ function onInput(query, command) {
     } else {
         return queryTabs(query, command);
     }
-}
-
-function locateTab(id) {
-    chrome.tabs.update(id, {
-        active: true
-    });
 }
 
 function removeTabs(ids) {
@@ -132,7 +130,9 @@ function moveTab(tabId, query) {
 
 function onEnter(item, {key, orkey}, query, shiftKey, list) {
     if (orkey === 'tab') {
-        locateTab(item.id);
+        updateTab(item.id, {
+            active: true
+        });
     } else if (orkey === 'tabc') {
         let items;
 
@@ -163,7 +163,17 @@ function onEnter(item, {key, orkey}, query, shiftKey, list) {
         });
     } else if (orkey === 'tabm') {
         return moveTab(item.id, query);
+    } else if (orkey === 'tabp') {
+        const exces = [
+            tab => updateTab(tab.id, { pinned: !tab.raw.pinned }),
+            tab => updateTab(tab.id, { pinned: !tab.raw.pinned })
+        ];
+        return util.batchExecutionIfNeeded(false, exces, [list, item]);
     }
+}
+
+function updateTab(id, updateProperties) {
+    return browser.tabs.update(id, updateProperties);
 }
 
 export default {

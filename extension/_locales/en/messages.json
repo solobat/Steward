@@ -200,29 +200,35 @@
     "setOption_subtitle": {
         "message": "find extension and open its option page"
     },
-    "locateTab_title": {
+    "tabs_title": {
         "message": "goto tab"
     },
-    "locateTab_subtitle": {
+    "tabs_subtitle": {
         "message": "find tab and goto it"
     },
-    "locateTab_tab_title": {
+    "tabs_tab_title": {
         "message": "goto tab"
     },
-    "locateTab_tab_subtitle": {
+    "tabs_tab_subtitle": {
         "message": "find tab and goto it"
     },
-    "locateTab_tabc_title": {
+    "tabs_tabc_title": {
         "message": "close one tab"
     },
-    "locateTab_tabc_subtitle": {
+    "tabs_tabc_subtitle": {
         "message": "find and close tab(s)"
     },
-    "locateTab_tabm_title": {
+    "tabs_tabm_title": {
         "message": "move the selected tab"
     },
-    "locateTab_tabm_subtitle": {
+    "tabs_tabm_subtitle": {
         "message": "To move the selected tab, enter a number from> = 1, while 0 moves to the end of the window"
+    },
+    "tabs_tabp_title": {
+        "message": "toggle tab's pin"
+    },
+    "tabs_tabp_subtitle": {
+        "message": "find tabs and toggle it's ping"
     },
     "tab_warning_invalidindex": {
         "message": "Invalid index!"

@@ -200,29 +200,35 @@
     "setOption_subtitle": {
         "message": "查找并设置扩展"
     },
-    "locateTab_title": {
+    "tabs_title": {
         "message": "跳转到标签页"
     },
-    "locateTab_subtitle": {
+    "tabs_subtitle": {
         "message": "查找并跳转至标签页"
     },
-    "locateTab_tab_title": {
+    "tabs_tab_title": {
         "message": "跳转到标签页"
     },
-    "locateTab_tab_subtitle": {
+    "tabs_tab_subtitle": {
         "message": "查找并跳转至标签页"
     },
-    "locateTab_tabc_title": {
+    "tabs_tabc_title": {
         "message": "关闭一个标签页"
     },
-    "locateTab_tabc_subtitle": {
+    "tabs_tabc_subtitle": {
         "message": "查找并关闭一(多)个标签页"
     },
-    "locateTab_tabm_title": {
+    "tabs_tabm_title": {
         "message": "移动选中的tab"
     },
-    "locateTab_tabm_subtitle": {
+    "tabs_tabm_subtitle": {
         "message": "请输入从 >=1 的数字，0则移动到window末尾"
+    },
+    "tabs_tabp_title": {
+        "message": "切换 tab 的锁定状态"
+    },
+    "tabs_tabp_subtitle": {
+        "message": "查找 tabs 并切换 tab 的锁定状态"
     },
     "tab_warning_invalidindex": {
         "message": "无效的数字"
