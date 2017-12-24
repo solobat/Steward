@@ -22,6 +22,7 @@ const commands = {};
 const regExpCommands = [];
 const otherCommands = [];
 const searchContexts = [];
+let alwaysCommand = null;
 let plugin4empty;
 let randomPlugin;
 let keys;
@@ -96,6 +97,22 @@ function searchInContext(query) {
         });
     } else {
         return Promise.resolve(res);
+    }
+}
+
+function alwaysStage() {
+    const str = cmdbox.str;
+
+    if (alwaysCommand) {
+        return callCommand(alwaysCommand, str).then(results => {
+            if (results) {
+                return Promise.reject(results);
+            } else {
+                return Promise.resolve();
+            }
+        });
+    } else {
+        return Promise.resolve();
     }
 }
 
@@ -219,7 +236,8 @@ function queryByInput(box, str, background) {
         box.background = true;
     }
 
-    return regexpStage(box)
+    return alwaysStage()
+        .then(regexpStage)
         .then(searchStage)
         .then(commandStage)
         .then(defaultStage)
@@ -610,6 +628,9 @@ function classifyPlugins(pluginsData) {
                             };
 
                             switch(command.type) {
+                            case PLUGIN_TYPE.ALWAYS:
+                                alwaysCommand = cmd;
+                                break;
                             case PLUGIN_TYPE.REGEXP:
                                 regExpCommands.push(cmd);
                                 break;

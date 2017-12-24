@@ -1,5 +1,6 @@
 
 export const PLUGIN_TYPE = {
+    ALWAYS: 'always',
     REGEXP: 'regexp',
     KEYWORD: 'keyword',
     OTHER: 'other',
