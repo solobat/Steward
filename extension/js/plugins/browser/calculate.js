@@ -8,21 +8,19 @@ import util from '../../common/util'
 import mathexp from 'math-expression-evaluator'
 
 const name = 'calculate';
-const version = 3;
-const type = 'regexp';
+const version = 4;
+const type = 'always';
 const key = 'calc';
 const icon = chrome.extension.getURL('img/calc.png');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
-const regExp = /^([-+]?)([\d\.]+)(?:\s*([-+*\/])\s*((?:\s[-+])?[\d\.]+)?\s*)+$/; 
 const commands = [{
     key,
     type,
     title,
     subtitle,
     icon,
-    editable: false,
-    regExp
+    editable: false
 }];
 
 function onInput(query) {
@@ -42,17 +40,10 @@ function onInput(query) {
             }
         ];
     } catch (e) {
-        data = [
-            {
-                key: title,
-                icon: icon,
-                title: '...',
-                desc: 'Please enter a valid expression'
-            }
-        ];
+        data = null;
     }
 
-    return data;
+    return Promise.resolve(data);
 }
 
 function onEnter(item) {
