@@ -100,6 +100,13 @@ function searchInContext(query) {
     }
 }
 
+function resetBox() {
+    cmdbox.cmd = '';
+    cmdbox.command = null;
+
+    return Promise.resolve();
+}
+
 function alwaysStage() {
     const str = cmdbox.str;
 
@@ -108,7 +115,7 @@ function alwaysStage() {
             if (results) {
                 return Promise.reject(results);
             } else {
-                return Promise.resolve();
+                return resetBox();
             }
         });
     } else {
@@ -344,6 +351,7 @@ function handleNormalItem(box, dataList, item) {
 }
 
 function execCommand(box, dataList = [], item, fromWorkflow) {
+    debugger
     if (item && item.isDefault && !box.query) {
         return;
     } else if (!box.cmd) {
