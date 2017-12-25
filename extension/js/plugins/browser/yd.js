@@ -6,11 +6,12 @@
 
 import $ from 'jquery'
 import util from '../../common/util'
+import Toast from 'toastr'
 
 const url = 'https://fanyi.youdao.com/openapi.do?' +
 'keyfrom=mineword&key=1362458147&type=data&doctype=json&version=1.1&q=';
 const emptyReg = /^\s+$/g;
-const version = 2;
+const version = 3;
 const name = 'youdao';
 const key = 'yd';
 const type = 'keyword';
@@ -23,6 +24,7 @@ const commands = [{
     title,
     subtitle,
     icon,
+    shiftKey: true,
     editable: true
 }];
 
@@ -34,10 +36,45 @@ function onInput(query) {
     return getTranslation(query);
 }
 
-function onEnter(item) {
-    util.copyToClipboard(item.title, true);
+function add2wordcard(wordName, transStr) {
+    const extId = window.stewardCache.wordcardExtId;
 
-    return Promise.resolve(false);
+    if (extId) {
+        if (wordName && transStr) {
+            const trans = transStr.replace(/\[.+\]/, '').split(/[；;,，]/).map(item => item.trim());
+
+            chrome.runtime.sendMessage(extId, {
+                action: 'create',
+                data: {
+                    name: wordName,
+                    trans: trans || [],
+                    tags: ['Steward']
+                }
+            }, () => {
+                Toast.success(`「${wordName}」成功保存到单词小卡片!`);
+            });
+        } else {
+            Toast.warning('单词与释义是必需的！');
+        }
+    } else {
+        Toast.warning('没有找到单词小卡片扩展！');
+    }
+}
+
+function onEnter(item, command, query, shiftKey) {
+    if (query) {
+        if (shiftKey) {
+            add2wordcard(query, item.title);
+
+            return Promise.resolve(true);
+        } else {
+            util.copyToClipboard(item.title, true);
+
+            return Promise.resolve(false);
+        }
+    } else {
+        return Promise.resolve(true);
+    }
 }
 
 function dataFormat(rawList) {

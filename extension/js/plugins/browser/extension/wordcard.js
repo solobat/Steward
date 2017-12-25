@@ -145,6 +145,7 @@ function onEnter(item, command, query, shiftKey) {
 
 function setup(ext) {
     extID = ext.id;
+    window.stewardCache.wordcardExtId = extID;
 }
 
 export default {
