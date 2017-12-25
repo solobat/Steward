@@ -1,5 +1,14 @@
 const langZh = [
     {
+        version: 'v3.2.5',
+        detail: `
+            tag 不再是必需的，notes 支持搜索功能;<br>
+            tab 锁定命令，trigger 为 <em>tabp</em>, 支持 Shift + Enter 与 批量操作;<br>
+            增强计算器的功能;<br>
+            yd 查词后添加到单词小卡片.
+        `
+    },
+    {
         version: 'v3.2.4',
         detail: `
             新增日记插件，像聊天一样的写日记, trigger: <em>: </em>, 下载日记 trigger: <em>diary</em><br>
@@ -168,6 +177,15 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.2.5',
+        detail: `
+            tag is no longer required, notes supports search function; <br>
+            tab lock command, trigger is <em>tabp</em>, supports Shift + Enter and bulk operations; <br>
+            Enhance the function of the calculator; <br>
+            yd check words added to the word small card. 
+        `
+    },
     {
         version: 'v3.2.4',
         detail: `
