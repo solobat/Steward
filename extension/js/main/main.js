@@ -351,7 +351,6 @@ function handleNormalItem(box, dataList, item) {
 }
 
 function execCommand(box, dataList = [], item, fromWorkflow) {
-    debugger
     if (item && item.isDefault && !box.query) {
         return;
     } else if (!box.cmd) {
