@@ -1,5 +1,11 @@
 const langZh = [
     {
+        version: 'v3.2.6',
+        detail: `
+            修复 Bug.
+        `
+    },
+    {
         version: 'v3.2.5',
         detail: `
             tag 不再是必需的，notes 支持搜索功能;<br>
@@ -177,6 +183,12 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.2.6',
+        detail: `
+            bugfix.
+        `
+    },
     {
         version: 'v3.2.5',
         detail: `
