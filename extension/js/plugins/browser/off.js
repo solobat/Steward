@@ -103,7 +103,7 @@ function onEnter(item, command, query, shiftKey, list) {
     }
 
     const tasks = util.batchExecutionIfNeeded(shiftKey, disableExecs, [list, items]);
-    return Promise.all(tasks).then(() => {
+    return tasks.then(() => {
         return '';
     });
 }
