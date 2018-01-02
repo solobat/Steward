@@ -26,7 +26,7 @@
     "fuzzaldrin-plus": "^0.5.0",
     "getdomain": "^1.0.7",
     "grapnel": "^0.6.4",
-    "jquery": "1.11.1",
+    "jquery": "^3.2.1",
     "keyboardjs": "^2.3.4",
     "lodash.sortby": "^4.7.0",
     "math-expression-evaluator": "^1.2.17",
