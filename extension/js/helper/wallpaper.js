@@ -3,14 +3,6 @@ import browser from 'webextension-polyfill'
 import util from '../common/util'
 import _ from 'underscore'
 
-export function initBgImg() {
-    const wallpaper = localStorage.getItem(STORAGE.WALLPAPER);
-
-    if (wallpaper) {
-        document.body.style.background = `url(${wallpaper}) center center / cover no-repeat fixed`;
-    }
-}
-
 export function saveWallpaperLink(url) {
     return util.isStorageSafe(STORAGE.WALLPAPERS).then(() => {
         return browser.storage.sync.get(STORAGE.WALLPAPERS).then(resp => {

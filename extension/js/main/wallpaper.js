@@ -30,9 +30,8 @@ function updateWallpaper(url, save, isNew) {
     }
 
     curUrl = url;
-    $body.css({
-        'background': `url(${url}) no-repeat center center fixed`,
-        'background-size': 'cover'
+    $('html').css({
+        '--app-newtab-background-image': `url(${url})`
     });
     $body.trigger('wallpaper:refreshed');
 }
