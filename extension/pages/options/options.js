@@ -160,17 +160,13 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
             }
         },
 
-        created() {
-            this.loadWallpapersIfNeeded();
-            this.loadThemesIfNeeded();
-        },
-
         mounted: function() {
             if (activeName === 'update') {
                 this.$nextTick(() => {
                     this.saveConfig(true);
                 });
             }
+            this.initTab(this.activeName);
         },
 
         watch: {
@@ -180,7 +176,19 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
         },
 
         methods: {
+            initTab(tabname) {
+                if (tabname === 'wallpapers') {
+                    this.loadWallpapersIfNeeded();
+                } else if (tabname === 'appearance') {
+                    if (!this.curApprItem) {
+                        this.loadThemes().then(() => {
+                            this.updateApprItem(this.appearanceItems[0]);
+                        });
+                    }
+                }
+            },
             handleClick: function(tab) {
+                this.initTab(tab.name);
                 _gaq.push(['_trackEvent', 'options_tab', 'click', tab.name]);
             },
 
@@ -336,11 +344,15 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                     });
             },
 
-            handleApprItemClick: function(apprItem) {
+            updateApprItem(apprItem) {
                 this.curApprItem = apprItem;
                 const mode = apprItem.name.replace(' ', '').toLowerCase();
 
                 this.themeMode = mode;
+            },
+
+            handleApprItemClick: function(apprItem) {
+                this.updateApprItem(apprItem);
 
                 _gaq.push(['_trackEvent', 'options_appearance', 'click', apprItem.name]);
             },
@@ -353,8 +365,8 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 }
             },
 
-            loadThemesIfNeeded() {
-                storage.sync.get(CONST.STORAGE.THEMES).then(themes => {
+            loadThemes() {
+                return storage.sync.get(CONST.STORAGE.THEMES).then(themes => {
                     if (themes) {
                         this.themes = themes;
                     }
