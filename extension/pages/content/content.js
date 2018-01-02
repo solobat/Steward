@@ -23,7 +23,7 @@ const App = {
         $('html').append(html);
         this.$el = $('#steward-main');
         this.$iframe = $('#steward-iframe');
-        this.$iframe.load(() => {
+        this.$iframe.on('load', () => {
             const iframeWindow = document.getElementById('steward-iframe').contentWindow;
 
             iframeWindow.postMessage({
