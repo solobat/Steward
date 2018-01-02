@@ -2,7 +2,8 @@ const langZh = [
     {
         version: 'v3.2.7',
         detail: `
-            新增主题编辑功能. 
+            新增主题编辑功能。<br>
+            新标签页新增毛玻璃效果选项，默认关闭，使用 <em>nt </em> 命令可切换。
         `
     },
     {
@@ -192,7 +193,8 @@ const langEn = [
     {
         version: 'v3.2.7',
         detail: `
-            Theme editing features. 
+            Theme editing features. <br>
+            Frosted glass effect for new tab.
         `
     },
     {
