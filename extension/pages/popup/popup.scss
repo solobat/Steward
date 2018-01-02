@@ -1,4 +1,5 @@
 @import '../../scss/main.scss';
+@import '../../scss/themes/popup/classical.scss';
 
 body {
     margin: 0;
@@ -16,19 +17,6 @@ a {
 
 * {
     box-sizing: border-box;
-}
-
-.main {
-    width: 500px;
-    margin: 0 auto;
-}
-
-.cmdbox {
-    width: 500px;
-    height: 50px;
-    font-size: 22px;
-    border: 0;
-    padding: 5px 10px;
 }
 
 .content-page {
@@ -50,137 +38,6 @@ a {
     }
 }
 
-.cmdbox:focus {
-    outline: 0;
-}
-
 .content-page .cmdbox-drop {
     border-bottom: 0;
-}
-
-.ec-itemList {
-    width: 500px;
-    margin: 0 auto;
-    overflow-y: auto;
-    background: #fff;
-
-    height: 400px;
-}
-
-.ec-itemList .ec-item {
-    display: flex;
-    width: 498px;
-    align-items: center;
-    padding: 2px 8px;
-    height: 40px;
-    position: relative;
-
-    .lazy {
-        visibility: hidden;
-    }
-}
-
-.ec-item .ec-item-icon {
-    display: block;
-    width: 25px;
-    height: 25px;
-    margin-right: 8px;
-
-    &.icon-enter {
-        display: none;
-        margin-right: 0;
-        margin-left: 8px;
-    }
-}
-
-
-.ec-item-content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    width: 416px;
-    max-width: 416px;
-
-    &.nodesc {
-        .ec-item-title {
-            line-height: 33px;
-            font-size: 20px;
-        }
-    }
-
-    > span {
-        flex: 1;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-}
-
-.ec-item .ec-item-title {
-    font-size: 14px;
-    line-height: 1.4;
-}
-
-.ec-item .ec-item-desc{
-    display: block;
-    color: rgb(166, 166, 166);
-}
-
-.ec-itemList .ec-item-select {
-    background: rgb(209, 209, 209);
-
-    .lazy {
-        visibility: visible;
-    }
-
-    .ec-item-icon {
-        &.icon-enter {
-            display: block;
-        }
-    }
-}
-
-.ec-item .ec-item-warn {
-    color: red;
-}
-
-.ec-item .ec-item-tip{
-    position: absolute;
-    right: 0;
-    top: 0;
-    margin-right: 10px;
-    font-size: 14px;
-    line-height: 34px;
-    color: rgb(92, 13, 123);
-}
-
-.ec-item .ec-item-tip .icon {
-    font-size: 16px;
-    position: relative;
-    top: 3px;
-}
-/* scrollbar styles */
-::-webkit-scrollbar {
-    width: 2px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-button:start,
-::-webkit-scrollbar-button:end {
-    display: none;
-}
-
-::-webkit-scrollbar-track-piece {
-    border-radius: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-}
-
-::-webkit-scrollbar-thumb {
-    width: 50px;
-
-    background-color: #CCCCCC;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: #999999;
 }

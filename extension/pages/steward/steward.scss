@@ -1,4 +1,11 @@
 @import '../../scss/main.scss';
+@import '../../scss/themes/newtab/classical.scss';
+
+:root {
+    --app-width-size: 560px;
+    --search-input-height: 64px;
+    --search-results-height: 432px;
+}
 
 .box-invisible {
     .main {
@@ -36,9 +43,9 @@ a {
 #header {
     height: 80px;
 }
+
 #main {
-    width: 560px;
-    margin: 40px auto 0;
+    margin-top: 40px;
 }
 
 .size-large {
@@ -93,14 +100,6 @@ a {
 }
 
 .cmdbox {
-    width: 100%;
-    height: 64px;
-    padding: 0 8px;
-    border: 0;
-    font-size: 26px;
-    color: #fafafa;
-    background-color: rgba(0, 0, 0, .4);
-
     &.autohide {
         color: transparent;
 
@@ -114,155 +113,4 @@ a {
         background-size: 40px 40px;
         padding: 0 60px 0 8px;
     }
-}
-
-.cmdbox:focus {
-    outline: 0;
-}
-
-.ec-itemList {
-    width: 100%;
-    margin: 0 auto;
-    overflow-y: auto;
-
-    height: 432px;
-
-    background: rgba(0, 0, 0, .4);
-    border: 0;
-}
-
-.ec-itemList .ec-item {
-    display: flex;
-    overflow: hidden;
-    align-items: center;
-    padding: 3px 8px;
-    height: 48px;
-    position: relative;
-    border-bottom: 1px solid rgba(209, 209, 209, .1);
-
-    .lazy {
-        visibility: hidden;
-    }
-}
-
-.ec-item .ec-item-icon {
-    display: block;
-    width: 25px;
-    min-width: 25px;
-    height: 25px;
-    margin-right: 8px;
-
-    &.icon-enter {
-        display: none;
-        margin-right: 0;
-        margin-left: 8px;
-    }
-}
-
-.ec-item-content {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    width: 476px;
-    max-width: 476px;
-
-    &.nodesc {
-        .ec-item-title {
-            line-height: 33px;
-            font-size: 20px;
-        }
-    }
-
-    > span {
-        display: block;
-        flex: 1;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-}
-
-.ec-item .ec-item-title {
-    color: #eee;
-    font-size: 16px;
-    line-height: 1.4;
-    font-weight: 300;
-}
-
-.ec-item .ec-item-desc {
-    color: #bbb;
-    font-family: "PingFangSC-Light";
-}
-
-.ec-itemList .ec-item-select {
-    background: rgba(0, 0, 0, .2);
-
-    .lazy {
-        visibility: visible;
-    }
-
-    .ec-item-icon {
-        &.icon-enter {
-            display: block;
-        }
-    }
-}
-
-.ec-itemList .ec-item-select .ec-item-title {
-    color: #fff;
-
-    &.ec-item-warn {
-        color: #fabb2d;
-    }
-}
-
-.ec-itemList .ec-item-select .ec-item-desc {
-    color: #ccc;
-}
-
-.ec-item .ec-item-warn {
-    color: #fabb2d;
-}
-
-.ec-item .ec-item-tip{
-    position: absolute;
-    right: 0;
-    top: 0;
-    margin-right: 10px;
-    font-size: 14px;
-    line-height: 34px;
-    color:#fff;
-}
-
-.ec-item .ec-item-tip .icon {
-    font-size: 16px;
-    position: relative;
-    top: 3px;
-}
-/* scrollbar styles */
-::-webkit-scrollbar {
-    width: 2px;
-    height: 8px;
-}
-
-::-webkit-scrollbar-button:start,
-::-webkit-scrollbar-button:end {
-    display: none;
-}
-
-::-webkit-scrollbar-track-piece {
-    -webkit-border-radius: 0;
-    background-color: rgba(0, 0, 0, 0);
-}
-
-::-webkit-scrollbar-thumb {
-    width: 50px;
-
-    -webkit-border-radius: 8px;
-    outline: 1px solid #ccc;
-    background-color: rgba(0, 0, 0, .5);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background-color: #999999;
 }

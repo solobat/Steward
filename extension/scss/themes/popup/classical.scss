@@ -1,0 +1,21 @@
+:root {
+    --app-background-color: #fff;
+    --app-width-size: 500px;
+    --search-input-height: 50px;
+    --search-input-value-text-color: #000;
+    --search-input-value-text-size: 22px;
+    --search-results-height: 400px;
+    --search-results-scrollbar-width: 2px;
+    --search-results-scrollbar-color: rgba(0, 0, 0, 0.5);
+    --selected-suggestion-background-color: rgb(209, 209, 209);
+    --selected-suggestion-title-text-color: #000;
+    --selected-suggestion-subtitle-text-color: #000;
+    --highlighted-suggestion-text-color: red;
+    --suggestion-height: 44px;
+    --suggestion-border-color: rgba(209, 209, 209, .1);
+    --suggestion-title-text-color: #000;
+    --suggestion-title-text-size: 14px;
+    --suggestion-subtitle-text-color: #000;
+    --suggestion-subtitle-text-size: 12px;
+}
+

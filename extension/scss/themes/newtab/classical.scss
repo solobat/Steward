@@ -1,0 +1,28 @@
+:root {
+    --app-background-color: rgba(0, 0, 0, .4);
+    --app-width-size: 500px;
+    --search-input-height: 50px;
+    --search-input-value-text-color: #fafafa;
+    --search-input-value-text-size: 26px;
+    --search-results-height: 400px;
+    --search-results-scrollbar-width: 2px;
+    --search-results-scrollbar-color: rgba(0, 0, 0, 0.5);
+    --selected-suggestion-background-color: rgba(0, 0, 0, 0.2);
+    --selected-suggestion-title-text-color: #fff;
+    --selected-suggestion-subtitle-text-color: #ccc;
+    --highlighted-suggestion-text-color: #fabb2d;
+    --suggestion-border-color: rgba(209, 209, 209, .1);
+    --suggestion-height: 48px;
+    --suggestion-title-text-color: #eee;
+    --suggestion-title-text-size: 16px;
+    --suggestion-subtitle-text-color: #bbb;
+    --suggestion-subtitle-text-size: 12px;
+}
+
+.ec-item-title {
+    font-weight: 300;
+}
+
+.ec-item-desc {
+    font-family: "PingFangSC-Light";
+}
