@@ -184,6 +184,8 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                         this.loadThemes().then(() => {
                             this.updateApprItem(this.appearanceItems[0]);
                         });
+                    } else {
+                        this.applyTheme(this.themeMode);
                     }
                 }
             },
@@ -407,9 +409,10 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
 
                 if (theme) {
                     const themeConfig = Object.assign({}, theme);
+                    const wallpaper = this.selectedWallpaper || 'http://www.bing.com/az/hprichbg/rb/MatusevichGlacier_EN-US13620113504_1920x1080.jpg';
 
                     if (mode === 'newtab') {
-                        themeConfig['--app-newtab-background-image'] = 'url(http://www.bing.com/az/hprichbg/rb/MatusevichGlacier_EN-US13620113504_1920x1080.jpg)';
+                        themeConfig['--app-newtab-background-image'] = `url(${wallpaper})`;
                         this.themeContainerStyles = {
                             background: 'var(--app-newtab-background-image) center center / cover no-repeat'
                         };
