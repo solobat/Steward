@@ -232,13 +232,27 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane v-if="extType === 'steward'" label="Appearance" name="appearance">
+            <el-tab-pane v-if="extType === 'steward'" label="Wallpapers" name="wallpapers">
+                <div class="wallpapers-container">
+                    <div class="wallpaper-box">
+                        <div class="wallpaper-add-btn" @click="handleAddWallpaperClick">
+                            <img src="/img/plus.png" alt="">
+                        </div>
+                    </div>
+                    <div v-for="(wallpaper, index) in wallpapers" @click="chooseWallpaper(wallpaper)"
+                        :class="['wallpaper-box', {'is-selected': selectedWallpaper === wallpaper}]">
+                        <img class="wallpaper-img" :ref="`wp${index}`" :src="wallpaper" alt="">
+                        <img v-if="selectedWallpaper === wallpaper" class="selected-icon" src="/img/selected-icon.png" alt="">
+                        <img src="/img/delete-icon.png" alt="" class="delete-wp icon" @click.stop="confirmDeleteWallpaper(wallpaper)">
+                    </div>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane label="Appearance" name="appearance">
                 <el-row>
                     <el-col :span="4">
                         <div class="appearance-items">
                             <div v-for="apprItem in appearanceItems" @click="handleApprItemClick(apprItem)"
                                 :class="['appearance-item', {'is-active': curApprItem ? curApprItem.name === apprItem.name : false}]">
-                                <img :src="apprItem.icon" class="appearance-item-icon" alt="">
                                 <span class="appearance-item-name">{{apprItem.name}}</span>
                             </div>
                         </div>
@@ -246,24 +260,11 @@
                     <el-col :span="20">
                         <div class="appearance-item-panel bg-black">
                             <template v-if="curApprItem">
-                                <div class="wallpapers-container" v-if="curApprItem.name === 'wallpapers'">
-                                    <div class="wallpaper-box">
-                                        <div class="wallpaper-add-btn" @click="handleAddWallpaperClick">
-                                            <img src="/img/plus.png" alt="">
+                                    <div class="themes-container" v-if="curApprItem.name === 'themes'">
+                                        <div class="themes-info">
+                                            TODO
                                         </div>
                                     </div>
-                                    <div v-for="(wallpaper, index) in wallpapers" @click="chooseWallpaper(wallpaper)"
-                                        :class="['wallpaper-box', {'is-selected': selectedWallpaper === wallpaper}]">
-                                        <img class="wallpaper-img" :ref="`wp${index}`" :src="wallpaper" alt="">
-                                        <img v-if="selectedWallpaper === wallpaper" class="selected-icon" src="/img/selected-icon.png" alt="">
-                                        <img src="/img/delete-icon.png" alt="" class="delete-wp icon" @click.stop="confirmDeleteWallpaper(wallpaper)">
-                                    </div>
-                                </div>
-                                <div class="themes-container" v-if="curApprItem.name === 'themes'">
-                                    <div class="themes-info">
-                                        TODO
-                                    </div>
-                                </div>
                             </template>
                         </div>
                     </el-col>

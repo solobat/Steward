@@ -146,6 +146,11 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 }
             }
         },
+
+        created() {
+            this.loadWallpapersIfNeeded();
+        },
+
         mounted: function() {
             if (activeName === 'update') {
                 this.$nextTick(() => {
@@ -312,14 +317,6 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
 
             handleApprItemClick: function(apprItem) {
                 this.curApprItem = apprItem;
-
-                switch (apprItem.name) {
-                    case 'wallpapers':
-                        this.loadWallpapersIfNeeded();
-                        break;
-                    default:
-                        break;
-                }
 
                 _gaq.push(['_trackEvent', 'options_appearance', 'click', apprItem.name]);
             },

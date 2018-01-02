@@ -28,4 +28,4 @@ export const EXTENSION = {
 
 export const alfredTabs = ['Alfred', 'General', 'Plugins', 'Workflows', 'Advanced', 'Help', 'Update'];
 
-export const stewardTabs = ['Steward', 'General', 'Plugins', 'Workflows', 'Appearance', 'Advanced', 'Help', 'Update'];
+export const stewardTabs = ['Steward', 'General', 'Plugins', 'Workflows', 'Wallpapers', 'Appearance', 'Advanced', 'Help', 'Update'];
