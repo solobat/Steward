@@ -353,6 +353,12 @@
     "newtab_newTabTitle_subtitle": {
         "message": "Enter the title you want in the popup box"
     },
+    "newtab_newTabUseFilter_title": {
+        "message": "Frosted glass effect"
+    },
+    "newtab_newTabUseFilter_subtitle": {
+        "message": "Switch to frosted glass effects for new tab"
+    },
     "wallpaper_title": {
         "message": "New Tab operations"
     },

@@ -47,6 +47,10 @@
         window.addEventListener('blur', addClass, false);
     }
 
+    if (window.localStorage.newTabUseFilter) {
+        document.documentElement.className += ' use-filter';
+    }
+
     if (window.localStorage.titleType === 'random') {
         chrome.storage.local.get('titleNotes', function(resp) {
             const notes = resp.titleNotes;

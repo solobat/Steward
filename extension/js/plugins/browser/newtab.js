@@ -33,6 +33,13 @@ const allActions = [
         title: chrome.i18n.getMessage('newtab_newTabTitle_title'),
         desc: chrome.i18n.getMessage('newtab_newTabTitle_subtitle'),
         type: 'string'
+    },
+    {
+        icon,
+        key: 'newTabUseFilter',
+        title: chrome.i18n.getMessage('newtab_newTabUseFilter_title'),
+        desc: chrome.i18n.getMessage('newtab_newTabUseFilter_subtitle'),
+        type: 'boolean'
     }
 ];
 

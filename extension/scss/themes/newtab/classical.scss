@@ -25,8 +25,8 @@ body {
     background: var(--app-newtab-background-image) center center / cover no-repeat fixed;
 }
 
-.main {
-    &.blur {
+.use-filter {
+    .main {
         position: relative;
 
         &::before {

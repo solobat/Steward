@@ -353,6 +353,12 @@
     "newtab_newTabTitle_subtitle": {
         "message": "在弹出框里输入你要的标题"
     },
+    "newtab_newTabUseFilter_title": {
+        "message": "毛玻璃效果"
+    },
+    "newtab_newTabUseFilter_subtitle": {
+        "message": "切换新标签页功能区是否使用毛玻璃效果"
+    },
     "wallpaper_title": {
         "message": "New Tab 壁纸快捷操作"
     },
