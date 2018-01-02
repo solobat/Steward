@@ -1,5 +1,11 @@
 const langZh = [
     {
+        version: 'v3.2.7',
+        detail: `
+            新增主题编辑功能. 
+        `
+    },
+    {
         version: 'v3.2.6',
         detail: `
             修复 Bug.
@@ -183,6 +189,12 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.2.7',
+        detail: `
+            Theme editing features. 
+        `
+    },
     {
         version: 'v3.2.6',
         detail: `
