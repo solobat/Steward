@@ -1,12 +1,6 @@
 @import '../../scss/main.scss';
 @import '../../scss/themes/newtab/classical.scss';
 
-:root {
-    --app-width-size: 560px;
-    --search-input-height: 64px;
-    --search-results-height: 432px;
-}
-
 .box-invisible {
     .main {
         display: none;
