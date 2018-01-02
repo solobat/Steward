@@ -2,6 +2,7 @@
 .main {
     margin: 0 auto;
     width: var(--app-width-size);
+    text-align: left;
 }
 
 .cmdbox {
@@ -85,6 +86,7 @@
     color: var(--suggestion-title-text-color);
     font-size: var(--suggestion-title-text-size);
     line-height: 1.4;
+    font-weight: var(--suggestion-title-text-weight);
 
     &.ec-item-warn {
         color: var(--highlighted-suggestion-text-color);
@@ -94,6 +96,7 @@
 .ec-item-desc {
     color: var(--suggestion-subtitle-text-color);
     font-size: var(--suggestion-subtitle-text-size);
+    font-family: var(--suggestion-subtitle-text-style);
 }
 
 .ec-item {

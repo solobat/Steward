@@ -15,16 +15,10 @@
     --suggestion-height: 48px;
     --suggestion-title-text-color: #eee;
     --suggestion-title-text-size: 16px;
+    --suggestion-title-text-weight: 300;
     --suggestion-subtitle-text-color: #bbb;
     --suggestion-subtitle-text-size: 12px;
-}
-
-.ec-item-title {
-    font-weight: 300;
-}
-
-.ec-item-desc {
-    font-family: "PingFangSC-Light";
+    --suggestion-subtitle-text-style: "PingFangSC-Light";
 }
 
 body {
