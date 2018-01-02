@@ -8,19 +8,6 @@
 </head>
 
 <body>
-    <header class="topbar">
-        <div class="links">
-            <a href="https://github.com/solobat/steward" class="github" target="_blank">
-                <img src="/img/github.png" alt="">
-            </a>
-            <a href="http://bbs.oksteward.com" class="steward_bbs" target="_blank">
-                <img src="/img/bbs.png" alt="">
-            </a>
-            <a href="http://oksteward.com" class="steward" target="_blank">
-                <img src="/img/icon.png" alt="">
-            </a>
-        </div>
-    </header>
     <div id="app" class="steward" v-cloak>
         <el-tabs v-model="activeName" @tab-click="handleClick">
             <el-tab-pane label="General" name="general">
@@ -249,7 +236,7 @@
             </el-tab-pane>
             <el-tab-pane label="Appearance" name="appearance">
                 <el-row>
-                    <el-col :span="4">
+                    <el-col :span="3">
                         <div class="appearance-items">
                             <div v-for="apprItem in appearanceItems" @click="handleApprItemClick(apprItem)"
                                 :class="['appearance-item', {'is-active': curApprItem ? curApprItem.name === apprItem.name : false}]">
@@ -257,14 +244,86 @@
                             </div>
                         </div>
                     </el-col>
-                    <el-col :span="20">
+                    <el-col :span="21">
                         <div class="appearance-item-panel bg-black">
                             <template v-if="curApprItem">
-                                    <div class="themes-container" v-if="curApprItem.name === 'themes'">
-                                        <div class="themes-info">
-                                            TODO
-                                        </div>
+                                <div class="themes-container" :style="themeContainerStyles">
+                                    <div class="themes-info">
+                                        <div class="preview" v-html="previewHtml"></div>
                                     </div>
+                                    <div class="theme-editor">
+                                        <el-form v-if="themeMode" :model="theme" label-width="258px">
+                                            <div>
+                                                <el-button type="primary" @click.native.prevent="handleThemeSave(themeMode)">Apply and Save</el-button>
+                                                <el-button type="warning" @click.native.prevent="handleThemeReset(themeMode)">Reset</el-button>
+                                            </div>
+                                            <div class="theme-field-type">Background Coloring</div>
+                                            <el-form-item label="App:">
+                                                <el-input :type="getColorType(themeMode)" v-model="theme['--app-background-color']" spellcheck="false">
+                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--app-background-color']}">&nbsp;</div>
+                                                </el-input>
+                                            </el-form-item>
+                                            <el-form-item label="Selected Search Suggestion:">
+                                                <el-input :type="getColorType(themeMode)" v-model="theme['--selected-suggestion-background-color']" spellcheck="false">
+                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--selected-suggestion-background-color']}">&nbsp;</div>
+                                                </el-input>
+                                            </el-form-item>
+                                            <el-form-item label="Search Results Scrollbar:">
+                                                <el-input :type="getColorType(themeMode)" v-model="theme['--search-results-scrollbar-color']" spellcheck="false">
+                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--search-results-scrollbar-color']}">&nbsp;</div>
+                                                </el-input>
+                                            </el-form-item>
+
+                                            <div class="theme-field-type">Text Coloring</div>
+                                            <el-form-item label="Search Input:">
+                                                <el-input :type="getColorType(themeMode)" v-model="theme['--search-input-value-text-color']" spellcheck="false">
+                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--search-input-value-text-color']}">&nbsp;</div>
+                                                </el-input>
+                                            </el-form-item>
+                                            <el-form-item label="Selected Search Suggestion Title:">
+                                                <el-input :type="getColorType(themeMode)" v-model="theme['--selected-suggestion-title-text-color']" spellcheck="false">
+                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--selected-suggestion-title-text-color']}">&nbsp;</div>
+                                                </el-input>
+                                            </el-form-item>
+                                            <el-form-item label="Selected Search Suggestion Subtitle:">
+                                                <el-input :type="getColorType(themeMode)" v-model="theme['--selected-suggestion-subtitle-text-color']" spellcheck="false">
+                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--selected-suggestion-subtitle-text-color']}">&nbsp;</div>
+                                                </el-input>
+                                            </el-form-item>
+                                            <el-form-item label="Search Suggestion Title:">
+                                                <el-input :type="getColorType(themeMode)" v-model="theme['--suggestion-title-text-color']" spellcheck="false">
+                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--suggestion-title-text-color']}">&nbsp;</div>
+                                                </el-input>
+                                            </el-form-item>
+                                            <el-form-item label="Search Suggestion Subtitle:">
+                                                <el-input :type="getColorType(themeMode)" v-model="theme['--suggestion-subtitle-text-color']" spellcheck="false">
+                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--suggestion-subtitle-text-color']}">&nbsp;</div>
+                                                </el-input>
+                                            </el-form-item>
+                                            <el-form-item label="Highlighted Suggestion Title:">
+                                                <el-input :type="getColorType(themeMode)" v-model="theme['--highlighted-suggestion-text-color']" spellcheck="false">
+                                                        <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--highlighted-suggestion-text-color']}">&nbsp;</div>
+                                                </el-input>
+                                            </el-form-item>
+
+                                            <div class="theme-field-type">Spacing</div>
+                                            <el-form-item label="Search Results Scrollbar Width:">
+                                                <el-input type="text" v-model="theme['--search-results-scrollbar-width']" spellcheck="false"></el-input>
+                                            </el-form-item>
+
+                                            <div class="theme-field-type">Text Sizing</div>
+                                            <el-form-item label="Search Input:">
+                                                <el-input type="text" v-model="theme['--search-input-value-text-size']" spellcheck="false"></el-input>
+                                            </el-form-item>
+                                            <el-form-item label="Search Suggestion Title:">
+                                                <el-input type="text" v-model="theme['--suggestion-title-text-size']" spellcheck="false"></el-input>
+                                            </el-form-item>
+                                            <el-form-item label="Search Suggestion Subtitle:">
+                                                <el-input type="text" v-model="theme['--suggestion-subtitle-text-size']" spellcheck="false"></el-input>
+                                            </el-form-item>
+                                        </el-form>
+                                    </div>
+                                </div>
                             </template>
                         </div>
                     </el-col>
@@ -293,6 +352,19 @@
                 </div>
             </el-tab-pane>
         </el-tabs>
+        <header class="topbar">
+            <div class="links">
+                <a href="https://github.com/solobat/steward" class="github" target="_blank">
+                    <img src="/img/github.png" alt="">
+                </a>
+                <a href="http://bbs.oksteward.com" class="steward_bbs" target="_blank">
+                    <img src="/img/bbs.png" alt="">
+                </a>
+                <a href="http://oksteward.com" class="steward" target="_blank">
+                    <img src="/img/icon.png" alt="">
+                </a>
+            </div>
+        </header>
     </div>
 </body>
 

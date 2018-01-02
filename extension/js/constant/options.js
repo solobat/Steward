@@ -1,10 +1,10 @@
 
 export const APPEARANCE_ITEMS = [{
-    name: 'wallpapers',
-    icon: '/img/wallpaper-icon.png'
+    name: 'New Tab'
 }, {
-    name: 'themes',
-    icon: '/img/themes-icon.png'
+    name: 'Popup'
+}, {
+    name: 'Page'
 }]
 
 export const DEFAULT_PLUGINS = ['Top Sites', 'Bookmarks', 'Tabs', 'Weather', 'Other', 'Random'].map(name => {

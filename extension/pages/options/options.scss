@@ -1,3 +1,5 @@
+@import '../../scss/main.scss';
+@import '../../scss/themes/popup/classical.scss';
 
 [v-cloak] {
     display: none;
@@ -21,6 +23,7 @@ a {
 }
 
 .topbar {
+    display: none;
     width: 1200px;
     height: 40px;
     margin: 0 auto;
@@ -47,8 +50,20 @@ a {
 }
 
 .steward {
-    width: 1200px;
     margin: 0 auto;
+
+    .el-tab-pane {
+        padding: 15px;
+    }
+
+    .main {
+        box-sizing: border-box;
+        margin: 0;
+    
+        * {
+            box-sizing: inherit;
+        }
+    }
 }
 
 .steward .el-tabs__header {
@@ -63,7 +78,7 @@ a {
 .plugin-list,
 .plugin-editor {
     height: 600px;
-    overflow: scroll;
+    overflow-y: auto;
 }
 
 .bg-black {
@@ -185,14 +200,57 @@ a {
 
 .appearance-item-panel {
     height: 600px;
-    overflow: scroll;
+}
+
+.themes-container {
+    display: flex;
+    height: 600px;
+    padding: 15px;
+    box-sizing: border-box;
 }
 
 .themes-info {
-    margin-top: 24px;
     font-size: 16px;
     color: #fff;
     text-align: center;
+}
+
+.theme-editor {
+    flex: 1;
+    margin-left: 15px;
+    background: #333;
+    color: #fff;
+    height: 570px;
+    overflow: auto;
+
+    .el-form {
+        margin: 12px;
+    }
+
+    .el-form-item {
+        margin-bottom: 6px;
+    }
+
+    .el-form-item__label {
+        color: #fff;
+        text-align: left;
+    }
+
+    .el-input {
+        width: 180px;
+    }
+
+    .theme-field-type {
+        margin-top: 15px;
+        margin-bottom: 10px;
+        padding-bottom: 2px;
+        border-bottom: 2px solid #fff;
+        font-size: 20px;
+    }
+
+    .color-indicator {
+        border: 1px solid #000;
+    }
 }
 
 .changelog {
