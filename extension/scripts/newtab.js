@@ -1,4 +1,34 @@
 (function() {
+    function getBg() {
+        return localStorage.getItem('wallpaper');
+    }
+
+    function initTheme(mode) {
+        const themesStr = window.localStorage.getItem('themes');
+
+        if (themesStr) {
+            const themes = JSON.parse(themesStr);
+
+            if (themes[mode]) {
+                let cssText = '';
+                const theme = themes[mode];
+                const bg = getBg();
+
+                if (bg) {
+                    theme['--app-newtab-background-image'] = `url(${bg})`;
+                }
+
+                for (const prop in theme) {
+                    cssText += `${prop}: ${theme[prop]};`;
+                }
+
+                document.querySelector('html').style.cssText = cssText;
+            }
+        }
+    }
+
+    initTheme('newtab');
+
     if (window.localStorage.visibleOnlyFocued) {
         if (!document.hasFocus()) {
             addClass();
