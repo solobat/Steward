@@ -101,6 +101,14 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
         activeName = fromTab.toLowerCase();
     }
 
+    let appearanceItems;
+
+    if (extType === 'steward') {
+        appearanceItems = CONST.OPTIONS.APPEARANCE_ITEMS;
+    } else {
+        appearanceItems = CONST.OPTIONS.APPEARANCE_ITEMS.filter(item => item.name !== 'New Tab');
+    }
+
     new Vue({
         el: '#app',
         data: function() {
@@ -111,7 +119,7 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 currentPlugin: null,
                 currentWorkflow: null,
                 curApprItem: null,
-                appearanceItems: CONST.OPTIONS.APPEARANCE_ITEMS,
+                appearanceItems,
                 wallpapers: [],
                 selectedWallpaper: window.localStorage.getItem(CONST.STORAGE.WALLPAPER) || '',
                 changelog,
