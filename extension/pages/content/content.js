@@ -16,7 +16,7 @@ const App = {
         const popupurl = chrome.extension.getURL('popup.html');
         const html = `
             <div id="steward-main" class="steward-main">
-                <iframe style="display:none;" id="steward-iframe" src="${popupurl}" name="steward-box" width="510" height="460" frameborder="0"></iframe>
+                <iframe style="display:none;" id="steward-iframe" src="${popupurl}" name="steward-box" width="530" height="480" frameborder="0"></iframe>
             </div>
         `;
 
