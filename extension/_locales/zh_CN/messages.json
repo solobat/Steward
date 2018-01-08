@@ -365,6 +365,18 @@
     "wallpaper_subtitle": {
         "message": "query 为空时，可以保存、刷新，不为空时可以将 query 作为新的壁纸添加到库中"
     },
+    "wallpaper_wp_title": {
+        "message": "New Tab 壁纸快捷操作"
+    },
+    "wallpaper_wp_subtitle": {
+        "message": "query 为空时，可以保存、刷新，不为空时可以将 query 作为新的壁纸添加到库中"
+    },
+    "wallpaper_wps_title": {
+        "message": "选择当前壁纸"
+    },
+    "wallpaper_wps_subtitle": {
+        "message": "查询所有壁纸，Enter 设定为当前"
+    },
     "wallpaper_action_save_title": {
         "message": "保存"
     },

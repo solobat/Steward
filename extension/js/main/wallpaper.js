@@ -155,6 +155,10 @@ function bindEvents() {
         _gaq.push(['_trackEvent', 'wallpaper', 'click', 'refresh']);
     });
 
+    $body.on('wallpaper:update', function(event, url) {
+        updateWallpaper(url, true);
+    });
+
     $saveBtn.on('click', function() {
         saveWallpaperLink(curUrl).then(() => {
             Toast.success('save successfully');

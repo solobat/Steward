@@ -365,6 +365,18 @@
     "wallpaper_subtitle": {
         "message": "If query empty，you can save or refresh; If no empty, press Enter will add the query as a wallpaper link into your library"
     },
+    "wallpaper_wp_title": {
+        "message": "New Tab operations"
+    },
+    "wallpaper_wp_subtitle": {
+        "message": "If query empty，you can save or refresh; If no empty, press Enter will add the query as a wallpaper link into your library"
+    },
+    "wallpaper_wps_title": {
+        "message": "Set the selected wallpaper as the current wallpaper"
+    },
+    "wallpaper_wps_subtitle": {
+        "message": "Search wallpapers, Press `Enter` to set as the current wallpaper"
+    },
     "wallpaper_action_save_title": {
         "message": "Save"
     },

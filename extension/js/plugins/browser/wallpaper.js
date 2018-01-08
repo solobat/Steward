@@ -8,22 +8,20 @@ import $ from 'jquery'
 import Toast from 'toastr'
 import { saveWallpaperLink, getDataURI } from '../../helper/wallpaper'
 import { MODE } from '../../constant/base'
+import STORAGE from '../../constant/storage'
+import util from '../../common/util'
+import browser from 'webextension-polyfill'
 
 const name = 'wallpaper';
-const key = 'wp';
-const version = 2;
+const keys = [
+    { key: 'wp' },
+    { key: 'wps' }
+];
+const version = 3;
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/wallpaper-icon.png');
 const title = chrome.i18n.getMessage(`${name}_title`);
-const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
-const commands = [{
-    key,
-    type,
-    title,
-    subtitle,
-    icon,
-    editable: true
-}];
+const commands = util.genCommands(name, icon, keys, type);
 const allActions = [
     {
         icon: chrome.extension.getURL('img/save-red.png'),
@@ -83,13 +81,63 @@ function setup() {
 
 setup();
 
-function onInput(query) {
-    that = this;
+function isNewTab() {
+    return window.stewardCache.mode === MODE.NEWTAB;
+}
 
-    if (!query && window.stewardCache.mode === MODE.NEWTAB) {
+function isInPage() {
+    return window.parent !== window;
+}
+
+function handleWpInput(query) {
+    if (!query && isNewTab()) {
         return Promise.resolve(actions);
     } else {
         return Promise.resolve(tips);
+    }
+}
+
+function fixImgUrl(rawUrl) {
+    const inPage = isInPage();
+    let url = rawUrl;
+
+    if (inPage && url.indexOf('http://') !== -1) {
+        url = url.replace('http://', 'https://');
+    }
+
+    return url;
+}
+
+function handleWpsInput(query, command) {
+    return browser.storage.sync.get(STORAGE.WALLPAPERS).then(resp => {
+        let list = resp[STORAGE.WALLPAPERS];
+
+        if (query) {
+            list = list.filter(item => item.indexOf(query) !== -1);
+        }
+
+
+        return list.map(item => {
+            const url = fixImgUrl(item);
+
+            return {
+                icon: url,
+                title: item,
+                url: item,
+                desc: command.subtitle
+            };
+        });
+    });
+}
+
+function onInput(query, command) {
+    that = this;
+    const orkey = command.orkey;
+
+    if (orkey === 'wp') {
+        return handleWpInput(query);
+    } else if (orkey === 'wps') {
+        return handleWpsInput(query, command);
     }
 }
 
@@ -133,11 +181,31 @@ function saveWallpaper(link, command) {
     }
 }
 
-function onEnter(item, command, query) {
+function handleWpEnter(item, query, command) {
     if (query) {
         return saveWallpaper(query, command);
     } else {
         handleWallpaperAction(item);
+    }
+}
+
+function handleWpsEnter(item) {
+    const url = item.url;
+
+    if (isNewTab()) {
+        $('body').trigger('wallpaper:update', url);
+    } else {
+        window.localStorage.setItem(STORAGE.WALLPAPER, url);
+    }
+}
+
+function onEnter(item, command, query) {
+    const orkey = command.orkey;
+
+    if (orkey === 'wp') {
+        return handleWpEnter(item, query, command);
+    } else if (orkey === 'wps') {
+        return handleWpsEnter(item, command);
     }
 }
 
