@@ -422,6 +422,18 @@
     "workflow_subtitle": {
         "message": "exec the commands in workflow"
     },
+    "workflow_wf_title": {
+        "message": "workflows"
+    },
+    "workflow_wf_subtitle": {
+        "message": "exec the commands in workflow"
+    },
+    "workflow_wfe_title": {
+        "message": "edit workflow"
+    },
+    "workflow_wfe_subtitle": {
+        "message": "edit the selected workflow，press Enter to delete while query is empty， otherwise add the query to the workflow's content"
+    },
     "general_useInContentPage": {
         "message": "use in every page"
     },

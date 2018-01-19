@@ -425,6 +425,18 @@
     "workflow_subtitle": {
         "message": "执行自定义的系列命令"
     },
+    "workflow_wf_title": {
+        "message": "工作流"
+    },
+    "workflow_wf_subtitle": {
+        "message": "执行自定义的系列命令"
+    },
+    "workflow_wfe_title": {
+        "message": "编辑工作流"
+    },
+    "workflow_wfe_subtitle": {
+        "message": "选择某条工作流以后，query 为空时 Enter 删除， query 不为空时 Enter 加入到 workflow"
+    },
     "general_useInContentPage": {
         "message": "在网页中启动"
     },

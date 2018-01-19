@@ -1,5 +1,5 @@
 /**
- * @description list the most visit websites
+ * @description run or edit workflow
  * @author tomasy
  * @email solopea@gmail.com
  */
@@ -7,22 +7,17 @@ import util from '../../common/util'
 import _ from 'underscore'
 
 const chrome = window.chrome;
-const version = 2;
+const version = 3;
 const name = 'workflow';
-const key = 'wf';
+const keys = [
+    { key: 'wf', workflow: true },
+    { key: 'wfe', shiftKey: true }
+];
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/workflow.png');
 const title = chrome.i18n.getMessage(`${name}_title`);
-const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
-const commands = [{
-    key,
-    type,
-    title,
-    subtitle,
-    icon,
-    workflow: true,
-    editable: true
-}];
+const commands = util.genCommands(name, icon, keys, type);
+let curWid;
 
 function getWorkflows(query) {
     return new Promise(resolve => {
@@ -36,41 +31,197 @@ function getWorkflows(query) {
     });
 }
 
-const dataFormat = (item, index) => {
-    return {
-        key: 'workflow',
-        id: index,
-        wid: item.id,
-        icon,
-        times: item.times || 0,
-        title: item.title,
-        desc: item.desc,
-        content: item.content
-    }
+function getWorkflow(wid) {
+    return new Promise(resolve => {
+        chrome.runtime.sendMessage({
+            action: 'getWorkflow',
+            data: wid
+        }, ({ data = {} }) => {
+            resolve(data);
+        });
+    });
+}
+
+const dataFormat = (list, command) => {
+    return list.map((item, index) => {
+        const { orkey } = command;
+        const ret = {
+            id: index,
+            wid: item.id,
+            icon,
+            times: item.times || 0,
+            title: item.title,
+            content: item.content
+        };
+
+        if (orkey === 'wf') {
+            Object.assign(ret, {
+                key: 'workflow',
+                desc: item.desc
+            });
+        } else if (orkey === 'wfe') {
+            Object.assign(ret, {
+                key: 'plugin',
+                desc: command.subtitle
+            });
+        }
+
+        return ret;
+    });
 };
 
-function onInput(query, command) {
+function queryWorkflows(query, command) {
     return getWorkflows(query).then((list = []) => {
         if (list.length) {
-            return _.sortBy(list.map(dataFormat), 'times').reverse();
+            return _.sortBy(dataFormat(list, command), 'times').reverse();
         } else {
             return util.getDefaultResult(command);
         }
     });
 }
 
-function onEnter(item) {
+function onInput(query, command) {
+    const { orkey } = command;
+
+    if (orkey === 'wf') {
+        return queryWorkflows(query, command);
+    } else if (orkey === 'wfe') {
+        if (!curWid) {
+            return queryWorkflows('', command);
+        } else {
+            getWorkflow(curWid).then(model => {
+                listWorkflowLines(this, model.id, model.content);
+            });
+        }
+    }
+}
+
+function handleWfEnter(item) {
+    return updateWorkflow({
+        id: item.wid,
+        times: item.times + 1
+    });
+}
+
+function parseContent(content) {
+    return content.split('\n')
+        .filter(line => line && !line.match(/^[\s\t]+$/))
+}
+
+function listWorkflowLines(box, wid, content) {
+    const lines = parseContent(content);
+
+    const backToWorkflow = [{
+        key: 'plugin',
+        icon,
+        action: 'backto',
+        title: '../'
+    }];
+    const list = backToWorkflow.concat(lines.map(line => {
+        return {
+            key: 'plugin',
+            icon,
+            wid,
+            title: line
+        };
+    }));
+
+    curWid = wid;
+    box.showItemList(list);
+}
+
+function handleWorkflowEditEnter(box, item, command) {
+    listWorkflowLines(box, item.wid, item.content);
+}
+
+function updateWorkflow(attrs) {
     return new Promise(resolve => {
         chrome.runtime.sendMessage({
             action: 'updateWorkflow',
-            data: {
-                id: item.wid,
-                times: item.times + 1
-            }
-        }, () => {
-            resolve('');
+            data: attrs
+        }, resp => {
+            resolve(resp.data);
         });
     });
+}
+
+function addLineToWorkflow(query, item, list) {
+    const lines = list.filter(line => !line.action).map(line => line.title);
+
+    lines.push(query);
+
+    return updateWorkflow({
+        id: curWid,
+        content: lines.join('\n')
+    });
+}
+
+function offsetWorkflowLine(item, list) {
+    const realList = list.filter(line => !line.action);
+    const index = realList.indexOf(item);
+
+    if (index > 0) {
+        realList.splice(index, 1);
+        realList.splice(index - 1, 0, item);
+
+        const lines = realList.map(line => line.title);
+
+        return updateWorkflow({
+            id: curWid,
+            content: lines.join('\n')
+        });
+    }
+}
+
+function deleteWorkflowLine(item, list) {
+    const lines = list.filter(line => !line.action && line.title !== item.title).map(line => line.title);
+
+    return updateWorkflow({
+        id: curWid,
+        content: lines.join('\n')
+    });
+}
+
+function handleWorkflowLineEditEnter(box, item, command, query, shiftKey, list) {
+    if (!query && item.action === 'backto') {
+        curWid = '';
+
+        return Promise.resolve(`${command.orkey} `);
+    } else {
+        let result;
+
+        if (query) {
+            result = addLineToWorkflow(query, item, list);
+        } else {
+            if (shiftKey) {
+                result = offsetWorkflowLine(item, list);
+            } else {
+                result = deleteWorkflowLine(item, list);
+            }
+        }
+
+        return result.then(() => {
+            return `${command.key} `;
+        });
+    }
+}
+
+function handleWfeEnter(box, item, command, query, shiftKey, list) {
+    if (!curWid) {
+        return handleWorkflowEditEnter(box, item, command);
+    } else {
+        return handleWorkflowLineEditEnter(box, item, command, query, shiftKey, list);
+    }
+}
+
+function onEnter(item, command, query, shiftKey, list) {
+    const { orkey } = command;
+
+    if (orkey === 'wf') {
+        return handleWfEnter(this, item);
+    } else if (orkey === 'wfe') {
+        return handleWfeEnter(this, item, command, query, shiftKey, list);
+    }
 }
 
 export default {
