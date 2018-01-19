@@ -130,8 +130,10 @@ function listWorkflowLines(box, wid, content) {
     box.showItemList(list);
 }
 
-function handleWorkflowEditEnter(box, item, command) {
+function handleWorkflowEditEnter(box, item) {
     listWorkflowLines(box, item.wid, item.content);
+
+    return Promise.resolve('');
 }
 
 function updateWorkflow(attrs) {
