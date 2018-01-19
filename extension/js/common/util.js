@@ -51,7 +51,7 @@ const simpleCommand = ({key, orkey}) => {
 
 function genCommands(name, icon, items, type) {
     return items.map(item => {
-        const {key, editable, keyname, allowBatch, shiftKey} = item;
+        const {key, editable, keyname, allowBatch, shiftKey, workflow} = item;
 
         return {
             key: item.key,
@@ -61,6 +61,7 @@ function genCommands(name, icon, items, type) {
             subtitle: chrome.i18n.getMessage(`${name}_${(keyname || key)}_subtitle`),
             icon,
             allowBatch,
+            workflow,
             shiftKey,
             editable: editable !== false
         };
