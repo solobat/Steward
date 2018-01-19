@@ -48,6 +48,12 @@ const workflowHelper = {
         return Workflows.fetch();
     },
 
+    getWorkflow(id) {
+        return Workflows.findWhere({
+            id
+        });
+    },
+
     getWorkflows: function() {
         return Workflows.toJSON();
     },
@@ -90,6 +96,9 @@ function addEvents() {
                     msg: 'get urls ok',
                     data: blockedUrls
                 });
+                break;
+            case 'getWorkflow':
+                resp({ msg: 'getWorkflow', data: workflowHelper.getWorkflow(req.data) });
                 break;
             case 'getWorkflows':
                 resp({ msg: 'getWorkflows', data: workflowHelper.getWorkflows() });
