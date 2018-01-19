@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.2.8',
+        detail: `
+            Page 模式主题优化;<br>
+            wps 命令 — 快速选择壁纸;<br>
+            wfe 命令 - 快速操作 workflow 里的单条命令.
+        `
+    },
+    {
         version: 'v3.2.7',
         detail: `
             新增主题编辑功能。<br>
@@ -190,6 +198,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.2.8',
+        detail: `
+            Page mode theme optimization; <br>
+            wps command - Quick selection of wallpaper; <br>
+            wfe command - Quick operation of a single command in the workflow. 
+        `
+    },
     {
         version: 'v3.2.7',
         detail: `
