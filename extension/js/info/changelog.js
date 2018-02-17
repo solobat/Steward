@@ -1,5 +1,12 @@
 const langZh = [
     {
+        version: 'v3.2.9',
+        detail: `
+            添加随机壁纸开关选项;
+            优化 pocket 插件列表显示逻辑。 
+        `
+    },
+    {
         version: 'v3.2.8',
         detail: `
             Page 模式主题优化;<br>
@@ -198,6 +205,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.2.9',
+        detail: `
+            Add enable random wallpaper option;
+            Optimize pocket list。 
+        `
+    },
     {
         version: 'v3.2.8',
         detail: `
