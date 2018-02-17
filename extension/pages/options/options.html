@@ -103,6 +103,16 @@
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
+                            <el-form-item :label="i18nTexts.general.enableRandomWallpaper">
+                                <el-switch
+                                    v-model="config.general.enableRandomWallpaper"
+                                    on-color="#20a0ff">
+                                </el-switch>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="12">
                             <el-form-item :label="i18nTexts.general.speedFirst">
                                 <el-switch
                                     v-model="config.general.speedFirst"

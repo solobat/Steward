@@ -9,5 +9,6 @@ export default {
     maxOperandsNum: 5,
     autoResizeBoxFontSize: false,
     wallpaperSources: ['bing'],
-    autoSelectByMouse: false
+    autoSelectByMouse: false,
+    enableRandomWallpaper: true
 }

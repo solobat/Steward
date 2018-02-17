@@ -476,6 +476,9 @@
     "general_autoSelectByMouse": {
         "message": "Select the item by mouse"
     },
+    "general_enableRandomWallpaper": {
+        "message": "Enable random wallpaper"
+    },
     "tips_bm_shift": {
         "message": "While holding shift, items marked with ⇧ are opened in batches"
     },

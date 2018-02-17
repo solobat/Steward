@@ -181,22 +181,25 @@ export function init() {
     // restore
     const lastDate = new Date(window.localStorage.getItem(CONST.STORAGE.LASTDATE) || Number(new Date()));
     const defaultWallpaper = window.localStorage.getItem(CONST.STORAGE.WALLPAPER);
+    const enableRandomWallpaper = window.stewardCache.config.general.enableRandomWallpaper;
 
     $saveBtn = $('#j-save-wplink');
 
     window.localStorage.setItem(CONST.STORAGE.LASTDATE, date.format());
 
-    if (date.isNewDate(new Date(), lastDate)) {
-        refreshWallpaper(true);
-    } else if (!defaultWallpaper) {
+    if (!defaultWallpaper) {
         refreshWallpaper();
     } else {
-        browser.storage.sync.get(CONST.STORAGE.WALLPAPERS).then(resp => {
-            const list = resp[CONST.STORAGE.WALLPAPERS] || [];
-            const isNew = list.indexOf(defaultWallpaper) === -1;
+        if (date.isNewDate(new Date(), lastDate) && enableRandomWallpaper) {
+            refreshWallpaper(true);
+        } else {
+            browser.storage.sync.get(CONST.STORAGE.WALLPAPERS).then(resp => {
+                const list = resp[CONST.STORAGE.WALLPAPERS] || [];
+                const isNew = list.indexOf(defaultWallpaper) === -1;
 
-            updateWallpaper(defaultWallpaper, false, isNew);
-        });
+                updateWallpaper(defaultWallpaper, false, isNew);
+            });
+        }
     }
 
     bindEvents();
@@ -204,5 +207,9 @@ export function init() {
     api.picsum.refreshPicsumList();
 
     // set interval
-    intervalTimer = setInterval(refreshWallpaper, CONST.NUMBER.WALLPAPER_INTERVAL);
+    if (enableRandomWallpaper) {
+        intervalTimer = setInterval(refreshWallpaper, CONST.NUMBER.WALLPAPER_INTERVAL);
+    } else {
+        console.log('disable random');
+    }
 }

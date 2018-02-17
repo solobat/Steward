@@ -470,6 +470,9 @@
     "general_wallpaperSources": {
         "message": "壁纸来源"
     },
+    "general_enableRandomWallpaper": {
+        "message": "随机应用壁纸"
+    },
     "tips_maxOperandsNum": {
         "message": "设置某些插件在shift + enter/click操作时所处理的最大条目数"
     },
