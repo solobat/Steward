@@ -5,13 +5,14 @@
  */
 
 import $ from 'jquery'
+import _ from 'underscore'
 import browser from 'webextension-polyfill'
 import Auth from '../../common/auth'
 import conf from '../../conf/pocket_conf'
 import util from '../../common/util'
 
 const auth = new Auth(conf);
-const version = 3;
+const version = 4;
 const name = 'pocket';
 const key = 'po';
 const type = 'keyword';
@@ -95,7 +96,9 @@ function query(str, callback) {
     const params = {
         consumer_key: auth.consumer_key,
         access_token: auth.get(auth.accessTokenName),
-        count: 20
+        count: 20,
+        state: 'unread',
+        sort: 'newest'
     };
 
     if (str) {
@@ -116,7 +119,7 @@ function query(str, callback) {
                 item.id = i;
                 list.push(item);
             }
-            callback(list);
+            callback(_.sortBy(list, 'time_added').reverse());
         }
     });
 }
