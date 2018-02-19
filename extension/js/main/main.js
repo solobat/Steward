@@ -663,7 +663,9 @@ function classifyPlugins(pluginsData) {
         }
     });
 
-    if (inContent && websitesMap[window.parentHost]) {
+    if (window.matchedSite) {
+        searchContexts.push(window.matchedSite);
+    } else if (inContent && websitesMap[window.parentHost]) {
         searchContexts.push(websitesMap[window.parentHost]);
     }
 }

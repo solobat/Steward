@@ -229,6 +229,82 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
+            <el-tab-pane label="Websites" name="websites">
+                <el-row>
+                    <el-col :span="6">
+                        <div class="grid-content plugin-list">
+                            <div class="plugin-searchbar">
+                                <el-input placeholder="Search" icon="search" v-model="websiteSearchText">
+                                </el-input>
+                            </div>
+                            <div class="button-bar">
+                                <el-button type="primary" icon="plus" @click="handleNewWebsiteClick">New Website</el-button>
+                            </div>
+                            <div class="plugin-item website-item" v-for="website in filteredWebsites" @click="handleWebsiteClick(website)">
+                                <span class="plugin-name">{{website.title}}</span>
+                            </div>
+                        </div>
+                    </el-col>
+                    <el-col :span="18">
+                        <div class="grid-content bg-black plugin-editor">
+                            <div v-if="currentWebsite" class="plugin-editor-container">
+                                <div class="plugin-editor-header">
+                                    <div class="plugin-editor-text">
+                                        <p class="plugin-editor-title">Website - {{currentWebsite.title}}</p>
+                                    </div>
+                                </div>
+                                <div class="plugin-editor-config">
+                                    <el-form style="margin: 20px;padding: 12px; min-height: 150px;" ref="websiteForm" :model="currentWebsite" :rules="websiteFormRuels" label-width="200px">
+                                        <el-form-item label="Title" prop="title">
+                                            <el-input type="text" style="width: 300px;" v-model="currentWebsite.title">
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="Host" prop="host">
+                                            <el-input type="text" style="width: 300px;" v-model="currentWebsite.host">
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="Site Icon">
+                                            <el-input type="text" style="width: 300px;" v-model="currentWebsite.icon" placeholder="https://baidu.com/favicon.ico">
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="Paths">
+                                            <div class="paths-container">
+                                                <el-row>
+                                                    <el-col :span="6">
+                                                        <el-input v-model="newPath.title" placeholder="Title" @keyup.enter.native="handleNewPathAddClick"></el-input>
+                                                    </el-col>
+                                                    <el-col :span="10" :offset="1">
+                                                        <el-input v-model="newPath.urlPattern" placeholder="URL Pattern" @keyup.enter.native="handleNewPathAddClick"></el-input>
+                                                    </el-col>
+                                                    <el-col :span="4" :offset="1">
+                                                        <el-button @click="handleNewPathAddClick" type="primary" icon="plus"></el-button>
+                                                    </el-col>
+                                                </el-row>
+                                                <el-row v-for="(path, index) in this.currentWebsite.paths" :key="index">
+                                                    <el-col :span="6">
+                                                        <el-input v-model="path.title" placeholder="Title" :disabled="!path.editable"></el-input>
+                                                    </el-col>
+                                                    <el-col :span="10" :offset="1">
+                                                        <el-input v-model="path.urlPattern" placeholder="URL Pattern" :disabled="!path.editable"></el-input>
+                                                    </el-col>
+                                                    <el-col :span="4" :offset="1">
+                                                        <el-button @click="path.editable = !path.editable" type="primary" :icon="path.editable ? 'check' : 'edit'"></el-button>
+                                                        <el-button @click="handleNewPathDeleteClick(index)" type="primary" icon="delete"></el-button>
+                                                    </el-col>
+                                                </el-row>
+                                            </div>
+                                        </el-form-item>
+                                        <el-form-item>
+                                            <el-button type="primary" @click.native.prevent="handleWebsiteSubmit">Save</el-button>
+                                            <el-button v-if="currentWebsite.id" type="warning" @click.native.prevent="handleWebsiteDelete(currentWebsite.id)">Delete</el-button>
+                                        </el-form-item>
+                                    </el-form>
+                                </div>
+                            </div>
+                        </div>
+                    </el-col>
+                </el-row>
+            </el-tab-pane>
             <el-tab-pane v-if="extType === 'steward'" label="Wallpapers" name="wallpapers">
                 <div class="wallpapers-container">
                     <div class="wallpaper-box">

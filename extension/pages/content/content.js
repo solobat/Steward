@@ -82,6 +82,10 @@ const App = {
                 this.closeBox();
             } else if (action === 'boxInited') {
                 this.handleBoxInited();
+            } else if (action === 'command') {
+                if (event.data.info.custom) {
+                    window.location.href = event.data.info.path;
+                }
             }
         });
 

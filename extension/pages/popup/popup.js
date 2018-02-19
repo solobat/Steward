@@ -2,6 +2,7 @@ import './popup.scss'
 import extension from '../../js/main/main'
 import keyboardJS from 'keyboardjs'
 import { MODE } from '../../js/constant/base'
+import { createWebsites } from '../../js/helper/websites'
 
 if (window.parent === window) {
     extension(MODE.POPUP);
@@ -14,7 +15,14 @@ window.addEventListener('message', function(event) {
         if (event.data.action === 'show') {
             changeBoxStatus(false);
         } else {
-            initForContentPage(event.source, event.data.lazy, event.data.host);
+            createWebsites().then(sites => {
+                const site = sites.find(item => {
+                    return item.host === event.data.host;
+                });
+
+                window.matchedSite = site;
+                initForContentPage(event.source, event.data.lazy, event.data.host);
+            });
         }
     }
 });

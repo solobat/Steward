@@ -15,6 +15,7 @@ import { restoreConfig } from '../../js/common/config'
 import { saveWallpaperLink } from '../../js/helper/wallpaper'
 import previewHtml from './preview.html'
 import * as defaultThemems from '../../js/conf/themes'
+import WebsitesMixin from './mixins/websites'
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -182,6 +183,10 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 this.applyTheme(newMode);
             }
         },
+
+        mixins: [
+            WebsitesMixin
+        ],
 
         methods: {
             initTab(tabname) {
