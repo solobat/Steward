@@ -17,6 +17,9 @@ export default {
                 ],
                 host: [
                     { type: 'string', required: true, trigger: 'change' }
+                ],
+                paths: [
+                    { type: 'array', required: true, trigger: 'change' }
                 ]
             }
         };
