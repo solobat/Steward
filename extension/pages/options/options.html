@@ -253,7 +253,7 @@
                                         <p class="plugin-editor-title">Website - {{currentWebsite.title}}</p>
                                     </div>
                                 </div>
-                                <div class="plugin-editor-config">
+                                <div class="plugin-editor-config" style="max-height: 560px; overflow-y: auto;">
                                     <el-form style="margin: 20px;padding: 12px; min-height: 150px;" ref="websiteForm" :model="currentWebsite" :rules="websiteFormRuels" label-width="200px">
                                         <el-form-item label="Title" prop="title">
                                             <el-input type="text" style="width: 300px;" v-model="currentWebsite.title">
@@ -267,7 +267,7 @@
                                             <el-input type="text" style="width: 300px;" v-model="currentWebsite.icon" placeholder="https://baidu.com/favicon.ico">
                                             </el-input>
                                         </el-form-item>
-                                        <el-form-item label="Paths" prop="paths">
+                                        <el-form-item label="Paths">
                                             <div class="paths-container">
                                                 <el-row>
                                                     <el-col :span="6">
@@ -293,6 +293,11 @@
                                                     </el-col>
                                                 </el-row>
                                             </div>
+                                        </el-form-item>
+                                        <el-form-item label="Navs">
+                                            <el-col :span="17">
+                                                <el-input type="textarea" :rows="2" autosize placeholder="Page navigation css selector, split with `,`" v-model="currentWebsite.navs"></el-input>
+                                            </el-col>
                                         </el-form-item>
                                         <el-form-item>
                                             <el-button type="primary" @click.native.prevent="handleWebsiteSubmit">Save</el-button>

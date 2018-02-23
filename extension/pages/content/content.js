@@ -51,6 +51,12 @@ const App = {
         }, 25);
     },
 
+    postToIframe(msg) {
+        const iframeWindow = document.getElementById('steward-iframe').contentWindow;
+
+        iframeWindow.postMessage(msg, '*');
+    },
+
     closeBox() {
         this.$iframe.hide();
         this.isOpen = false;
@@ -60,6 +66,24 @@ const App = {
         // don't need to get the focus while inited
         if (!this.isLazy && document.activeElement === this.$iframe[0]) {
             document.activeElement.blur();
+        }
+    },
+
+    handleQueryNavs(event) {
+        if (event.data.selectors) {
+            const items = $.makeArray($(event.data.selectors).filter('a')).map(elem => {
+                return {
+                    name: elem.text,
+                    path: elem.getAttribute('href')
+                }
+            });
+
+            this.postToIframe({
+                action: 'navs',
+                navs: items.filter(item => {
+                    return item.name && item.path && item.path.indexOf('javascript:') === -1
+                })
+            });
         }
     },
 
@@ -86,6 +110,8 @@ const App = {
                 if (event.data.info.custom) {
                     window.location.href = event.data.info.path;
                 }
+            } else if (action === 'queryNavs') {
+                this.handleQueryNavs(event);
             }
         });
 

@@ -1,5 +1,6 @@
 import util from '../common/util'
 import { WebsiteList } from '../collection/website'
+import $ from 'jquery'
 
 const websiteList = new WebsiteList();
 
@@ -30,12 +31,39 @@ function handlePaths(paths) {
 }
 
 export class Website {
-    constructor(options) {
+    constructor(options, parentWindow) {
         this.name = options.name;
         this.type = 'search';
         this.icon = options.icon;
         this.host = options.host;
+        this.parentWindow = parentWindow;
+        this.navs = options.navs || 'nav ul li a';
         this.paths = handlePaths(options.paths, options.deps);
+        this.bindEvents();
+        this.findNavs();
+    }
+
+    bindEvents() {
+        window.addEventListener('message', event => {
+            const { data } = event;
+
+            if (data.action === 'navs') {
+                if (event.data.navs.length) {
+                    this.paths = this.paths.concat(event.data.navs);
+                }
+            }
+        });
+    }
+
+    findNavs() {
+        const navSelectors = this.navs.trim();
+
+        if (navSelectors) {
+            this.parentWindow.postMessage({
+                action: 'queryNavs',
+                selectors: navSelectors
+            }, '*');
+        }
     }
 
     onInput(text) {
@@ -60,10 +88,12 @@ export class Website {
     }
 }
 
-export function createWebsites() {
+export function createWebsites(parentWindow, theHost) {
     return helper.init().then(sites => {
-        return sites.map(site => {
-            return new Website(site);
+        return sites.filter(site => {
+            return site.host === theHost;
+        }).map(site => {
+            return new Website(site, parentWindow);
         });
     });
 }

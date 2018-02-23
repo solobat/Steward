@@ -17,9 +17,6 @@ export default {
                 ],
                 host: [
                     { type: 'string', required: true, trigger: 'change' }
-                ],
-                paths: [
-                    { type: 'array', required: true, trigger: 'change' }
                 ]
             }
         };
@@ -58,7 +55,8 @@ export default {
                 title: 'New Website',
                 host: '',
                 icon: '',
-                paths: []
+                paths: [],
+                navs: 'nav ul li a'
             };
         },
 
