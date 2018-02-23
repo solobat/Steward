@@ -116,7 +116,7 @@ export default {
             const data = this.handleWebsiteBeforeSave();
             const website = websiteHelper.save(data);
 
-            this.afterSubmit(website.toJSON());
+            this.afterWebsiteSubmit(website.toJSON());
             this.$message('Save successfully!');
         },
 
@@ -124,7 +124,7 @@ export default {
             this.websites = websiteHelper.getWebsiteList();
         },
 
-        afterSubmit(website) {
+        afterWebsiteSubmit(website) {
             this.refreshWebsites();
             this.currentWebsite = website;
         },
