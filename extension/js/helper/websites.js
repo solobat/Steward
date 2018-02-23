@@ -91,7 +91,7 @@ export class Website {
 export function createWebsites(parentWindow, theHost) {
     return helper.init().then(sites => {
         return sites.filter(site => {
-            return site.host === theHost;
+            return theHost.indexOf(site.host) !== -1;
         }).map(site => {
             return new Website(site, parentWindow);
         });

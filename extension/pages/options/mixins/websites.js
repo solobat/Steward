@@ -56,7 +56,7 @@ export default {
                 host: '',
                 icon: '',
                 paths: [],
-                navs: 'nav ul li a'
+                navs: 'nav a'
             };
         },
 

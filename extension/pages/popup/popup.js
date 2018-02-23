@@ -16,11 +16,7 @@ window.addEventListener('message', function(event) {
             changeBoxStatus(false);
         } else {
             createWebsites(event.source, event.data.host).then(sites => {
-                const site = sites.find(item => {
-                    return item.host === event.data.host;
-                });
-
-                window.matchedSite = site;
+                window.matchedSite = sites[0];
                 initForContentPage(event.source, event.data.lazy, event.data.host);
             });
         }
