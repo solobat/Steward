@@ -1,6 +1,5 @@
 import util from '../common/util'
 import { WebsiteList } from '../collection/website'
-import $ from 'jquery'
 
 const websiteList = new WebsiteList();
 
