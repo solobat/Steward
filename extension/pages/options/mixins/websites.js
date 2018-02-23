@@ -91,7 +91,8 @@ export default {
                 this.currentWebsite.paths.push(this.newPath);
                 this.newPath = {
                     title: '',
-                    urlPattern: ''
+                    urlPattern: '',
+                    editable: false
                 };
             }
         },
