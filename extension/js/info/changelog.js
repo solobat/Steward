@@ -1,5 +1,11 @@
 const langZh = [
     {
+        version: 'v3.3',
+        detail: `
+            新增 website 配置面板。 
+        `
+    },
+    {
         version: 'v3.2.9',
         detail: `
             添加随机壁纸开关选项;
@@ -205,6 +211,12 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.3',
+        detail: `
+            Add website configuration panel。 
+        `
+    },
     {
         version: 'v3.2.9',
         detail: `
