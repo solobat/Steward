@@ -57,6 +57,7 @@ export default {
                 icon: '',
                 paths: [],
                 navs: 'nav a',
+                disabled: false,
                 outlineScope: ''
             };
         },

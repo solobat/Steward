@@ -113,7 +113,7 @@ export class Website {
 export function createWebsites(parentWindow, theHost) {
     return helper.init().then(sites => {
         return sites.filter(site => {
-            return theHost.indexOf(site.host) !== -1;
+            return theHost.indexOf(site.host) !== -1 && !site.disabled;
         }).map(site => {
             return new Website(site, parentWindow);
         });

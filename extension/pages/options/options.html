@@ -304,6 +304,12 @@
                                                 <el-input placeholder="such as: .markdown-body" v-model="currentWebsite.outlineScope"></el-input>
                                             </el-col>
                                         </el-form-item>
+                                        <el-form-item label="Disable">
+                                            <el-switch
+                                                v-model="currentWebsite.disabled"
+                                                on-color="#20a0ff">
+                                            </el-switch>
+                                        </el-form-item>
                                         <el-form-item>
                                             <el-button type="primary" @click.native.prevent="handleWebsiteSubmit">Save</el-button>
                                             <el-button v-if="currentWebsite.id" type="warning" @click.native.prevent="handleWebsiteDelete(currentWebsite.id)">Delete</el-button>
