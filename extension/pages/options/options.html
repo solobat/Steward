@@ -299,6 +299,11 @@
                                                 <el-input type="textarea" :rows="2" autosize placeholder="such as: nav > ul > li > a" v-model="currentWebsite.navs"></el-input>
                                             </el-col>
                                         </el-form-item>
+                                        <el-form-item label="Outline Scope">
+                                            <el-col :span="17">
+                                                <el-input placeholder="such as: .markdown-body" v-model="currentWebsite.outlineScope"></el-input>
+                                            </el-col>
+                                        </el-form-item>
                                         <el-form-item>
                                             <el-button type="primary" @click.native.prevent="handleWebsiteSubmit">Save</el-button>
                                             <el-button v-if="currentWebsite.id" type="warning" @click.native.prevent="handleWebsiteDelete(currentWebsite.id)">Delete</el-button>

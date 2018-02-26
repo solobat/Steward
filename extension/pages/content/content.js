@@ -81,8 +81,31 @@ const App = {
             this.postToIframe({
                 action: 'navs',
                 navs: items.filter(item => {
+                    // eslint-disable-next-line
                     return item.name && item.path && item.path.indexOf('javascript:') === -1
                 })
+            });
+        }
+    },
+
+    handleGenOutline(event) {
+        if (event.data.outlineScope) {
+            const headerSels = 'h1,h2,h3,h4,h5,h6';
+
+            const nodes = $.makeArray($(event.data.outlineScope).find(headerSels)) || [];
+
+            this.headerElems = nodes;
+
+            const items = nodes.map((elem, index) => {
+                return {
+                    name: elem.innerText,
+                    index: index
+                }
+            });
+
+            this.postToIframe({
+                action: 'outline',
+                outline: items
             });
         }
     },
@@ -107,11 +130,17 @@ const App = {
             } else if (action === 'boxInited') {
                 this.handleBoxInited();
             } else if (action === 'command') {
-                if (event.data.info.custom) {
-                    window.location.href = event.data.info.path;
+                const { subType, index, path, custom } = event.data.info;
+
+                if (subType === 'outline') {
+                    this.headerElems[index].scrollIntoView();
+                } else if (custom) {
+                    window.location.href = path;
                 }
             } else if (action === 'queryNavs') {
                 this.handleQueryNavs(event);
+            } else if (action === 'genOutline') {
+                this.handleGenOutline(event);
             }
         });
 

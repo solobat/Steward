@@ -37,9 +37,11 @@ export class Website {
         this.host = options.host;
         this.parentWindow = parentWindow;
         this.navs = options.navs || 'nav ul li a';
+        this.outlineScope = options.outlineScope || '';
         this.paths = handlePaths(options.paths, options.deps);
         this.bindEvents();
         this.findNavs();
+        this.genOutline();
     }
 
     bindEvents() {
@@ -49,6 +51,10 @@ export class Website {
             if (data.action === 'navs') {
                 if (event.data.navs.length) {
                     this.paths = this.paths.concat(event.data.navs);
+                }
+            } else if (data.action === 'outline') {
+                if (event.data.outline.length) {
+                    this.outline = event.data.outline;
                 }
             }
         });
@@ -65,12 +71,27 @@ export class Website {
         }
     }
 
+    genOutline() {
+        console.log(this.outlineScope);
+        const outlineScope = this.outlineScope.trim();
+
+        if (outlineScope) {
+            this.parentWindow.postMessage({
+                action: 'genOutline',
+                outlineScope: outlineScope
+            }, '*');
+        }
+    }
+
     onInput(text) {
         const cnNameFilter = item => util.matchText(text, item.name + item.path);
-        const mapTo = key => item => {
+        const outlineNameFilter = item => util.matchText(text.slice(1), item.name);
+        const mapTo = (key, subType) => item => {
             return {
                 icon: this.icon,
                 key,
+                subType,
+                index: item.index,
                 title: item.name,
                 desc: item.path,
                 path: item.path,
@@ -81,6 +102,8 @@ export class Website {
 
         if (text[0] === '/') {
             return Promise.resolve(filterByPath(this.paths, text).map(mapTo('action')));
+        } else if (text[0] === '`') {
+            return Promise.resolve(this.outline.filter(outlineNameFilter).map(mapTo('action', 'outline')));
         } else {
             return Promise.resolve(this.paths.filter(cnNameFilter).map(mapTo('action')));
         }

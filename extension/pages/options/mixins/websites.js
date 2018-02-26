@@ -56,7 +56,8 @@ export default {
                 host: '',
                 icon: '',
                 paths: [],
-                navs: 'nav a'
+                navs: 'nav a',
+                outlineScope: ''
             };
         },
 
