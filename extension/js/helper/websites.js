@@ -49,6 +49,7 @@ export class Website {
             if (data.action === 'navs') {
                 if (event.data.navs.length) {
                     this.paths = this.paths.concat(event.data.navs);
+                    console.log(this.paths);
                 }
             } else if (data.action === 'outline') {
                 if (data.outline.length) {
@@ -105,7 +106,11 @@ export class Website {
         };
 
         if (text[0] === '/') {
-            return Promise.resolve(filterByPath(this.paths, text).map(mapTo('action')));
+            if (text === '/') {
+                return Promise.resolve(this.paths.map(mapTo('action')));
+            } else {
+                return Promise.resolve(filterByPath(this.paths, text).map(mapTo('action')));
+            }
         } else if (text[0] === '`') {
             return Promise.resolve(this.outline.filter(outlineNameFilter).map(mapTo('action', 'outline')));
         } else {
