@@ -1,5 +1,12 @@
 const langZh = [
     {
+        version: 'v3.3.1',
+        detail: `
+            Websites 新增 outline 功能;
+            Websites path 优化。 
+        `
+    },
+    {
         version: 'v3.3',
         detail: `
             新增 website 配置面板。 
@@ -211,6 +218,12 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.3.1',
+        detail: `
+            Add outline feature for Websites. 
+        `
+    },
     {
         version: 'v3.3',
         detail: `
