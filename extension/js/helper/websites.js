@@ -40,8 +40,6 @@ export class Website {
         this.outlineScope = options.outlineScope || '';
         this.paths = handlePaths(options.paths, options.deps);
         this.bindEvents();
-        this.findNavs();
-        this.genOutline();
     }
 
     bindEvents() {
@@ -53,11 +51,18 @@ export class Website {
                     this.paths = this.paths.concat(event.data.navs);
                 }
             } else if (data.action === 'outline') {
-                if (event.data.outline.length) {
-                    this.outline = event.data.outline;
+                if (data.outline.length) {
+                    this.outline = data.outline;
                 }
+            } else if (data.action === 'show') {
+                this.handleBoxShow();
             }
         });
+    }
+
+    handleBoxShow() {
+        this.findNavs();
+        this.genOutline();
     }
 
     findNavs() {
@@ -72,7 +77,6 @@ export class Website {
     }
 
     genOutline() {
-        console.log(this.outlineScope);
         const outlineScope = this.outlineScope.trim();
 
         if (outlineScope) {
