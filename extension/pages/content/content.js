@@ -92,13 +92,24 @@ const App = {
         if (event.data.outlineScope) {
             const headerSels = 'h1,h2,h3,h4,h5,h6';
 
+            function getLevelSymbol(level) {
+                const spaces = new Array(level).join('&nbsp;&nbsp;');
+                const levelSymbol = ['', '', '&#8729;', '&#9702;', '&#9702;', '&#9702;'];
+
+                return spaces + levelSymbol[level] + new Array(2).join('&nbsp;');
+            }
+
             const nodes = $.makeArray($(event.data.outlineScope).find(headerSels)) || [];
 
             this.headerElems = nodes;
 
-            const items = nodes.map((elem, index) => {
+            const items = nodes.filter(elem => {
+                return elem.innerText !== '';
+            }).map((elem, index) => {
+                const level = Number(elem.tagName[1]);
+
                 return {
-                    name: elem.innerText,
+                    name: getLevelSymbol(level) + elem.innerText,
                     index: index
                 }
             });
