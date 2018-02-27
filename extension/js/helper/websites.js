@@ -38,7 +38,8 @@ export class Website {
         this.parentWindow = parentWindow;
         this.navs = options.navs || 'nav ul li a';
         this.outlineScope = options.outlineScope || '';
-        this.paths = handlePaths(options.paths, options.deps);
+        this.paths = [];
+        this.customPaths = handlePaths(options.paths, options.deps) || [];
         this.bindEvents();
     }
 
@@ -48,7 +49,7 @@ export class Website {
 
             if (data.action === 'navs') {
                 if (event.data.navs.length) {
-                    this.paths = this.paths.concat(event.data.navs);
+                    this.paths = this.customPaths.concat(event.data.navs);
                     console.log(this.paths);
                 }
             } else if (data.action === 'outline') {
