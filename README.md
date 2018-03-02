@@ -55,6 +55,12 @@
 <div>
     <h4>PayPal:</h4> Please click <a href="https://paypal.me/tomasy/5" target="_blank">Payment Link</a>
 </div>
+<div>
+    <h4>BTC: </h4>1EY57mUdurFnjCfLfcNxFyxnC36iMKYh8
+</div>
+<div>
+    <h4>ETH: </h4>0xafBE53c0f9BEC80cc615d43B011497F316C039B5
+</div>
 
 ---
 #### License:
