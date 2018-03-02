@@ -1,5 +1,12 @@
 const langZh = [
     {
+        version: 'v3.3.2',
+        detail: `
+            优化 Websites Navs 提取；
+            修复 Websites Paths 的 bug.
+        `
+    },
+    {
         version: 'v3.3.1',
         detail: `
             Websites 新增 outline 功能;
@@ -218,6 +225,12 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.3.2',
+        detail: `
+            Optimize Websites navs && fix bug of paths. 
+        `
+    },
     {
         version: 'v3.3.1',
         detail: `
