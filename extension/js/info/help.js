@@ -7,6 +7,7 @@ const langZh = `
 <a href="http://bbs.oksteward.com" target="_blank" style="margin-left: 12px;">论坛</a>
 <a href="https://t.me/chromesteward" target="_blank" style="margin-left: 12px;">Telegram</a>
 <br>
+<span>QQ群: 575397892</span>
 <hr>
 <iframe v-if="activeName === 'help'" height="330" width="510" src='http://player.youku.com/embed/XMzEyNDE4MDUzMg==' frameborder="0" allowfullscreen></iframe> <br>
 <img src="http://owsjc7iz3.bkt.clouddn.com/qrcode_wx_gzh.jpg" alt="微信公众号" class="qrcode">
