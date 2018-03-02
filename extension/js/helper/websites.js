@@ -51,6 +51,8 @@ export class Website {
                 if (event.data.navs.length) {
                     this.paths = this.customPaths.concat(event.data.navs);
                     console.log(this.paths);
+                } else {
+                    this.paths = this.customPaths;
                 }
             } else if (data.action === 'outline') {
                 if (data.outline.length) {
