@@ -75,9 +75,11 @@ const App = {
                 let text;
 
                 if (elem.childNodes.length === 1) {
-                    text = elem.innerText;
+                    text = elem.innerText || elem.text;
                 } else {
-                    text = elem.childNodes[elem.childNodes.length - 1].innerText;
+                    const lastNode = elem.childNodes[elem.childNodes.length - 1];
+
+                    text = lastNode.innerText || lastNode.text;
                 }
 
                 return {
