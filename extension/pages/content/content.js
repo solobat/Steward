@@ -72,8 +72,16 @@ const App = {
     handleQueryNavs(event) {
         if (event.data.selectors) {
             const items = $.makeArray($(event.data.selectors).filter('a')).map(elem => {
+                let text;
+
+                if (elem.childNodes.length === 1) {
+                    text = elem.innerText;
+                } else {
+                    text = elem.childNodes[elem.childNodes.length - 1].innerText;
+                }
+
                 return {
-                    name: elem.text,
+                    name: text,
                     path: elem.getAttribute('href')
                 }
             });
