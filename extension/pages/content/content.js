@@ -71,8 +71,9 @@ const App = {
 
     handleQueryNavs(event) {
         if (event.data.selectors) {
-            const items = $.makeArray($(event.data.selectors).filter('a')).map(elem => {
+            const items = $.makeArray($(event.data.selectors)).map(elem => {
                 let text;
+                const isLink = elem.tagName === 'A';
 
                 if (elem.childNodes.length === 1) {
                     text = elem.innerText || elem.text;
@@ -80,20 +81,48 @@ const App = {
                     const lastNode = elem.childNodes[elem.childNodes.length - 1];
 
                     text = lastNode.innerText || lastNode.text;
+
+                    if (!text) {
+                        $(elem.childNodes).each((index, node) => {
+                            const title = node.innerText || node.text || node.textContent;
+
+                            if (title) {
+                                text = title;
+
+                                return false;
+                            }
+                        });
+                    }
                 }
 
                 return {
                     name: text,
-                    path: elem.getAttribute('href')
+                    path: elem.getAttribute('href'),
+                    elem,
+                    isLink
                 }
             });
 
+            const validItems = items.filter(item => {
+                if (item.isLink) {
+                    // eslint-disable-next-line
+                    return item.name && item.path && item.path.indexOf('javascript:') === -1;
+                } else {
+                    return item.name;
+                }
+            });
+
+            this.navItems = validItems;
+
             this.postToIframe({
                 action: 'navs',
-                navs: items.filter(item => {
-                    // eslint-disable-next-line
-                    return item.name && item.path && item.path.indexOf('javascript:') === -1
-                })
+                navs: validItems.map(({ name, path}, index) => {
+                        return {
+                            name,
+                            path,
+                            index
+                        };
+                    })
             });
         }
     },
@@ -156,7 +185,11 @@ const App = {
                 if (subType === 'outline') {
                     this.headerElems[index].scrollIntoView();
                 } else if (custom) {
-                    window.location.href = path;
+                    if (path) {
+                        window.location.href = path;
+                    } else {
+                        this.navItems[index].elem.click();
+                    }
                 }
             } else if (action === 'queryNavs') {
                 this.handleQueryNavs(event);
