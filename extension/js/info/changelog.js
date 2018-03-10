@@ -1,5 +1,11 @@
 const langZh = [
     {
+        version: 'v3.3.3',
+        detail: `
+            支持非链接导航.
+        `
+    },
+    {
         version: 'v3.3.2',
         detail: `
             优化 Websites Navs 提取；
@@ -225,6 +231,12 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.3.3',
+        detail: `
+            Support more navigation types. 
+        `
+    },
     {
         version: 'v3.3.2',
         detail: `
