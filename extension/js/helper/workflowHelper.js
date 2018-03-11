@@ -47,6 +47,14 @@ const workflowHelper = {
         return Workflows.toJSON();
     },
 
+    getData() {
+        return this.refresh().then(() => {
+            const list = this.getWorkflows();
+
+            return list;
+        });
+    },
+
     init: function() {
         return workflowHelper.refresh();
     }

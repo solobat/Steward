@@ -62,3 +62,14 @@ export function getDataURI(url) {
         }
     });
 }
+
+export default {
+    saveWallpaperLink,
+    getDataURI,
+
+    getData() {
+        return browser.storage.sync.get(STORAGE.WALLPAPERS).then(resp => {
+            return resp[STORAGE.WALLPAPERS] || [];
+        });
+    }
+}

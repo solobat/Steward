@@ -186,12 +186,16 @@ const helper = {
         return websiteList.toJSON();
     },
 
-    init() {
+    getData() {
         return this.refresh().then(() => {
             const list = this.getWebsiteList();
 
             return list;
         });
+    },
+
+    init() {
+        return this.getData();
     }
 }
 
