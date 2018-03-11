@@ -11,11 +11,11 @@ import storage from '../../js/utils/storage'
 import util from '../../js/common/util'
 import { helpInfo } from '../../js/info/help'
 import CONST from '../../js/constant'
-import { restoreConfig } from '../../js/common/config'
 import { saveWallpaperLink } from '../../js/helper/wallpaper'
 import previewHtml from './preview.html'
 import * as defaultThemems from '../../js/conf/themes'
 import WebsitesMixin from './mixins/websites'
+import AdvancedMixin from './mixins/advanced'
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -185,7 +185,8 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
         },
 
         mixins: [
-            WebsitesMixin
+            WebsitesMixin,
+            AdvancedMixin
         ],
 
         methods: {
@@ -509,21 +510,6 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                         message: 'delete successfully!'
                     });
                     _gaq.push(['_trackEvent', 'options_wallpaper', 'click', 'delete']);
-                });
-            },
-
-            handleResetClick() {
-               this.$confirm('This operation will reset your config, whether to continue?',
-                    'Prompt', {
-                    type: 'warning'
-                }).then(() => {
-                    restoreConfig().then(() => {
-                        this.$message('Reset successfully and this page will be reloaded');
-                        setTimeout(function() {
-                            window.location.reload();
-                        }, 500);
-                    });
-                }).catch(() => {
                 });
             }
         }
