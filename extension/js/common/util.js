@@ -219,6 +219,16 @@ function simTemplate(tpl, data) {
     });
 }
 
+const getData = field => () => {
+    return new Promise(resolve => {
+        chrome.runtime.sendMessage({
+            action: field
+        }, resp => {
+            resolve(resp.data);
+        });
+    });
+}
+
 export default {
     matchText,
     isMac,
@@ -237,5 +247,6 @@ export default {
     getDocumentURL,
     isStorageSafe,
     shouldSupportMe,
-    simTemplate
+    simTemplate,
+    getData
 };

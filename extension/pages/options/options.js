@@ -14,6 +14,7 @@ import WebsitesMixin from './mixins/websites'
 import AdvancedMixin from './mixins/advanced'
 import AppearanceMixin from './mixins/appearance'
 import WallpapersMixin from './mixins/wallpapers'
+import WorkflowsMixin from './mixins/workflows'
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -35,23 +36,13 @@ const pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name')
 });
 
 // plugins: { [pname]: { version, commands } }
-const getData = field => () => {
-    return new Promise(resolve => {
-        chrome.runtime.sendMessage({
-            action: field
-        }, resp => {
-            resolve(resp.data);
-        });
-    });
-}
-const getConfig = getData('getConfig');
-const getWorkflows = getData('getWorkflows');
+
+const getConfig = util.getData('getConfig');
 
 function init() {
     Promise.all([
-        getConfig(),
-        getWorkflows()
-    ]).then(([config, workflows]) => {
+        getConfig()
+    ]).then(([config]) => {
         const tips = CONST.I18N.TIPS;
 
         config.lastVersion = config.version || version;
@@ -59,7 +50,7 @@ function init() {
         const i18nTexts = getI18nTexts({general: config.general, tips});
 
         ga();
-        render(config, workflows, i18nTexts);
+        render(config, i18nTexts);
     });
 }
 
@@ -83,7 +74,7 @@ function getI18nTexts(obj) {
     return texts;
 }
 
-function render({general, plugins, lastVersion}, workflows, i18nTexts) {
+function render({general, plugins, lastVersion}, i18nTexts) {
     let activeName = 'general';
 
     if (lastVersion < version) {
@@ -102,9 +93,7 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
             return {
                 activeName,
                 pluginSearchText: '',
-                workflowSearchText: '',
                 currentPlugin: null,
-                currentWorkflow: null,
                 changelog,
                 defaultPlugins: CONST.OPTIONS.DEFAULT_PLUGINS,
                 extType,
@@ -115,7 +104,6 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                     plugins,
                     version
                 },
-                workflows,
                 i18nTexts
             }
         },
@@ -127,13 +115,7 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                     return plugin.name.toLowerCase().indexOf(text) > -1;
                 });
             },
-            filteredWorkflows() {
-                const text = this.workflowSearchText.toLowerCase();
 
-                return this.workflows.filter(workflow => {
-                    return workflow.title.toLowerCase().indexOf(text) > -1;
-                });
-            },
             hasKeywordCommands() {
                 if (this.currentPlugin && this.currentPlugin.commands) {
                     return this.currentPlugin.commands.filter(cmd => cmd.type === 'keyword').length > 0;
@@ -156,7 +138,8 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
             WebsitesMixin,
             AdvancedMixin,
             AppearanceMixin,
-            WallpapersMixin
+            WallpapersMixin,
+            WorkflowsMixin
         ],
 
         methods: {
@@ -171,6 +154,8 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                     } else {
                         this.applyTheme(this.themeMode);
                     }
+                } else if (tabname === 'workflows') {
+                    this.loadWallpapersIfNeeded();
                 }
             },
             handleClick: function(tab) {
@@ -243,91 +228,6 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
 
                     _gaq.push(['_trackEvent', 'options_plugins', 'save', this.currentPlugin.name]);
                 }
-            },
-
-            handleNewWorkflowClick() {
-                const maxNum = CONST.NUMBER.MAX_WORKFLOW_NUM;
-
-                if (this.workflows.length < maxNum) {
-                    this.currentWorkflow = {
-                        title: 'New Workflow',
-                        desc: '',
-                        content: ''
-                    };
-                } else {
-                    this.$message.warning(`You can not create more than ${maxNum} workflows`);
-                }
-            },
-
-            handleWorkflowClick(workflow) {
-                this.currentWorkflow = workflow;
-                _gaq.push(['_trackEvent', 'options_workflows', 'click', workflow.title]);
-            },
-
-            reloadWorkflows() {
-                getWorkflows().then(results => {
-                    this.workflows = results;
-                });
-            },
-
-            handleWorkflowsSubmit() {
-                const { title, content, id } = this.currentWorkflow;
-
-                if (title && content) {
-                    if (id) {
-                        chrome.runtime.sendMessage({
-                            action: 'updateWorkflow',
-                            data: this.currentWorkflow
-                        }, () => {
-                            this.reloadWorkflows();
-                            this.$message('Update workflow successfully');
-                        });
-                    } else {
-                        chrome.runtime.sendMessage({
-                            action: 'createWorkflow',
-                            data: this.currentWorkflow
-                        }, resp => {
-                            this.reloadWorkflows();
-                            this.currentWorkflow = resp.data;
-                            this.$message('Create workflow successfully');
-                        });
-                    }
-                } else {
-                    this.$message.warning('Title and content are required!');
-                }
-            },
-
-            deleteWorkflow(workflow) {
-                if (workflow && workflow.id) {
-                    return new Promise(resolve => {
-                        chrome.runtime.sendMessage({
-                            action: 'removeWorkflow',
-                            data: workflow.id
-                        }, resp => {
-                            console.log(resp);
-                            resolve(resp);
-                        });
-                    });
-                } else {
-                    return Promise.reject('no workflow to delete');
-                }
-            },
-
-            handleWorkflowsDelete() {
-                this.$confirm('This operation will permanently delete the workflow, whether to continue?', 'Prompt', {
-                        confirmButtonText: 'Delete',
-                        cancelButtonText: 'Cancel',
-                        type: 'warning'
-                    }).then(() => {
-                        this.deleteWorkflow(this.currentWorkflow).then(() => {
-                            this.currentWorkflow = null;
-                            this.reloadWorkflows();
-                        }).catch(resp => {
-                            this.$message.error(resp);
-                        });
-                    }).catch(() => {
-
-                    });
             }
         }
     });
