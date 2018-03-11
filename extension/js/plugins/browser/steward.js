@@ -23,6 +23,8 @@ if (EXT_TYPE === 'alfred') {
     optionTabs = stewardTabs;
 }
 
+optionTabs.push('Backup');
+
 function caseFormat(str) {
     return str[0].toUpperCase() + str.slice(1);
 }
@@ -31,9 +33,11 @@ function onInput(text) {
     const filterByName = suggestions => util.getMatches(suggestions, text);
     const extType = caseFormat(EXT_TYPE);
     const mapTo = itemType => item => {
+        const isBackup = item === 'Backup';
+
         return {
             icon,
-            key: itemType,
+            key: isBackup ? 'app' : itemType,
             title: item,
             url: item === extType ? baseUrl : `${baseUrl}?tab=${item}`
         }
@@ -44,10 +48,8 @@ function onInput(text) {
     return Promise.resolve(tabs);
 }
 
-function onEnter({ url }) {
-    chrome.tabs.create({
-        url
-    });
+function onEnter() {
+
 }
 
 export default {

@@ -17,6 +17,7 @@ import _ from 'underscore'
 import { websitesMap } from '../plugins/website'
 import defaultGeneral from '../../js/conf/general'
 import Toast from 'toastr'
+import App from './application'
 
 const commands = {};
 const regExpCommands = [];
@@ -341,6 +342,8 @@ function handleNormalItem(box, dataList, item) {
             action: 'command',
             info: item
         });
+    } else if (type === ITEM_TYPE.APP) {
+        App.hanldle(item);
     }
 
     _gaq.push(['_trackEvent', 'exec', 'enter', type]);

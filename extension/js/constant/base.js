@@ -13,7 +13,8 @@ export const ITEM_TYPE = {
     PLUGINS: 'plugins',
     URL: 'url',
     COPY: 'copy',
-    ACTION: 'action'
+    ACTION: 'action',
+    APP: 'app'
 };
 
 export const MODE = {
