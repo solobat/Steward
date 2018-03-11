@@ -1,5 +1,12 @@
 const langZh = [
     {
+        version: 'v3.4',
+        detail: `
+            Advanced 面板添加导出、导入配置功能;<br>
+            <em>Backup</em> 命令下载配置文件。 
+        `
+    },
+    {
         version: 'v3.3.3',
         detail: `
             支持非链接导航.
@@ -231,6 +238,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4',
+        detail: `
+            Add export / import in Advanced panel;<br>
+            <em>Backup</em> to download configuration.
+        `
+    },
     {
         version: 'v3.3.3',
         detail: `
