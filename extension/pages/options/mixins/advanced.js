@@ -1,5 +1,10 @@
+/*global EXT_TYPE */
 import { restoreConfig } from '../../../js/common/config'
 import { dataHelpers } from '../../../js/helper'
+
+const manifest = chrome.runtime.getManifest();
+const version = manifest.version;
+const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'steward';
 
 function downloadAsJson(exportObj, exportName) {
     const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(exportObj))}`;
@@ -53,7 +58,12 @@ export default {
                     workflows,
                     websites,
                     wallpapers,
-                    themes
+                    themes,
+                    meta: {
+                        version,
+                        export_at: Number(new Date()),
+                        app: extType
+                    }
                 };
 
                 console.log(data);
