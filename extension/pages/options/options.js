@@ -7,14 +7,13 @@ import './options.scss'
 import ga from '../../js/common/ga'
 import { plugins as pluginList } from '../../js/plugins/browser'
 import changelog from '../../js/info/changelog'
-import storage from '../../js/utils/storage'
 import util from '../../js/common/util'
 import { helpInfo } from '../../js/info/help'
 import CONST from '../../js/constant'
-import { saveWallpaperLink } from '../../js/helper/wallpaper'
 import WebsitesMixin from './mixins/websites'
 import AdvancedMixin from './mixins/advanced'
 import AppearanceMixin from './mixins/appearance'
+import WallpapersMixin from './mixins/wallpapers'
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -106,14 +105,11 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 workflowSearchText: '',
                 currentPlugin: null,
                 currentWorkflow: null,
-                wallpapers: [],
-                selectedWallpaper: window.localStorage.getItem(CONST.STORAGE.WALLPAPER) || '',
                 changelog,
                 defaultPlugins: CONST.OPTIONS.DEFAULT_PLUGINS,
                 extType,
                 storeId,
                 helpInfo,
-                wallpaperSources: CONST.OPTIONS.WALLPAPER_SOURCES,
                 config: {
                     general,
                     plugins,
@@ -159,7 +155,8 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
         mixins: [
             WebsitesMixin,
             AdvancedMixin,
-            AppearanceMixin
+            AppearanceMixin,
+            WallpapersMixin
         ],
 
         methods: {
@@ -331,83 +328,6 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                     }).catch(() => {
 
                     });
-            },
-
-            loadWallpapersIfNeeded: function() {
-                if (!this.wallpapers.length) {
-                    storage.sync.get(CONST.STORAGE.WALLPAPERS).then(wallpapers => {
-                        this.wallpapers = wallpapers;
-                    });
-                }
-            },
-
-            handleAddWallpaperClick() {
-                this.$prompt('Please enter your wallpaper link', 'prompt', {
-                    confirmButtonText: 'Confirm',
-                    cancelButtonText: 'Cancel',
-                    inputPattern: /(https?:\/\/.*\.(?:png|jpg|jpeg))/i,
-                    inputErrorMessage: 'Image format is incorrect'
-                }).then(({ value }) => {
-                    console.log(value);
-                    this.saveWallpaper(value);
-                }).catch(() => {
-                    console.log('user cancel');
-                });
-            },
-
-            saveWallpaper(url) {
-                saveWallpaperLink(url).then(() => {
-                    this.wallpapers.push(url);
-                    this.$message.success('Add new wallpaper successfully!');
-                }).catch(msg => {
-                    this.$message.warning(msg);
-                });
-            },
-
-            chooseWallpaper: function(wallpaper) {
-                const KEY = CONST.STORAGE.WALLPAPER;
-
-                if (this.selectedWallpaper === wallpaper) {
-                    this.selectedWallpaper = '';
-                    window.localStorage.removeItem(KEY);
-                } else {
-                    this.selectedWallpaper = wallpaper;
-                    window.localStorage.setItem(KEY, wallpaper);
-                }
-                _gaq.push(['_trackEvent', 'options_wallpaper', 'click', 'choose']);
-
-                this.$message('set successfully!');
-            },
-
-            confirmDeleteWallpaper: function(wallpaper) {
-                this.$confirm('This operation will permanently delete the wallpaper, whether to continue?',
-                    'Prompt', {
-                    confirmButtonText: 'Delete',
-                    cancelButtonText: 'Cancel',
-                    type: 'warning'
-                }).then(() => {
-                    this.deleteWallpaper(wallpaper);
-                }).catch(() => {
-
-                });
-            },
-
-            deleteWallpaper: function(wallpaper) {
-                const wpIdx = this.wallpapers.indexOf(wallpaper);
-
-                if (wpIdx !== -1) {
-                    this.wallpapers.splice(wpIdx, 1);
-                }
-
-                storage.sync.set({
-                    wallpapers: this.wallpapers
-                }).then(() => {
-                    this.$message({
-                        type: 'success',
-                        message: 'delete successfully!'
-                    });
-                    _gaq.push(['_trackEvent', 'options_wallpaper', 'click', 'delete']);
-                });
             }
         }
     });
