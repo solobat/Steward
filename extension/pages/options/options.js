@@ -121,10 +121,10 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                         this.applyTheme(this.themeMode);
                     }
                 } else if (tabname === 'workflows') {
-                    this.loadWallpapersIfNeeded();
+                    this.loadWorkflowsIfNeeded();
                 }
             },
-            handleClick: function(tab) {
+            handleTabClick: function(tab) {
                 this.initTab(tab.name);
                 _gaq.push(['_trackEvent', 'options_tab', 'click', tab.name]);
             },

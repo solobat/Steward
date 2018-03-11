@@ -3,6 +3,8 @@ import { WorkflowList } from '../collection/workflow'
 const Workflows = new WorkflowList();
 
 const workflowHelper = {
+    key: 'workflows',
+
     create: function(info) {
         if (info.title && info.content) {
             const workflow = Workflows.create({
@@ -53,6 +55,20 @@ const workflowHelper = {
 
             return list;
         });
+    },
+
+    setData(list) {
+        if (list && list.length) {
+            const models = Workflows.set(list);
+
+            models.forEach(model => {
+                model.save();
+            });
+
+            return Promise.resolve(models);
+        } else {
+            return Promise.resolve('no websites');
+        }
     },
 
     init: function() {

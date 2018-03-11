@@ -7,6 +7,7 @@ import { saveWallpaperLink } from '../../../js/helper/wallpaper'
 export default {
     data() {
         return {
+            wallpapersLoaded: false,
             wallpapers: [],
             selectedWallpaper: window.localStorage.getItem(CONST.STORAGE.WALLPAPER) || '',
             wallpaperSources: CONST.OPTIONS.WALLPAPER_SOURCES
@@ -15,9 +16,10 @@ export default {
 
     methods: {
         loadWallpapersIfNeeded: function() {
-            if (!this.wallpapers.length) {
+            if (!this.wallpapersLoaded) {
                 storage.sync.get(CONST.STORAGE.WALLPAPERS).then(wallpapers => {
                     this.wallpapers = wallpapers;
+                    this.wallpapersLoaded = true;
                 });
             }
         },

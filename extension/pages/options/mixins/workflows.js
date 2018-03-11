@@ -25,7 +25,7 @@ export default {
     },
 
     methods: {
-        loadWallpapersIfNeeded: function() {
+        loadWorkflowsIfNeeded: function() {
             if (!this.workflowLoaded) {
                 getWorkflows().then(workflows => {
                     this.workflows = workflows;

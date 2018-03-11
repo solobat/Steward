@@ -64,12 +64,27 @@ export function getDataURI(url) {
 }
 
 export default {
+    key: STORAGE.WALLPAPERS,
+
     saveWallpaperLink,
     getDataURI,
 
     getData() {
         return browser.storage.sync.get(STORAGE.WALLPAPERS).then(resp => {
-            return resp[STORAGE.WALLPAPERS] || [];
+            return resp[STORAGE.WALLPAPERS];
         });
+    },
+
+    setData(wallpapers) {
+        if (wallpapers && wallpapers.length) {
+            console.log({
+                [STORAGE.WALLPAPERS]: wallpapers
+            });
+            return browser.storage.sync.set({
+                [STORAGE.WALLPAPERS]: wallpapers
+            });
+        } else {
+            return Promise.resolve('no wallpapers');
+        }
     }
 }

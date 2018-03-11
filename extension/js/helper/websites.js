@@ -133,6 +133,8 @@ export function createWebsites(parentWindow, theHost) {
 }
 
 const helper = {
+    key: 'websites',
+
     create(info) {
         if (info.title && info.host) {
             const website = websiteList.create({
@@ -192,6 +194,20 @@ const helper = {
 
             return list;
         });
+    },
+
+    setData(list) {
+        if (list && list.length) {
+            const models = websiteList.set(list);
+
+            models.forEach(model => {
+                model.save();
+            });
+
+            return Promise.resolve(models);
+        } else {
+            return Promise.resolve('no websites');
+        }
     },
 
     init() {

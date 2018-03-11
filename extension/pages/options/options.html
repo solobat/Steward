@@ -9,7 +9,7 @@
 
 <body>
     <div id="app" class="steward" v-cloak>
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName" @tab-click="handleTabClick">
             <el-tab-pane label="General" name="general">
                 <el-form style="margin: 20px 0; min-height: 150px;" ref="general" :model="config.general">
                     <el-row>
@@ -432,7 +432,19 @@
                 </el-row>
             </el-tab-pane>
             <el-tab-pane label="Advanced" name="advanced">
-                <el-button @click="handleResetClick" type="danger" style="margin-top: 12px">Reset</el-button>
+                <el-row>
+                    <el-col :span="2">
+                        <el-button @click="handleExportClick" type="primary">Export</el-button>
+                    </el-col>
+                    <el-col :span="2">
+                        <el-upload accept="text/json" action="/" :before-upload="handleBackupBeforeUpload">
+                            <el-button type="primary">Import</el-button>
+                        </el-upload>
+                    </el-col>
+                    <el-col :span="2">
+                        <el-button @click="handleResetClick" type="danger">Reset</el-button>
+                    </el-col>
+                </el-row>
             </el-tab-pane>
             <el-tab-pane label="Help" name="help">
                 <div class="text-panel">
