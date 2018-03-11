@@ -12,10 +12,9 @@ import util from '../../js/common/util'
 import { helpInfo } from '../../js/info/help'
 import CONST from '../../js/constant'
 import { saveWallpaperLink } from '../../js/helper/wallpaper'
-import previewHtml from './preview.html'
-import * as defaultThemems from '../../js/conf/themes'
 import WebsitesMixin from './mixins/websites'
 import AdvancedMixin from './mixins/advanced'
+import AppearanceMixin from './mixins/appearance'
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -85,10 +84,6 @@ function getI18nTexts(obj) {
     return texts;
 }
 
-function clone(obj) {
-    return JSON.parse(JSON.stringify(obj));
-}
-
 function render({general, plugins, lastVersion}, workflows, i18nTexts) {
     let activeName = 'general';
 
@@ -102,14 +97,6 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
         activeName = fromTab.toLowerCase();
     }
 
-    let appearanceItems;
-
-    if (extType === 'steward') {
-        appearanceItems = CONST.OPTIONS.APPEARANCE_ITEMS;
-    } else {
-        appearanceItems = CONST.OPTIONS.APPEARANCE_ITEMS.filter(item => item.name !== 'New Tab');
-    }
-
     new Vue({
         el: '#app',
         data: function() {
@@ -119,8 +106,6 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 workflowSearchText: '',
                 currentPlugin: null,
                 currentWorkflow: null,
-                curApprItem: null,
-                appearanceItems,
                 wallpapers: [],
                 selectedWallpaper: window.localStorage.getItem(CONST.STORAGE.WALLPAPER) || '',
                 changelog,
@@ -129,17 +114,13 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 storeId,
                 helpInfo,
                 wallpaperSources: CONST.OPTIONS.WALLPAPER_SOURCES,
-                previewHtml,
-                themeMode: '',
                 config: {
                     general,
                     plugins,
                     version
                 },
                 workflows,
-                i18nTexts,
-                themes: clone(defaultThemems),
-                themeContainerStyles: {}
+                i18nTexts
             }
         },
         computed: {
@@ -163,9 +144,6 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                 } else {
                     return false;
                 }
-            },
-            theme() {
-                return this.themes[this.themeMode];
             }
         },
 
@@ -178,15 +156,10 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
             this.initTab(this.activeName);
         },
 
-        watch: {
-            themeMode(newMode) {
-                this.applyTheme(newMode);
-            }
-        },
-
         mixins: [
             WebsitesMixin,
-            AdvancedMixin
+            AdvancedMixin,
+            AppearanceMixin
         ],
 
         methods: {
@@ -360,87 +333,11 @@ function render({general, plugins, lastVersion}, workflows, i18nTexts) {
                     });
             },
 
-            updateApprItem(apprItem) {
-                this.curApprItem = apprItem;
-                const mode = apprItem.name.replace(' ', '').toLowerCase();
-
-                this.themeMode = mode;
-            },
-
-            handleApprItemClick: function(apprItem) {
-                this.updateApprItem(apprItem);
-
-                _gaq.push(['_trackEvent', 'options_appearance', 'click', apprItem.name]);
-            },
-
             loadWallpapersIfNeeded: function() {
                 if (!this.wallpapers.length) {
                     storage.sync.get(CONST.STORAGE.WALLPAPERS).then(wallpapers => {
                         this.wallpapers = wallpapers;
                     });
-                }
-            },
-
-            loadThemes() {
-                return storage.sync.get(CONST.STORAGE.THEMES).then(themes => {
-                    if (themes) {
-                        this.themes = themes;
-                    }
-                });
-            },
-
-            saveThemes() {
-                window.localStorage.setItem('themes', JSON.stringify(this.themes));
-                storage.sync.set({
-                    [CONST.STORAGE.THEMES]: this.themes
-                }).then(() => {
-                    console.log('save themes successfully...');
-                });
-            },
-
-            handleThemeSave(mode) {
-                this.applyTheme(mode);
-
-                this.saveThemes();
-            },
-
-            handleThemeReset(mode) {
-                this.themes[mode] = Object.assign({}, defaultThemems[mode]);
-                this.applyTheme(mode);
-                this.saveThemes();
-            },
-
-            getColorType(mode) {
-                if (mode === 'popup') {
-                    return 'text';
-                } else {
-                    return 'text';
-                }
-            },
-
-            applyTheme(mode) {
-                const theme = this.themes[mode] || this.defaultThemems[mode];
-
-                if (theme) {
-                    const themeConfig = Object.assign({}, theme);
-                    const wallpaper = this.selectedWallpaper || 'http://www.bing.com/az/hprichbg/rb/MatusevichGlacier_EN-US13620113504_1920x1080.jpg';
-
-                    if (mode === 'newtab') {
-                        themeConfig['--app-newtab-background-image'] = `url(${wallpaper})`;
-                        this.themeContainerStyles = {
-                            background: 'var(--app-newtab-background-image) center center / cover no-repeat'
-                        };
-                    } else {
-                        this.themeContainerStyles = {};
-                    }
-
-                    let cssText = '';
-
-                    for (const prop in themeConfig) {
-                        cssText += `${prop}: ${themeConfig[prop]};`;
-                    }
-
-                    document.querySelector('html').style.cssText = cssText;
                 }
             },
 
