@@ -395,6 +395,9 @@
     "wallpaper_action_download_subtitle": {
         "message": "The format is jpg"
     },
+    "wallpaper_action_copy_title": {
+        "message": "Copy to clipboard"
+    },
     "wallpaper_warning_format": {
         "message": "Image format is incorrect"
     },

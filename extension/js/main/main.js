@@ -356,7 +356,7 @@ function handleNormalItem(box, dataList, item) {
 function execCommand(box, dataList = [], item, fromWorkflow) {
     if (item && item.isDefault && !box.query) {
         return;
-    } else if (!box.cmd) {
+    } else if (!box.cmd || item.universal) {
         return handleNormalItem(box, dataList, item);
     } else {
         let plugin;

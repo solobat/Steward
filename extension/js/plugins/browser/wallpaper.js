@@ -40,6 +40,14 @@ const allActions = [
         title: chrome.i18n.getMessage('wallpaper_action_download_title'),
         desc: chrome.i18n.getMessage('wallpaper_action_download_subtitle'),
         type: 'download'
+    },
+    {
+        icon: chrome.extension.getURL('img/copy.png'),
+        title: chrome.i18n.getMessage('wallpaper_action_copy_title'),
+        desc: '',
+        url: '',
+        universal: true,
+        key: 'copy'
     }
 ];
 let actions = allActions;
@@ -63,6 +71,11 @@ function updateActions() {
     actions.forEach(action => {
         if (action.selector === '#j-save-wplink') {
             action.desc = action.desc.replace('source', window.localStorage.getItem('wallpaper_source'));
+        } else if (action.key === 'copy') {
+            const url = window.localStorage.getItem('wallpaper');
+
+            action.url = url;
+            action.desc = url;
         }
     });
 }

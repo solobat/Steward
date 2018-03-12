@@ -395,6 +395,9 @@
     "wallpaper_action_download_subtitle": {
         "message": "格式为 jpg，下载完成后可自行上传到图床，将 URL 通过 wp 命令添加到收藏里"
     },
+    "wallpaper_action_copy_title": {
+        "message": "复制到剪贴板"
+    },
     "wallpaper_warning_format": {
         "message": "图片格式错误"
     },
