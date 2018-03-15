@@ -99,13 +99,13 @@ EasyComplete.prototype = {
             }, 0);
         });
 
-        keyboardJS.bind(['down', 'tab'], function(event) {
+        keyboardJS.bind(['down', 'tab', 'ctrl + n'], function(event) {
             event.preventDefault();
             if (that.isVisible()) {
                 that.move('down');
             }
         });
-        keyboardJS.bind(['up', 'shift + tab'], function(event) {
+        keyboardJS.bind(['up', 'shift + tab', 'ctrl + p'], function(event) {
             event.preventDefault();
             if (that.isVisible()) {
                 that.move('up');
