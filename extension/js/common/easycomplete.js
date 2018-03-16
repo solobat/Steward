@@ -97,18 +97,21 @@ EasyComplete.prototype = {
                     that.resizeUI($input);
                 }
             }, 0);
+            that.trigger('input');
         });
 
         keyboardJS.bind(['down', 'tab', 'ctrl + n'], function(event) {
             event.preventDefault();
             if (that.isVisible()) {
                 that.move('down');
+                that.trigger('move', 'down');
             }
         });
         keyboardJS.bind(['up', 'shift + tab', 'ctrl + p'], function(event) {
             event.preventDefault();
             if (that.isVisible()) {
                 that.move('up');
+                that.trigger('move', 'up');
             }
         });
         keyboardJS.bind('enter', function(event) {
@@ -215,6 +218,9 @@ EasyComplete.prototype = {
         const $item = $('.ec-item-select');
         const $itemList = $item.parent();
 
+        if (!$itemList.length) {
+            return;
+        }
         // scroll to visible
         const pH = $itemList.height();
         const pTop = $itemList.get(0).scrollTop;

@@ -585,6 +585,19 @@ function initWallpaper() {
     });
 }
 
+function handleMove(event, dir) {
+    if (dir === 'up' && (!cmdbox.ipt.val() || app.viewLog)) {
+        console.log('show latest cmd!');
+        app.applyLatestCmd();
+    } else {
+        app.resetLogView();
+    }
+}
+
+function hanldeInput() {
+    app.resetLogView();
+}
+
 function init() {
     prepareBox();
 
@@ -600,6 +613,7 @@ function init() {
     });
 
     app = new Application(cmdbox);
+    app.applyCmd = applyCmd;
 
     cmdbox.sid = 0;
     cmdbox.bind('init', handleInit);
@@ -607,6 +621,8 @@ function init() {
     cmdbox.bind('empty', handleEmpty);
     cmdbox.bind('show', handleShow);
     cmdbox.bind('clear', handleClear);
+    cmdbox.bind('move', handleMove);
+    cmdbox.bind('input', hanldeInput);
     cmdbox.clearQuery = clearQuery;
 
     cmdbox.init();

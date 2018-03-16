@@ -8,6 +8,8 @@ export default class Appliction {
         this.uid = Number(new Date());
         this.box = box;
         this.cachedCmds = [];
+        this.viewLog = false;
+        this.viewIndex = -1;
 
         browser.storage.local.get('cached_cmds').then(resp => {
             this.storageCmds = (resp.cached_cmds || []).slice(0, MAX_CACHED_CMD_NUM);
@@ -25,7 +27,7 @@ export default class Appliction {
     }
 
     log(input) {
-        if (!this.box.isFirst) {
+        if (!this.box.isFirst && !this.viewLog) {
             this.addOne(input);
         }
     }
@@ -58,5 +60,25 @@ export default class Appliction {
                 cached_cmds: newCmds
             });
         });
+    }
+
+    applyLatestCmd() {
+        this.viewLog = true;
+        this.viewIndex = this.viewIndex + 1;
+
+        browser.storage.local.get('cached_cmds').then(resp => {
+            const cachedCmds = resp.cached_cmds || [];
+            const item = cachedCmds[cachedCmds.length - 1 - this.viewIndex];
+
+            if (item) {
+                this.applyCmd(item.str);
+                this.box.ipt[0].select();
+            }
+        })
+    }
+
+    resetLogView() {
+        this.viewLog = false;
+        this.viewIndex = -1;
     }
 }
