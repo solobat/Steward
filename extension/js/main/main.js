@@ -17,7 +17,7 @@ import _ from 'underscore'
 import { websitesMap } from '../plugins/website'
 import defaultGeneral from '../../js/conf/general'
 import Toast from 'toastr'
-import App from './application'
+import Application from './application'
 
 const commands = {};
 const regExpCommands = [];
@@ -31,6 +31,7 @@ let reg;
 let cmdbox;
 let mode;
 let inContent;
+let app;
 
 window.stewardCache = {};
 window.slogs = [];
@@ -114,6 +115,7 @@ function alwaysStage() {
     if (alwaysCommand) {
         return callCommand(alwaysCommand, str).then(results => {
             if (results) {
+                app.log({ key: 'calc', str });
                 return Promise.reject(results);
             } else {
                 return resetBox();
@@ -130,6 +132,7 @@ function regexpStage() {
 
     // handle regexp commands
     if (spCommand) {
+        app.log({ key: 'regexp', str });
         return Promise.reject(callCommand(spCommand, str));
     } else {
         return Promise.resolve();
@@ -151,6 +154,7 @@ function searchStage() {
             const searchRes = _.flatten(res.filter(item => item && item.length));
 
             if (searchRes && searchRes.length) {
+                app.log({ key: 'search', str });
                 return Promise.reject(searchRes);
             } else {
                 return Promise.resolve(true);
@@ -185,6 +189,8 @@ function commandStage(gothrough) {
 
         const command = commands[cmdbox.cmd];
 
+        app.log({ key: cmd, str });
+
         return Promise.reject(callCommand(command, key));
     } else {
         return Promise.resolve(cmdbox);
@@ -193,6 +199,7 @@ function commandStage(gothrough) {
 
 function defaultStage() {
     if (otherCommands.length) {
+        app.log({ key: 'other', str: cmdbox.str });
         return callCommand(otherCommands[0], cmdbox.str);
     }
 }
@@ -250,6 +257,7 @@ function queryByInput(box, str, background) {
         .then(commandStage)
         .then(defaultStage)
         .catch(msg => {
+            box.isFirst = false;
             if (msg) {
                 return Promise.resolve(msg);
             }
@@ -297,6 +305,7 @@ function handleInit () {
         const { cacheLastCmd, defaultPlugin, customCmd } = config.general;
         let cmd;
 
+        cmdbox.isFirst = true;
         if (util.shouldSupportMe()) {
             cmd = 'about ';
             applyCmd(cmd);
@@ -343,7 +352,7 @@ function handleNormalItem(box, dataList, item) {
             info: item
         });
     } else if (type === ITEM_TYPE.APP) {
-        App.hanldle(item);
+        app.hanldle(item);
     }
 
     _gaq.push(['_trackEvent', 'exec', 'enter', type]);
@@ -513,6 +522,8 @@ function execWorkflow(item) {
 }
 
 function handleEmpty() {
+    this.sid = this.sid + 1;
+
     if (plugin4empty) {
         this.cmd = CONST.BASE.EMPTY_COMMAND;
         this.command = null;
@@ -588,6 +599,9 @@ function init() {
         createItem
     });
 
+    app = new Application(cmdbox);
+
+    cmdbox.sid = 0;
     cmdbox.bind('init', handleInit);
     cmdbox.bind('enter', handleEnter);
     cmdbox.bind('empty', handleEmpty);
