@@ -10,5 +10,6 @@ export default {
     autoResizeBoxFontSize: false,
     wallpaperSources: ['bing'],
     autoSelectByMouse: false,
-    enableRandomWallpaper: true
+    enableRandomWallpaper: true,
+    storeTypedQuery: true
 }

@@ -476,6 +476,9 @@
     "general_enableRandomWallpaper": {
         "message": "随机应用壁纸"
     },
+    "general_storeTypedQuery": {
+        "message": "存储最近的命令"
+    },
     "tips_maxOperandsNum": {
         "message": "设置某些插件在shift + enter/click操作时所处理的最大条目数"
     },
@@ -502,6 +505,9 @@
     },
     "tips_allowBatch": {
         "message": "允许批量执行，用于workflows中，形式为`1-n | all | n | `"
+    },
+    "tips_storeTypedQuery": {
+        "message": "输入框为空时按下向上箭头可查看最近20次输入的查询。自动显示最新的历史记录。"
     },
     "chrome_title": {
         "message": "chrome常用url"

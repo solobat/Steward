@@ -70,6 +70,12 @@ a {
     margin-bottom: 0;
 }
 
+.general-panel {
+    .el-form-item {
+        margin-bottom: 5px;
+    }
+}
+
 .plugin-searchbar,
 .button-bar {
     padding: 10px;
@@ -379,4 +385,9 @@ a {
     .el-row {
         margin-top: 6px;
     }
+}
+
+.split {
+    margin: 15px 0;
+    border-bottom: 1px dotted #d1dbe5;
 }

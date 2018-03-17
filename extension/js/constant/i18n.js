@@ -11,5 +11,6 @@ export const TIPS = {
     his_shift: 'his_shift',
     site_shift: 'site_shift',
     tabc_shift: 'tabc_shift',
-    wd_shift: 'wd_shift'
+    wd_shift: 'wd_shift',
+    storeTypedQuery: 'storeTypedQuery'
 };

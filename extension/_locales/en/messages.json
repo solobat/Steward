@@ -482,6 +482,9 @@
     "general_enableRandomWallpaper": {
         "message": "Enable random wallpaper"
     },
+    "general_storeTypedQuery": {
+        "message": "Store typed query"
+    },
     "tips_bm_shift": {
         "message": "While holding shift, items marked with ⇧ are opened in batches"
     },
@@ -499,6 +502,9 @@
     },
     "tips_allowBatch": {
         "message": "Allow batch execution for use in workflow，format: `1-n | all | n | `"
+    },
+    "tips_storeTypedQuery": {
+        "message": "Press the up arrow with an empty query field to view up to 20 of your last typed queries. Automatically show the latest history."
     },
     "chrome_title": {
         "message": "chrome urls"

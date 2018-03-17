@@ -585,12 +585,18 @@ function initWallpaper() {
     });
 }
 
-function handleMove(event, dir) {
+function viewHistory(dir) {
     if (dir === 'up' && (!cmdbox.ipt.val() || app.viewLog)) {
         console.log('show latest cmd!');
         app.applyLatestCmd();
     } else {
         app.resetLogView();
+    }
+}
+
+function handleMove(event, dir) {
+    if (window.stewardCache.config.general.storeTypedQuery) {
+        viewHistory(dir);
     }
 }
 
