@@ -1,5 +1,12 @@
 const langZh = [
     {
+        version: 'v3.4.1',
+        detail: `
+            存储最近的命令：输入框为空时，按向上键将显示最近20条命令记录，可以设置 -> General 面板关闭/开启；
+            Ctrl + p / Ctrl + n 对应 up / down 操作。
+        `
+    },
+    {
         version: 'v3.4',
         detail: `
             Advanced 面板添加导出、导入配置功能;<br>
@@ -238,6 +245,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4.1',
+        detail: `
+            Store typed query：Press the up arrow with an empty query field to view up to 20 of your last typed queries. Automatically show the latest history；
+            Ctrl + p / Ctrl + n <==> up / down.
+        `
+    },
     {
         version: 'v3.4',
         detail: `
