@@ -3,9 +3,13 @@ import keyboardJS from 'keyboardjs'
 import './content.scss'
 import { websitesMap } from '../../js/plugins/website'
 import PluginHelper from '../../js/helper/pluginHelper'
+import { checkAutoMatchingSites } from '../../js/helper/websites'
 
 const chrome = window.chrome;
 const pluginHelper = new PluginHelper();
+const autoMatchingSites = checkAutoMatchingSites(selector => {
+    return Boolean($(selector).length);
+});
 
 const App = {
     isInit: false,
@@ -29,6 +33,7 @@ const App = {
             iframeWindow.postMessage({
                 ext_from: 'content',
                 lazy: this.isLazy,
+                autoMatchingSites,
                 host: window.location.host
             }, '*');
         });

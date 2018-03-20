@@ -2,9 +2,25 @@ import util from '../common/util'
 import { WebsiteList } from '../collection/website'
 
 const websiteList = new WebsiteList();
+const autoMatchingSites = [{
+    name: 'GitBook',
+    title: 'GitBook',
+    host: '',
+    icon: 'https://www.gitbook.com/assets/images/logo/favicon.ico',
+    autoMatching: 'meta[content*="GitBook"]',
+    navs: 'nav a',
+    outlineScope: '.markdown-section',
+    paths: []
+}];
 
 export const filterByName = (suggestions, text) => util.getMatches(suggestions, text, 'name');
 export const filterByPath = (suggestions, text) => util.getMatches(suggestions, text, 'path');
+
+export function checkAutoMatchingSites(fn) {
+    return autoMatchingSites.filter(site => {
+        return fn(site.autoMatching);
+    });
+}
 
 export function handlePath(path, info, deps) {
     if (info.deps) {
@@ -122,11 +138,11 @@ export class Website {
     }
 }
 
-export function createWebsites(parentWindow, theHost) {
+export function createWebsites(parentWindow, theHost, autoMatching = []) {
     return helper.init().then(sites => {
         return sites.filter(site => {
             return theHost.indexOf(site.host) !== -1 && !site.disabled;
-        }).map(site => {
+        }).concat(autoMatching).map(site => {
             return new Website(site, parentWindow);
         });
     });

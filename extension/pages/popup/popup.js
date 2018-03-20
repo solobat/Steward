@@ -15,7 +15,7 @@ window.addEventListener('message', function(event) {
         if (event.data.action === 'show') {
             changeBoxStatus(false);
         } else {
-            createWebsites(event.source, event.data.host).then(sites => {
+            createWebsites(event.source, event.data.host, event.data.autoMatchingSites).then(sites => {
                 window.matchedSite = sites[0];
                 initForContentPage(event.source, event.data.lazy, event.data.host);
             });
