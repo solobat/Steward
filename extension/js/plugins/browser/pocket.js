@@ -26,6 +26,7 @@ const commands = [{
     subtitle,
     icon,
     allowBatch: true,
+    shiftKey: true,
     editable: true
 }];
 
@@ -47,7 +48,8 @@ function dataFormat(rawList) {
             id: item.id,
             icon: icon,
             title: itemTitle,
-            desc: subtitle
+            desc: subtitle,
+            resolved_url: item.resolved_url
         };
     });
 }
@@ -125,13 +127,20 @@ function query(str, callback) {
 }
 
 function onEnter(item, command, q, shiftKey, list) {
+    function resolveUrl(it) {
+        if (shiftKey) {
+            return it.resolved_url;
+        } else {
+            return `https://getpocket.com/a/read/${it.id}`;
+        }
+    }
     util.batchExecutionIfNeeded(false, [
         it => {
-            chrome.tabs.create({ url: `https://getpocket.com/a/read/${it.id}`, active: false });
+            chrome.tabs.create({ url: resolveUrl(it), active: false });
             window.slogs.push(`open pocket ${it.title}`);
         },
         it => {
-            chrome.tabs.create({ url: `https://getpocket.com/a/read/${it.id}` });
+            chrome.tabs.create({ url: resolveUrl(it) });
             window.slogs.push(`open pocket ${it.title}`);
         }
     ], [list, item]);
