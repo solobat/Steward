@@ -4,6 +4,7 @@
  * @email solopea@gmail.com
  */
 
+/*global EXT_TYPE */
 import util from '../../common/util'
 
 const version = 2;
@@ -22,6 +23,7 @@ const commands = [{
     shiftKey: true,
     editable: true
 }];
+const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'Steward';
 
 function getExtensions(query, callback) {
     chrome.management.getAll(function (extList) {
@@ -62,11 +64,15 @@ function dataFormat(rawList, command) {
 }
 
 function onInput(query, command) {
-    return new Promise(resolve => {
-        getExtensions(query.toLowerCase(), function (data) {
-            resolve(dataFormat(data, command));
+    if (query === '/') {
+        return `${command.key} ${extType}`;
+    } else {
+        return new Promise(resolve => {
+            getExtensions(query.toLowerCase(), function (data) {
+                resolve(dataFormat(data, command));
+            });
         });
-    });
+    }
 }
 
 function onEnter({ id, homepage }, command, query, shiftKey) {

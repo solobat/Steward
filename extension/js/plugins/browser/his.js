@@ -63,11 +63,15 @@ function dataFormat(rawList, command) {
 }
 
 function onInput(query, command) {
-    return new Promise(resolve => {
-        searchHistory(query, function (matchUrls) {
-            resolve(dataFormat(matchUrls, command));
+    if (query === '/' && window.parentHost) {
+        return `${command.key} ${window.parentHost}`;
+    } else {
+        return new Promise(resolve => {
+            searchHistory(query, function (matchUrls) {
+                resolve(dataFormat(matchUrls, command));
+            });
         });
-    });
+    }
 }
 
 function onEnter(item, command, query, shiftKey, list) {

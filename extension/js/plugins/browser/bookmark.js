@@ -39,39 +39,43 @@ function searchBookmark(query, callback) {
 }
 
 function onInput(query, command) {
-    return new Promise(resolve => {
-        searchBookmark(query, bookMarkList => {
-            let wrapDesc;
+    if (query === '/' && window.parentHost) {
+        return `${command.key} ${window.parentHost}`;
+    } else {
+        return new Promise(resolve => {
+            searchBookmark(query, bookMarkList => {
+                let wrapDesc;
 
-            if (command.shiftKey) {
-                wrapDesc = util.wrapWithMaxNumIfNeeded('url');
-            }
-
-            const arr = [];
-            let i;
-
-            for (i in bookMarkList) {
-                const item = bookMarkList[i];
-                let desc = item.url;
-
-                if (wrapDesc) {
-                    desc = wrapDesc(item, i);
+                if (command.shiftKey) {
+                    wrapDesc = util.wrapWithMaxNumIfNeeded('url');
                 }
 
-                arr.push({
-                    key: command.key,
-                    id: item.id,
-                    icon,
-                    url: item.url,
-                    title: item.title,
-                    desc,
-                    isWarn: false
-                });
-            }
+                const arr = [];
+                let i;
 
-            resolve(arr);
+                for (i in bookMarkList) {
+                    const item = bookMarkList[i];
+                    let desc = item.url;
+
+                    if (wrapDesc) {
+                        desc = wrapDesc(item, i);
+                    }
+
+                    arr.push({
+                        key: command.key,
+                        id: item.id,
+                        icon,
+                        url: item.url,
+                        title: item.title,
+                        desc,
+                        isWarn: false
+                    });
+                }
+
+                resolve(arr);
+            });
         });
-    });
+    }
 }
 
 function onEnter(item, { orkey }, query, shiftKey, list) {
