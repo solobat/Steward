@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.4.2',
+        detail: `
+            自动添加 GitBook 类站点的 Websites 配置;<br>
+            Shift + Enter 打开 Pocket 文章的原文链接;<br>
+            bm / his 命令 query 为 / 时带出 host。
+        `
+    },
+    {
         version: 'v3.4.1',
         detail: `
             存储最近的命令：输入框为空时，按向上键将显示最近20条命令记录，可以设置 -> General 面板关闭/开启；
@@ -245,6 +253,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4.2',
+        detail: `
+        Automatically add the Websites configuration of the GitBook class site;<br>
+        Press Shift + Enter to open the original link of one Pocket article;<br>
+        Opitimize bm / his plugins.
+        `
+    },
     {
         version: 'v3.4.1',
         detail: `
