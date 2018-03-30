@@ -22,6 +22,7 @@ const commands = [{
     title,
     subtitle,
     icon,
+    shiftKey: true,
     editable: false
 }, {
     key: 'se',
@@ -198,11 +199,15 @@ function handleEnginesUpdate(item, query, command) {
     }
 }
 
-function onEnter(item, command, query) {
+function onEnter(item, command, query, shiftKey, list) {
     if (command.orkey === 'se') {
         return handleEnginesUpdate(item, query, command);
     } else {
-        gotoSearch(item, this.str);
+        if (shiftKey) {
+            list.forEach(eitem => gotoSearch(eitem, this.str));
+        } else {
+            gotoSearch(item, this.str);
+        }
     }
 }
 
