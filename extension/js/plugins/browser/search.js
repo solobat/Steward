@@ -85,10 +85,27 @@ function getSearchLinks(query) {
                 query,
                 engine,
                 count: engines[engine].count || 0,
+                engineUrl: engines[engine].url,
                 icon: engines[engine].icon,
                 title: `Search ${engine} for: ${query}`
             };
         });
+    }).then(results => {
+        if (window.parentHost) {
+            const index = results.findIndex(item => item.engineUrl.indexOf(window.parentHost) !== -1);
+
+            if (index !== -1) {
+                const item = results.splice(index, 1)[0];
+
+                results.unshift(item);
+
+                return results;
+            } else {
+                return results;
+            }
+        } else {
+            return results;
+        }
     });
 }
 
