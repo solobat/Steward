@@ -174,5 +174,6 @@ export default {
     title,
     commands,
     onInput,
-    onEnter
+    onEnter,
+    canDisabled: true
 };

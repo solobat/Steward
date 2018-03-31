@@ -96,6 +96,10 @@ a {
     padding: 3px 8px;
     height: 40px;
     position: relative;
+
+    &.plugin-disabled {
+        color: #999;
+    }
 }
 
 .workflow-item {

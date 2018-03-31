@@ -77,6 +77,10 @@ pluginList.forEach(plugin => {
             }
         });
     }
+
+    if (plugin.canDisabled) {
+        plugin.disabled = false;
+    }
 });
 
 export const plugins = pluginList

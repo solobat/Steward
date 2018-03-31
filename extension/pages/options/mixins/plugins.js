@@ -6,15 +6,22 @@ import _ from 'underscore'
 
 // plugins: { [pname]: { version, commands } }
 const pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name').map(plugin => {
-    const {name, icon, commands, title} = plugin;
+    const {name, icon, commands, title, disabled, canDisabled} = plugin;
 
-    return {
+    const ret = {
         name,
         version: plugin.version,
         commands,
         title,
-        icon
+        icon,
+        canDisabled
+    };
+
+    if (canDisabled) {
+        ret.disabled = disabled;
     }
+
+    return ret;
 });
 
 export default {
@@ -45,6 +52,17 @@ export default {
     },
 
     methods: {
+        isPluginDisabled(plugin) {
+            const pname = plugin.name;
+            const pluginsData = this.config.plugins;
+
+            if (pluginsData[pname] && pluginsData[pname].disabled) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+
         getDocumentURL: function(plugin) {
             return util.getDocumentURL(plugin.name);
         },

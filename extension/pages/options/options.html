@@ -150,7 +150,7 @@
                                 <el-input placeholder="Search" icon="search" v-model="pluginSearchText">
                                 </el-input>
                             </div>
-                            <div class="plugin-item" v-for="plugin in filteredPlugins" @click="handlePluginClick(plugin)">
+                            <div class="plugin-item" v-for="plugin in filteredPlugins" :class="{'plugin-disabled': isPluginDisabled(plugin)}" @click="handlePluginClick(plugin)">
                                 <img :src="plugin.icon" class="plugin-icon" alt="">
                                 <span class="plugin-name">{{plugin.name}}</span>
                             </div>
@@ -182,6 +182,12 @@
                                             <el-tooltip v-if="command.allowBatch" class="item" effect="dark" :content="i18nTexts.tips.allowBatch" placement="top-start">
                                                 <img src="/img/allowbatch.png" class="icon-batch" alt="">
                                             </el-tooltip>
+                                        </el-form-item>
+                                        <el-form-item v-if="currentPlugin.canDisabled" label="Disable">
+                                            <el-switch
+                                                v-model="config.plugins[currentPlugin.name].disabled"
+                                                on-color="#20a0ff">
+                                            </el-switch>
                                         </el-form-item>
                                         <el-form-item>
                                             <el-button type="primary" @click.native.prevent="handlePluginsSubmit">Save</el-button>

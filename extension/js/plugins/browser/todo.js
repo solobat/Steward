@@ -224,5 +224,6 @@ export default {
     commands,
     showTodos,
     onInput,
-    onEnter
+    onEnter,
+    canDisabled: true
 };

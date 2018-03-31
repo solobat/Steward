@@ -46,5 +46,6 @@ export default {
     icon,
     title,
     onInput,
-    onEnter
+    onEnter,
+    canDisabled: false
 };

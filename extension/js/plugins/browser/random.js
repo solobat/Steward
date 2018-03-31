@@ -97,5 +97,6 @@ export default {
     commands,
     getOneCommand,
     onInput,
-    onEnter
+    onEnter,
+    canDisabled: false
 };

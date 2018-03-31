@@ -8,7 +8,7 @@ import util from './util'
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
 const pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name').map(plugin => {
-    const {name, icon, commands, title} = plugin;
+    const {name, icon, commands, title, canDisabled} = plugin;
     let simpleCommand;
 
     if (commands) {
@@ -20,7 +20,8 @@ const pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name')
         version: plugin.version,
         commands: simpleCommand,
         title,
-        icon
+        icon,
+        canDisabled
     }
 });
 
@@ -46,12 +47,20 @@ function mergePluginData(plugin, cachePlugins) {
         // rough merge
         cachePlugin.commands = $.extend(true, plugin.commands, cachePlugin.commands);
         cachePlugin.version = plugin.version;
+
+        if (plugin.canDisabled) {
+            cachePlugin.disabled = cachePlugin.disabled || false;
+        }
     } else {
         cachePlugins[name] = {
             version: plugin.version,
             commands: plugin.commands
         };
         cachePlugin = cachePlugins[name];
+
+        if (plugin.canDisabled) {
+            cachePlugin.disabled = false;
+        }
     }
 
     // Reduce the cache usage because of the limitation of chrome.storage.sync api

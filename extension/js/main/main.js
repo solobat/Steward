@@ -647,8 +647,18 @@ function init() {
 function classifyPlugins(pluginsData) {
     const PLUGIN_TYPE = CONST.BASE.PLUGIN_TYPE;
 
+    function isEnabled(plugin) {
+        const pname = plugin.name;
+
+        if (pluginsData[pname] && pluginsData[pname].disabled) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     plugins.forEach(plugin => {
-        if (!plugin.invalid) {
+        if (!plugin.invalid && isEnabled(plugin)) {
             if (typeof plugin.onBoxEmpty === 'function') {
                 plugin4empty = plugin;
             }
