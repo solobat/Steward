@@ -35,7 +35,6 @@ export default {
     created() {
         websiteHelper.init().then((resp = []) => {
             this.websites = resp;
-            console.log(resp);
         });
     },
 
