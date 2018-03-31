@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.4.3',
+        detail: `
+            支持禁用部分插件;<br>
+            搜索支持批量, 页面模式搜索提升;<br>
+            更多 Chrome URL 添加。
+        `
+    },
+    {
         version: 'v3.4.2',
         detail: `
             自动添加 GitBook 类站点的 Websites 配置;<br>
@@ -253,6 +261,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4.3',
+        detail: `
+            Support disabling some plugins;<br>
+            Search support batch; Page mode search promotion;<br>
+            More Chrome URLs added.
+        `
+    },
     {
         version: 'v3.4.2',
         detail: `
