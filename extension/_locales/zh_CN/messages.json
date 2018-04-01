@@ -381,13 +381,19 @@
         "message": "保存"
     },
     "wallpaper_action_save_subtitle": {
-        "message": "保存当前壁纸 [ source ] 到你的收藏中"
+        "message": "保存当前壁纸原链接到你的收藏中"
     },
     "wallpaper_action_refresh_title": {
         "message": "刷新"
     },
     "wallpaper_action_refresh_subtitle": {
         "message": "刷新壁纸，来源包括 bing.com / 收藏 / picsum.photos，随机权重为 1 / 2 / 2"
+    },
+    "wallpaper_action_upload_title": {
+        "message": "上传到微博图床并保存"
+    },
+    "wallpaper_action_upload_subtitle": {
+        "message": "请优先选择此项，因图片链接加载较慢或可能失效 -- 需要先登录新浪微博"
     },
     "wallpaper_action_download_title": {
         "message": "下载"

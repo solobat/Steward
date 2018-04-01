@@ -381,13 +381,19 @@
         "message": "Save"
     },
     "wallpaper_action_save_subtitle": {
-        "message": "Save current wallpaper [ source ] to your collections"
+        "message": "Save current wallpaper to your collections"
     },
     "wallpaper_action_refresh_title": {
         "message": "Refresh"
     },
     "wallpaper_action_refresh_subtitle": {
         "message": "Refresh wallpaper from sources which include bing.com / collections / picsum.photos"
+    },
+    "wallpaper_action_upload_title": {
+        "message": "Upload to WeiBo picture bed and save to you collections"
+    },
+    "wallpaper_action_upload_subtitle": {
+        "message": "Please select this option first, because the image link may be loaded slowly or invalidated - You need to log in to Sina Weibo first"
     },
     "wallpaper_action_download_title": {
         "message": "Download"
