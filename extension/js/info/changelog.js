@@ -3,6 +3,7 @@ const langZh = [
         version: 'v3.4.3',
         detail: `
             支持禁用部分插件;<br>
+            <em>wp</em> 命令支持上传壁纸到微博图床，壁纸来源中添加 favorites;<br>
             搜索支持批量, 页面模式搜索提升;<br>
             更多 Chrome URL 添加。
         `
