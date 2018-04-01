@@ -92,7 +92,7 @@ function setup() {
         updateActions();
 
         if (that && that.command && that.command.orkey === 'wp') {
-            that.showItemList(actions);
+            that.showItemList(JSON.parse(JSON.stringify(actions)));
         }
     });
     updateActions();
