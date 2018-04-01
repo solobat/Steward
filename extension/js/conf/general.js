@@ -8,7 +8,7 @@ export default {
     autoHideCmd: false,
     maxOperandsNum: 5,
     autoResizeBoxFontSize: false,
-    wallpaperSources: ['bing'],
+    wallpaperSources: ['bing', 'favorites'],
     autoSelectByMouse: false,
     enableRandomWallpaper: true,
     storeTypedQuery: true

@@ -15,6 +15,10 @@ export const DEFAULT_PLUGINS = ['Top Sites', 'Bookmarks', 'Tabs', 'Weather', 'Ot
 })
 
 export const WALLPAPER_SOURCES = [{
+    label: 'Favorites',
+    value: 'favorites',
+    tips: 'Your favorites'
+}, {
     label: 'Bing',
     value: 'bing',
     tips: 'faster, but less'
