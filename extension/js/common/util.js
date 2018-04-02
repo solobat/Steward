@@ -220,11 +220,15 @@ function simTemplate(tpl, data) {
 }
 
 const getData = field => () => {
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
         chrome.runtime.sendMessage({
             action: field
         }, resp => {
-            resolve(resp.data);
+            if (resp) {
+                resolve(resp.data);
+            } else {
+                reject(null);
+            }
         });
     });
 }

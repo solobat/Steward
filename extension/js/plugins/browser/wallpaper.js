@@ -4,6 +4,7 @@
  * @mail solopea@gmail.com
  */
 
+/*global EXT_TYPE */
 import $ from 'jquery'
 import Toast from 'toastr'
 import { saveWallpaperLink, getDataURI } from '../../helper/wallpaper'
@@ -98,7 +99,9 @@ function setup() {
     updateActions();
 }
 
-setup();
+if (EXT_TYPE === 'steward') {
+    setup();
+}
 
 function isNewTab() {
     return window.stewardCache.mode === MODE.NEWTAB;
