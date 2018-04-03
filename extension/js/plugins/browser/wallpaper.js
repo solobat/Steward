@@ -67,10 +67,12 @@ const tips = [{
 let that;
 
 function updateActions() {
+    const wallpaper = window.localStorage.getItem('wallpaper') || '';
+
     actions = allActions.filter(action => {
         if (action.selector) {
             return $(action.selector).is(':visible')
-        } else if (action.type === 'upload' && window.localStorage.getItem('wallpaper').indexOf('sinaimg.cn') !== -1) {
+        } else if (action.type === 'upload' && wallpaper.indexOf('sinaimg.cn') !== -1) {
             return false;
         } else {
             return true;
