@@ -15,9 +15,9 @@ const aboutLinks = {
             url: 'http://bbs.oksteward.com'
         },
         {
-            title: '开发者网站',
-            desc: 'tomasy 的博客',
-            url: 'http://tomasy.me'
+            title: '攻略',
+            desc: '看了攻略，才能更好的了解 Steward 的精髓所在',
+            url: 'http://oksteward.com/steward-document-zh/%E6%94%BB%E7%95%A5.html'
         },
         {
             title: '帮助文档',
@@ -29,9 +29,9 @@ const aboutLinks = {
             desc: '575397892'
         },
         {
-            title: '攻略',
-            desc: '看了攻略，才能更好的了解 Steward 的精髓所在',
-            url: 'http://oksteward.com/steward-document-zh/%E6%94%BB%E7%95%A5.html'
+            title: 'Telegram',
+            desc: '加入 Steward Telegram 频道',
+            url: 'https://t.me/chromesteward'
         },
         {
             title: '项目',
@@ -44,9 +44,9 @@ const aboutLinks = {
             url: 'https://github.com/solobat/Steward/issues'
         },
         {
-            title: '交流',
-            desc: '加入 Steward Telegram 频道',
-            url: 'https://t.me/chromesteward'
+            title: '开发者网站',
+            desc: 'tomasy 的博客',
+            url: 'http://tomasy.me'
         }
     ],
     en: [
@@ -73,7 +73,7 @@ const upLinks = {
         {
             title: '赞助: Steward 开发者',
             desc: '如果你觉得 Steward 还不错，确实提高了你的效率的话......',
-            url: 'http://oksteward.com'
+            url: 'http://oksteward.com/donate.html'
         },
         {
             title: 'Star: Steward on Github',
