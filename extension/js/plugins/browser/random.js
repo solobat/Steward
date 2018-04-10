@@ -56,7 +56,7 @@ function onInput(query) {
 function onEnter(item, command, query) {
     if (query) {
         return randomStorage.addItem(query).then(() => {
-            return `${command.orkey} `;
+            return `${command.key} `;
         });
     } else {
         return randomStorage.removeItem(item.id).then(() => {

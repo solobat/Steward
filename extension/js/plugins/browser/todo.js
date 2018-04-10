@@ -166,7 +166,7 @@ function addTodo(todo, command) {
                 Toast.success(`Add todo [${todoText}]`, 'TodoList', { timeOut: 1000 });
 
                 if (command) {
-                    return `${command.orkey} `;
+                    return `${command.key} `;
                 } else {
                     return '';
                 }

@@ -122,7 +122,7 @@ function removeRandomItem(item) {
 function handleRandomNotesEnter(item, query, command) {
     if (query) {
         return addRandomItem(query, command).then(() => {
-            return `${command.orkey} `;
+            return `${command.key} `;
         });
     } else {
         return removeRandomItem(item).then(() => {

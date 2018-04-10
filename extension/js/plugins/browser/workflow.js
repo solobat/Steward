@@ -188,7 +188,7 @@ function handleWorkflowLineEditEnter(box, item, command, query, shiftKey, list) 
     if (!query && item.action === 'backto') {
         curWid = '';
 
-        return Promise.resolve(`${command.orkey} `);
+        return Promise.resolve(`${command.key} `);
     } else {
         let result;
 

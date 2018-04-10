@@ -124,7 +124,7 @@ function updateTimes(newItem, command) {
             [STORAGE.TIMES]: times
         }).then(() => {
             if (command) {
-                return `${command.orkey} `;
+                return `${command.key} `;
             } else {
                 return '';
             }
@@ -140,7 +140,7 @@ function removeTimes(ditem, command) {
             [STORAGE.TIMES]: times
         }).then(() => {
             if (command) {
-                return `${command.orkey} `;
+                return `${command.key} `;
             } else {
                 return '';
             }
