@@ -67,6 +67,13 @@ function callCommand(command, key) {
     }
 
     cmdbox.cmd = command.key;
+    if (cmdbox.command && cmdbox.command !== command) {
+        const onLeave = cmdbox.command.plugin.onLeave;
+
+        if (typeof onLeave === 'function') {
+            Reflect.apply(onLeave, cmdbox, [key, command, inContent]);
+        }
+    }
     cmdbox.command = command;
 
     return Reflect.apply(command.plugin.onInput, cmdbox, [key, command, inContent]);

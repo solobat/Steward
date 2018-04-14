@@ -146,6 +146,12 @@ function onEnter(item, command, q, shiftKey, list) {
     ], [list, item]);
 }
 
+function onLeave() {
+    if (ajax) {
+        ajax.abort();
+    }
+}
+
 export default {
     version,
     name: 'Pocket',
@@ -154,5 +160,6 @@ export default {
     commands,
     onInput,
     onEnter,
+    onLeave,
     canDisabled: true
 };
