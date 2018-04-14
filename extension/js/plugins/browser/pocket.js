@@ -156,6 +156,12 @@ function authenticate() {
     auth.reAuthenticate(handler);
 }
 
+function onStorageChange(event) {
+    if (event.key === 'pocket_username') {
+        this.render(this.str);
+    }
+}
+
 export default {
     version,
     name: 'Pocket',
@@ -166,5 +172,6 @@ export default {
     onEnter,
     onLeave,
     authenticate,
+    onStorageChange,
     canDisabled: true
 };

@@ -649,6 +649,18 @@ function init() {
     } else if(!inContent) {
         setTimeout(ga, 200);
     }
+
+    window.addEventListener('storage', function(event) {
+        const command = cmdbox.command
+
+        if (command) {
+            const onStorageChange = command.plugin.onStorageChange;
+
+            if (onStorageChange) {
+                Reflect.apply(onStorageChange, cmdbox, [event, command]);
+            }
+        }
+    });
 }
 
 function classifyPlugins(pluginsData) {
