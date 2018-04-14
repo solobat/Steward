@@ -6,7 +6,7 @@ const autoMatchingSites = [{
     name: 'GitBook',
     title: 'GitBook',
     host: '',
-    icon: 'https://www.gitbook.com/assets/images/logo/favicon.ico',
+    icon: chrome.extension.getURL('img/gitbook.ico'),
     autoMatching: 'meta[content*="GitBook"]',
     navs: 'nav a',
     outlineScope: '.markdown-section',
