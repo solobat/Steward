@@ -152,6 +152,10 @@ function onLeave() {
     }
 }
 
+function authenticate() {
+    auth.reAuthenticate(handler);
+}
+
 export default {
     version,
     name: 'Pocket',
@@ -161,5 +165,6 @@ export default {
     onInput,
     onEnter,
     onLeave,
+    authenticate,
     canDisabled: true
 };

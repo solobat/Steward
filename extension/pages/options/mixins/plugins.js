@@ -6,7 +6,7 @@ import _ from 'underscore'
 
 // plugins: { [pname]: { version, commands } }
 const pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name').map(plugin => {
-    const {name, icon, commands, title, disabled, canDisabled} = plugin;
+    const {name, icon, commands, title, disabled, canDisabled, authenticate} = plugin;
 
     const ret = {
         name,
@@ -14,7 +14,8 @@ const pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name')
         commands,
         title,
         icon,
-        canDisabled
+        canDisabled,
+        authenticate
     };
 
     if (canDisabled) {
@@ -70,6 +71,10 @@ export default {
         handlePluginClick: function(plugin) {
             this.currentPlugin = plugin;
             _gaq.push(['_trackEvent', 'options_plugins', 'click', plugin.name]);
+        },
+
+        handlePluginAuth(plugin) {
+            plugin.authenticate();
         },
 
         checkTriggerRepetition() {

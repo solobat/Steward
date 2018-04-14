@@ -164,6 +164,7 @@
                                     <div class="plugin-editor-text">
                                         <p class="plugin-editor-name">
                                             {{currentPlugin.name}} - v{{currentPlugin.version}}
+                                            <el-button type="text" v-if="currentPlugin.authenticate" @click="handlePluginAuth(currentPlugin)">重新授权</el-button>
                                             <a class="plugin-doc" :href="getDocumentURL(currentPlugin)" target="_blank">Document</a>
                                         </p>
                                         <p class="plugin-editor-title">{{currentPlugin.title}}</p>

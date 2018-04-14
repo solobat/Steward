@@ -23,6 +23,17 @@ Auth.prototype.get = function (key) {
     return localStorage[key];
 };
 
+Auth.prototype.remove = function() {
+    localStorage.removeItem(this.requestTokenName);
+    localStorage.removeItem(this.accessTokenName);
+    localStorage.removeItem(this.username);
+};
+
+Auth.prototype.reAuthenticate = function(handler) {
+    this.remove();
+    this.authenticate(handler);
+};
+
 Auth.prototype.isAuthenticated = function () {
     const accessToken = this.get(this.accessTokenName);
 
