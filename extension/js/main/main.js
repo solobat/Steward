@@ -314,7 +314,7 @@ function handleInit () {
 
         cmdbox.isFirst = true;
         if (util.shouldSupportMe()) {
-            cmd = 'about ';
+            cmd = Number(new Date()) % 2 ? 'about ' : 'up ';
             applyCmd(cmd);
         } else if (cacheLastCmd) {
             cmd = storage.h5.get(CONST.STORAGE.LAST_CMD) || 'site ';

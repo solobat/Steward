@@ -202,7 +202,7 @@ function isStorageSafe(key) {
 }
 
 function shouldSupportMe() {
-    const nums = [6, 66, 666];
+    const nums = [6, 8, 66, 88, 666, 888];
     const random = Math.floor(Math.random() * 1000);
     console.log(random);
 
