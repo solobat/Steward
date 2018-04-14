@@ -306,10 +306,6 @@ a {
     justify-content: space-between;
 }
 
-.wallpapers-container {
-
-}
-
 .wallpaper-box {
     position: relative;
     width: 25%;
@@ -339,9 +335,6 @@ a {
     width: 100%;
     height: 135px;
     transition: transform .3s ease-out;
-}
-
-.wallpaper-box.is-selected {
 }
 
 .wallpaper-box .selected-icon {
