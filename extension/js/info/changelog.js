@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.4.4',
+        detail: `
+            新增 Nasa 以及 Desktoppr 壁纸来源；<br>
+            pocket 重新授权及优化；<br>
+            体验优化及 Bug 修复。
+        `
+    },
+    {
         version: 'v3.4.3',
         detail: `
             支持禁用部分插件;<br>
@@ -262,6 +270,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4.4',
+        detail: `
+            Added Nasa and Desktoppr wallpaper sources;<br>
+            Pocket re-authorization and optimization; <br> 
+            Experience optimization and bug fixes. 
+        `
+    },
     {
         version: 'v3.4.3',
         detail: `
