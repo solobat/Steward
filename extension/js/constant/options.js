@@ -26,4 +26,8 @@ export const WALLPAPER_SOURCES = [{
     label: 'Unsplash',
     value: 'picsum',
     tips: 'lower, but more'
+}, {
+    label: 'Nasa',
+    value: 'nasa',
+    tips: 'NASA'
 }];

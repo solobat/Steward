@@ -49,15 +49,6 @@ function randomIndex(sourceWeights) {
     return getRandomOne(list);
 }
 
-function wallpaperApiHandler(resp, isBing) {
-    console.log(`update from ${isBing ? 'bing' : 'favorites'}...`);
-    if (!isBing) {
-        return resp;
-    } else {
-        return api.bing.root + resp.images[0].url;
-    }
-}
-
 function getRandomOne(list) {
     if (list && list.length) {
         const index = Math.round(Math.random() * (list.length - 1));
@@ -69,21 +60,30 @@ function getRandomOne(list) {
 const sourcesInfo = {
     bing: {
         api: method => () => api.bing[method](),
+        handle: result => (api.bing.root + result.images[0].url),
         weight: 1
     },
     favorites: {
         api: () => storage.sync.get(CONST.STORAGE.WALLPAPERS, []),
+        handle: result => getRandomOne(result),
         weight: 2
     },
     picsum: {
         api: () => api.picsum.getRandomImage(),
+        handle: result => result,
         weight: 2
+    },
+    nasa: {
+        api: () => api.nasa.getList(),
+        handle: result => result.url,
+        weight: 0.5
     }
 };
 
 function getSources(method) {
     let sources = window.stewardCache.config.general.wallpaperSources.slice(0);
 
+    // default
     if (!sources || !sources.length) {
         sources = ['bing', 'favorites'];
     }
@@ -102,6 +102,7 @@ function getSources(method) {
         tasks.push(source.api(method));
         tasks.push(sourcesInfo.favorites.api);
     } else if (sourceName === 'favorites') {
+        // there may be no pictures in the `favorites`
         tasks.push(sourcesInfo.bing.api(method));
         tasks.push(source.api);
     } else {
@@ -124,22 +125,23 @@ export function refreshWallpaper(today) {
     const server = getSources(method);
 
     Promise.all(server.tasks.map(task => task())).then(sources => {
+        // `result` will never be `favorites`.
         const [result, favorites] = sources;
+        const type = server.name;
 
-        if (server.name === 'picsum') {
-            const isNew = favorites.indexOf(result) === -1;
+        if (type !== 'favorites' || favorites.length > 0) {
+            let wp;
+            let isNew;
 
-            recordSource('picsum');
-            updateWallpaper(result, true, isNew);
-            console.log('update from picsum');
-        } else if (server.name === 'favorites' && favorites.length > 0) {
-            recordSource('favorites');
-            updateWallpaper(wallpaperApiHandler(getRandomOne(favorites)), true, false);
-        } else {
-            const wp = wallpaperApiHandler(result, true);
-            const isNew = favorites.indexOf(wp) === -1;
+            if (type === 'favorites') {
+                wp = sourcesInfo[type].handle(favorites);
+                isNew = false;
+            } else {
+                wp = sourcesInfo[type].handle(result);
+                isNew = favorites.indexOf(wp) === -1;
+            }
 
-            recordSource('bing');
+            recordSource(type);
             updateWallpaper(wp, true, isNew);
         }
     }).catch(resp => {
