@@ -132,23 +132,25 @@ export function refreshWallpaper(today) {
     Promise.all(server.tasks.map(task => task())).then(sources => {
         // `result` will never be `favorites`.
         const [result, favorites] = sources;
-        const type = server.name;
+        let type = server.name;
 
-        if (type !== 'favorites' || favorites.length > 0) {
-            let wp;
-            let isNew;
-
-            if (type === 'favorites') {
-                wp = sourcesInfo[type].handle(favorites);
-                isNew = false;
-            } else {
-                wp = sourcesInfo[type].handle(result);
-                isNew = favorites.indexOf(wp) === -1;
-            }
-
-            recordSource(type);
-            updateWallpaper(wp, true, isNew);
+        if (type === 'favorites' && favorites.length === 0) {
+            type = 'bing';
         }
+
+        let wp;
+        let isNew;
+
+        if (type === 'favorites') {
+            wp = sourcesInfo[type].handle(favorites);
+            isNew = false;
+        } else {
+            wp = sourcesInfo[type].handle(result);
+            isNew = favorites.indexOf(wp) === -1;
+        }
+
+        recordSource(type);
+        updateWallpaper(wp, true, isNew);
     }).catch(resp => {
         console.log(resp);
     });
