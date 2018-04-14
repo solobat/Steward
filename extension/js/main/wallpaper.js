@@ -77,6 +77,11 @@ const sourcesInfo = {
         api: () => api.nasa.getList(),
         handle: result => result.url,
         weight: 0.5
+    },
+    desktoppr: {
+        api: () => api.desktoppr.getRandom(),
+        handle: result => result.response.image.url,
+        weight: 3
     }
 };
 

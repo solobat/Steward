@@ -30,4 +30,8 @@ export const WALLPAPER_SOURCES = [{
     label: 'Nasa',
     value: 'nasa',
     tips: 'NASA'
+}, {
+    label: 'Desktoppr',
+    value: 'desktoppr',
+    tips: 'desktoppr.co'
 }];
