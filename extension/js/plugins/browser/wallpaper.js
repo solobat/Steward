@@ -34,13 +34,15 @@ const allActions = [
         icon: chrome.extension.getURL('img/save-red.png'),
         title: chrome.i18n.getMessage('wallpaper_action_save_title'),
         desc: chrome.i18n.getMessage('wallpaper_action_save_subtitle'),
-        selector: '#j-save-wplink'
+        selector: '#j-save-wplink',
+        type: 'save'
     },
     {
         icon: chrome.extension.getURL('img/refresh-red.png'),
         title: chrome.i18n.getMessage('wallpaper_action_refresh_title'),
         desc: chrome.i18n.getMessage('wallpaper_action_refresh_subtitle'),
-        selector: '#j-refresh-wp'
+        selector: '#j-refresh-wp',
+        type: 'refresh'
     },
     {
         icon: chrome.extension.getURL('img/download-red.png'),
@@ -66,11 +68,13 @@ const tips = [{
 
 let that;
 
-function updateActions() {
+function updateActions(saved) {
     const wallpaper = window.localStorage.getItem('wallpaper') || '';
 
     actions = allActions.filter(action => {
-        if (action.selector) {
+        if (action.type === 'save' && saved) {
+            return false;
+        } else if (action.selector) {
             return $(action.selector).is(':visible')
         } else if (action.type === 'upload' && wallpaper.indexOf('sinaimg.cn') !== -1) {
             return false;
@@ -291,7 +295,7 @@ function saveWallpaper(link, command) {
 
     if (link.match(reg)) {
         return saveWallpaperLink(link).then(() => {
-            updateActions();
+            updateActions(true);
 
             return `${command.key} `;
         }).catch(msg => {
