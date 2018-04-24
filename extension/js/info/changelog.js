@@ -1,5 +1,11 @@
 const langZh = [
     {
+        version: 'v3.4.4.1',
+        detail: `
+            修复 wp 命令的 Bug。
+        `
+    },
+    {
         version: 'v3.4.4',
         detail: `
             新增 Nasa 以及 Desktoppr 壁纸来源；<br>
@@ -270,6 +276,12 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4.4.1',
+        detail: `
+            fix bug of wp command.
+        `
+    },
     {
         version: 'v3.4.4',
         detail: `
