@@ -278,55 +278,63 @@
                                 </div>
                                 <div class="plugin-editor-config" style="max-height: 560px; overflow-y: auto;">
                                     <el-form style="margin: 20px;padding: 12px; min-height: 150px;" ref="websiteForm" :model="currentWebsite" :rules="websiteFormRuels" label-width="200px">
-                                        <el-form-item label="Title" prop="title">
-                                            <el-input type="text" style="width: 300px;" v-model="currentWebsite.title">
-                                            </el-input>
-                                        </el-form-item>
-                                        <el-form-item label="Host" prop="host">
-                                            <el-input type="text" style="width: 300px;" v-model="currentWebsite.host">
-                                            </el-input>
-                                        </el-form-item>
-                                        <el-form-item label="Site Icon">
-                                            <el-input type="text" style="width: 300px;" v-model="currentWebsite.icon" placeholder="https://baidu.com/favicon.ico">
-                                            </el-input>
-                                        </el-form-item>
-                                        <el-form-item label="Paths">
-                                            <div class="paths-container">
-                                                <el-row>
-                                                    <el-col :span="6">
-                                                        <el-input v-model="newPath.title" placeholder="Title" @keyup.enter.native="handleNewPathAddClick"></el-input>
+                                        <el-collapse v-model="activeFieldsName">
+                                            <el-collapse-item name="meta" title="Base Info">
+                                                <el-form-item label="Title" prop="title">
+                                                    <el-input type="text" style="width: 300px;" v-model="currentWebsite.title">
+                                                    </el-input>
+                                                </el-form-item>
+                                                <el-form-item label="Host" prop="host">
+                                                    <el-input type="text" style="width: 300px;" v-model="currentWebsite.host">
+                                                    </el-input>
+                                                </el-form-item>
+                                                <el-form-item label="Site Icon">
+                                                    <el-input type="text" style="width: 300px;" v-model="currentWebsite.icon" placeholder="https://baidu.com/favicon.ico">
+                                                    </el-input>
+                                                </el-form-item>
+                                            </el-collapse-item>
+                                            <el-collapse-item title="Site navigation, trigger: [ Direct search ] or [ / ]" name="site">
+                                                <el-form-item label="Paths">
+                                                    <div class="paths-container">
+                                                        <el-row>
+                                                            <el-col :span="6">
+                                                                <el-input v-model="newPath.title" placeholder="Title" @keyup.enter.native="handleNewPathAddClick"></el-input>
+                                                            </el-col>
+                                                            <el-col :span="10" :offset="1">
+                                                                <el-input v-model="newPath.urlPattern" placeholder="URL Pattern" @keyup.enter.native="handleNewPathAddClick"></el-input>
+                                                            </el-col>
+                                                            <el-col :span="4" :offset="1">
+                                                                <el-button @click="handleNewPathAddClick" type="primary" icon="plus"></el-button>
+                                                            </el-col>
+                                                        </el-row>
+                                                        <el-row v-for="(path, index) in this.currentWebsite.paths" :key="index">
+                                                            <el-col :span="6">
+                                                                <el-input v-model="path.title" placeholder="Title" :disabled="!path.editable"></el-input>
+                                                            </el-col>
+                                                            <el-col :span="10" :offset="1">
+                                                                <el-input v-model="path.urlPattern" placeholder="URL Pattern" :disabled="!path.editable"></el-input>
+                                                            </el-col>
+                                                            <el-col :span="4" :offset="1">
+                                                                <el-button @click="path.editable = !path.editable" type="primary" :icon="path.editable ? 'check' : 'edit'"></el-button>
+                                                                <el-button @click="handleNewPathDeleteClick(index)" type="primary" icon="delete"></el-button>
+                                                            </el-col>
+                                                        </el-row>
+                                                    </div>
+                                                </el-form-item>
+                                                <el-form-item label="Navigations">
+                                                    <el-col :span="17">
+                                                        <el-input type="textarea" :rows="2" autosize placeholder="such as: nav > ul > li > a" v-model="currentWebsite.navs"></el-input>
                                                     </el-col>
-                                                    <el-col :span="10" :offset="1">
-                                                        <el-input v-model="newPath.urlPattern" placeholder="URL Pattern" @keyup.enter.native="handleNewPathAddClick"></el-input>
+                                                </el-form-item>
+                                            </el-collapse-item>
+                                            <el-collapse-item name="inpage" title="In-page navigation, trigger: [ ` ]">
+                                                <el-form-item label="Outline Scope">
+                                                    <el-col :span="17">
+                                                        <el-input placeholder="such as: .markdown-body" v-model="currentWebsite.outlineScope"></el-input>
                                                     </el-col>
-                                                    <el-col :span="4" :offset="1">
-                                                        <el-button @click="handleNewPathAddClick" type="primary" icon="plus"></el-button>
-                                                    </el-col>
-                                                </el-row>
-                                                <el-row v-for="(path, index) in this.currentWebsite.paths" :key="index">
-                                                    <el-col :span="6">
-                                                        <el-input v-model="path.title" placeholder="Title" :disabled="!path.editable"></el-input>
-                                                    </el-col>
-                                                    <el-col :span="10" :offset="1">
-                                                        <el-input v-model="path.urlPattern" placeholder="URL Pattern" :disabled="!path.editable"></el-input>
-                                                    </el-col>
-                                                    <el-col :span="4" :offset="1">
-                                                        <el-button @click="path.editable = !path.editable" type="primary" :icon="path.editable ? 'check' : 'edit'"></el-button>
-                                                        <el-button @click="handleNewPathDeleteClick(index)" type="primary" icon="delete"></el-button>
-                                                    </el-col>
-                                                </el-row>
-                                            </div>
-                                        </el-form-item>
-                                        <el-form-item label="Navigations">
-                                            <el-col :span="17">
-                                                <el-input type="textarea" :rows="2" autosize placeholder="such as: nav > ul > li > a" v-model="currentWebsite.navs"></el-input>
-                                            </el-col>
-                                        </el-form-item>
-                                        <el-form-item label="Outline Scope">
-                                            <el-col :span="17">
-                                                <el-input placeholder="such as: .markdown-body" v-model="currentWebsite.outlineScope"></el-input>
-                                            </el-col>
-                                        </el-form-item>
+                                                </el-form-item>
+                                            </el-collapse-item>
+                                        </el-collapse>
                                         <el-form-item label="Disable">
                                             <el-switch
                                                 v-model="currentWebsite.disabled"

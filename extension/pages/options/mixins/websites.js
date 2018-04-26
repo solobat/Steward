@@ -6,6 +6,7 @@ export default {
             websiteSearchText: '',
             websites: [],
             currentWebsite: null,
+            activeFieldsName: ['meta'],
             newPath: {
                 title: '',
                 urlPattern: '',
