@@ -149,8 +149,12 @@ export function refreshWallpaper(today) {
             isNew = favorites.indexOf(wp) === -1;
         }
 
-        recordSource(type);
-        updateWallpaper(wp, true, isNew);
+        if (!/\.html$/.test(wp)) {
+            recordSource(type);
+            updateWallpaper(wp, true, isNew);
+        } else {
+            Toast.warning('Picture error, please refresh again.');
+        }
     }).catch(resp => {
         console.log(resp);
     });
