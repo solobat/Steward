@@ -213,6 +213,7 @@ function pid2url(params, sizeType = 'large') {
 
 // copy from https://github.com/suxiaogang/WeiboPicBed
 function uploadToWeiBoPicBed(imgData) {
+    Toast.info('Uploading, please wait...');
     return new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
 
@@ -223,6 +224,7 @@ function uploadToWeiBoPicBed(imgData) {
         data.append('b64_data', imgData.slice(23));
         xhr.onreadystatechange = function() {
             if (xhr.readyState === 4) {
+                Toast.clear();
                 if (xhr.status === 200) {
                     const resText = xhr.responseText;
                     const splitIndex = resText.indexOf('{"');
