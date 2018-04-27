@@ -35,8 +35,10 @@
         }
 
         function removeClass() {
-            document.documentElement.className = '';
-            document.querySelector('#cmdbox').focus();
+            requestAnimationFrame(function() {
+                document.documentElement.className = '';
+                document.querySelector('#cmdbox').focus();
+            });
         }
 
         function addClass() {
