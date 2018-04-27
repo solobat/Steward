@@ -27,6 +27,7 @@
     "getdomain": "^1.0.7",
     "grapnel": "^0.6.4",
     "jquery": "^3.2.1",
+    "jquery.waitforimages": "^2.4.0",
     "keyboardjs": "^2.3.4",
     "lodash.sortby": "^4.7.0",
     "math-expression-evaluator": "^1.2.17",

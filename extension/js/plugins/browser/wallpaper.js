@@ -271,25 +271,29 @@ function downloadImage(imgData) {
 }
 
 function saveImage(actionType, command) {
-    return getDataURI(window.localStorage.wallpaper).then(result => {
-        if (actionType === 'upload') {
-            return uploadToWeiBoPicBed(result);
-        } else {
-            return downloadImage(result);
-        }
-    }).then(imgUrl => {
-        if (imgUrl) {
-            console.log(imgUrl);
-            window.localStorage.setItem('wallpaper', imgUrl);
+    if (!window.stewardCache.wallpaper.loading) {
+        return getDataURI(window.localStorage.wallpaper).then(result => {
+            if (actionType === 'upload') {
+                return uploadToWeiBoPicBed(result);
+            } else {
+                return downloadImage(result);
+            }
+        }).then(imgUrl => {
+            if (imgUrl) {
+                console.log(imgUrl);
+                window.localStorage.setItem('wallpaper', imgUrl);
 
-            return saveWallpaper(imgUrl, command);
-        }
-    }).catch(resp => {
-        Toast.warning(resp.msg);
-        if (resp.url) {
-            chrome.tabs.create({ url: resp.url });
-        }
-    });
+                return saveWallpaper(imgUrl, command);
+            }
+        }).catch(resp => {
+            Toast.warning(resp.msg);
+            if (resp.url) {
+                chrome.tabs.create({ url: resp.url });
+            }
+        });
+    } else {
+        Toast.warning('Image loading, please try again later', { timeOut: 1000 });
+    }
 }
 
 function saveWallpaper(link, command) {

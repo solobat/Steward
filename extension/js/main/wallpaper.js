@@ -7,12 +7,14 @@ import storage from '../utils/storage'
 import Toast from 'toastr'
 import { saveWallpaperLink } from '../helper/wallpaper'
 import browser from 'webextension-polyfill'
+import 'jquery.waitforimages'
 
 const $body = $('body');
 
 let curUrl = '';
 let intervalTimer = 0;
 let $saveBtn;
+let state;
 
 function updateWallpaper(url, save, isNew) {
     if (!url) {
@@ -34,6 +36,10 @@ function updateWallpaper(url, save, isNew) {
         '--app-newtab-background-image': `url(${url})`
     });
     $body.trigger('wallpaper:refreshed');
+    $body.waitForImages(true).done(function() {
+        Toast.clear();
+        state.loading = false;
+    });
 }
 
 
@@ -128,6 +134,9 @@ function recordSource(source) {
 export function refreshWallpaper(today) {
     const method = today ? 'today' : 'rand';
     const server = getSources(method);
+    Toast.info('Updating wallpaper...', { timeOut: 20000 });
+
+    state.loading = true;
 
     Promise.all(server.tasks.map(task => task())).then(sources => {
         // `result` will never be `favorites`.
@@ -153,10 +162,14 @@ export function refreshWallpaper(today) {
             recordSource(type);
             updateWallpaper(wp, true, isNew);
         } else {
+            state.loading = false;
+            Toast.clear();
             Toast.warning('Picture error, please refresh again.');
         }
     }).catch(resp => {
         console.log(resp);
+        state.loading = false;
+        Toast.clear();
     });
 }
 
@@ -193,6 +206,10 @@ export function init() {
     const lastDate = new Date(window.localStorage.getItem(CONST.STORAGE.LASTDATE) || Number(new Date()));
     const defaultWallpaper = window.localStorage.getItem(CONST.STORAGE.WALLPAPER);
     const enableRandomWallpaper = window.stewardCache.config.general.enableRandomWallpaper;
+
+    state = window.stewardCache.wallpaper = {
+        loading: false
+    };
 
     $saveBtn = $('#j-save-wplink');
 
