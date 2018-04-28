@@ -56,6 +56,8 @@ export class Website {
         this.outlineScope = options.outlineScope || '';
         this.paths = [];
         this.customPaths = handlePaths(options.paths, options.deps) || [];
+        this.anchors = [];
+        this.anchorsConfig = options.anchors || [];
         this.bindEvents();
     }
 
@@ -74,6 +76,11 @@ export class Website {
                 if (data.outline.length) {
                     this.outline = data.outline;
                 }
+            } else if (data.action === 'anchors' ) {
+                if (data.anchors.length) {
+                    this.anchors = data.anchors;
+                    console.log(this.anchors);
+                }
             } else if (data.action === 'show') {
                 this.handleBoxShow();
             }
@@ -83,6 +90,7 @@ export class Website {
     handleBoxShow() {
         this.findNavs();
         this.genOutline();
+        this.getAnchors();
     }
 
     findNavs() {
@@ -107,9 +115,19 @@ export class Website {
         }
     }
 
+    getAnchors() {
+        if (this.anchorsConfig.length) {
+            this.parentWindow.postMessage({
+                action: 'getAnchors',
+                anchorsConfig: this.anchorsConfig
+            }, '*');
+        }
+    }
+
     onInput(text) {
         const cnNameFilter = item => util.matchText(text, item.name + item.path);
         const outlineNameFilter = item => util.matchText(text.slice(1), item.name);
+        const anchorNameFilter = outlineNameFilter;
         const mapTo = (key, subType) => item => {
             return {
                 icon: this.icon,
@@ -132,6 +150,8 @@ export class Website {
             }
         } else if (text[0] === '`') {
             return Promise.resolve(this.outline.filter(outlineNameFilter).map(mapTo('action', 'outline')));
+        } else if (text[0] === '#') {
+            return Promise.resolve(this.anchors.filter(anchorNameFilter).map(mapTo('action', 'anchor')));
         } else {
             return Promise.resolve(this.paths.filter(cnNameFilter).map(mapTo('action')));
         }

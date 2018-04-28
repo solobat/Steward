@@ -165,6 +165,45 @@ const App = {
         }
     },
 
+    handleGetAnchors(event) {
+        if (event.data.anchorsConfig) {
+            const anchorsConfig = event.data.anchorsConfig;
+            const items = anchorsConfig.map(conf => {
+                return {
+                    name: conf.title,
+                    node: document.querySelector(conf.selector)
+                };
+            }).filter(item => item.node !== null);
+            this.anchorNodes = items.map(item => item.node);
+
+            this.postToIframe({
+                action: 'anchors',
+                anchors: items.map((item, index) => {
+                    return {
+                        name: item.name,
+                        index
+                    }
+                })
+            });
+        }
+    },
+
+    handleCommand(event) {
+        const { subType, index, path, custom } = event.data.info;
+
+        if (subType === 'outline') {
+            this.headerElems[index].scrollIntoView();
+        } else if (subType === 'anchor') {
+            this.anchorNodes[index].scrollIntoView();
+        } else if (custom) {
+            if (path) {
+                window.location.href = path;
+            } else {
+                this.navItems[index].elem.click();
+            }
+        }
+    },
+
     bindEvents() {
         const that = this;
         const host = window.location.host;
@@ -185,21 +224,13 @@ const App = {
             } else if (action === 'boxInited') {
                 this.handleBoxInited();
             } else if (action === 'command') {
-                const { subType, index, path, custom } = event.data.info;
-
-                if (subType === 'outline') {
-                    this.headerElems[index].scrollIntoView();
-                } else if (custom) {
-                    if (path) {
-                        window.location.href = path;
-                    } else {
-                        this.navItems[index].elem.click();
-                    }
-                }
+                this.handleCommand(event);
             } else if (action === 'queryNavs') {
                 this.handleQueryNavs(event);
             } else if (action === 'genOutline') {
                 this.handleGenOutline(event);
+            } else if (action === 'getAnchors') {
+                this.handleGetAnchors(event);
             }
         });
 

@@ -12,6 +12,11 @@ export default {
                 urlPattern: '',
                 editable: false
             },
+            newAnchor: {
+                title: '',
+                selector: '',
+                editable: false
+            },
             websiteFormRuels: {
                 title: [
                     { type: 'string', required: true, trigger: 'change' }
@@ -43,8 +48,14 @@ export default {
         handleWebsiteClick(website) {
             const data = JSON.parse(JSON.stringify(website));
 
-            data.paths.forEach(path => {
-                path.editable = false;
+            if (!data.anchors) {
+                data.anchors = [];
+            }
+
+            ['anchors', 'paths'].forEach(key => {
+                data[key].forEach(item => {
+                    item.editable = false;
+                });
             });
 
             this.currentWebsite = data;
@@ -58,7 +69,8 @@ export default {
                 paths: [],
                 navs: 'nav a',
                 disabled: false,
-                outlineScope: ''
+                outlineScope: '',
+                anchors: []
             };
         },
 
@@ -103,11 +115,50 @@ export default {
             this.currentWebsite.paths.splice(index, 1);
         },
 
+        validateNewAnchor() {
+            if (!this.newAnchor.title || !this.newAnchor.selector) {
+                return 'Title and Selector is required!';
+            } else {
+                let msg;
+
+                this.currentWebsite.anchors.forEach(anchor => {
+                    if (anchor.title === this.newAnchor.title) {
+                        msg = 'Title is repeated!';
+                    } else if (anchor.selector === this.newAnchor.selector) {
+                        msg = 'Selector is repeated!';
+                    }
+                });
+
+                return msg;
+            }
+        },
+
+        handleNewAnchorAddClick() {
+            const msg = this.validateNewAnchor();
+
+            if (msg) {
+                this.$message(msg);
+            } else {
+                this.currentWebsite.anchors.push(this.newAnchor);
+                this.newAnchor = {
+                    title: '',
+                    selector: '',
+                    editable: false
+                };
+            }
+        },
+
+        handleNewAnchorDeleteClick(index) {
+            this.currentWebsite.anchors.splice(index, 1);
+        },
+
         handleWebsiteBeforeSave() {
             const website = JSON.parse(JSON.stringify(this.currentWebsite));
 
-            website.paths.forEach(path => {
-                Reflect.deleteProperty(path, 'editable');
+            ['paths', 'anchors'].forEach(key => {
+                website[key].forEach(item => {
+                    Reflect.deleteProperty(item, 'editable');
+                });
             });
 
             return website;

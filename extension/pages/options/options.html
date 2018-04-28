@@ -333,6 +333,33 @@
                                                         <el-input placeholder="such as: .markdown-body" v-model="currentWebsite.outlineScope"></el-input>
                                                     </el-col>
                                                 </el-form-item>
+                                                <el-form-item label="Anchors">
+                                                    <div class="paths-container">
+                                                        <el-row>
+                                                            <el-col :span="6">
+                                                                <el-input v-model="newAnchor.title" placeholder="Title" @keyup.enter.native="handleNewAnchorAddClick"></el-input>
+                                                            </el-col>
+                                                            <el-col :span="10" :offset="1">
+                                                                <el-input v-model="newAnchor.selector" placeholder="CSS Selector" @keyup.enter.native="handleNewAnchorAddClick"></el-input>
+                                                            </el-col>
+                                                            <el-col :span="4" :offset="1">
+                                                                <el-button @click="handleNewAnchorAddClick" type="primary" icon="plus"></el-button>
+                                                            </el-col>
+                                                        </el-row>
+                                                        <el-row v-for="(anchor, index) in this.currentWebsite.anchors" :key="index">
+                                                            <el-col :span="6">
+                                                                <el-input v-model="anchor.title" placeholder="Title" :disabled="!anchor.editable"></el-input>
+                                                            </el-col>
+                                                            <el-col :span="10" :offset="1">
+                                                                <el-input v-model="anchor.selector" placeholder="CSS Selector" :disabled="!anchor.editable"></el-input>
+                                                            </el-col>
+                                                            <el-col :span="4" :offset="1">
+                                                                <el-button @click="anchor.editable = !anchor.editable" type="primary" :icon="anchor.editable ? 'check' : 'edit'"></el-button>
+                                                                <el-button @click="handleNewAnchorDeleteClick(index)" type="primary" icon="delete"></el-button>
+                                                            </el-col>
+                                                        </el-row>
+                                                    </div>
+                                                </el-form-item>
                                             </el-collapse-item>
                                         </el-collapse>
                                         <el-form-item label="Disable">
