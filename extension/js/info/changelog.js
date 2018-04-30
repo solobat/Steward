@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.4.5',
+        detail: `
+            通过 css selector 给特定页面添加锚点，快速定位;<br>
+            主题可以使用 color-picker 编辑；<br> 
+            其它一些优化以及问题修复。
+        `
+    },
+    {
         version: 'v3.4.4.1',
         detail: `
             修复 wp 命令的 Bug。
@@ -276,6 +284,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4.5',
+        detail: `
+            Add anchor points to specific pages via the css selector for quick positioning;<br>
+            Themes can be edited using color-picker;<br>
+            Other optimizations and problem fixes.
+        `
+    },
     {
         version: 'v3.4.4.1',
         detail: `
