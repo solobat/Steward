@@ -87,9 +87,9 @@ export default {
 
         getColorType(mode) {
             if (mode === 'popup') {
-                return 'text';
+                return false;
             } else {
-                return 'text';
+                return true;
             }
         },
 

@@ -419,51 +419,33 @@
                                             </div>
                                             <div class="theme-field-type">Background Coloring</div>
                                             <el-form-item label="App:">
-                                                <el-input :type="getColorType(themeMode)" v-model="theme['--app-background-color']" spellcheck="false">
-                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--app-background-color']}">&nbsp;</div>
-                                                </el-input>
+                                                <el-color-picker v-model="theme['--app-background-color']" :show-alpha="getColorType(themeMode)"></el-color-picker>
                                             </el-form-item>
                                             <el-form-item label="Selected Search Suggestion:">
-                                                <el-input :type="getColorType(themeMode)" v-model="theme['--selected-suggestion-background-color']" spellcheck="false">
-                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--selected-suggestion-background-color']}">&nbsp;</div>
-                                                </el-input>
+                                                <el-color-picker v-model="theme['--selected-suggestion-background-color']" :show-alpha="getColorType(themeMode)"></el-color-picker>
                                             </el-form-item>
                                             <el-form-item label="Search Results Scrollbar:">
-                                                <el-input :type="getColorType(themeMode)" v-model="theme['--search-results-scrollbar-color']" spellcheck="false">
-                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--search-results-scrollbar-color']}">&nbsp;</div>
-                                                </el-input>
+                                                <el-color-picker v-model="theme['--search-results-scrollbar-color']" :show-alpha="getColorType(themeMode)"></el-color-picker>
                                             </el-form-item>
 
                                             <div class="theme-field-type">Text Coloring</div>
                                             <el-form-item label="Search Input:">
-                                                <el-input :type="getColorType(themeMode)" v-model="theme['--search-input-value-text-color']" spellcheck="false">
-                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--search-input-value-text-color']}">&nbsp;</div>
-                                                </el-input>
+                                                <el-color-picker v-model="theme['--search-input-value-text-color']" :show-alpha="getColorType(themeMode)"></el-color-picker>
                                             </el-form-item>
                                             <el-form-item label="Selected Search Suggestion Title:">
-                                                <el-input :type="getColorType(themeMode)" v-model="theme['--selected-suggestion-title-text-color']" spellcheck="false">
-                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--selected-suggestion-title-text-color']}">&nbsp;</div>
-                                                </el-input>
+                                                <el-color-picker v-model="theme['--selected-suggestion-title-text-color']" :show-alpha="getColorType(themeMode)"></el-color-picker>
                                             </el-form-item>
                                             <el-form-item label="Selected Search Suggestion Subtitle:">
-                                                <el-input :type="getColorType(themeMode)" v-model="theme['--selected-suggestion-subtitle-text-color']" spellcheck="false">
-                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--selected-suggestion-subtitle-text-color']}">&nbsp;</div>
-                                                </el-input>
+                                                <el-color-picker v-model="theme['--selected-suggestion-subtitle-text-color']" :show-alpha="getColorType(themeMode)"></el-color-picker>
                                             </el-form-item>
                                             <el-form-item label="Search Suggestion Title:">
-                                                <el-input :type="getColorType(themeMode)" v-model="theme['--suggestion-title-text-color']" spellcheck="false">
-                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--suggestion-title-text-color']}">&nbsp;</div>
-                                                </el-input>
+                                                <el-color-picker v-model="theme['--suggestion-title-text-color']" :show-alpha="getColorType(themeMode)"></el-color-picker>
                                             </el-form-item>
                                             <el-form-item label="Search Suggestion Subtitle:">
-                                                <el-input :type="getColorType(themeMode)" v-model="theme['--suggestion-subtitle-text-color']" spellcheck="false">
-                                                    <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--suggestion-subtitle-text-color']}">&nbsp;</div>
-                                                </el-input>
+                                                <el-color-picker v-model="theme['--suggestion-subtitle-text-color']" :show-alpha="getColorType(themeMode)"></el-color-picker>
                                             </el-form-item>
                                             <el-form-item label="Highlighted Suggestion Title:">
-                                                <el-input :type="getColorType(themeMode)" v-model="theme['--highlighted-suggestion-text-color']" spellcheck="false">
-                                                        <div class="color-indicator" slot="prepend" :style="{'background-color': theme['--highlighted-suggestion-text-color']}">&nbsp;</div>
-                                                </el-input>
+                                                <el-color-picker v-model="theme['--highlighted-suggestion-text-color']" :show-alpha="getColorType(themeMode)"></el-color-picker>
                                             </el-form-item>
 
                                             <div class="theme-field-type">Spacing</div>
