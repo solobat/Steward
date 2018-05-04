@@ -8,7 +8,7 @@ import Toast from 'toastr'
 import _ from 'underscore'
 
 const extName = '单词小卡片: 查词/收集/背单词';
-const version = 2;
+const version = 3;
 const name = 'wordcard';
 const key = 'wd';
 const type = 'keyword';
@@ -91,6 +91,29 @@ function getTagsAndLevels() {
     });
 }
 
+function getExtLinks() {
+    const tabs = [
+        { label: '通用', value: 'general' },
+        { label: '单词列表', value: 'words' },
+        { label: '背单词', value: 'wordsrecite' },
+        { label: '词根表', value: 'wordroots' },
+        { label: '同步', value: 'advanced' }
+    ];
+
+    return tabs.map(tab => {
+        const prefixUrl = `chrome-extension://${extID}/options.html?tab=`;
+        const url = `${prefixUrl}${tab.value}`;
+
+        return {
+            key: 'url',
+            icon,
+            title: tab.label,
+            url: url,
+            universal: true
+        };
+    });
+}
+
 function queryByFilter(query) {
     return new Promise(resolve => {
         chrome.runtime.sendMessage(extID, {
@@ -106,7 +129,11 @@ function queryFromExt(query) {
     if (query) {
         return queryByFilter(query);
     } else {
-        return getTagsAndLevels();
+        return getTagsAndLevels().then(items => {
+            const links = getExtLinks();
+
+            return links.concat(items);
+        });
     }
 }
 
