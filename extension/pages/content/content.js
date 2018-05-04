@@ -3,7 +3,7 @@ import keyboardJS from 'keyboardjs'
 import './content.scss'
 import { websitesMap } from '../../js/plugins/website'
 import PluginHelper from '../../js/helper/pluginHelper'
-import { getFavicon } from '../../js/helper/websites'
+import { getFavicon, getShareFields } from '../../js/helper/websites'
 import { ITEM_TYPE } from '../../js/constant/base'
 
 const chrome = window.chrome;
@@ -212,7 +212,8 @@ const App = {
             host: window.location.host,
             pathname: window.location.pathname,
             search: window.location.search,
-            hash: window.location.hash
+            hash: window.location.hash,
+            share: getShareFields(document)
         };
     },
 

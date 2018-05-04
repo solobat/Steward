@@ -4,6 +4,7 @@ import resolveUrl from 'resolve-url'
 import QRCode from 'qrcode'
 import shortUrlCn from 'url-shorten.china'
 import * as ResultHelper from './resultHelper'
+import { generateSocialUrls } from '../../lib/social-share-urls'
 
 const websiteList = new WebsiteList();
 
@@ -15,7 +16,8 @@ const TRIGGER_SYMBOL = {
     OUTLINE: '`',
     ANCHOR: '#',
     META: `'`,
-    URL: ','
+    URL: ',',
+    SHARE: '@'
 };
 
 export function getFavicon(context = document, win) {
@@ -39,6 +41,32 @@ export function getFavicon(context = document, win) {
         return resolveUrl(pathname, favicon);
     } else {
         return `${protocol}//${host}${favicon}`;
+    }
+}
+
+export function getShareFields(context) {
+    const elems = Array.from(context.querySelectorAll('meta[property^="og:"]'));
+
+    if (elems.length) {
+        const info = {};
+
+        elems.forEach(elem => {
+            const property = elem.getAttribute('property');
+            const content = elem.getAttribute('content');
+            const key = property.split(':')[1];
+
+            if (key) {
+                info[key] = content;
+            }
+        });
+
+        const img = info.img || info.image;
+
+        info.img = info.image = img;
+
+        return info;
+    } else {
+        return null;
     }
 }
 
@@ -81,13 +109,17 @@ export class Website {
         this.isDefault = options.isDefault;
         this.meta = [];
         this.urls = [];
-        this.pageMeta = pageMeta;
+        this.pageMeta = pageMeta || {};
+        this.shareUrls = [];
         this.init();
         this.bindEvents();
     }
 
     init() {
-        this.handleMetaInfo();
+        requestAnimationFrame(() => {
+            this.handleMetaInfo();
+            this.generateShareUrls();
+        });
     }
 
     bindEvents() {
@@ -131,6 +163,18 @@ export class Website {
                 url, title: '短网址', icon: metaInfo.icon, showDesc: true, desc: url
             });
         }).then(item => this.urls.push(item));
+    }
+
+    generateShareUrls() {
+        const shareInfo = this.pageMeta.share || this.pageMeta;
+
+        this.shareUrls = generateSocialUrls(shareInfo).map(item => {
+            const icon = chrome.extension.getURL(`img/share-icons/${item.class}.jpg`);
+
+            return ResultHelper.createUrl({
+                url: item.url, title: item.name, icon
+            });
+        });
     }
 
     handleBoxShow() {
@@ -205,18 +249,22 @@ export class Website {
             }
         };
 
-        if (text[0] === TRIGGER_SYMBOL.PATH) {
+        const first = text[0];
+
+        if (first === TRIGGER_SYMBOL.PATH) {
             if (text === TRIGGER_SYMBOL.PATH) {
                 return Promise.resolve(this.paths.map(mapTo('action')));
             } else {
                 return Promise.resolve(filterByPath(this.paths, text).map(mapTo('action')));
             }
-        } else if (text[0] === TRIGGER_SYMBOL.OUTLINE) {
+        } else if (first === TRIGGER_SYMBOL.OUTLINE) {
             return Promise.resolve(this.outline.filter(outlineNameFilter).map(mapTo('action', 'outline')));
-        } else if (text[0] === TRIGGER_SYMBOL.ANCHOR) {
+        } else if (first === TRIGGER_SYMBOL.ANCHOR) {
             return Promise.resolve(this.anchors.filter(anchorNameFilter).map(mapTo('action', 'anchor')));
-        } else if (text[0] === TRIGGER_SYMBOL.META) {
+        } else if (first === TRIGGER_SYMBOL.META) {
             return Promise.resolve(this.meta.concat(this.urls).filter(metaFilter));
+        } else if (first === TRIGGER_SYMBOL.SHARE) {
+            return Promise.resolve(this.shareUrls.filter(metaFilter));
         } else {
             return Promise.resolve(this.paths.filter(cnNameFilter).map(mapTo('action')));
         }
