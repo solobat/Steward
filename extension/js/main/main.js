@@ -734,11 +734,24 @@ function classifyPlugins(pluginsData) {
             }
         }
     });
+}
 
-    if (window.matchedSite) {
-        searchContexts.push(window.matchedSite);
-    } else if (inContent && websitesMap[window.parentHost]) {
-        searchContexts.push(websitesMap[window.parentHost]);
+function initWebsites() {
+    if (inContent) {
+        const site = window.matchedSite;
+        const sitePlugin = websitesMap[window.parentHost];
+
+        if (site) {
+            if (!site.isDefault) {
+                searchContexts.push(site);
+            } else if (sitePlugin) {
+                searchContexts.push(sitePlugin);
+            } else {
+                searchContexts.push(site);
+            }
+        } else if (sitePlugin) {
+            searchContexts.push(sitePlugin);
+        }
     }
 }
 
@@ -746,17 +759,19 @@ function restoreConfig() {
     return new Promise(resove => {
         chrome.storage.sync.get(CONST.STORAGE.CONFIG, function(res) {
             classifyPlugins(res.config.plugins, inContent);
+            initWebsites();
 
-             keys = Object.keys(commands).join('|');
-             reg = new RegExp(`^((?:${keys}))\\s(.*)$`, 'i');
+            keys = Object.keys(commands).join('|');
+            reg = new RegExp(`^((?:${keys}))\\s(.*)$`, 'i');
 
-             stewardCache.commands = commands;
-             stewardCache.config = res.config || {};
+            stewardCache.commands = commands;
+            stewardCache.config = res.config || {};
 
             if (!stewardCache.config.general) {
                 stewardCache.config.general = defaultGeneral;
             }
-             resove(stewardCache.config);
+
+            resove(stewardCache.config);
         });
     });
 }

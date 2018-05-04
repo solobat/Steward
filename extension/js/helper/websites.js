@@ -1,17 +1,8 @@
 import util from '../common/util'
 import { WebsiteList } from '../collection/website'
+import resolveUrl from 'resolve-url'
 
 const websiteList = new WebsiteList();
-const autoMatchingSites = [{
-    name: 'GitBook',
-    title: 'GitBook',
-    host: '',
-    icon: chrome.extension.getURL('img/gitbook.ico'),
-    autoMatching: 'meta[content*="GitBook"]',
-    navs: 'nav a',
-    outlineScope: '.markdown-section',
-    paths: []
-}];
 
 export const filterByName = (suggestions, text) => util.getMatches(suggestions, text, 'name');
 export const filterByPath = (suggestions, text) => util.getMatches(suggestions, text, 'path');
@@ -23,7 +14,7 @@ const TRIGGER_SYMBOL = {
     META: `'`
 };
 
-export function getFavicon(context = document, parentWindow) {
+export function getFavicon(context = document, win) {
     let favicon = '/favicon.ico';
     const nodeList = context.getElementsByTagName("link");
 
@@ -34,21 +25,17 @@ export function getFavicon(context = document, parentWindow) {
         }
     }
 
-    const { protocol, host } = parentWindow.location;
+    const { protocol, host, pathname } = win.location;
 
     if (favicon.startsWith('http')) {
         return favicon;
     } else if (favicon.startsWith('//')) {
         return `${protocol}${favicon}`;
+    } else if (favicon.startsWith('.')) {
+        return resolveUrl(pathname, favicon);
     } else {
         return `${protocol}//${host}${favicon}`;
     }
-}
-
-export function checkAutoMatchingSites(fn) {
-    return autoMatchingSites.filter(site => {
-        return fn(site.autoMatching);
-    });
 }
 
 export function handlePath(path, info, deps) {
@@ -87,6 +74,7 @@ export class Website {
         this.customPaths = handlePaths(options.paths, options.deps) || [];
         this.anchors = [];
         this.anchorsConfig = options.anchors || [];
+        this.isDefault = options.isDefault;
         this.meta = [];
         this.bindEvents();
     }
@@ -216,16 +204,17 @@ function getDefaultSiteInfo(meta) {
         paths: [],
         navs: 'nav a,.nav a,.header-nav a,.topbar a,#topnav a,.nav-wrapper a',
         disabled: false,
-        outlineScope: '',
+        outlineScope: '.markdown-section',
+        isDefault: true,
         anchors: []
     };
 }
 
-export function createWebsites(parentWindow, theHost, autoMatching = [], meta) {
+export function createWebsites(parentWindow, theHost, meta) {
     return helper.init().then(sites => {
         const mixedSites = sites.filter(site => {
             return theHost.indexOf(site.host) !== -1 && !site.disabled;
-        }).concat(autoMatching).concat(getDefaultSiteInfo(meta));
+        }).concat(getDefaultSiteInfo(meta));
 
         return new Website(mixedSites[0], parentWindow);
     });
