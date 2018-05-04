@@ -7,11 +7,6 @@ const Networks = [
         url: 'https://www.facebook.com/sharer.php?s=100&p[url]={url}&p[images][0]={img}&p[title]={title}&p[summary]={desc}'
     },
     {
-        name: 'Facebook (share dialog)',
-        class: 'facebook',
-        url: 'https://www.facebook.com/dialog/share?app_id={app_id}&display=page&href={url}&redirect_uri={redirect_url}'
-    },
-    {
         name: 'Twitter',
         class: 'twitter',
         url: 'https://twitter.com/intent/tweet?url={url}&text={title}&via={via}&hashtags={hashtags}'
@@ -135,16 +130,6 @@ const Networks = [
         name: 'Telegram.me',
         class: 'telegram.me',
         url: 'https://telegram.me/share/url?url={url}&text={title}',
-    },
-    {
-        name: 'VK',
-        class: 'vk',
-        url: 'http://oauth.vk.com/authorize?client_id=-1&redirect_uri={url}&display=widget&caption={title}',
-    },
-    {
-        name: 'OK.ru',
-        class: 'okru',
-        url: 'https://connect.ok.ru/dk?st.cmd=WidgetSharePreview&st.shareUrl={url}&title={title}',
     },
     {
         name: 'Douban',
