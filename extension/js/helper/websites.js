@@ -16,6 +16,13 @@ const autoMatchingSites = [{
 export const filterByName = (suggestions, text) => util.getMatches(suggestions, text, 'name');
 export const filterByPath = (suggestions, text) => util.getMatches(suggestions, text, 'path');
 
+const TRIGGER_SYMBOL = {
+    PATH: '/',
+    OUTLINE: '`',
+    ANCHOR: '#',
+    META: `'`
+};
+
 export function checkAutoMatchingSites(fn) {
     return autoMatchingSites.filter(site => {
         return fn(site.autoMatching);
@@ -58,6 +65,7 @@ export class Website {
         this.customPaths = handlePaths(options.paths, options.deps) || [];
         this.anchors = [];
         this.anchorsConfig = options.anchors || [];
+        this.meta = [];
         this.bindEvents();
     }
 
@@ -68,7 +76,6 @@ export class Website {
             if (data.action === 'navs') {
                 if (event.data.navs.length) {
                     this.paths = this.customPaths.concat(event.data.navs);
-                    console.log(this.paths);
                 } else {
                     this.paths = this.customPaths;
                 }
@@ -79,18 +86,37 @@ export class Website {
             } else if (data.action === 'anchors' ) {
                 if (data.anchors.length) {
                     this.anchors = data.anchors;
-                    console.log(this.anchors);
                 }
             } else if (data.action === 'show') {
                 this.handleBoxShow();
+            } else if (data.action === 'meta') {
+                if (data.meta.length) {
+                    this.handleMetaItems(data.meta);
+                }
             }
         });
     }
 
     handleBoxShow() {
+        this.getMeta();
         this.findNavs();
         this.genOutline();
         this.getAnchors();
+    }
+
+    handleMetaItems(meta) {
+        meta.forEach(item => {
+            item.icon = this.icon;
+            item.universal = true;
+        });
+
+        this.meta = meta.filter(item => item.desc || item.url);
+    }
+
+    getMeta() {
+        this.parentWindow.postMessage({
+            action: 'getMeta'
+        }, '*');
     }
 
     findNavs() {
@@ -142,16 +168,18 @@ export class Website {
             }
         };
 
-        if (text[0] === '/') {
-            if (text === '/') {
+        if (text[0] === TRIGGER_SYMBOL.PATH) {
+            if (text === TRIGGER_SYMBOL.PATH) {
                 return Promise.resolve(this.paths.map(mapTo('action')));
             } else {
                 return Promise.resolve(filterByPath(this.paths, text).map(mapTo('action')));
             }
-        } else if (text[0] === '`') {
+        } else if (text[0] === TRIGGER_SYMBOL.OUTLINE) {
             return Promise.resolve(this.outline.filter(outlineNameFilter).map(mapTo('action', 'outline')));
-        } else if (text[0] === '#') {
+        } else if (text[0] === TRIGGER_SYMBOL.ANCHOR) {
             return Promise.resolve(this.anchors.filter(anchorNameFilter).map(mapTo('action', 'anchor')));
+        } else if (text[0] === TRIGGER_SYMBOL.META) {
+            return Promise.resolve(this.meta);
         } else {
             return Promise.resolve(this.paths.filter(cnNameFilter).map(mapTo('action')));
         }

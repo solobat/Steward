@@ -352,7 +352,9 @@ function handleNormalItem(box, dataList, item) {
             url
         });
     } else if (type === ITEM_TYPE.COPY) {
-        util.copyToClipboard(item.url, true);
+        util.copyToClipboard(item.url || item.desc || item.title, true);
+
+        return Promise.resolve(true);
     } else if (type === ITEM_TYPE.ACTION) {
         box.trigger('action', {
             action: 'command',
@@ -373,7 +375,9 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
     if (item && item.isDefault && !box.query) {
         return;
     } else if (!box.cmd || item.universal) {
-        return handleNormalItem(box, dataList, item);
+        const result = handleNormalItem(box, dataList, item);
+
+        return handleEnterResult(result)
     } else {
         let plugin;
         const command = box.command;

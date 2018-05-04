@@ -4,6 +4,7 @@ import './content.scss'
 import { websitesMap } from '../../js/plugins/website'
 import PluginHelper from '../../js/helper/pluginHelper'
 import { checkAutoMatchingSites } from '../../js/helper/websites'
+import { ITEM_TYPE } from '../../js/constant/base'
 
 const chrome = window.chrome;
 const pluginHelper = new PluginHelper();
@@ -204,6 +205,23 @@ const App = {
         }
     },
 
+    handleGetMeta() {
+        const meta = [
+            { title: 'Title', desc: document.title, key: ITEM_TYPE.COPY },
+            { title: 'URL', desc: window.location.href, key: ITEM_TYPE.COPY },
+            { title: 'URL Host', desc: window.location.host, key: ITEM_TYPE.COPY },
+            { title: 'URL Path', desc: window.location.pathname, key: ITEM_TYPE.COPY },
+            { title: 'URL Search', desc: window.location.search, key: ITEM_TYPE.COPY },
+            { title: 'URL Hash', desc: window.location.hash, key: ITEM_TYPE.COPY },
+            { title: 'Source', desc: `open view-source:${window.location.href}`, url: `view-source:${window.location.href}`, key: ITEM_TYPE.URL }
+        ];
+
+        this.postToIframe({
+            action: 'meta',
+            meta
+        });
+    },
+
     bindEvents() {
         const that = this;
         const host = window.location.host;
@@ -231,6 +249,8 @@ const App = {
                 this.handleGenOutline(event);
             } else if (action === 'getAnchors') {
                 this.handleGetAnchors(event);
+            } else if (action === 'getMeta') {
+                this.handleGetMeta();
             }
         });
 
