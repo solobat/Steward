@@ -11,5 +11,8 @@ export default {
     wallpaperSources: ['bing', 'favorites'],
     autoSelectByMouse: false,
     enableRandomWallpaper: true,
-    storeTypedQuery: true
+    storeTypedQuery: true,
+    autoCreateWebsite: true,
+    websiteUrls: true,
+    websiteShareUrls: true
 }

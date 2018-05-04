@@ -32,7 +32,8 @@ const App = {
                 ext_from: 'content',
                 lazy: this.isLazy,
                 host: window.location.host,
-                meta: this.getMeta()
+                meta: this.getMeta(),
+                general: this.config.general
             }, '*');
         });
     },
@@ -274,7 +275,8 @@ const App = {
         });
     },
 
-    init(isLazy) {
+    init(config, isLazy) {
+        this.config = config;
         this.isLazy = isLazy;
         this.initDom();
         this.bindEvents();
@@ -290,15 +292,15 @@ function toggleBox() {
     }
 }
 
-const initFactory = lazy => () => {
+const initFactory = lazy => config => {
     if (!lazy) {
-        App.init(lazy);
+        App.init(config, lazy);
     }
     chrome.runtime.onMessage.addListener(req => {
         if (req.action === 'openBox') {
             if (lazy) {
                 if (!App.isInit) {
-                    App.init(lazy);
+                    App.init(config, lazy);
                 }
             }
             toggleBox();
@@ -317,8 +319,8 @@ chrome.runtime.sendMessage({
     pluginHelper.init(resp.data.blockedUrls);
 
     if (config.general.speedFirst) {
-        quickInit();
+        quickInit(config);
     } else {
-        lazyInit();
+        lazyInit(config);
     }
 })

@@ -485,6 +485,15 @@
     "general_storeTypedQuery": {
         "message": "存储最近的命令"
     },
+    "general_autoCreateWebsite": {
+        "message": "自动配置 Websites"
+    },
+    "general_websiteUrls": {
+        "message": "Website 网址工具"
+    },
+    "general_websiteShareUrls": {
+        "message": "Website 分享功能"
+    },
     "tips_maxOperandsNum": {
         "message": "设置某些插件在shift + enter/click操作时所处理的最大条目数"
     },

@@ -94,7 +94,7 @@ function handlePaths(paths) {
 }
 
 export class Website {
-    constructor(options, parentWindow, pageMeta) {
+    constructor(options, parentWindow, pageMeta, generalConfig) {
         this.name = options.name;
         this.type = 'search';
         this.icon = options.icon;
@@ -111,14 +111,17 @@ export class Website {
         this.urls = [];
         this.pageMeta = pageMeta || {};
         this.shareUrls = [];
-        this.init();
+        this.init(generalConfig);
         this.bindEvents();
     }
 
-    init() {
+    init(generalConfig = {}) {
         requestAnimationFrame(() => {
-            this.handleMetaInfo();
-            this.generateShareUrls();
+            this.handleMetaInfo(generalConfig.websiteUrls);
+
+            if (generalConfig.websiteShareUrls) {
+                this.generateShareUrls();
+            }
         });
     }
 
@@ -136,7 +139,7 @@ export class Website {
                 if (data.outline.length) {
                     this.outline = data.outline;
                 }
-            } else if (data.action === 'anchors' ) {
+            } else if (data.action === 'anchors') {
                 if (data.anchors.length) {
                     this.anchors = data.anchors;
                 }
@@ -150,19 +153,21 @@ export class Website {
         });
     }
 
-    handleMetaInfo() {
+    handleMetaInfo(websiteUrls) {
         const metaInfo = this.pageMeta;
 
-        QRCode.toDataURL(metaInfo.url).then(url => {
-            return ResultHelper.createUrl({
-                url, title: '二维码', icon: metaInfo.icon, showDesc: true, desc: metaInfo.url
-            });
-        }).then(item => this.urls.push(item));
-        shortUrlCn(metaInfo.url).then(url => {
-            return ResultHelper.createCopy({
-                url, title: '短网址', icon: metaInfo.icon, showDesc: true, desc: url
-            });
-        }).then(item => this.urls.push(item));
+        if (websiteUrls) {
+            QRCode.toDataURL(metaInfo.url).then(url => {
+                return ResultHelper.createUrl({
+                    url, title: '二维码', icon: metaInfo.icon, showDesc: true, desc: metaInfo.url
+                });
+            }).then(item => this.urls.push(item));
+            shortUrlCn(metaInfo.url).then(url => {
+                return ResultHelper.createCopy({
+                    url, title: '短网址', icon: metaInfo.icon, showDesc: true, desc: url
+                });
+            }).then(item => this.urls.push(item));
+        }
     }
 
     generateShareUrls() {
@@ -285,13 +290,21 @@ function getDefaultSiteInfo(meta) {
     };
 }
 
-export function createWebsites(parentWindow, theHost, meta) {
+export function createWebsites(parentWindow, theHost, meta, general = {}) {
     return helper.init().then(sites => {
-        const mixedSites = sites.filter(site => {
+        let mixedSites = sites.filter(site => {
             return theHost.indexOf(site.host) !== -1 && !site.disabled;
-        }).concat(getDefaultSiteInfo(meta));
+        });
 
-        return new Website(mixedSites[0], parentWindow, meta);
+        if (general.autoCreateWebsite) {
+            mixedSites = mixedSites.concat(getDefaultSiteInfo(meta));
+        }
+
+        if (mixedSites[0]) {
+            return new Website(mixedSites[0], parentWindow, meta, general);
+        } else {
+            return null;
+        }
     });
 }
 

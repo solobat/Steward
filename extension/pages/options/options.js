@@ -76,6 +76,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
         el: '#app',
         data: function() {
             return {
+                activeGeneralConfigName: ['command'],
                 activeName,
                 changelog,
                 extType,

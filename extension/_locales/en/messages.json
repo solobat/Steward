@@ -470,6 +470,15 @@
     "general_wallpaperSources": {
         "message": "Wallpaper sources"
     },
+    "general_autoCreateWebsite": {
+        "message": "Auto config websites"
+    },
+    "general_websiteUrls": {
+        "message": "Website url tools"
+    },
+    "general_websiteShareUrls": {
+        "message": "Website social share urls"
+    },
     "tips_maxOperandsNum": {
         "message": "Sets the maximum number of entries processed by some plugins for shift + enter / click operations"
     },

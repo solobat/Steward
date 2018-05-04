@@ -15,10 +15,12 @@ window.addEventListener('message', function(event) {
         if (event.data.action === 'show') {
             changeBoxStatus(false);
         } else {
-            const { host, meta } = event.data;
+            const { host, meta, general } = event.data;
 
-            createWebsites(event.source, host, meta).then(site => {
-                window.matchedSite = site;
+            createWebsites(event.source, host, meta, general).then(site => {
+                if (site) {
+                    window.matchedSite = site;
+                }
                 initForContentPage(event.source, event.data.lazy, event.data.host);
             });
         }
