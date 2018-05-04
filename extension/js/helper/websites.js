@@ -159,12 +159,12 @@ export class Website {
         if (websiteUrls) {
             QRCode.toDataURL(metaInfo.url).then(url => {
                 return ResultHelper.createUrl({
-                    url, title: '二维码', icon: metaInfo.icon, showDesc: true, desc: metaInfo.url
+                    url, title: 'QR code', icon: metaInfo.icon, showDesc: true, desc: metaInfo.url
                 });
             }).then(item => this.urls.push(item));
             shortUrlCn(metaInfo.url).then(url => {
                 return ResultHelper.createCopy({
-                    url, title: '短网址', icon: metaInfo.icon, showDesc: true, desc: url
+                    url, title: 'Short URL', icon: metaInfo.icon, showDesc: true, desc: url
                 });
             }).then(item => this.urls.push(item));
         }
