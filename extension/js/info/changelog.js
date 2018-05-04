@@ -1,5 +1,15 @@
 const langZh = [
     {
+        version: 'v3.4.6',
+        detail: `
+            为网站自动配置 Websites 功能，默认开启；<br>
+            页面模式下提供当前页面的常用操作以及信息，以单引号 <em>'</em> 为 trigger;<br>
+            提供当前页面的二维码图片及短网址功能，以单引号 <em>'</em> 为 trigger，默认开启；<br>
+            Websites 生成社会化分享链接，以 <em>@</em> 为 trigger, 默认开启;<br>
+            通过 <em>wd</em> 命令提供单词小卡片常用选项。
+        `
+    },
+    {
         version: 'v3.4.5',
         detail: `
             通过 css selector 给特定页面添加锚点，快速定位;<br>
@@ -284,6 +294,15 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4.6',
+        detail: `
+            Automatically configure the Websites feature, which is turned on by default;<br>
+            Page mode provides common operations and information for the current page, with <em>'</em> being a trigger;<br>
+            Provide qr-code picture and short URL of the current page, use <em>'</em> as trigger, enabled by default;<br>
+            Generates social sharing links, with <em>@</em> being a trigger, which are turned on by default.
+        `
+    },
     {
         version: 'v3.4.5',
         detail: `
