@@ -1,6 +1,9 @@
 import util from '../common/util'
 import { WebsiteList } from '../collection/website'
 import resolveUrl from 'resolve-url'
+import QRCode from 'qrcode'
+import shortUrlCn from 'url-shorten.china'
+import * as ResultHelper from './resultHelper'
 
 const websiteList = new WebsiteList();
 
@@ -11,7 +14,8 @@ const TRIGGER_SYMBOL = {
     PATH: '/',
     OUTLINE: '`',
     ANCHOR: '#',
-    META: `'`
+    META: `'`,
+    URL: ','
 };
 
 export function getFavicon(context = document, win) {
@@ -62,7 +66,7 @@ function handlePaths(paths) {
 }
 
 export class Website {
-    constructor(options, parentWindow) {
+    constructor(options, parentWindow, pageMeta) {
         this.name = options.name;
         this.type = 'search';
         this.icon = options.icon;
@@ -76,7 +80,14 @@ export class Website {
         this.anchorsConfig = options.anchors || [];
         this.isDefault = options.isDefault;
         this.meta = [];
+        this.urls = [];
+        this.pageMeta = pageMeta;
+        this.init();
         this.bindEvents();
+    }
+
+    init() {
+        this.handleMetaInfo();
     }
 
     bindEvents() {
@@ -105,6 +116,21 @@ export class Website {
                 }
             }
         });
+    }
+
+    handleMetaInfo() {
+        const metaInfo = this.pageMeta;
+
+        QRCode.toDataURL(metaInfo.url).then(url => {
+            return ResultHelper.createUrl({
+                url, title: '二维码', icon: metaInfo.icon, showDesc: true, desc: metaInfo.url
+            });
+        }).then(item => this.urls.push(item));
+        shortUrlCn(metaInfo.url).then(url => {
+            return ResultHelper.createCopy({
+                url, title: '短网址', icon: metaInfo.icon, showDesc: true, desc: url
+            });
+        }).then(item => this.urls.push(item));
     }
 
     handleBoxShow() {
@@ -164,6 +190,7 @@ export class Website {
         const cnNameFilter = item => util.matchText(text, item.name + item.path);
         const outlineNameFilter = item => util.matchText(text.slice(1), item.name);
         const anchorNameFilter = outlineNameFilter;
+        const metaFilter = item => util.matchText(text.slice(1), item.title);
         const mapTo = (key, subType) => item => {
             return {
                 icon: this.icon,
@@ -189,7 +216,7 @@ export class Website {
         } else if (text[0] === TRIGGER_SYMBOL.ANCHOR) {
             return Promise.resolve(this.anchors.filter(anchorNameFilter).map(mapTo('action', 'anchor')));
         } else if (text[0] === TRIGGER_SYMBOL.META) {
-            return Promise.resolve(this.meta);
+            return Promise.resolve(this.meta.concat(this.urls).filter(metaFilter));
         } else {
             return Promise.resolve(this.paths.filter(cnNameFilter).map(mapTo('action')));
         }
@@ -216,7 +243,7 @@ export function createWebsites(parentWindow, theHost, meta) {
             return theHost.indexOf(site.host) !== -1 && !site.disabled;
         }).concat(getDefaultSiteInfo(meta));
 
-        return new Website(mixedSites[0], parentWindow);
+        return new Website(mixedSites[0], parentWindow, meta);
     });
 }
 
