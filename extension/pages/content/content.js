@@ -3,7 +3,7 @@ import keyboardJS from 'keyboardjs'
 import './content.scss'
 import { websitesMap } from '../../js/plugins/website'
 import PluginHelper from '../../js/helper/pluginHelper'
-import { checkAutoMatchingSites } from '../../js/helper/websites'
+import { checkAutoMatchingSites, getFavicon } from '../../js/helper/websites'
 import { ITEM_TYPE } from '../../js/constant/base'
 
 const chrome = window.chrome;
@@ -35,7 +35,8 @@ const App = {
                 ext_from: 'content',
                 lazy: this.isLazy,
                 autoMatchingSites,
-                host: window.location.host
+                host: window.location.host,
+                meta: this.getMeta()
             }, '*');
         });
     },
@@ -86,7 +87,9 @@ const App = {
                 } else {
                     const lastNode = elem.childNodes[elem.childNodes.length - 1];
 
-                    text = lastNode.innerText || lastNode.text;
+                    if (lastNode) {
+                        text = lastNode.innerText || lastNode.text;
+                    }
 
                     if (!text) {
                         $(elem.childNodes).each((index, node) => {
@@ -205,20 +208,33 @@ const App = {
         }
     },
 
+    getMeta() {
+        return {
+            title: document.title,
+            icon: getFavicon(document, window),
+            url: window.location.href,
+            host: window.location.host,
+            pathname: window.location.pathname,
+            search: window.location.search,
+            hash: window.location.hash
+        };
+    },
+
     handleGetMeta() {
-        const meta = [
-            { title: 'Title', desc: document.title, key: ITEM_TYPE.COPY },
-            { title: 'URL', desc: window.location.href, key: ITEM_TYPE.COPY },
-            { title: 'URL Host', desc: window.location.host, key: ITEM_TYPE.COPY },
-            { title: 'URL Path', desc: window.location.pathname, key: ITEM_TYPE.COPY },
-            { title: 'URL Search', desc: window.location.search, key: ITEM_TYPE.COPY },
-            { title: 'URL Hash', desc: window.location.hash, key: ITEM_TYPE.COPY },
-            { title: 'Source', desc: `open view-source:${window.location.href}`, url: `view-source:${window.location.href}`, key: ITEM_TYPE.URL }
+        const meta = this.getMeta();
+        const list = [
+            { title: 'Title', desc: meta.title, key: ITEM_TYPE.COPY },
+            { title: 'URL', desc: meta.url, key: ITEM_TYPE.COPY },
+            { title: 'URL Host', desc: meta.host, key: ITEM_TYPE.COPY },
+            { title: 'URL Path', desc: meta.pathname, key: ITEM_TYPE.COPY },
+            { title: 'URL Search', desc: meta.search, key: ITEM_TYPE.COPY },
+            { title: 'URL Hash', desc: meta.hash, key: ITEM_TYPE.COPY },
+            { title: 'Source', desc: `open view-source:${meta.url}`, url: `view-source:${meta.url}`, key: ITEM_TYPE.URL }
         ];
 
         this.postToIframe({
             action: 'meta',
-            meta
+            meta: list
         });
     },
 

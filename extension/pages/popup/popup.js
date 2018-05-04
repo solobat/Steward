@@ -15,8 +15,10 @@ window.addEventListener('message', function(event) {
         if (event.data.action === 'show') {
             changeBoxStatus(false);
         } else {
-            createWebsites(event.source, event.data.host, event.data.autoMatchingSites).then(sites => {
-                window.matchedSite = sites[0];
+            const { host, autoMatchingSites, meta } = event.data;
+
+            createWebsites(event.source, host, autoMatchingSites, meta).then(site => {
+                window.matchedSite = site;
                 initForContentPage(event.source, event.data.lazy, event.data.host);
             });
         }

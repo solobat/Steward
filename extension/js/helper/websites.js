@@ -23,6 +23,28 @@ const TRIGGER_SYMBOL = {
     META: `'`
 };
 
+export function getFavicon(context = document, parentWindow) {
+    let favicon = '/favicon.ico';
+    const nodeList = context.getElementsByTagName("link");
+
+    for (let i = 0; i < nodeList.length; i += 1) {
+        if((nodeList[i].getAttribute('rel') === 'icon') ||
+            (nodeList[i].getAttribute('rel') === 'shortcut icon')) {
+            favicon = nodeList[i].getAttribute("href");
+        }
+    }
+
+    const { protocol, host } = parentWindow.location;
+
+    if (favicon.startsWith('http')) {
+        return favicon;
+    } else if (favicon.startsWith('//')) {
+        return `${protocol}${favicon}`;
+    } else {
+        return `${protocol}//${host}${favicon}`;
+    }
+}
+
 export function checkAutoMatchingSites(fn) {
     return autoMatchingSites.filter(site => {
         return fn(site.autoMatching);
@@ -186,13 +208,26 @@ export class Website {
     }
 }
 
-export function createWebsites(parentWindow, theHost, autoMatching = []) {
+function getDefaultSiteInfo(meta) {
+    return {
+        title: meta.title,
+        host: meta.host,
+        icon: meta.icon,
+        paths: [],
+        navs: 'nav a,.nav a,.header-nav a,.topbar a,#topnav a,.nav-wrapper a',
+        disabled: false,
+        outlineScope: '',
+        anchors: []
+    };
+}
+
+export function createWebsites(parentWindow, theHost, autoMatching = [], meta) {
     return helper.init().then(sites => {
-        return sites.filter(site => {
+        const mixedSites = sites.filter(site => {
             return theHost.indexOf(site.host) !== -1 && !site.disabled;
-        }).concat(autoMatching).map(site => {
-            return new Website(site, parentWindow);
-        });
+        }).concat(autoMatching).concat(getDefaultSiteInfo(meta));
+
+        return new Website(mixedSites[0], parentWindow);
     });
 }
 
