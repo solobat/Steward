@@ -1,5 +1,6 @@
 /*global EXT_TYPE */
 
+import $ from 'jquery'
 import configHelper from './configHelper'
 import workflowHelper from './workflowHelper'
 import websitesHelper from './websites'
@@ -44,10 +45,13 @@ export function backup() {
     });
 }
 
-export function restoreData(data) {
-    console.log(data);
+export function restoreData(data, config) {
     const tasks = dataHelpers.map(helper => {
-        const obj = data[helper.key];
+        let obj = data[helper.key];
+
+        if (helper.key === 'config') {
+            obj = $.extend(true, config, obj);
+        }
 
         if (obj) {
             return helper.setData(obj);

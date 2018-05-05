@@ -36,7 +36,7 @@ export default {
                         return Promise.reject('File content is wrong');
                     }
 
-                    return restoreData(data);
+                    return restoreData(data, this.config);
                 }).then(resp => {
                     console.log(resp);
                     this.$message.success('Import successfully and this page will be reloaded!');
