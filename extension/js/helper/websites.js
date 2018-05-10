@@ -282,9 +282,9 @@ function getDefaultSiteInfo(meta) {
         host: meta.host,
         icon: meta.icon,
         paths: [],
-        navs: 'nav a,.nav a,.header-nav a,.topbar a,#topnav a,.nav-wrapper a',
+        navs: 'nav a,.nav a,.header-nav a,.topbar a,#topnav a,.nav-wrapper a,.topnav a',
         disabled: false,
-        outlineScope: '.markdown-section',
+        outlineScope: '.markdown-section,#js_article',
         isDefault: true,
         anchors: []
     };
