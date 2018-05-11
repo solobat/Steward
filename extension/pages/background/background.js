@@ -85,11 +85,11 @@ function addEvents() {
     });
 
     chrome.commands.onCommand.addListener(function(command) {
-        if (command === 'open-in-content-page') {
-            chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-                chrome.tabs.sendMessage(tabs[0].id, {action: "openBox"}, function() {});
-            });
-        }
+        const conf = config.general.shortcuts[command] || {cmd: ''};
+
+        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+            chrome.tabs.sendMessage(tabs[0].id, {action: "openBox", cmd: conf.cmd}, function() {});
+        });
     });
 }
 

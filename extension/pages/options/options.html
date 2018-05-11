@@ -170,6 +170,62 @@
                                 </el-col>
                             </el-row>
                         </el-collapse-item>
+                        <el-collapse-item class="shortcuts-config" name="shortcuts" title="Shortcuts configuration">
+                            <el-row>
+                                <el-col :span="4">
+                                    <el-form-item :label="i18nTexts.general.shortcuts.pageboxShortcut_0.cmd">
+                                        <el-input v-model="config.general.shortcuts.pageboxShortcut_0.cmd" placeholder="command"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="4">
+                                    <el-form-item :label="i18nTexts.general.shortcuts.pageboxShortcut_1.cmd">
+                                        <el-input v-model="config.general.shortcuts.pageboxShortcut_1.cmd" placeholder="command"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="4">
+                                    <el-form-item :label="i18nTexts.general.shortcuts.pageboxShortcut_2.cmd">
+                                        <el-input v-model="config.general.shortcuts.pageboxShortcut_2.cmd" placeholder="command"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="4">
+                                    <el-form-item :label="i18nTexts.general.shortcuts.pageboxShortcut_3.cmd">
+                                        <el-input v-model="config.general.shortcuts.pageboxShortcut_3.cmd" placeholder="command"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="4">
+                                    <el-form-item :label="i18nTexts.general.shortcuts.pageboxShortcut_4.cmd">
+                                        <el-input v-model="config.general.shortcuts.pageboxShortcut_4.cmd" placeholder="command"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                            <el-row>
+                                <el-col :span="4">
+                                    <el-form-item :label="i18nTexts.general.shortcuts.pageboxShortcut_5.cmd">
+                                        <el-input v-model="config.general.shortcuts.pageboxShortcut_5.cmd" placeholder="command"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="4">
+                                    <el-form-item :label="i18nTexts.general.shortcuts.pageboxShortcut_6.cmd">
+                                        <el-input v-model="config.general.shortcuts.pageboxShortcut_6.cmd" placeholder="command"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="4">
+                                    <el-form-item :label="i18nTexts.general.shortcuts.pageboxShortcut_7.cmd">
+                                        <el-input v-model="config.general.shortcuts.pageboxShortcut_7.cmd" placeholder="command"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="4">
+                                    <el-form-item :label="i18nTexts.general.shortcuts.pageboxShortcut_8.cmd">
+                                        <el-input v-model="config.general.shortcuts.pageboxShortcut_8.cmd" placeholder="command"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="4">
+                                    <el-form-item :label="i18nTexts.general.shortcuts.pageboxShortcut_9.cmd">
+                                        <el-input v-model="config.general.shortcuts.pageboxShortcut_9.cmd" placeholder="command"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                            </el-row>
+                        </el-collapse-item>
                     </el-collapse>
                     <el-form-item style="margin-top: 20px;">
                         <el-button type="primary" @click.native.prevent="handleGeneralSubmit">Save</el-button>

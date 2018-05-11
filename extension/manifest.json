@@ -68,6 +68,36 @@
             },
             "description": "__MSG_pageboxDesc__",
             "global": true
+        },
+        "pageboxShortcut_0": {
+            "description": "__MSG_general_shortcuts_pageboxShortcut_0_cmd__"
+        },
+        "pageboxShortcut_1": {
+            "description": "__MSG_general_shortcuts_pageboxShortcut_1_cmd__"
+        },
+        "pageboxShortcut_2": {
+            "description": "__MSG_general_shortcuts_pageboxShortcut_2_cmd__"
+        },
+        "pageboxShortcut_3": {
+            "description": "__MSG_general_shortcuts_pageboxShortcut_3_cmd__"
+        },
+        "pageboxShortcut_4": {
+            "description": "__MSG_general_shortcuts_pageboxShortcut_4_cmd__"
+        },
+        "pageboxShortcut_5": {
+            "description": "__MSG_general_shortcuts_pageboxShortcut_5_cmd__"
+        },
+        "pageboxShortcut_6": {
+            "description": "__MSG_general_shortcuts_pageboxShortcut_6_cmd__"
+        },
+        "pageboxShortcut_7": {
+            "description": "__MSG_general_shortcuts_pageboxShortcut_7_cmd__"
+        },
+        "pageboxShortcut_8": {
+            "description": "__MSG_general_shortcuts_pageboxShortcut_8_cmd__"
+        },
+        "pageboxShortcut_9": {
+            "description": "__MSG_general_shortcuts_pageboxShortcut_9_cmd__"
         }
     }
 }

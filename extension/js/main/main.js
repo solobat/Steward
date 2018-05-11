@@ -630,7 +630,7 @@ function init() {
     });
 
     app = new Application(cmdbox);
-    app.applyCmd = applyCmd;
+    app.applyCmd = cmdbox.applyCmd = applyCmd;
 
     cmdbox.sid = 0;
     cmdbox.bind('init', handleInit);

@@ -39,24 +39,24 @@ function init() {
     });
 }
 
-function getI18nTexts(obj) {
-    const texts = {};
-
+function getI18nTexts(obj, prefix) {
     try {
-        let cate;
-        for (cate in obj) {
-            const subobj = texts[cate] = {};
+        if (typeof obj === 'object' && !(obj instanceof Array)) {
+            const ret = {};
 
-            let key;
-            for (key in obj[cate]) {
-                subobj[key] = chrome.i18n.getMessage(`${cate}_${key}`);
+            for (const key in obj) {
+                const nextPrefix = prefix ? `${prefix}_${key}` : key;
+
+                ret[key] = getI18nTexts(obj[key], nextPrefix);
             }
+            return ret;
+        } else {
+            return chrome.i18n.getMessage(prefix)
         }
     } catch (e) {
         console.log(e);
+        return {};
     }
-
-    return texts;
 }
 
 function render({general, plugins, lastVersion}, i18nTexts) {

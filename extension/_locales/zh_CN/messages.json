@@ -8,6 +8,36 @@
     "pageboxDesc": {
         "message": "在页面上启用"
     },
+    "general_shortcuts_pageboxShortcut_0_cmd": {
+        "message": "快捷键0"
+    },
+    "general_shortcuts_pageboxShortcut_1_cmd": {
+        "message": "快捷键1"
+    },
+    "general_shortcuts_pageboxShortcut_2_cmd": {
+        "message": "快捷键2"
+    },
+    "general_shortcuts_pageboxShortcut_3_cmd": {
+        "message": "快捷键3"
+    },
+    "general_shortcuts_pageboxShortcut_4_cmd": {
+        "message": "快捷键4"
+    },
+    "general_shortcuts_pageboxShortcut_5_cmd": {
+        "message": "快捷键5"
+    },
+    "general_shortcuts_pageboxShortcut_6_cmd": {
+        "message": "快捷键6"
+    },
+    "general_shortcuts_pageboxShortcut_7_cmd": {
+        "message": "快捷键7"
+    },
+    "general_shortcuts_pageboxShortcut_8_cmd": {
+        "message": "快捷键8"
+    },
+    "general_shortcuts_pageboxShortcut_9_cmd": {
+        "message": "快捷键9"
+    },
     "save_ok": {
         "message": "保存成功!"
     },

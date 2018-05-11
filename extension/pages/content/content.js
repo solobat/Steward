@@ -15,30 +15,34 @@ const App = {
     isLazy: false,
 
     initDom() {
-        const popupurl = chrome.extension.getURL('popup.html');
-        const html = `
-            <div id="steward-main" class="steward-main">
-                <iframe style="display:none;" id="steward-iframe" src="${popupurl}" name="steward-box" width="530" height="480" frameborder="0"></iframe>
-            </div>
-        `;
+        return new Promise(resolve => {
+            const popupurl = chrome.extension.getURL('popup.html');
+            const html = `
+                <div id="steward-main" class="steward-main">
+                    <iframe style="display:none;" id="steward-iframe" src="${popupurl}" name="steward-box" width="530" height="480" frameborder="0"></iframe>
+                </div>
+            `;
 
-        $('html').append(html);
-        this.$el = $('#steward-main');
-        this.$iframe = $('#steward-iframe');
-        this.$iframe.on('load', () => {
-            const iframeWindow = document.getElementById('steward-iframe').contentWindow;
+            $('html').append(html);
+            this.$el = $('#steward-main');
+            this.$iframe = $('#steward-iframe');
+            this.$iframe.on('load', () => {
+                const iframeWindow = document.getElementById('steward-iframe').contentWindow;
 
-            iframeWindow.postMessage({
-                ext_from: 'content',
-                lazy: this.isLazy,
-                host: window.location.host,
-                meta: this.getMeta(),
-                general: this.config.general
-            }, '*');
+                iframeWindow.postMessage({
+                    ext_from: 'content',
+                    lazy: this.isLazy,
+                    host: window.location.host,
+                    meta: this.getMeta(),
+                    general: this.config.general
+                }, '*');
+
+                resolve();
+            });
         });
     },
-    openBox() {
-        if (this.isOpen) {
+    openBox(cmd) {
+        if (this.isOpen && !cmd) {
             return;
         } else {
             this.isOpen = true;
@@ -50,7 +54,8 @@ const App = {
 
             iframeWindow.postMessage({
                 ext_from: 'content',
-                action: 'show'
+                action: 'show',
+                cmd: cmd
             }, '*');
         }, 25);
     },
@@ -278,17 +283,18 @@ const App = {
     init(config, isLazy) {
         this.config = config;
         this.isLazy = isLazy;
-        this.initDom();
         this.bindEvents();
         this.isInit = true;
+
+        return this.initDom();
     }
 };
 
-function toggleBox() {
-    if (App.isOpen) {
+function toggleBox(cmd) {
+    if (App.isOpen && !cmd) {
         App.closeBox();
     } else {
-        App.openBox();
+        App.openBox(cmd);
     }
 }
 
@@ -300,10 +306,15 @@ const initFactory = lazy => config => {
         if (req.action === 'openBox') {
             if (lazy) {
                 if (!App.isInit) {
-                    App.init(config, lazy);
+                    App.init(config, lazy).then(() => {
+                        toggleBox(req.cmd);
+                    });
+                } else {
+                    toggleBox(req.cmd);
                 }
+            } else {
+                toggleBox(req.cmd);
             }
-            toggleBox();
         }
     });
 }

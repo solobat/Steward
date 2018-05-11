@@ -13,7 +13,7 @@ let box;
 window.addEventListener('message', function(event) {
     if (event.data.ext_from === 'content') {
         if (event.data.action === 'show') {
-            changeBoxStatus(false);
+            changeBoxStatus(false, event.data.cmd);
         } else {
             const { host, meta, general } = event.data;
 
@@ -27,7 +27,7 @@ window.addEventListener('message', function(event) {
     }
 });
 
-function changeBoxStatus(disabled) {
+function changeBoxStatus(disabled, cmd) {
     if (box) {
         box.ipt.attr('readonly', disabled);
 
@@ -36,6 +36,11 @@ function changeBoxStatus(disabled) {
             box.ipt.blur();
         } else {
             box.ipt.focus();
+            if (cmd) {
+                requestAnimationFrame(() => {
+                    box.applyCmd(cmd);
+                });
+            }
         }
     }
 }
