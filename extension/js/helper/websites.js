@@ -284,7 +284,7 @@ function getDefaultSiteInfo(meta) {
         paths: [],
         navs: 'nav a,.nav a,.header-nav a,.topbar a,#topnav a,.nav-wrapper a,.topnav a',
         disabled: false,
-        outlineScope: '.markdown-section,#js_article',
+        outlineScope: '.markdown-section,#js_article,.doc-article-inner',
         isDefault: true,
         anchors: []
     };
