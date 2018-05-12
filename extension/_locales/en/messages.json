@@ -336,10 +336,10 @@
         "message": "Press Enter or Return after 8 hours of shielding to unblock"
     },
     "youdao_title": {
-        "message": "youdao translator"
+        "message": "google translator"
     },
     "youdao_subtitle": {
-        "message": "translate a word / phrase by youdao translator..."
+        "message": "translate a word / phrase by google translator..."
     },
     "weather_title": {
         "message": "weather"

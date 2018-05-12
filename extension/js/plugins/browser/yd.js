@@ -4,12 +4,10 @@
  * @email solopea@gmail.com
  */
 
-import $ from 'jquery'
 import util from '../../common/util'
 import Toast from 'toastr'
+import { google } from 'translation.js'
 
-const url = 'https://fanyi.youdao.com/openapi.do?' +
-'keyfrom=mineword&key=1362458147&type=data&doctype=json&version=1.1&q=';
 const emptyReg = /^\s+$/g;
 const version = 3;
 const name = 'youdao';
@@ -77,53 +75,29 @@ function onEnter(item, command, query, shiftKey) {
     }
 }
 
-function dataFormat(rawList) {
-    return rawList.map(function (item) {
+function dataFormat(rawList = []) {
+    return rawList.map(function (item, index) {
         return {
             key: key,
-            id: item.id,
+            id: index,
             icon: icon,
-            title: item.text,
-            desc: item.note
+            title: item
         };
     });
 }
 
+let transTimer = 0;
+
 function getTranslation(query) {
     return new Promise(resolve => {
+        clearTimeout(transTimer);
+
         if (query) {
-            $.get(url + query, function (data) {
-                let retData = [];
-                const str = [
-                    data.basic.phonetic,
-                    data.basic['uk-phonetic'],
-                    data.basic['us-phonetic']
-                ].join(',');
-                const phonetic = data.basic ? `[${str}]` : '';
-
-                retData.push({
-                    text: (data.translation || []).join(';') + phonetic,
-                    note: '翻译结果'
-                });
-
-                const explains = data.basic && data.basic.explains && data.basic.explains.map(function (exp) {
-                    return {
-                        text: exp,
-                        note: '简明释义'
-                    };
-                });
-
-                const webs = data.web && data.web.map(function (web) {
-                    return {
-                        text: web.value.join(', '),
-                        note: `网络释义: ${web.key}`
-                    };
-                });
-
-                retData = retData.concat(explains || []).concat(webs || []);
-
-                resolve(dataFormat(retData));
-            });
+            transTimer = setTimeout(() => {
+                resolve(google.translate(query).then(resp => {
+                    return dataFormat(resp.dict);
+                }));
+            }, 500);
         } else {
             resolve([]);
         }

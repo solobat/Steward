@@ -336,10 +336,10 @@
         "message": "屏蔽8小时后按 Enter 键或 Return 键才能解除屏蔽"
     },
     "youdao_title": {
-        "message": "有道翻译"
+        "message": "查词翻译"
     },
     "youdao_subtitle": {
-        "message": "使用有道翻译你想知道的单词或短语..."
+        "message": "使用谷歌翻译你想知道的单词或短语..."
     },
     "weather_title": {
         "message": "查询城市天气"
