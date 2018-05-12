@@ -123,6 +123,8 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                     }
                 } else if (tabname === 'workflows') {
                     this.loadWorkflowsIfNeeded();
+                } else if (tabname === 'advanced') {
+                    this.initAdvancedIfNeeded();
                 }
             },
             handleTabClick: function(tab) {

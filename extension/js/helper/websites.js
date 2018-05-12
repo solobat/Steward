@@ -173,13 +173,21 @@ export class Website {
     generateShareUrls() {
         const shareInfo = this.pageMeta.share || this.pageMeta;
 
-        this.shareUrls = generateSocialUrls(shareInfo).map(item => {
-            const icon = chrome.extension.getURL(`img/share-icons/${item.class}.jpg`);
+        generateSocialUrls(shareInfo).then(links => {
+            this.shareUrls = links.map(item => {
+                let icon;
 
-            return ResultHelper.createUrl({
-                url: item.url, title: item.name, icon
+                if (item.class.startsWith('http')) {
+                    icon = item.class;
+                } else {
+                    icon = chrome.extension.getURL(`img/share-icons/${item.class}.jpg`);
+                }
+
+                return ResultHelper.createUrl({
+                    url: item.url, title: item.name, icon
+                });
             });
-        });
+        })
     }
 
     handleBoxShow() {

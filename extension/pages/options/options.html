@@ -562,19 +562,44 @@
                 </el-row>
             </el-tab-pane>
             <el-tab-pane label="Advanced" name="advanced">
-                <el-row>
-                    <el-col :span="2">
-                        <el-button @click="handleExportClick" type="primary">Export</el-button>
-                    </el-col>
-                    <el-col :span="2">
-                        <el-upload accept="text/json" action="/" :before-upload="handleBackupBeforeUpload">
-                            <el-button type="primary">Import</el-button>
-                        </el-upload>
-                    </el-col>
-                    <el-col :span="2">
-                        <el-button @click="handleResetClick" type="danger">Reset</el-button>
-                    </el-col>
-                </el-row>
+                <el-collapse v-model="activeAdvancedName">
+                    <el-collapse-item name="userData" title="Export / Import">
+                        <el-row>
+                            <el-col :span="2">
+                                <el-button @click="handleExportClick" type="primary">Export</el-button>
+                            </el-col>
+                            <el-col :span="2">
+                                <el-upload accept="text/json" action="/" :before-upload="handleBackupBeforeUpload">
+                                    <el-button type="primary">Import</el-button>
+                                </el-upload>
+                            </el-col>
+                            <el-col :span="2">
+                                <el-button @click="handleResetClick" type="danger">Reset</el-button>
+                            </el-col>
+                        </el-row>
+                    </el-collapse-item>
+                    <el-collapse-item name="socialShare" title="Social Share configuration">
+                        <el-table :data="socialNetworks" style="width: 100%">
+                            <el-table-column prop="class" label="Icon Link" width="100">
+                                <template scope="scope">
+                                    <img class="network-icon" :src="networksIconFormatter(scope.row, scope.column)" alt="">
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="name" label="Name" width="180"> </el-table-column>
+                            <el-table-column prop="url" label="URL"></el-table-column>
+                            <el-table-column label="Operation" width="300">
+                                <template scope="scope">
+                                    <el-switch v-model="scope.row.enable" @change="handleNetWorkSwitchChange(scope.row)"></el-switch>
+                                    <el-button @click="handleNetworkEditClick(scope.row)" type="primary" icon="edit"></el-button>
+                                    <el-button @click="handleNetworkDeleteClick(scope.row)" type="danger" icon="delete"></el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                        <div style="margin-top: 12px;">
+                            <el-button icon="plus" @click="handleNewNewworkClick"></el-button>
+                        </div>
+                    </el-collapse-item>
+                </el-collapse>
             </el-tab-pane>
             <el-tab-pane label="Help" name="help">
                 <div class="text-panel">
@@ -596,6 +621,22 @@
                 </div>
             </el-tab-pane>
         </el-tabs>
+        <el-dialog v-model="networkDialogVisible" title="Social Network Edit">
+            <el-form ref="networkForm" :model="networkForm" :rules="networkRules">
+                <el-form-item label="Name" prop="name">
+                    <el-input v-model="networkForm.name" placeholder="Facebook"></el-input>
+                </el-form-item>
+                <el-form-item label="Icon" prop="class">
+                    <el-input v-model="networkForm.class" placeholder="https://xxx.com/favicon.png"></el-input>
+                </el-form-item>
+                <el-form-item label="URL" prop="url">
+                    <el-input v-model="networkForm.url" placeholder="https://www.xxx.com/sharer?url={url}&img={img}&title{title}&desc={desc}"></el-input>
+                </el-form-item>
+                <div>
+                    <el-button type="primary" @click="handleNetworkSaveClick">Save</el-button>
+                </div>
+            </el-form>
+        </el-dialog>
         <header class="topbar">
             <div class="links">
                 <a href="https://github.com/solobat/steward" class="github" target="_blank">
