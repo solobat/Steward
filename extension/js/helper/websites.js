@@ -275,7 +275,7 @@ export class Website {
         } else if (first === TRIGGER_SYMBOL.ANCHOR) {
             return Promise.resolve(this.anchors.filter(anchorNameFilter).map(mapTo('action', 'anchor')));
         } else if (first === TRIGGER_SYMBOL.META) {
-            return Promise.resolve(this.meta.concat(this.urls).filter(metaFilter));
+            return Promise.resolve(this.urls.concat(this.meta).filter(metaFilter));
         } else if (first === TRIGGER_SYMBOL.SHARE) {
             return Promise.resolve(this.shareUrls.filter(metaFilter));
         } else {
