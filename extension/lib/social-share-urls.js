@@ -192,7 +192,7 @@ const Networks = [
         name: 'Weibo',
         class: 'weibo',
         enable: true,
-        url: 'http://service.weibo.com/share/share.php?url={url}&appkey=&title={title}&pic=&ralateUid=',
+        url: 'http://service.weibo.com/share/share.php?url={url}&appkey=&title={title}&pic={img}&ralateUid=',
     },
 ];
 

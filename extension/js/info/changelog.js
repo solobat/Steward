@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.4.7',
+        detail: `
+            额外提供 10 个快捷键，以方便自定义命令快捷方式；<br>
+            yd 插件修复，以 google 翻译代替有道词典；<br>
+            页面模式的分享列表可以在选项 --> Advanced 里自定义。
+        `
+    },
+    {
         version: 'v3.4.6',
         detail: `
             为网站自动配置 Websites 功能，默认开启；<br>
@@ -294,6 +302,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4.7',
+        detail: `
+            Provides 10 additional shortcuts for customizing command shortcuts;<br>
+            The sharing links of page mode can be customized in Options --> Advanced。
+        `
+    },
     {
         version: 'v3.4.6',
         detail: `
