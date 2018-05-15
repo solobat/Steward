@@ -25,8 +25,10 @@ export function getFavicon(context = document, win) {
     const nodeList = context.getElementsByTagName("link");
 
     for (let i = 0; i < nodeList.length; i += 1) {
-        if((nodeList[i].getAttribute('rel') === 'icon') ||
-            (nodeList[i].getAttribute('rel') === 'shortcut icon')) {
+        const rel = (nodeList[i].getAttribute('rel') || '').toLowerCase();
+
+        if((rel === 'icon') ||
+            (rel === 'shortcut icon')) {
             favicon = nodeList[i].getAttribute("href");
         }
     }
@@ -37,7 +39,10 @@ export function getFavicon(context = document, win) {
         return favicon;
     } else if (favicon.startsWith('//')) {
         return `${protocol}${favicon}`;
-    } else if (favicon.startsWith('.')) {
+    } else if (favicon.startsWith('.') || !favicon.startsWith('/')) {
+        if (favicon.startsWith('/')) {
+            favicon += '.';
+        }
         return resolveUrl(pathname, favicon);
     } else {
         return `${protocol}//${host}${favicon}`;
