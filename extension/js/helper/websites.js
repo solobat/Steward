@@ -61,8 +61,10 @@ export function getShareFields(context) {
         });
 
         const img = info.img || info.image;
+        const desc = info.desc || info.description;
 
         info.img = info.image = img;
+        info.desc = info.description = desc;
 
         return info;
     } else {
