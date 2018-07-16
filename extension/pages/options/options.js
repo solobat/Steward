@@ -142,7 +142,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                     if (silent) {
                         console.log('save successfully');
                     } else {
-                        that.$message('save successfully!');
+                        that.$message(chrome.i18n.getMessage('save_ok'));
                     }
                 });
             },

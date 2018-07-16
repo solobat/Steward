@@ -56,6 +56,30 @@
     "toggle_ok": {
         "message": "切换 {{text}} 成功!"
     },
+    "confirm_delete_tpl": {
+        "message": "这个操作将永久删除此{{text}}，是否继续？"
+    },
+    "check_form": {
+        "message": "请检查表单"
+    },
+    "file_content_error": {
+        "message": "文件内容错误!"
+    },
+    "file_type_wrong": {
+        "message": "文件格式不正确!"
+    },
+    "import_config_ok": {
+        "message": "导入 Steward 配置成功，页面即将刷新！"
+    },
+    "import_config_failed": {
+        "message": "导入数据失败，可能是由于上传中断或错误的数据文件！"
+    },
+    "reset_config_confirm": {
+        "message": "这个操作将重置你的 Steward 配置，是否继续？"
+    },
+    "reset_config_ok": {
+        "message": "重置 Steward 配置成功，页面即将刷新!"
+    },
     "not_add_repeatedly": {
         "message": "不能重复添加!"
     },
@@ -628,6 +652,9 @@
     },
     "settings_notion_website": {
         "message": "网站配置"
+    },
+    "settings_notion_wallpaper": {
+        "message": "壁纸"
     },
     "settings_website_workflow": {
         "message": "网站配置"

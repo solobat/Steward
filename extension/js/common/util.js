@@ -233,11 +233,25 @@ const getData = field => () => {
     });
 }
 
+function getTplMsg(tplKey, data) {
+    return simTemplate(chrome.i18n.getMessage(tplKey), data);
+}
+
+function getTextMsg(tplKey, textKey) {
+    const data = {
+        text: chrome.i18n.getMessage(textKey)
+    };
+
+    return getTplMsg(tplKey, data);
+}
+
 export default {
     matchText,
     isMac,
     guid,
     simpleCommand,
+    getTplMsg,
+    getTextMsg,
     genCommands,
     getDefaultResult,
     copyToClipboard,

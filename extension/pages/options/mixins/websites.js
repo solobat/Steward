@@ -1,4 +1,5 @@
 import websiteHelper from '../../../js/helper/websites'
+import util from '../../../js/common/util'
 
 export default {
     data() {
@@ -169,7 +170,7 @@ export default {
             const website = websiteHelper.save(data);
 
             this.afterWebsiteSubmit(website.toJSON());
-            this.$message('Save successfully!');
+            this.$message(chrome.i18n.getMessage('save_ok'));
         },
 
         refreshWebsites() {
@@ -184,7 +185,7 @@ export default {
         handleWebsiteSubmit() {
             this.$refs.websiteForm.validate(valid => {
                 if (!valid) {
-                    this.$message.error('Please check the form');
+                    this.$message.error(chrome.i18n.getMessage('check_form'));
                 } else {
                     this.submitWebsite();
                 }
@@ -192,12 +193,12 @@ export default {
         },
 
         handleWebsiteDelete(id) {
-            this.$confirm('This operation will permanently delete the website, whether to continue?', 'Prompt', {
+            this.$confirm(util.getTextMsg('confirm_delete_tpl', 'settings_notion_website'), 'Prompt', {
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel',
                 type: 'warning'
             }).then(() => {
-                this.$message('Delete successfully!');
+                this.$message(chrome.i18n.getMessage('delete_ok'));
                 websiteHelper.remove(id);
                 this.refreshWebsites();
                 this.currentWebsite = null;

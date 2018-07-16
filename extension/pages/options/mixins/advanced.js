@@ -61,7 +61,7 @@ export default {
                     try {
                         data = JSON.parse(content);
                     } catch (error) {
-                        this.$message.error('File content is wrong');
+                        this.$message.error(chrome.i18n.getMessage('file_content_error'));
 
                         return Promise.reject('File content is wrong');
                     }
@@ -69,28 +69,28 @@ export default {
                     return restoreData(data, this.config);
                 }).then(resp => {
                     console.log(resp);
-                    this.$message.success('Import successfully and this page will be reloaded!');
+                    this.$message.success(chrome.i18n.getMessage('import_config_ok'));
                     setTimeout(() => {
                         window.location.reload();
                     }, 500);
                 }).catch(msg => {
                     console.log(msg);
-                    this.$message.error('Failed to import data! This may be due to corrupted or incorrect data files.');
+                    this.$message.error(chrome.i18n.getMessage('import_config_failed'));
                 });
             } else {
-                this.$message.error('Incorrect file type!');
+                this.$message.error(chrome.i18n.getMessage('file_type_wrong'));
             }
 
             return false;
         },
 
         handleResetClick() {
-            this.$confirm('This operation will reset your config, whether to continue?',
+            this.$confirm(chrome.i18n.getMessage('reset_config_confirm'),
                  'Prompt', {
                  type: 'warning'
              }).then(() => {
                  restoreConfig().then(() => {
-                     this.$message('Reset successfully and this page will be reloaded');
+                     this.$message(chrome.i18n.getMessage('reset_config_ok'));
                      setTimeout(function() {
                          window.location.reload();
                      }, 500);
@@ -111,7 +111,7 @@ export default {
 
         saveNetworks() {
             return saveNetworks(JSON.parse(JSON.stringify(this.socialNetworks))).then(resp => {
-                this.$message.success('Save successfully!');
+                this.$message.success(chrome.i18n.getMessage('save_ok'));
             });
         },
 
@@ -159,7 +159,7 @@ export default {
         handleNetworkSaveClick() {
             this.$refs.networkForm.validate(valid => {
                 if (!valid) {
-                    this.$message.error('Please check the form');
+                    this.$message.error(chrome.i18n.getMessage('check_form'));
                 } else {
                     this.submitNetwork();
                 }

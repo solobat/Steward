@@ -67,7 +67,7 @@ export default {
                         data: this.currentWorkflow
                     }, () => {
                         this.reloadWorkflows();
-                        this.$message('Update workflow successfully');
+                        this.$message(chrome.i18n.getMessage('save_ok'));
                     });
                 } else {
                     chrome.runtime.sendMessage({
@@ -76,7 +76,7 @@ export default {
                     }, resp => {
                         this.reloadWorkflows();
                         this.currentWorkflow = resp.data;
-                        this.$message('Create workflow successfully');
+                        this.$message(chrome.i18n.getMessage('add_ok'));
                     });
                 }
             } else {
@@ -101,7 +101,7 @@ export default {
         },
 
         handleWorkflowsDelete() {
-            this.$confirm('This operation will permanently delete the workflow, whether to continue?', 'Prompt', {
+            this.$confirm(util.getTextMsg('confirm_delete_tpl', 'settings_notion_workflow'), 'Confirm', {
                     confirmButtonText: 'Delete',
                     cancelButtonText: 'Cancel',
                     type: 'warning'

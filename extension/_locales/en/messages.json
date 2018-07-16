@@ -56,6 +56,30 @@
     "toggle_ok": {
         "message": "Toggle {{text}} successfully!"
     },
+    "confirm_delete_tpl": {
+        "message": "This operation will permanently delete the {{text}}, whether to continue?"
+    },
+    "check_form": {
+        "message": "Please check the form"
+    },
+    "file_content_error": {
+        "message": "File content is wrong!"
+    },
+    "file_type_wrong": {
+        "message": "Incorrect file type!"
+    },
+    "import_config_ok": {
+        "message": "Import successfully and this page will be reloaded!"
+    },
+    "import_config_failed": {
+        "message": "Failed to import data! This may be due to corrupted or incorrect data files."
+    },
+    "reset_config_confirm": {
+        "message": "This operation will permanently reset your configuration, whether to continue?"
+    },
+    "reset_config_ok": {
+        "message": "Reset successfully and this page will be reloaded!"
+    },
     "not_add_repeatedly": {
         "message": "Can not be added repeatedly!"
     },
@@ -622,6 +646,9 @@
     },
     "settings_notion_website": {
         "message": "Website"
+    },
+    "settings_notion_wallpaper": {
+        "message": "Wallpaper"
     },
     "settings_website_workflow": {
         "message": "Website"

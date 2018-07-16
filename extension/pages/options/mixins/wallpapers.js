@@ -1,6 +1,7 @@
 import CONST from '../../../js/constant'
 import storage from '../../../js/utils/storage'
 import { saveWallpaperLink } from '../../../js/helper/wallpaper'
+import util from '../../../js/common/util'
 
 export default {
     data() {
@@ -56,11 +57,11 @@ export default {
                 window.localStorage.setItem(KEY, wallpaper);
             }
 
-            this.$message('set successfully!');
+            this.$message(chrome.i18n.getMessage('set_ok'));
         },
 
         confirmDeleteWallpaper: function(wallpaper) {
-            this.$confirm('This operation will permanently delete the wallpaper, whether to continue?',
+            this.$confirm(util.getTextMsg('confirm_delete_tpl', 'settings_notion_wallpaper'),
                 'Prompt', {
                 confirmButtonText: 'Delete',
                 cancelButtonText: 'Cancel',
@@ -84,7 +85,7 @@ export default {
             }).then(() => {
                 this.$message({
                     type: 'success',
-                    message: 'delete successfully!'
+                    message: chrome.i18n.getMessage('delete_ok')
                 });
             });
         }
