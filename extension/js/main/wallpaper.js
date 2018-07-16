@@ -134,7 +134,7 @@ function recordSource(source) {
 export function refreshWallpaper(today) {
     const method = today ? 'today' : 'rand';
     const server = getSources(method);
-    Toast.info('Updating wallpaper...', { timeOut: 20000 });
+    Toast.info(chrome.i18n.getMessage('wallpaper_update'), { timeOut: 20000 });
 
     state.loading = true;
 
@@ -185,7 +185,7 @@ function bindEvents() {
 
     $saveBtn.on('click', function() {
         saveWallpaperLink(curUrl).then(() => {
-            Toast.success('save successfully');
+            Toast.success(chrome.i18n.getMessage('wallpaper_save_done'));
             $saveBtn.hide();
         }).catch(msg => {
             Toast.warning(msg);
@@ -196,7 +196,7 @@ function bindEvents() {
     $(document).on('dblclick', function(event) {
         if (event.target.tagName === 'BODY') {
             clearInterval(intervalTimer);
-            Toast.success('The automatic refresh of the wallpaper has been disabled');
+            Toast.success(chrome.i18n.getMessage('wallpaper_stoprefresh'));
         }
     });
 }

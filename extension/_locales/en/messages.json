@@ -607,5 +607,140 @@
     },
     "STORAGE_WARNING": {
         "message": "Storage is full, can not be added!"
+    },
+    "wallpaper_stoprefresh": {
+        "message": "The automatic refresh of the wallpaper has been disabled"
+    },
+    "wallpaper_save_done": {
+        "message": "save successfully"
+    },
+    "wallpaper_update": {
+        "message": "Updating wallpaper..."
+    },
+    "settings_notion_workflow": {
+        "message": "Workflow"
+    },
+    "settings_notion_website": {
+        "message": "Website"
+    },
+    "settings_website_workflow": {
+        "message": "Website"
+    },
+    "settings_tabs_general": {
+        "message": "General"
+    },
+    "settings_tabs_plugins": {
+        "message": "Plugins"
+    },
+    "settings_tabs_workflows": {
+        "message": "Workflows"
+    },
+    "settings_tabs_websites": {
+        "message": "Websites"
+    },
+    "settings_tabs_wallpapers": {
+        "message": "Wallpapers"
+    },
+    "settings_tabs_appearance": {
+        "message": "Appearance"
+    },
+    "settings_tabs_advanced": {
+        "message": "Advanced"
+    },
+    "settings_tabs_help": {
+        "message": "Help"
+    },
+    "settings_tabs_update": {
+        "message": "Update"
+    },
+    "settings_blocks_commandsplugins": {
+        "message": "Commands and plugins"
+    },
+    "settings_blocks_operationinteraction": {
+        "message": "Operation and interaction"
+    },
+    "settings_blocks_websitesconfiguration": {
+        "message": "Websites configuration"
+    },
+    "settings_blocks_wallpapers": {
+        "message": "Wallpapers"
+    },
+    "settings_blocks_performance": {
+        "message": "Performance"
+    },
+    "settings_blocks_shortcutconfiguration": {
+        "message": "Shortcuts configuration"
+    },
+    "settings_blocks_websitebaseinfo": {
+        "message": "Base Info"
+    },
+    "settings_blocks_websitenav": {
+        "message": "Site Navigation, trigger: [ Direct search ] or [ / ]"
+    },
+    "settings_blocks_inpagenav": {
+        "message": "In-page Navigation, trigger: [ ` ]"
+    },
+    "settings_blocks_exportimport": {
+        "message": "Export / Import"
+    },
+    "settings_blocks_socialshareconfig": {
+        "message": "Social Share configuration"
+    },
+    "settings_fields_title": {
+        "message": "Title"
+    },
+    "settings_fields_description": {
+        "message": "Description"
+    },
+    "settings_fields_content": {
+        "message": "Content"
+    },
+    "settings_fields_host": {
+        "message": "Host"
+    },
+    "settings_fields_siteicon": {
+        "message": "Site Icon"
+    },
+    "settings_fields_paths": {
+        "message": "Paths"
+    },
+    "settings_fields_navigations": {
+        "message": "Navigations"
+    },
+    "settings_fields_outlinescope": {
+        "message": "Outline Scope"
+    },
+    "settings_fields_anchors": {
+        "message": "Anchors"
+    },
+    "settings_fields_disable": {
+        "message": "Disable"
+    },
+    "settings_actions_save": {
+        "message": "Save"
+    },
+    "settings_actions_delete": {
+        "message": "Delete"
+    },
+    "settings_actions_newworkflow": {
+        "message": "New Workflow"
+    },
+    "settings_actions_newwebsite": {
+        "message": "New Website"
+    },
+    "settings_actions_applysave": {
+        "message": "Apply and Save"
+    },
+    "settings_actions_reset": {
+        "message": "Reset"
+    },
+    "settings_actions_export": {
+        "message": "Export"
+    },
+    "settings_actions_import": {
+        "message": "Import"
+    },
+    "settings_actions_downloadcrx": {
+        "message": "Download CRX"
     }
 }

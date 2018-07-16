@@ -7,6 +7,7 @@ import ga from '../../js/common/ga'
 import changelog from '../../js/info/changelog'
 import util from '../../js/common/util'
 import { helpInfo } from '../../js/info/help'
+import * as i18n from '../../js/info/i18n'
 import CONST from '../../js/constant'
 import WebsitesMixin from './mixins/websites'
 import AdvancedMixin from './mixins/advanced'
@@ -33,6 +34,8 @@ function init() {
         config.lastVersion = config.version || version;
 
         const i18nTexts = getI18nTexts({general: config.general, tips});
+
+        i18nTexts.ui = i18n;
 
         ga();
         render(config, i18nTexts);

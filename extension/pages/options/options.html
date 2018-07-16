@@ -10,10 +10,10 @@
 <body>
     <div id="app" class="steward" v-cloak>
         <el-tabs v-model="activeName" @tab-click="handleTabClick">
-            <el-tab-pane label="General" name="general" class="general-panel">
+            <el-tab-pane :label="i18nTexts.ui.settings.tabs.general" name="general" class="general-panel">
                 <el-form style="margin: 20px 0; min-height: 150px;" ref="general" :model="config.general">
                     <el-collapse v-model="activeGeneralConfigName">
-                        <el-collapse-item name="command" title="Commands and plugins">
+                        <el-collapse-item name="command" :title="i18nTexts.ui.settings.blocks.commandsplugins">
                             <el-row>
                                 <el-col :span="12">
                                     <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.cacheLastCmd">
@@ -67,7 +67,7 @@
                                 </el-col>
                             </el-row>
                         </el-collapse-item>
-                        <el-collapse-item name="operation" title="Operation and interaction">
+                        <el-collapse-item name="operation" :title="i18nTexts.ui.settings.blocks.operationinteraction">
                             <el-row>
                                 <el-col :span="12">
                                     <el-form-item :label="i18nTexts.general.maxOperandsNum">
@@ -106,7 +106,7 @@
                                 </el-col>
                             </el-row>
                         </el-collapse-item>
-                        <el-collapse-item name="websites" title="Websites configuration">
+                        <el-collapse-item name="websites" :title="i18nTexts.ui.settings.blocks.websitesconfiguration">
                             <el-row>
                                 <el-col :span="8">
                                     <el-form-item :label="i18nTexts.general.autoCreateWebsite">
@@ -134,7 +134,7 @@
                                 </el-col>
                             </el-row>
                         </el-collapse-item>
-                        <el-collapse-item name="appearance" title="Wallpapers">
+                        <el-collapse-item name="appearance" :title="i18nTexts.ui.settings.blocks.wallpapers">
                             <el-row>
                                 <el-col :span="12">
                                     <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.wallpaperSources">
@@ -158,7 +158,7 @@
                                 </el-col>
                             </el-row>
                         </el-collapse-item>
-                        <el-collapse-item name="performance" title="Performance">
+                        <el-collapse-item name="performance" :title="i18nTexts.ui.settings.blocks.performance">
                             <el-row>
                                 <el-col :span="12">
                                     <el-form-item :label="i18nTexts.general.speedFirst">
@@ -170,7 +170,7 @@
                                 </el-col>
                             </el-row>
                         </el-collapse-item>
-                        <el-collapse-item class="shortcuts-config" name="shortcuts" title="Shortcuts configuration">
+                        <el-collapse-item class="shortcuts-config" name="shortcuts" :title="i18nTexts.ui.settings.blocks.shortcutconfiguration">
                             <el-row>
                                 <el-col :span="4">
                                     <el-form-item :label="i18nTexts.general.shortcuts.pageboxShortcut_0.cmd">
@@ -228,11 +228,11 @@
                         </el-collapse-item>
                     </el-collapse>
                     <el-form-item style="margin-top: 20px;">
-                        <el-button type="primary" @click.native.prevent="handleGeneralSubmit">Save</el-button>
+                        <el-button type="primary" @click.native.prevent="handleGeneralSubmit">{{i18nTexts.ui.settings.actions.save}}</el-button>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
-            <el-tab-pane label="Plugins" name="plugins">
+            <el-tab-pane :label="i18nTexts.ui.settings.tabs.plugins" name="plugins">
                 <el-row>
                     <el-col :span="6">
                         <div class="grid-content plugin-list">
@@ -281,7 +281,7 @@
                                             </el-switch>
                                         </el-form-item>
                                         <el-form-item>
-                                            <el-button type="primary" @click.native.prevent="handlePluginsSubmit">Save</el-button>
+                                            <el-button type="primary" @click.native.prevent="handlePluginsSubmit">{{i18nTexts.ui.settings.actions.save}}</el-button>
                                         </el-form-item>
                                     </el-form>
                                 </div>
@@ -290,7 +290,7 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane label="Workflows" name="workflows">
+            <el-tab-pane :label="i18nTexts.ui.settings.tabs.workflows" name="workflows">
                 <el-row>
                     <el-col :span="6">
                         <div class="grid-content plugin-list">
@@ -299,7 +299,7 @@
                                 </el-input>
                             </div>
                             <div class="button-bar">
-                                <el-button type="primary" icon="plus" @click="handleNewWorkflowClick">New Workflow</el-button>
+                                <el-button type="primary" icon="plus" @click="handleNewWorkflowClick">{{i18nTexts.ui.settings.actions.newworkflow}}</el-button>
                             </div>
                             <div class="plugin-item workflow-item" v-for="workflow in filteredWorkflows" @click="handleWorkflowClick(workflow)">
                                 <span class="plugin-name">{{workflow.title}}</span>
@@ -311,20 +311,20 @@
                             <div v-if="currentWorkflow" class="plugin-editor-container">
                                 <div class="plugin-editor-header">
                                     <div class="plugin-editor-text">
-                                        <p class="plugin-editor-title">Workflow - {{currentWorkflow.title}}</p>
+                                        <p class="plugin-editor-title">{{i18nTexts.ui.settings.notion.workflow}} - {{currentWorkflow.title}}</p>
                                     </div>
                                 </div>
                                 <div class="plugin-editor-config">
                                     <el-form style="margin: 20px;padding: 12px; min-height: 150px;" ref="form" :model="currentWorkflow" label-width="200px">
-                                        <el-form-item label="Title">
+                                        <el-form-item :label="i18nTexts.ui.settings.fields.title">
                                             <el-input type="text" style="width: 300px;" v-model="currentWorkflow.title">
                                             </el-input>
                                         </el-form-item>
-                                        <el-form-item label="Description">
+                                        <el-form-item :label="i18nTexts.ui.settings.fields.description">
                                             <el-input type="text" style="width: 300px;" v-model="currentWorkflow.desc">
                                             </el-input>
                                         </el-form-item>
-                                        <el-form-item label="Content">
+                                        <el-form-item :label="i18nTexts.ui.settings.fields.content">
                                             <el-input autocorrect="off" autocapitalize="off" spellcheck="false" type="textarea" style="width: 300px;" :autosize="{ minRows: 5, maxRows: 12 }" placeholder="Please input your commands" v-model="currentWorkflow.content">
                                             </el-input>
                                             <el-tooltip class="item" effect="dark" content="Workflow Document" placement="top-start">
@@ -332,8 +332,8 @@
                                             </el-tooltip>
                                         </el-form-item>
                                         <el-form-item>
-                                            <el-button type="primary" @click.native.prevent="handleWorkflowsSubmit">Save</el-button>
-                                            <el-button v-if="currentWorkflow.id" type="warning" @click.native.prevent="handleWorkflowsDelete">Delete</el-button>
+                                            <el-button type="primary" @click.native.prevent="handleWorkflowsSubmit">{{i18nTexts.ui.settings.actions.save}}</el-button>
+                                            <el-button v-if="currentWorkflow.id" type="warning" @click.native.prevent="handleWorkflowsDelete">{{i18nTexts.ui.settings.actions.delete}}</el-button>
                                         </el-form-item>
                                     </el-form>
                                 </div>
@@ -342,7 +342,7 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane label="Websites" name="websites">
+            <el-tab-pane :label="i18nTexts.ui.settings.tabs.websites" name="websites">
                 <el-row>
                     <el-col :span="6">
                         <div class="grid-content plugin-list">
@@ -351,7 +351,7 @@
                                 </el-input>
                             </div>
                             <div class="button-bar">
-                                <el-button type="primary" icon="plus" @click="handleNewWebsiteClick">New Website</el-button>
+                                <el-button type="primary" icon="plus" @click="handleNewWebsiteClick">{{i18nTexts.ui.settings.actions.newwebsite}}</el-button>
                             </div>
                             <div class="plugin-item website-item" v-for="website in filteredWebsites" @click="handleWebsiteClick(website)">
                                 <span class="plugin-name">{{website.title}}</span>
@@ -363,28 +363,28 @@
                             <div v-if="currentWebsite" class="plugin-editor-container">
                                 <div class="plugin-editor-header">
                                     <div class="plugin-editor-text">
-                                        <p class="plugin-editor-title">Website - {{currentWebsite.title}}</p>
+                                        <p class="plugin-editor-title">{{i18nTexts.ui.settings.notion.website}} - {{currentWebsite.title}}</p>
                                     </div>
                                 </div>
                                 <div class="plugin-editor-config" style="max-height: 560px; overflow-y: auto;">
                                     <el-form style="margin: 20px;padding: 12px; min-height: 150px;" ref="websiteForm" :model="currentWebsite" :rules="websiteFormRuels" label-width="200px">
                                         <el-collapse v-model="activeFieldsName">
-                                            <el-collapse-item name="meta" title="Base Info">
-                                                <el-form-item label="Title" prop="title">
+                                            <el-collapse-item name="meta" :title="i18nTexts.ui.settings.blocks.websitebaseinfo">
+                                                <el-form-item :label="i18nTexts.ui.settings.fields.title" prop="title">
                                                     <el-input type="text" style="width: 300px;" v-model="currentWebsite.title">
                                                     </el-input>
                                                 </el-form-item>
-                                                <el-form-item label="Host" prop="host">
+                                                <el-form-item :label="i18nTexts.ui.settings.fields.host" prop="host">
                                                     <el-input type="text" style="width: 300px;" v-model="currentWebsite.host">
                                                     </el-input>
                                                 </el-form-item>
-                                                <el-form-item label="Site Icon">
+                                                <el-form-item :label="i18nTexts.ui.settings.fields.siteicon">
                                                     <el-input type="text" style="width: 300px;" v-model="currentWebsite.icon" placeholder="https://baidu.com/favicon.ico">
                                                     </el-input>
                                                 </el-form-item>
                                             </el-collapse-item>
-                                            <el-collapse-item title="Site Navigation, trigger: [ Direct search ] or [ / ]" name="site">
-                                                <el-form-item label="Paths">
+                                            <el-collapse-item :title="i18nTexts.ui.settings.blocks.websitenav" name="site">
+                                                <el-form-item :label="i18nTexts.ui.settings.fields.paths">
                                                     <div class="paths-container">
                                                         <el-row>
                                                             <el-col :span="6">
@@ -411,19 +411,19 @@
                                                         </el-row>
                                                     </div>
                                                 </el-form-item>
-                                                <el-form-item label="Navigations">
+                                                <el-form-item :label="i18nTexts.ui.settings.fields.navigations">
                                                     <el-col :span="17">
                                                         <el-input type="textarea" :rows="2" autosize placeholder="such as: nav > ul > li > a" v-model="currentWebsite.navs"></el-input>
                                                     </el-col>
                                                 </el-form-item>
                                             </el-collapse-item>
-                                            <el-collapse-item name="inpage" title="In-page Navigation, trigger: [ ` ]">
-                                                <el-form-item label="Outline Scope">
+                                            <el-collapse-item name="inpage" :title="i18nTexts.ui.settings.blocks.inpagenav">
+                                                <el-form-item :label="i18nTexts.ui.settings.fields.outlinescope">
                                                     <el-col :span="17">
                                                         <el-input placeholder="such as: .markdown-body" v-model="currentWebsite.outlineScope"></el-input>
                                                     </el-col>
                                                 </el-form-item>
-                                                <el-form-item label="Anchors">
+                                                <el-form-item :label="i18nTexts.ui.settings.fields.anchors">
                                                     <div class="paths-container">
                                                         <el-row>
                                                             <el-col :span="6">
@@ -452,15 +452,15 @@
                                                 </el-form-item>
                                             </el-collapse-item>
                                         </el-collapse>
-                                        <el-form-item label="Disable">
+                                        <el-form-item :label="i18nTexts.ui.settings.fields.disable">
                                             <el-switch
                                                 v-model="currentWebsite.disabled"
                                                 on-color="#20a0ff">
                                             </el-switch>
                                         </el-form-item>
                                         <el-form-item>
-                                            <el-button type="primary" @click.native.prevent="handleWebsiteSubmit">Save</el-button>
-                                            <el-button v-if="currentWebsite.id" type="warning" @click.native.prevent="handleWebsiteDelete(currentWebsite.id)">Delete</el-button>
+                                            <el-button type="primary" @click.native.prevent="handleWebsiteSubmit">{{i18nTexts.ui.settings.actions.save}}</el-button>
+                                            <el-button v-if="currentWebsite.id" type="warning" @click.native.prevent="handleWebsiteDelete(currentWebsite.id)">{{i18nTexts.ui.settings.actions.delete}}</el-button>
                                         </el-form-item>
                                     </el-form>
                                 </div>
@@ -469,7 +469,7 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane v-if="extType === 'steward'" label="Wallpapers" name="wallpapers">
+            <el-tab-pane v-if="extType === 'steward'" :label="i18nTexts.ui.settings.tabs.wallpapers" name="wallpapers">
                 <div class="wallpapers-container">
                     <div class="wallpaper-box">
                         <div class="wallpaper-add-btn" @click="handleAddWallpaperClick">
@@ -484,7 +484,7 @@
                     </div>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="Appearance" name="appearance">
+            <el-tab-pane :label="i18nTexts.ui.settings.tabs.appearance" name="appearance">
                 <el-row>
                     <el-col :span="3">
                         <div class="appearance-items">
@@ -504,8 +504,8 @@
                                     <div class="theme-editor">
                                         <el-form v-if="themeMode" :model="theme" label-width="258px">
                                             <div>
-                                                <el-button type="primary" @click.native.prevent="handleThemeSave(themeMode)">Apply and Save</el-button>
-                                                <el-button type="warning" @click.native.prevent="handleThemeReset(themeMode)">Reset</el-button>
+                                                <el-button type="primary" @click.native.prevent="handleThemeSave(themeMode)">{{i18nTexts.ui.settings.actions.applysave}}</el-button>
+                                                <el-button type="warning" @click.native.prevent="handleThemeReset(themeMode)">{{i18nTexts.ui.settings.actions.reset}}</el-button>
                                             </div>
                                             <div class="theme-field-type">Background Coloring</div>
                                             <el-form-item label="App:">
@@ -561,24 +561,24 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane label="Advanced" name="advanced">
+            <el-tab-pane :label="i18nTexts.ui.settings.tabs.advanced" name="advanced">
                 <el-collapse v-model="activeAdvancedName">
-                    <el-collapse-item name="userData" title="Export / Import">
+                    <el-collapse-item name="userData" :title="i18nTexts.ui.settings.blocks.exportimport">
                         <el-row>
                             <el-col :span="2">
-                                <el-button @click="handleExportClick" type="primary">Export</el-button>
+                                <el-button @click="handleExportClick" type="primary">{{i18nTexts.ui.settings.actions.export}}</el-button>
                             </el-col>
                             <el-col :span="2">
                                 <el-upload accept="text/json" action="/" :before-upload="handleBackupBeforeUpload">
-                                    <el-button type="primary">Import</el-button>
+                                    <el-button type="primary">{{i18nTexts.ui.settings.actions.import}}</el-button>
                                 </el-upload>
                             </el-col>
                             <el-col :span="2">
-                                <el-button @click="handleResetClick" type="danger">Reset</el-button>
+                                <el-button @click="handleResetClick" type="danger">{{i18nTexts.ui.settings.actions.reset}}</el-button>
                             </el-col>
                         </el-row>
                     </el-collapse-item>
-                    <el-collapse-item name="socialShare" title="Social Share configuration">
+                    <el-collapse-item name="socialShare" :title="i18nTexts.ui.settings.blocks.socialshareconfig">
                         <el-table :data="socialNetworks" style="width: 100%">
                             <el-table-column prop="class" label="Icon Link" width="100">
                                 <template scope="scope">
@@ -601,12 +601,12 @@
                     </el-collapse-item>
                 </el-collapse>
             </el-tab-pane>
-            <el-tab-pane label="Help" name="help">
+            <el-tab-pane :label="i18nTexts.ui.settings.tabs.help" name="help">
                 <div class="text-panel">
                     <div v-if="activeName === 'help'" v-html="helpInfo"></div>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="Update" name="update">
+            <el-tab-pane :label="i18nTexts.ui.settings.tabs.update" name="update">
                 <div class="text-panel">
                     <h2>{{ extType }} v{{config.version}}</h2>
                     <section class="changelog">
@@ -616,7 +616,7 @@
                         </template>
                     </section>
                     <div style="margin-top: 12px;">
-                        <a style="margin-left: 12px;" :href="'http://owsjc7iz3.bkt.clouddn.com/' + extType + '-' + config.version + '.crx'">Download crx</a>
+                        <a style="margin-left: 12px;" :href="'http://owsjc7iz3.bkt.clouddn.com/' + extType + '-' + config.version + '.crx'">{{i18nTexts.ui.settings.actions.downloadcrx}}</a>
                     </div>
                 </div>
             </el-tab-pane>
