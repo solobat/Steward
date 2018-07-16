@@ -1,4 +1,3 @@
-/*global _gaq*/
 import CONST from '../../../js/constant'
 import util from '../../../js/common/util'
 
@@ -50,7 +49,6 @@ export default {
 
         handleWorkflowClick(workflow) {
             this.currentWorkflow = workflow;
-            _gaq.push(['_trackEvent', 'options_workflows', 'click', workflow.title]);
         },
 
         reloadWorkflows() {

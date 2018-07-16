@@ -1,4 +1,4 @@
-/*global EXT_TYPE _gaq*/
+/*global EXT_TYPE*/
 
 import CONST from '../../../js/constant'
 import previewHtml from '../preview.html'
@@ -52,8 +52,6 @@ export default {
 
         handleApprItemClick: function(apprItem) {
             this.updateApprItem(apprItem);
-
-            _gaq.push(['_trackEvent', 'options_appearance', 'click', apprItem.name]);
         },
 
         loadThemes() {

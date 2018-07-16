@@ -1,5 +1,3 @@
-/*global _gaq*/
-
 import CONST from '../../../js/constant'
 import storage from '../../../js/utils/storage'
 import { saveWallpaperLink } from '../../../js/helper/wallpaper'
@@ -57,7 +55,6 @@ export default {
                 this.selectedWallpaper = wallpaper;
                 window.localStorage.setItem(KEY, wallpaper);
             }
-            _gaq.push(['_trackEvent', 'options_wallpaper', 'click', 'choose']);
 
             this.$message('set successfully!');
         },
@@ -89,7 +86,6 @@ export default {
                     type: 'success',
                     message: 'delete successfully!'
                 });
-                _gaq.push(['_trackEvent', 'options_wallpaper', 'click', 'delete']);
             });
         }
     }

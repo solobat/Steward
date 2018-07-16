@@ -3,7 +3,7 @@
  * @author tomasy
  * @email solopea@gmail.com
  */
-/*global _gaq stewardCache*/
+/*global stewardCache*/
 
 import $ from 'jquery'
 import EasyComplete from '../common/easycomplete'
@@ -12,7 +12,6 @@ import storage from '../common/storage'
 import CONST from '../constant'
 import {plugins} from '../plugins/browser'
 import * as Wallpaper from './wallpaper'
-import ga from '../../js/common/ga'
 import _ from 'underscore'
 import { websitesMap } from '../plugins/website'
 import defaultGeneral from '../../js/conf/general'
@@ -190,7 +189,6 @@ function commandStage(gothrough) {
         storage.h5.set(CONST.STORAGE.LAST_CMD, str);
 
         if (cmdbox.lastcmd !== cmdbox.cmd) {
-            _gaq.push(['_trackEvent', 'command', 'input', cmdbox.cmd]);
             cmdbox.lastcmd = cmdbox.cmd;
         }
 
@@ -364,8 +362,6 @@ function handleNormalItem(box, dataList, item) {
         app.hanldle(item);
     }
 
-    _gaq.push(['_trackEvent', 'exec', 'enter', type]);
-
     if (type !== ITEM_TYPE.PLUGINS) {
         box.trigger('shouldCloseBox');
     }
@@ -411,7 +407,6 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
 
             if (!fromWorkflow) {
                 const enterResult = handleEnterResult(result);
-                _gaq.push(['_trackEvent', 'exec', 'enter', plugin.name]);
 
                 return enterResult;
             } else {
@@ -649,9 +644,6 @@ function init() {
         $('body').fadeIn(100, function() {
             cmdbox.ipt.focus();
         });
-        ga();
-    } else if(!inContent) {
-        setTimeout(ga, 200);
     }
 
     window.addEventListener('storage', function(event) {

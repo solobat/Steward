@@ -1,4 +1,3 @@
-/*global _gaq*/
 import $ from 'jquery'
 import CONST from '../constant'
 import * as api from '../api/index'
@@ -176,7 +175,6 @@ export function refreshWallpaper(today) {
 function bindEvents() {
     $('#j-refresh-wp').on('click', function() {
         refreshWallpaper();
-        _gaq.push(['_trackEvent', 'wallpaper', 'click', 'refresh']);
     });
 
     $body.on('wallpaper:update', function(event, url) {
@@ -190,7 +188,6 @@ function bindEvents() {
         }).catch(msg => {
             Toast.warning(msg);
         });
-        _gaq.push(['_trackEvent', 'wallpaper', 'click', 'save']);
     });
 
     $(document).on('dblclick', function(event) {

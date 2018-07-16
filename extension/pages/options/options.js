@@ -1,9 +1,8 @@
-/*global EXT_TYPE _gaq*/
+/*global EXT_TYPE*/
 import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 import './options.scss'
-import ga from '../../js/common/ga'
 import changelog from '../../js/info/changelog'
 import util from '../../js/common/util'
 import { helpInfo } from '../../js/info/help'
@@ -37,7 +36,6 @@ function init() {
 
         i18nTexts.ui = i18n;
 
-        ga();
         render(config, i18nTexts);
     });
 }
@@ -132,7 +130,6 @@ function render({general, plugins, lastVersion}, i18nTexts) {
             },
             handleTabClick: function(tab) {
                 this.initTab(tab.name);
-                _gaq.push(['_trackEvent', 'options_tab', 'click', tab.name]);
             },
 
             saveConfig: function(silent) {
@@ -152,8 +149,6 @@ function render({general, plugins, lastVersion}, i18nTexts) {
 
             handleGeneralSubmit: function() {
                 this.saveConfig();
-
-                _gaq.push(['_trackEvent', 'options_general', 'save']);
             }
         }
     });
