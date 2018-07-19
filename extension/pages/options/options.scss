@@ -64,6 +64,14 @@ a {
             box-sizing: inherit;
         }
     }
+
+    .el-tabs__header,
+    .el-collapse-item__header,
+    .plugin-item,
+    .el-form-item__label,
+    .appearance-item {
+        user-select: none;
+    }
 }
 
 .steward .el-tabs__header {
