@@ -114,6 +114,10 @@ a {
     &.plugin-disabled {
         color: #999;
     }
+
+    &.is-selected {
+        color: #20a0ff;
+    }
 }
 
 .workflow-item {

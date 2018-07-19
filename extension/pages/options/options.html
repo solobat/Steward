@@ -240,7 +240,7 @@
                                 <el-input placeholder="Search" icon="search" v-model="pluginSearchText">
                                 </el-input>
                             </div>
-                            <div class="plugin-item" v-for="plugin in filteredPlugins" :class="{'plugin-disabled': isPluginDisabled(plugin)}" @click="handlePluginClick(plugin)">
+                            <div class="plugin-item" v-for="plugin in filteredPlugins" :class="{'plugin-disabled': isPluginDisabled(plugin), 'is-selected': plugin === currentPlugin}" @click="handlePluginClick(plugin)">
                                 <img :src="plugin.icon" class="plugin-icon" alt="">
                                 <span class="plugin-name">{{plugin.name}}</span>
                             </div>
@@ -301,7 +301,7 @@
                             <div class="button-bar">
                                 <el-button type="primary" icon="plus" @click="handleNewWorkflowClick">{{i18nTexts.ui.settings.actions.newworkflow}}</el-button>
                             </div>
-                            <div class="plugin-item workflow-item" v-for="workflow in filteredWorkflows" @click="handleWorkflowClick(workflow)">
+                            <div class="plugin-item workflow-item" :class="{'is-selected': workflow === currentWorkflow}" v-for="workflow in filteredWorkflows" @click="handleWorkflowClick(workflow)">
                                 <span class="plugin-name">{{workflow.title}}</span>
                             </div>
                         </div>
@@ -353,7 +353,7 @@
                             <div class="button-bar">
                                 <el-button type="primary" icon="plus" @click="handleNewWebsiteClick">{{i18nTexts.ui.settings.actions.newwebsite}}</el-button>
                             </div>
-                            <div class="plugin-item website-item" v-for="website in filteredWebsites" @click="handleWebsiteClick(website)">
+                            <div class="plugin-item website-item" :class="{'is-selected': website.title === (currentWebsite && currentWebsite.title)}" v-for="website in filteredWebsites" @click="handleWebsiteClick(website)">
                                 <span class="plugin-name">{{website.title}}</span>
                             </div>
                         </div>
