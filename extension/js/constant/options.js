@@ -34,4 +34,8 @@ export const WALLPAPER_SOURCES = [{
     label: 'Desktoppr',
     value: 'desktoppr',
     tips: 'desktoppr.co'
+}, {
+    label: 'Pixabay',
+    value: 'pixabay',
+    tips: 'pixabay.com'
 }];

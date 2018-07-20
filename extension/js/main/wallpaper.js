@@ -87,6 +87,11 @@ const sourcesInfo = {
         api: () => api.desktoppr.getRandom(),
         handle: result => result.response.image.url,
         weight: 3
+    },
+    pixabay: {
+        api: () => api.pixabay.getPageList(),
+        handle: result => getRandomOne(result.hits).largeImageURL,
+        weight: 3
     }
 };
 
