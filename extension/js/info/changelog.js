@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.4.8',
+        detail: `
+            新增 pixabay 壁纸来源；<br>
+            更好的国际化支持，一些样式优化；<br>
+            移除 google 统计以提高性能。
+        `
+    },
+    {
         version: 'v3.4.7',
         detail: `
             额外提供 10 个快捷键，以方便自定义命令快捷方式；<br>
@@ -302,6 +310,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4.8',
+        detail: `
+            Add pixabay wallpaper source；<br>
+            Better international support, some style optimization；<br>
+            Remove google stats to improve performance。
+        `
+    },
     {
         version: 'v3.4.7',
         detail: `
