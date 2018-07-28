@@ -19,6 +19,7 @@ import download from './download'
 import help from './help'
 import topsites from './topsites'
 import weather from './weather'
+import coin from './coin'
 import openurl from './openurl'
 import newtab from './newtab'
 import wallpaper from './wallpaper'
@@ -55,6 +56,7 @@ const pluginList = [
     help,
     topsites,
     weather,
+    coin,
     openurl,
     newtab,
     wallpaper,

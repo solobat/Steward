@@ -371,6 +371,18 @@
     "weather_subtitle": {
         "message": "weather..."
     },
+    "coin_coin_title": {
+        "message": "Query digital currency info"
+    },
+    "coin_coin_subtitle": {
+        "message": "Enter btc/eth/eos/ft, etc. to check their global prices..."
+    },
+    "coin_coins_title": {
+        "message": "Query digital currency list"
+    },
+    "coin_coins_subtitle": {
+        "message": "Enter the digital currency name/identification, etc."
+    },
     "openurl_title": {
         "message": "Open the typed url"
     },
