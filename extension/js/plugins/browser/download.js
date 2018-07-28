@@ -21,15 +21,22 @@ const commands = [{
     editable: true
 }];
 
-function searchDownload(query, callback) {
-    chrome.downloads.search({
-      query: [query],
-      orderBy: ['-endTime']
-    }, function (data) {
-        const downloadList = data || [];
+let timer = 0;
+const QUERY_DELAY = 200;
 
-        callback(downloadList);
-    });
+function searchDownload(query, callback) {
+    clearTimeout(timer);
+
+    timer = setTimeout(function() {
+        chrome.downloads.search({
+            query: query ? [query] : [],
+            limit: 10
+          }, function (data) {
+              const downloadList = data || [];
+
+              callback(downloadList);
+          });
+    }, QUERY_DELAY);
 }
 
 const rFilename = /(?!\/)[^\/]+\.?(\w+)?$/;
