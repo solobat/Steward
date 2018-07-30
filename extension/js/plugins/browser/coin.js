@@ -61,29 +61,37 @@ function queryCoin(query) {
 
     if (supportConverts.indexOf(convertTo.toUpperCase()) !== -1) {
         return getCoinInfoBySymbol(coinSymbol).then(coinInfo => {
-            return coinApi.price(coinInfo.id, convertTo).then(resp => {
-                const data = resp.data;
+            if (coinInfo) {
+                return coinApi.price(coinInfo.id, convertTo).then(resp => {
+                    const data = resp.data;
 
-                if (data.quotes) {
-                    const items = [];
+                    if (data.quotes) {
+                        const items = [];
 
-                    for (const key in data.quotes) {
-                        const item = data.quotes[key];
+                        for (const key in data.quotes) {
+                            const item = data.quotes[key];
 
-                        items.push({
-                            key: 'coins',
-                            id: key,
-                            icon,
-                            title: `${coinInfo.symbol} ==> ${item.price}/${key}`,
-                            desc: `${item.percent_change_1h || 0}%[1h] -- ${item.percent_change_24h}%[24h] -- ${item.percent_change_7d}%[7d]`
-                        });
+                            items.push({
+                                key: 'coins',
+                                id: key,
+                                icon,
+                                title: `${coinInfo.symbol} ==> ${item.price}/${key}`,
+                                desc: `${item.percent_change_1h || 0}%[1h] -- ${item.percent_change_24h}%[24h] -- ${item.percent_change_7d}%[7d]`,
+                                data: {
+                                    coinSymbol: data.symbol.toLowerCase(),
+                                    convertTo: key.toLowerCase()
+                                }
+                            });
+                        }
+
+                        return items;
+                    } else {
+                        return [];
                     }
-
-                    return items;
-                } else {
-                    return [];
-                }
-            });
+                });
+            } else {
+                return [];
+            }
         });
     }
 }
@@ -98,9 +106,25 @@ function onInput(query, command) {
     }
 }
 
+const exMap = {
+    okex: {
+        urlFn: (coinSymbol, convertTo) => `https://www.okex.com/spot/trade#product=${coinSymbol}_${convertTo}`,
+        converts: ['btc', 'usdt', 'eth', 'okb']
+    }
+};
+
+function getTradeUrl(coinSymbol = 'btc', convertTo = 'usdt', ex = 'okex') {
+    const exConf = exMap[ex];
+    const fixedConvert = exConf.converts.indexOf(convertTo) !== -1 ? convertTo : 'usdt';
+
+    return exConf.urlFn(coinSymbol, fixedConvert);
+}
+
 function onEnter(item, { orkey }) {
     if (orkey === 'coins') {
         return Promise.resolve(`coin ${item.id}`);
+    } else if (orkey === 'coin') {
+        chrome.tabs.create({ url: getTradeUrl(item.data.coinSymbol, item.data.convertTo), active: true });
     }
 }
 
