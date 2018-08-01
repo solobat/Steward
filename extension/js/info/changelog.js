@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.4.9',
+        detail: `
+            新增 coin market 插件，查询最新的数字货币价格，包括<em>coin</em> 以及 <em>coins</em>命令；<br>
+            一定程度上优化 dl 命令性能问题；<br>
+            新增繁体中文语言包。
+        `
+    },
+    {
         version: 'v3.4.8',
         detail: `
             新增 pixabay 壁纸来源；<br>
@@ -310,6 +318,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4.9',
+        detail: `
+            Add the coin market plugin to check the latest digital currency prices, including the <em>coin</em> and <em>coins</em> commands;<br>
+            Optimize <em>dl</em> command performance issues；<br>
+            Add Traditional Chinese Language Pack。
+        `
+    },
     {
         version: 'v3.4.8',
         detail: `
