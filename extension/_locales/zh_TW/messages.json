@@ -1,0 +1,791 @@
+{
+    "extName": {
+        "message": "擴展管家/應用啟動/標籤管理/歷史記錄查詢/alfred"
+    },
+    "extDesc": {
+        "message": "啟動器/便捷管理擴展/應用/標籤/歷史記錄等"
+    },
+    "pageboxDesc": {
+        "message": "在頁面上啟用"
+    },
+    "general_shortcuts_pageboxShortcut_0_cmd": {
+        "message": "快捷鍵0"
+    },
+    "general_shortcuts_pageboxShortcut_1_cmd": {
+        "message": "快捷鍵1"
+    },
+    "general_shortcuts_pageboxShortcut_2_cmd": {
+        "message": "快捷鍵2"
+    },
+    "general_shortcuts_pageboxShortcut_3_cmd": {
+        "message": "快捷鍵3"
+    },
+    "general_shortcuts_pageboxShortcut_4_cmd": {
+        "message": "快捷鍵4"
+    },
+    "general_shortcuts_pageboxShortcut_5_cmd": {
+        "message": "快捷鍵5"
+    },
+    "general_shortcuts_pageboxShortcut_6_cmd": {
+        "message": "快捷鍵6"
+    },
+    "general_shortcuts_pageboxShortcut_7_cmd": {
+        "message": "快捷鍵7"
+    },
+    "general_shortcuts_pageboxShortcut_8_cmd": {
+        "message": "快捷鍵8"
+    },
+    "general_shortcuts_pageboxShortcut_9_cmd": {
+        "message": "快捷鍵9"
+    },
+    "save_ok": {
+        "message": "保存成功!"
+    },
+    "add_ok": {
+        "message": "添加成功!"
+    },
+    "delete_ok": {
+        "message": "刪除成功!"
+    },
+    "delete_ok_tpl": {
+        "message": "刪除 {{text}} 成功!"
+    },
+    "set_ok": {
+        "message": "設置成功!"
+    },
+    "toggle_ok": {
+        "message": "切換 {{text}} 成功!"
+    },
+    "confirm_delete_tpl": {
+        "message": "這個操作將永久刪除此{{text}}，是否繼續？"
+    },
+    "check_form": {
+        "message": "請檢查表單"
+    },
+    "file_content_error": {
+        "message": "文件內容錯誤!"
+    },
+    "file_type_wrong": {
+        "message": "文件格式不正確!"
+    },
+    "import_config_ok": {
+        "message": "導入 Steward 配置成功，頁面即將刷新！"
+    },
+    "import_config_failed": {
+        "message": "導入數據失敗，可能是由於上傳中斷或錯誤的數據文件！"
+    },
+    "reset_config_confirm": {
+        "message": "這個操作將重置你的 Steward 配置，是否繼續？"
+    },
+    "reset_config_ok": {
+        "message": "重置 Steward 配置成功，頁面即將刷新!"
+    },
+    "not_add_repeatedly": {
+        "message": "不能重複添加!"
+    },
+    "bookmark_title": {
+        "message": "查找書籤"
+    },
+    "bookmark_subtitle": {
+        "message": "查找書籤記錄並打開"
+    },
+    "bookmark_bm_title": {
+        "message": "查找書籤"
+    },
+    "bookmark_bm_subtitle": {
+        "message": "查找書籤記錄並打開"
+    },
+    "bookmark_bmd_title": {
+        "message": "查找書籤並刪除"
+    },
+    "bookmark_bmd_subtitle": {
+        "message": "查找書籤記錄並刪除"
+    },
+    "topsites_title": {
+        "message": "常用網站"
+    },
+    "topsites_subtitle": {
+        "message": "常用網站並打開"
+    },
+    "download_title": {
+        "message": "下載列表"
+    },
+    "download_subtitle": {
+        "message": "查找下載記錄並打開所在文件夾"
+    },
+    "calculate_title": {
+        "message": "運算"
+    },
+    "calculate_subtitle": {
+        "message": "複製到剪切板"
+    },
+    "viewExtension_title": {
+        "message": "查看擴展或應用"
+    },
+    "viewExtension_subtitle": {
+        "message": "在chrome://extensions/頁查看擴展或應用"
+    },
+    "deleteExtension_title": {
+        "message": "刪除擴展"
+    },
+    "deleteExtension_subtitle": {
+        "message": "查找並刪除擴展"
+    },
+    "help_title": {
+        "message": "查看命令幫助"
+    },
+    "help_subtitle": {
+        "message": "查看命令列表並跳轉"
+    },
+    "history_title": {
+        "message": "查找歷史記錄"
+    },
+    "history_subtitle": {
+        "message": "查找歷史記錄並打開"
+    },
+    "jenkins_title": {
+        "message": "查找並打開"
+    },
+    "jenkins_subtitle": {
+        "message": "查找並打開jenkins jobs"
+    },
+    "jenkins_jk_title": {
+        "message": "查找並打開"
+    },
+    "jenkins_jk_subtitle": {
+        "message": "查找並打開jenkins jobs"
+    },
+    "jenkins_jkb_title": {
+        "message": "查找並編譯"
+    },
+    "jenkins_jkb_subtitle": {
+        "message": "查找並編譯jenkins jobs"
+    },
+    "jenkins_jkc_title": {
+        "message": "查找並配置"
+    },
+    "jenkins_jkc_subtitle": {
+        "message": "查找並配置jenkins jobs"
+    },
+    "jenkins_jkw_title": {
+        "message": "查找打開工作空間"
+    },
+    "jenkins_jkw_subtitle": {
+        "message": "查找jenkins jobs打開工作空間"
+    },
+    "jenkins_jkset_title": {
+        "message": "設置jenkins url"
+    },
+    "jenkins_jkset_subtitle": {
+        "message": "設置jenkins url"
+    },
+    "note_title": {
+        "message": "添加筆記"
+    },
+    "note_subtitle": {
+        "message": "標籤以'#'開始, 標籤文本只支持英文及中文字符, 其它字符自動作為標籤結尾標誌"
+    },
+    "note_note_title": {
+        "message": "添加筆記"
+    },
+    "note_note_subtitle": {
+        "message": "標籤以'#'開始, 標籤文本只支持英文及中文字符, 其它字符自動作為標籤結尾標誌"
+    },
+    "note_notetag_title": {
+        "message": "查找標籤"
+    },
+    "note_notetag_subtitle": {
+        "message": "根據標籤查找note"
+    },
+    "note_notes_title": {
+        "message": "筆記列表"
+    },
+    "note_notes_subtitle": {
+        "message": "查看所有筆記，Enter 複製，Shift + Enter 刪除"
+    },
+    "diary_title": {
+        "message": "聊天式日記"
+    },
+    "diary_subtitle": {
+        "message": "一次一句，自動按日期歸檔"
+    },
+    "diary_say_title": {
+        "message": "寫日記"
+    },
+    "diary_say_subtitle": {
+        "message": "像聊天一樣記日記，按 Enter 添加一條，按 Shift + Enter 刪除選中的條目"
+    },
+    "diary_diary_title": {
+        "message": "日記列表"
+    },
+    "diary_diary_subtitle": {
+        "message": "按 Enter 下載日記，按 Shift + Enter 下載日記並刪除"
+    },
+    "diary_warning_notempty": {
+        "message": "總得寫點兒什麼!"
+    },
+    "offExtension_title": {
+        "message": "禁用擴展/App"
+    },
+    "offExtension_subtitle": {
+        "message": "查找並禁用擴展/App"
+    },
+    "onExtension_title": {
+        "message": "啟用擴展"
+    },
+    "onExtension_subtitle": {
+        "message": "查找並啟用擴展"
+    },
+    "pocket_title": {
+        "message": "查找pocket"
+    },
+    "pocket_subtitle": {
+        "message": "查找我的pocket文檔並打開"
+    },
+    "runapp_title": {
+        "message": "運行應用(app)"
+    },
+    "runapp_subtitle": {
+        "message": "查找並運行應用(app)"
+    },
+    "setOption_title": {
+        "message": "設置擴展"
+    },
+    "setOption_subtitle": {
+        "message": "查找並設置擴展"
+    },
+    "tabs_title": {
+        "message": "跳轉到標籤頁"
+    },
+    "tabs_subtitle": {
+        "message": "查找並跳轉至標籤頁"
+    },
+    "tabs_tab_title": {
+        "message": "跳轉到標籤頁"
+    },
+    "tabs_tab_subtitle": {
+        "message": "查找並跳轉至標籤頁"
+    },
+    "tabs_tabc_title": {
+        "message": "關閉一個標籤頁"
+    },
+    "tabs_tabc_subtitle": {
+        "message": "查找並關閉一(多)個標籤頁"
+    },
+    "tabs_tabm_title": {
+        "message": "移動選中的tab"
+    },
+    "tabs_tabm_subtitle": {
+        "message": "請輸入從 >=1 的數字，0則移動到window末尾"
+    },
+    "tabs_tabp_title": {
+        "message": "切換 tab 的鎖定狀態"
+    },
+    "tabs_tabp_subtitle": {
+        "message": "查找 tabs 並切換 tab 的鎖定狀態"
+    },
+    "tab_warning_invalidindex": {
+        "message": "無效的數字"
+    },
+    "todolist_title": {
+        "message": "添加todo"
+    },
+    "todolist_subtitle": {
+        "message": "添加todo，單擊todo選項消除"
+    },
+    "todolist_todo_title": {
+        "message": "添加todo"
+    },
+    "todolist_todo_subtitle": {
+        "message": "添加todo，單擊todo選項消除"
+    },
+    "todolist_done_title": {
+        "message": "查詢已完成待辦事項"
+    },
+    "todolist_done_subtitle": {
+        "message": "按 Enter 再次添加到 Todolist, 按 Shift + Enter 直接刪除此項"
+    },
+    "times_title": {
+        "message": "添加 times"
+    },
+    "times_subtitle": {
+        "message": "添加 times, 格式為 {task}/{m|w|d}/{times}，Enter 次數 +1，Shift + Enter 次數 -1"
+    },
+    "times_ts_title": {
+        "message": "添加 times"
+    },
+    "times_ts_subtitle": {
+        "message": "添加 times，格式為 {task}/{m|w|d}/{times}, Enter 次數 +1，Shift + Enter 次數 -1"
+    },
+    "times_tsd_title": {
+        "message": "刪除 times"
+    },
+    "times_tsd_subtitle": {
+        "message": "刪除選中的 times"
+    },
+    "times_ts_warn_format": {
+        "message": "times 格式有誤，正確的為 {task}/{m|w|d}/{times}/{+|-}"
+    },
+    "times_ts_tpl_title": {
+        "message": "{{task}} / {{interval}} / {{curCount}}"
+    },
+    "times_ts_tpl_subtitle_more": {
+        "message": "設定次數​​: {{count}}, 類型: 多多益善"
+    },
+    "times_ts_tpl_subtitle_less": {
+        "message": "設定次數​​: {{count}}, 類型: 越少越好"
+    },
+    "urlblock_title": {
+        "message": "屏蔽網址"
+    },
+    "urlblock_subtitle": {
+        "message": "屏蔽指定網址"
+    },
+    "urlblock_bk_title": {
+        "message": "屏蔽網址"
+    },
+    "urlblock_bk_subtitle": {
+        "message": "屏蔽指定網址"
+    },
+    "urlblock_bk8_title": {
+        "message": "屏蔽網址8小時"
+    },
+    "urlblock_bk8_subtitle": {
+        "message": "屏蔽指定網址8小時"
+    },
+    "urlblock_unbk_subtitle": {
+        "message": "按 Enter 鍵或 Return 鍵可以解除屏蔽"
+    },
+    "urlblock_unbk8_subtitle": {
+        "message": "屏蔽8小時後按 Enter 鍵或 Return 鍵才能解除屏蔽"
+    },
+    "youdao_title": {
+        "message": "查詞翻譯"
+    },
+    "youdao_subtitle": {
+        "message": "使用谷歌翻譯你想知道的單詞或短語..."
+    },
+    "weather_title": {
+        "message": "查詢城市天氣"
+    },
+    "weather_subtitle": {
+        "message": "輸入城市名，查詢天氣、指數、pm2.5..."
+    },
+    "coin_coin_title": {
+        "message": "查詢數字貨幣信息"
+    },
+    "coin_coin_subtitle": {
+        "message": "輸入btc/eth/eos/ft等，查詢全球價格..."
+    },
+    "coin_coins_title": {
+        "message": "查詢數字貨幣列表"
+    },
+    "coin_coins_subtitle": {
+        "message": "輸入數字貨幣名稱/標識等進行查詢"
+    },
+    "openurl_title": {
+        "message": "打開輸入的網址"
+    },
+    "openurl_subtitle": {
+        "message": "打開輸入的網址"
+    },
+    "newtab_title": {
+        "message": "New Tab 的一些本地設置"
+    },
+    "newtab_subtitle": {
+        "message": "只適用於 Steward 的 New Tab 模式"
+    },
+    "newtab_nt_title": {
+        "message": "New Tab 的一些本地設置"
+    },
+    "newtab_nt_subtitle": {
+        "message": "只適用於 Steward 的 New Tab 模式"
+    },
+    "newtab_ntm_title": {
+        "message": "New Tab 可選標題列表"
+    },
+    "newtab_ntm_subtitle": {
+        "message": "按 Enter 或 Return 鍵將移除此項"
+    },
+    "newtab_visibleOnlyFocued_title": {
+        "message": "功能區默認顯示/隱藏"
+    },
+    "newtab_visibleOnlyFocued_subtitle": {
+        "message": "切換是否只當頁面獲取到焦點時才顯示功能區"
+    },
+    "newtab_newTabTitle_title": {
+        "message": "設置新標籤頁的標題"
+    },
+    "newtab_newTabTitle_subtitle": {
+        "message": "在彈出框裡輸入你要的標題"
+    },
+    "newtab_newTabUseFilter_title": {
+        "message": "毛玻璃效果"
+    },
+    "newtab_newTabUseFilter_subtitle": {
+        "message": "切換新標籤頁功能區是否使用毛玻璃效果"
+    },
+    "wallpaper_title": {
+        "message": "New Tab 壁紙快捷操作"
+    },
+    "wallpaper_subtitle": {
+        "message": "query 為空時，可以保存、刷新，不為空時可以將 query 作為新的壁紙添加到庫中"
+    },
+    "wallpaper_wp_title": {
+        "message": "New Tab 壁紙快捷操作"
+    },
+    "wallpaper_wp_subtitle": {
+        "message": "query 為空時，可以保存、刷新，不為空時可以將 query 作為新的壁紙添加到庫中"
+    },
+    "wallpaper_wps_title": {
+        "message": "選擇當前壁紙"
+    },
+    "wallpaper_wps_subtitle": {
+        "message": "查詢所有壁紙，Enter 設定為當前"
+    },
+    "wallpaper_action_save_title": {
+        "message": "保存"
+    },
+    "wallpaper_action_save_subtitle": {
+        "message": "保存當前壁紙原鏈接到你的收藏中"
+    },
+    "wallpaper_action_refresh_title": {
+        "message": "刷新"
+    },
+    "wallpaper_action_refresh_subtitle": {
+        "message": "刷新壁紙，來源包括 bing.com / 收藏 / picsum.photos / Nasa / Desktoppr，隨機權重為 1 / 2 / 2 / 0.5 / 3"
+    },
+    "wallpaper_action_upload_title": {
+        "message": "上傳到微博圖床並保存"
+    },
+    "wallpaper_action_upload_subtitle": {
+        "message": "請優先選擇此項，因圖片鏈接加載較慢或可能失效 -- 需要先登錄新浪微博"
+    },
+    "wallpaper_action_download_title": {
+        "message": "下載"
+    },
+    "wallpaper_action_download_subtitle": {
+        "message": "格式為 jpg，下載完成後可自行上傳到圖床，將 URL 通過 wp 命令添加到收藏裡"
+    },
+    "wallpaper_action_copy_title": {
+        "message": "複製到剪貼板"
+    },
+    "wallpaper_warning_format": {
+        "message": "圖片格式錯誤"
+    },
+    "search_title": {
+        "message": "搜索指定內容"
+    },
+    "search_subtitle": {
+        "message": "搜索指定內容"
+    },
+    "search_se_title": {
+        "message": "自定義搜索引擎"
+    },
+    "search_se_subtitle": {
+        "message": "query格式為`Name|URL|Icon`, 為空時可刪除選中的引擎"
+    },
+    "search_removese_subtitle": {
+        "message": "按 Enter 或 Return 移除此搜索引擎"
+    },
+    "search_warning_format": {
+        "message": "搜索引擎的格式錯誤, <br> 正確的格式為: Name|Url|Icon,<br>"
+    },
+    "search_warning_del": {
+        "message": "是否刪除選中的搜索引擎?"
+    },
+    "workflow_title": {
+        "message": "工作流"
+    },
+    "workflow_subtitle": {
+        "message": "執行自定義的系列命令"
+    },
+    "workflow_wf_title": {
+        "message": "工作流"
+    },
+    "workflow_wf_subtitle": {
+        "message": "執行自定義的系列命令"
+    },
+    "workflow_wfe_title": {
+        "message": "編輯工作流"
+    },
+    "workflow_wfe_subtitle": {
+        "message": "選擇某條工作流以後，query 為空時 Enter 刪除， query 不為空時 Enter 加入到 workflow"
+    },
+    "general_useInContentPage": {
+        "message": "在網頁中啟動"
+    },
+    "general_cacheLastCmd": {
+        "message": "緩存上一條命令"
+    },
+    "general_defaultPlugin": {
+        "message": "New Tab默認插件"
+    },
+    "general_customCmd": {
+        "message": "New Tab自定義命令"
+    },
+    "general_maxOperandsNum": {
+        "message": "最大批量操作條目數"
+    },
+    "general_autoScrollToMiddle": {
+        "message": "列表底部時自動上移"
+    },
+    "general_speedFirst": {
+        "message": "速度優先"
+    },
+    "general_autoHideCmd": {
+        "message": "自動隱藏命令"
+    },
+    "general_autoResizeBoxFontSize": {
+        "message": "自動調整輸入框字體大小"
+    },
+    "general_autoSelectByMouse": {
+        "message": "鼠標 hover 時選中下拉項"
+    },
+    "general_wallpaperSources": {
+        "message": "壁紙來源"
+    },
+    "general_enableRandomWallpaper": {
+        "message": "隨機應用壁紙"
+    },
+    "general_storeTypedQuery": {
+        "message": "存儲最近的命令"
+    },
+    "general_autoCreateWebsite": {
+        "message": "自動配置 Websites"
+    },
+    "general_websiteUrls": {
+        "message": "Website 網址工具"
+    },
+    "general_websiteShareUrls": {
+        "message": "Website 分享功能"
+    },
+    "tips_maxOperandsNum": {
+        "message": "設置某些插件在shift + enter/click操作時所處理的最大條目數"
+    },
+    "tips_autoScrollToMiddle": {
+        "message": "自動將位於列表底部的元素滾動到列表中間"
+    },
+    "tips_autoHideCmd": {
+        "message": "在New Tab輸入框失去焦點時自動隱藏命令"
+    },
+    "tips_bm_shift": {
+        "message": "按住shift時將批量打開帶⇧標識的項"
+    },
+    "tips_his_shift": {
+        "message": "按住shift時將批量打開帶⇧標識的項"
+    },
+    "tips_site_shift": {
+        "message": "按住shift時將批量打開帶⇧標識的項"
+    },
+    "tips_tabc_shift": {
+        "message": "按住shift時將批量打開帶⇧標識的項"
+    },
+    "tips_wd_shift": {
+        "message": "按住shift時表示認識此單詞"
+    },
+    "tips_allowBatch": {
+        "message": "允許批量執行，用於workflows中，形式為`1-n | all | n | `"
+    },
+    "tips_storeTypedQuery": {
+        "message": "輸入框為空時按下向上箭頭可查看最近20次輸入的查詢。自動顯示最新的歷史記錄。"
+    },
+    "chrome_title": {
+        "message": "chrome常用url"
+    },
+    "chrome_subtitle": {
+        "message": "查找chrome常用頁面/命令，打開/複製到剪切板"
+    },
+    "steward_title": {
+        "message": "常用steward選項"
+    },
+    "steward_subtitle": {
+        "message": "查找常用steward選項並打開"
+    },
+    "about_title": {
+        "message": "Steward 相關"
+    },
+    "about_subtitle": {
+        "message": "Steward 相關鏈接"
+    },
+    "about_about_title": {
+        "message": "Steward 相關"
+    },
+    "about_about_subtitle": {
+        "message": "Steward 相關鏈接"
+    },
+    "about_up_title": {
+        "message": "支持 Steward"
+    },
+    "about_up_subtitle": {
+        "message": "Steward 需要大家的持續關注與支持"
+    },
+    "custom_title": {
+        "message": "自定義命令"
+    },
+    "custom_subtitle": {
+        "message": "設置在NewTab輸入框中的默認命令"
+    },
+    "custom_warning_notempty": {
+        "message": "命令不能為空!"
+    },
+    "random_title": {
+        "message": "隨機應用命令"
+    },
+    "random_subtitle": {
+        "message": "設置在NewTab隨機應用的命令"
+    },
+    "random_remove_subtitle": {
+        "message": "按 Enter 或 Return 鍵移除此命令"
+    },
+    "github_title": {
+        "message": "github常用頁面"
+    },
+    "wordcard_title": {
+        "message": "單詞小卡片擴展工具"
+    },
+    "wordcard_subtitle": {
+        "message": "需要單詞小卡片擴展處於啟用狀態，且版本 >= v2.2.1"
+    },
+    "STORAGE_WARNING": {
+        "message": "存儲空間不足，不能繼續添加了！"
+    },
+    "wallpaper_stoprefresh": {
+        "message": "已停止此頁面的壁紙自動刷新功能"
+    },
+    "wallpaper_save_done": {
+        "message": "壁紙保存成功"
+    },
+    "wallpaper_update": {
+        "message": "壁紙刷新中..."
+    },
+    "settings_notion_workflow": {
+        "message": "工作流"
+    },
+    "settings_notion_website": {
+        "message": "網站配置"
+    },
+    "settings_notion_wallpaper": {
+        "message": "壁紙"
+    },
+    "settings_website_workflow": {
+        "message": "網站配置"
+    },
+    "settings_tabs_general": {
+        "message": "通用"
+    },
+    "settings_tabs_plugins": {
+        "message": "插件"
+    },
+    "settings_tabs_workflows": {
+        "message": "工作流"
+    },
+    "settings_tabs_websites": {
+        "message": "網站"
+    },
+    "settings_tabs_wallpapers": {
+        "message": "壁紙"
+    },
+    "settings_tabs_appearance": {
+        "message": "外觀"
+    },
+    "settings_tabs_advanced": {
+        "message": "高級"
+    },
+    "settings_tabs_help": {
+        "message": "幫助"
+    },
+    "settings_tabs_update": {
+        "message": "更新"
+    },
+    "settings_blocks_commandsplugins": {
+        "message": "命令與插件"
+    },
+    "settings_blocks_operationinteraction": {
+        "message": "操作與交互"
+    },
+    "settings_blocks_websitesconfiguration": {
+        "message": "網站設置"
+    },
+    "settings_blocks_wallpapers": {
+        "message": "壁紙設置"
+    },
+    "settings_blocks_performance": {
+        "message": "性能"
+    },
+    "settings_blocks_shortcutconfiguration": {
+        "message": "快捷鍵設置"
+    },
+    "settings_blocks_websitebaseinfo": {
+        "message": "基本信息"
+    },
+    "settings_blocks_websitenav": {
+        "message": "網站地圖, 觸發條件: [ 直接搜索 ] 或者 [ / ]"
+    },
+    "settings_blocks_inpagenav": {
+        "message": "頁面內導航, 觸發條件: [ ` ]"
+    },
+    "settings_blocks_exportimport": {
+        "message": "導入/導出"
+    },
+    "settings_blocks_socialshareconfig": {
+        "message": "社會化分享配置"
+    },
+    "settings_fields_title": {
+        "message": "標題"
+    },
+    "settings_fields_description": {
+        "message": "描述"
+    },
+    "settings_fields_content": {
+        "message": "內容"
+    },
+    "settings_fields_host": {
+        "message": "域名"
+    },
+    "settings_fields_siteicon": {
+        "message": "站點圖標"
+    },
+    "settings_fields_paths": {
+        "message": "頁面路徑"
+    },
+    "settings_fields_navigations": {
+        "message": "導航"
+    },
+    "settings_fields_outlinescope": {
+        "message": "大綱範圍"
+    },
+    "settings_fields_anchors": {
+        "message": "錨點"
+    },
+    "settings_fields_disable": {
+        "message": "禁用"
+    },
+    "settings_actions_save": {
+        "message": "保存"
+    },
+    "settings_actions_delete": {
+        "message": "刪除"
+    },
+    "settings_actions_newworkflow": {
+        "message": "新建工作流"
+    },
+    "settings_actions_newwebsite": {
+        "message": "新建網站配置"
+    },
+    "settings_actions_applysave": {
+        "message": "應用及保存"
+    },
+    "settings_actions_reset": {
+        "message": "重置"
+    },
+    "settings_actions_export": {
+        "message": "導出"
+    },
+    "settings_actions_import": {
+        "message": "導入"
+    },
+    "settings_actions_downloadcrx": {
+        "message": "下載 CRX 文件"
+    }
+}
