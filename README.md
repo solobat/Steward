@@ -16,8 +16,8 @@
 ### Usage
 > Use the commands to complete most of the operation in the browser
 
-- [Document](http://oksteward.com/steward-document-en/)
-- [中文版文档](http://oksteward.com/steward-document-zh/)
+- [Document](http://oksteward.com/steward-documents/)
+- [中文版文档](http://oksteward.com/steward-documents/zh/)
 - [论坛](http://bbs.oksteward.com)
 ---
 #### Screenshots:
