@@ -67,6 +67,7 @@ function queryCoin(query) {
     const arr = query.split(/[_\s]/);
     const coinSymbol = arr[0] || 'BTC';
     const convertTo = arr[1] || 'BTC';
+    const ex = arr[2] || 'okex';
 
     if (supportConverts.indexOf(convertTo.toUpperCase()) !== -1) {
         return getCoinInfoBySymbol(coinSymbol).then(coinInfo => {
@@ -88,7 +89,8 @@ function queryCoin(query) {
                                 desc: `${item.percent_change_1h || 0}%[1h] -- ${item.percent_change_24h}%[24h] -- ${item.percent_change_7d}%[7d]`,
                                 data: {
                                     coinSymbol: data.symbol.toLowerCase(),
-                                    convertTo: key.toLowerCase()
+                                    convertTo: key.toLowerCase(),
+                                    ex
                                 }
                             });
                         }
@@ -119,12 +121,29 @@ const exMap = {
     okex: {
         urlFn: (coinSymbol, convertTo) => `https://www.okex.com/spot/trade#product=${coinSymbol}_${convertTo}`,
         converts: ['btc', 'usdt', 'eth', 'okb']
+    },
+    huobi: {
+        urlFn: (coinSymbol, convertTo) => `https://www.huobi.br.com/${coinSymbol}_${convertTo}/exchange/`,
+        converts: ['btc', 'usdt', 'eth', 'ht']
+    },
+    hadax: {
+        urlFn: (coinSymbol, convertTo) => `https://www.hadax.com/coin_coin/exchange/#${coinSymbol}_${convertTo}`,
+        converts: ['btc', 'eth', 'ht']
+    },
+    binance: {
+        urlFn: (coinSymbol, convertTo) => `https://www.binance.com/trade/${coinSymbol}_${convertTo}`,
+        converts: ['btc', 'eth', 'usdt', 'bnb']
+    },
+    fcoin: {
+        urlFn: (coinSymbol, convertTo) => `https://exchange.fcoin.com/ex/main/${coinSymbol}-${convertTo}`,
+        converts: ['btc', 'eth', 'usdt']
     }
 };
 
 function getTradeUrl(coinSymbol = 'btc', convertTo = 'usdt', ex = 'okex') {
     const exConf = exMap[ex];
-    const fixedConvert = exConf.converts.indexOf(convertTo) !== -1 ? convertTo : 'usdt';
+    const realConvert = convertTo.toLowerCase() === 'usd' ? 'usdt' : convertTo.toLowerCase();
+    const fixedConvert = exConf.converts.indexOf(realConvert) !== -1 ? realConvert : exConf.converts[0];
 
     return exConf.urlFn(coinSymbol, fixedConvert);
 }
@@ -146,7 +165,7 @@ function onEnter(item, { orkey }) {
 
         return Promise.resolve(`coin ${item.id}`);
     } else if (orkey === 'coin') {
-        chrome.tabs.create({ url: getTradeUrl(item.data.coinSymbol, item.data.convertTo), active: true });
+        chrome.tabs.create({ url: getTradeUrl(item.data.coinSymbol, item.data.convertTo, item.data.ex), active: true });
     }
 }
 
