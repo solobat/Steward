@@ -18,26 +18,58 @@ const commands = util.genCommands(name, icon, keys, type);
 const supportConverts = ['AUD', 'BRL', 'CAD', 'CHF', 'CLP', 'CNY', 'CZK', 'DKK', 'EUR', 'GBP', 'HKD', 'HUF', 'IDR', 'ILS', 'INR', 'JPY', 'KRW', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PKR', 'PLN', 'RUB', 'SEK', 'SGD', 'THB', 'TRY', 'TWD', 'ZAR', 'BTC', 'ETH', 'XRP', 'LTC', 'BCH'];
 
 let coinList;
+let coinMap;
+
+function getCoinState(coinSymbol) {
+    const fixedSymbol = coinSymbol.toUpperCase();
+
+    if (coinMap) {
+        return Promise.resolve(coinMap[fixedSymbol]);
+    } else {
+        return storage.local.get('coin_map').then(resp => {
+            coinMap = resp || {};
+
+            return coinMap[fixedSymbol];
+        });
+    }
+}
+
+function setCoinState(coinSymbol, newState) {
+    const oldState = coinMap[coinSymbol] || {};
+
+    coinMap[coinSymbol] = Object.assign(oldState, newState);
+
+    return storage.local.set({
+        coin_map: coinMap
+    });
+}
+
+function getCachedCoinState(coinSymbol) {
+    if (Number(coinSymbol)) {
+        return Promise.resolve({
+            id: Number(coinSymbol)
+        });
+    } else {
+        return getCoinState(coinSymbol).then(coinState => {
+            return coinState || {};
+        });
+    }
+}
 
 function getCoinInfoBySymbol(coinSymbol) {
     function searchInList() {
-        return storage.local.get('coin_map').then(resp => {
-            let id = parseInt(coinSymbol, 10);
-            const coinMap = resp || {};
-            const fixedSymbol = coinSymbol.toUpperCase();
+        return getCachedCoinState(coinSymbol).then(coinState => {
+            const findFn = coinState.id ? coin => coin.id === coinState.id : coin => coin.symbol === coinSymbol;
 
-            if (coinMap[fixedSymbol]) {
-                id = coinMap[fixedSymbol];
-            }
-
-            const findFn = id ? coin => coin.id === id : coin => coin.symbol === fixedSymbol;
-
-            return coinList.find(findFn);
+            return {
+                info: coinList.find(findFn),
+                state: coinState
+            };
         });
     }
 
     if (coinList) {
-        return Promise.resolve(searchInList());
+        return searchInList();
     } else {
         return coinApi.list().then(coins => {
             coinList = coins;
@@ -65,14 +97,17 @@ function queryCoins(query) {
 
 function queryCoin(query) {
     const arr = query.split(/[_\s]/);
-    const coinSymbol = arr[0] || 'BTC';
-    const convertTo = arr[1] || 'BTC';
-    const ex = arr[2] || 'okex';
+    const coinSymbol = (arr[0] || 'BTC').toUpperCase();
+    const convertTo = (arr[1] || '').toUpperCase();
+    const ex = arr[2];
 
-    if (supportConverts.indexOf(convertTo.toUpperCase()) !== -1) {
-        return getCoinInfoBySymbol(coinSymbol).then(coinInfo => {
-            if (coinInfo) {
-                return coinApi.price(coinInfo.id, convertTo).then(resp => {
+    if (!convertTo || supportConverts.indexOf(convertTo) !== -1) {
+        return getCoinInfoBySymbol(coinSymbol).then(({ info, state }) => {
+            if (info) {
+                const fixedConvert = convertTo || state.convertTo || 'BTC';
+                const fixedEx = ex || state.ex || 'okex';
+
+                return coinApi.price(info.id, fixedConvert).then(resp => {
                     const data = resp.data;
 
                     if (data.quotes) {
@@ -85,12 +120,13 @@ function queryCoin(query) {
                                 key: 'coins',
                                 id: key,
                                 icon,
-                                title: `${coinInfo.symbol} ==> ${item.price}/${key}`,
+                                title: `${info.symbol} ==> ${item.price}/${key}`,
                                 desc: `${item.percent_change_1h || 0}%[1h] -- ${item.percent_change_24h}%[24h] -- ${item.percent_change_7d}%[7d]`,
-                                data: {
-                                    coinSymbol: data.symbol.toLowerCase(),
-                                    convertTo: key.toLowerCase(),
-                                    ex
+                                state: {
+                                    id: info.id,
+                                    coinSymbol: data.symbol,
+                                    convertTo: key,
+                                    ex: fixedEx
                                 }
                             });
                         }
@@ -148,24 +184,16 @@ function getTradeUrl(coinSymbol = 'btc', convertTo = 'usdt', ex = 'okex') {
     return exConf.urlFn(coinSymbol, fixedConvert);
 }
 
-function updateCache(id, coinSymbol) {
-    storage.local.get('coin_map').then(resp => {
-        const coinMap = resp ? resp : {};
-
-        coinMap[coinSymbol] = id;
-        storage.local.set({
-            coin_map: coinMap
-        });
-    });
-}
-
 function onEnter(item, { orkey }) {
     if (orkey === 'coins') {
-        updateCache(item.id, item.title);
+        setCoinState(item.title.toUpperCase(), {
+            id: item.id
+        });
 
         return Promise.resolve(`coin ${item.id}`);
     } else if (orkey === 'coin') {
-        chrome.tabs.create({ url: getTradeUrl(item.data.coinSymbol, item.data.convertTo, item.data.ex), active: true });
+        chrome.tabs.create({ url: getTradeUrl(item.state.coinSymbol, item.state.convertTo, item.state.ex), active: true });
+        setCoinState(item.state.coinSymbol, item.state);
     }
 }
 
