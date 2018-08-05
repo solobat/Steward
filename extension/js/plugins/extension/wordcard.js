@@ -181,6 +181,7 @@ export default {
     version,
     extName,
     name: 'wordcard',
+    category: 'extension',
     icon,
     title,
     commands,

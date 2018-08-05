@@ -165,6 +165,7 @@ function setNewValueFromUserInput(item) {
 export default {
     version,
     name: 'New Tab',
+    category: 'steward',
     icon,
     title,
     onInput,

@@ -42,6 +42,7 @@ function onEnter({ url }) {
 export default {
     version,
     name: 'Chrome',
+    category: 'browser',
     type,
     icon,
     title,

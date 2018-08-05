@@ -131,6 +131,7 @@ function onEnter(item, { orkey }) {
 export default {
     version,
     name: 'Coin Market',
+    category: 'other',
     icon,
     title,
     commands,

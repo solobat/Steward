@@ -110,6 +110,7 @@ function setup() {
 export default {
     version,
     name,
+    category: 'website',
     host,
     type,
     icon,

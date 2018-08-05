@@ -94,6 +94,7 @@ function onEnter(item, { orkey }, query, shiftKey, list) {
 export default {
     version,
     name: 'Bookmarks',
+    category: 'browser',
     icon,
     title,
     commands,

@@ -229,6 +229,7 @@ function onEnter(item, command, query, shiftKey, list) {
 export default {
     version,
     name: 'Workflow',
+    category: 'steward',
     icon,
     title,
     commands,

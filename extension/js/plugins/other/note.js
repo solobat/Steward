@@ -255,6 +255,7 @@ function getTags() {
 export default {
     version,
     name: 'Note',
+    category: 'other',
     icon,
     title,
     commands,

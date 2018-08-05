@@ -81,6 +81,7 @@ function onEnter(item) {
 export default {
     version,
     name: 'Set Extension',
+    category: 'browser',
     icon,
     title,
     commands,

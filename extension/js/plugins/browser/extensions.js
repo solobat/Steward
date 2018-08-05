@@ -90,6 +90,7 @@ function onEnter({ id, homepage }, command, query, shiftKey) {
 export default {
     version,
     name: 'View Extension',
+    category: 'browser',
     icon,
     title,
     commands,

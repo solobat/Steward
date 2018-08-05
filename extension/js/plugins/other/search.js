@@ -231,6 +231,7 @@ function onEnter(item, command, query, shiftKey, list) {
 export default {
     version,
     name: 'Search',
+    category: 'other',
     icon,
     title,
     onInput,

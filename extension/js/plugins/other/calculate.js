@@ -57,6 +57,7 @@ function onEnter(item) {
 export default {
     version,
     name: 'Calculator',
+    category: 'other',
     icon,
     title,
     commands,

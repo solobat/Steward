@@ -70,6 +70,7 @@ function onEnter({ id }) {
 export default {
     version,
     name: 'Run App',
+    category: 'browser',
     icon,
     title,
     commands,

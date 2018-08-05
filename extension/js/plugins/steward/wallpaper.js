@@ -345,6 +345,7 @@ function onEnter(item, command, query) {
 export default {
     version,
     name: 'Wallpaper',
+    category: 'steward',
     icon,
     title,
     onInput,

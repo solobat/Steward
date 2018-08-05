@@ -51,6 +51,7 @@ function onEnter({ url }) {
 export default {
     version,
     name: 'Open Url',
+    category: 'other',
     icon,
     title,
     onInput,

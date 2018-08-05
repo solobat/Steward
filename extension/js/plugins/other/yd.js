@@ -107,6 +107,7 @@ function getTranslation(query) {
 export default {
     version,
     name,
+    category: 'other',
     icon,
     title,
     commands,

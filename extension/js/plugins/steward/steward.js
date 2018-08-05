@@ -55,6 +55,7 @@ function onEnter() {
 export default {
     version,
     name: 'Steward',
+    category: 'steward',
     type,
     icon,
     title,

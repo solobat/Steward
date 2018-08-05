@@ -92,6 +92,7 @@ function getOneCommand() {
 export default {
     version,
     name: 'Random Commands',
+    category: 'steward',
     icon,
     title,
     commands,

@@ -174,6 +174,7 @@ function onEnter(item, command, query, shiftKey) {
 export default {
     version,
     name: 'Diary',
+    category: 'other',
     icon,
     title,
     commands,

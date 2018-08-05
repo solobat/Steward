@@ -163,16 +163,17 @@ function getLang() {
     }
 }
 
-function getDocumentURL(name) {
+function getDocumentURL(name, category) {
     const lang = getLang();
-    const baseUrl = `http://oksteward.com/steward-document-${lang}/plugins`;
-    const exts = ['wordcard'];
+    let baseUrl;
 
-    if (exts.indexOf(name) === -1) {
-        return `${baseUrl}/browser/${name}.html`;
+    if (lang === 'en') {
+        baseUrl = `http://oksteward.com/steward-documents/plugins/${category}`;
     } else {
-        return `${baseUrl}/browser/extension/${name}.html`;
+        baseUrl = `http://oksteward.com/steward-documents/zh/plugins/${category}`;
     }
+
+    return `${baseUrl}/${name}.html`;
 }
 
 function getBytesInUse(key) {

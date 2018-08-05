@@ -88,6 +88,7 @@ function onEnter(item) {
 export default {
     version,
     name: 'Downloads',
+    category: 'browser',
     icon,
     title,
     commands,

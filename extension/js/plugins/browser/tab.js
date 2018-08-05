@@ -179,6 +179,7 @@ function updateTab(id, updateProperties) {
 export default {
     version,
     name: 'Tabs',
+    category: 'browser',
     icon,
     title,
     commands,

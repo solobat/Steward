@@ -219,6 +219,7 @@ function showTodos() {
 export default {
     version,
     name: 'Todolist',
+    category: 'other',
     icon,
     title,
     commands,

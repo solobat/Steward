@@ -35,7 +35,8 @@ function getPlugins(query) {
             name: command.name,
             title: `${command.key}: ${command.title}`,
             desc: `⇧: ${command.subtitle}`,
-            type: command.type
+            type: command.type,
+            category: command.plugin.category
         }
     })
     .filter(item => item.type === 'keyword')
@@ -53,7 +54,7 @@ function onInput(query) {
 function onEnter(item, command, query, shiftKey) {
     if (shiftKey) {
         chrome.tabs.create({
-            url: util.getDocumentURL(item.name)
+            url: util.getDocumentURL(item.name, item.category)
         });
     } else {
         return Promise.resolve(`${String(item.id.split(',')[0])} `);
@@ -63,6 +64,7 @@ function onEnter(item, command, query, shiftKey) {
 export default {
     version,
     name: 'Help',
+    category: 'steward',
     icon,
     title,
     commands,

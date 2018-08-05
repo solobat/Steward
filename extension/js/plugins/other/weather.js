@@ -94,6 +94,7 @@ function onEnter() {
 export default {
     version,
     name: 'Weather',
+    category: 'other',
     icon,
     title,
     commands,

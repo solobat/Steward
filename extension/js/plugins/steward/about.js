@@ -54,6 +54,7 @@ function onEnter(item, command, query, shiftKey, list) {
 export default {
     version,
     name: 'About Steward',
+    category: 'steward',
     icon,
     title,
     commands,

@@ -111,6 +111,7 @@ function onEnter(item, command, query, shiftKey, list) {
 export default {
     version,
     name: 'Disable Extension',
+    category: 'browser',
     icon,
     title,
     commands,

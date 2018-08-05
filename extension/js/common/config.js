@@ -1,6 +1,6 @@
 import browser from 'webextension-polyfill'
 import $ from 'jquery'
-import { plugins as pluginList } from '../plugins/browser'
+import { plugins as pluginList } from '../plugins'
 import _ from 'underscore'
 import defaultGeneral from '../conf/general'
 import util from './util'

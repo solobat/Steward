@@ -165,6 +165,7 @@ function onStorageChange(event) {
 export default {
     version,
     name: 'Pocket',
+    category: 'other',
     icon,
     title,
     commands,

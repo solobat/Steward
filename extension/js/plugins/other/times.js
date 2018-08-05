@@ -260,6 +260,7 @@ refreshTimes();
 export default {
     version,
     name: 'Times',
+    category: 'other',
     icon,
     title,
     commands,

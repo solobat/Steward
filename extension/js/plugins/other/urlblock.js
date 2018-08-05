@@ -161,6 +161,7 @@ function showBlacklist(command) {
 export default {
     version,
     name: 'URL Block',
+    category: 'other',
     icon,
     title,
     commands,

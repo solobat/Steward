@@ -82,6 +82,7 @@ function onEnter(item, command, query, shiftKey, list) {
 export default {
     version,
     name: 'History',
+    category: 'browser',
     icon,
     title,
     commands,

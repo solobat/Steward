@@ -71,6 +71,7 @@ function onEnter(item) {
 export default {
     version,
     name: 'Enable Extension',
+    category: 'browser',
     icon,
     title,
     commands,

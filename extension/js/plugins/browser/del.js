@@ -72,6 +72,7 @@ function onEnter(item) {
 export default {
     version,
     name: 'Delete Extension',
+    category: 'browser',
     icon,
     title,
     commands,

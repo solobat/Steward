@@ -170,6 +170,7 @@ function onEnter({ id }) {
 export default {
     version,
     name: 'Jenkins',
+    category: 'other',
     icon,
     title,
     commands,

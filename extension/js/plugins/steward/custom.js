@@ -54,6 +54,7 @@ function onEnter(item, command, query) {
 export default {
     version,
     name: 'Custom',
+    category: 'steward',
     type,
     icon,
     title,

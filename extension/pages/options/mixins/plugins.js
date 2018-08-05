@@ -1,4 +1,4 @@
-import { plugins as pluginList } from '../../../js/plugins/browser'
+import { plugins as pluginList } from '../../../js/plugins'
 import util from '../../../js/common/util'
 import CONST from '../../../js/constant'
 import _ from 'underscore'
@@ -10,6 +10,7 @@ const pluginModules = _.sortBy(pluginList.filter(item => item.commands), 'name')
     const ret = {
         name,
         version: plugin.version,
+        category: plugin.category,
         commands,
         title,
         icon,
@@ -64,7 +65,7 @@ export default {
         },
 
         getDocumentURL: function(plugin) {
-            return util.getDocumentURL(plugin.name);
+            return util.getDocumentURL(plugin.name, plugin.category);
         },
 
         handlePluginClick: function(plugin) {
