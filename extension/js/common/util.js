@@ -166,6 +166,7 @@ function getLang() {
 function getDocumentURL(name, category) {
     const lang = getLang();
     let baseUrl;
+    const fixedName = name.replace(/\s/, '-');
 
     if (lang === 'en') {
         baseUrl = `http://oksteward.com/steward-documents/plugins/${category}`;
@@ -173,7 +174,7 @@ function getDocumentURL(name, category) {
         baseUrl = `http://oksteward.com/steward-documents/zh/plugins/${category}`;
     }
 
-    return `${baseUrl}/${name}.html`;
+    return `${baseUrl}/${fixedName}.html`;
 }
 
 function getBytesInUse(key) {
