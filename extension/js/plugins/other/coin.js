@@ -6,6 +6,7 @@
 
 import util from '../../common/util'
 import * as coinApi from '../../api/coin'
+import storage from '../../utils/storage'
 
 const version = 1;
 const name = 'coin';
@@ -19,11 +20,19 @@ const supportConverts = ['AUD', 'BRL', 'CAD', 'CHF', 'CLP', 'CNY', 'CZK', 'DKK',
 let coinList;
 
 function getCoinInfoBySymbol(coinSymbol) {
-    const id = parseInt(coinSymbol, 10);
-
     function searchInList() {
-        return coinList.find(coin => {
-            return coin.symbol === coinSymbol.toUpperCase() || coin.id === id;
+        return storage.local.get('coin_map').then(resp => {
+            let id = parseInt(coinSymbol, 10);
+            const coinMap = resp || {};
+            const fixedSymbol = coinSymbol.toUpperCase();
+
+            if (coinMap[fixedSymbol]) {
+                id = coinMap[fixedSymbol];
+            }
+
+            const findFn = id ? coin => coin.id === id : coin => coin.symbol === fixedSymbol;
+
+            return coinList.find(findFn);
         });
     }
 
@@ -120,8 +129,21 @@ function getTradeUrl(coinSymbol = 'btc', convertTo = 'usdt', ex = 'okex') {
     return exConf.urlFn(coinSymbol, fixedConvert);
 }
 
+function updateCache(id, coinSymbol) {
+    storage.local.get('coin_map').then(resp => {
+        const coinMap = resp ? resp : {};
+
+        coinMap[coinSymbol] = id;
+        storage.local.set({
+            coin_map: coinMap
+        });
+    });
+}
+
 function onEnter(item, { orkey }) {
     if (orkey === 'coins') {
+        updateCache(item.id, item.title);
+
         return Promise.resolve(`coin ${item.id}`);
     } else if (orkey === 'coin') {
         chrome.tabs.create({ url: getTradeUrl(item.data.coinSymbol, item.data.convertTo), active: true });
