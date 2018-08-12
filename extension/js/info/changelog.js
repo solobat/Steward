@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.4.10',
+        detail: `
+            websites 支持 vuepress 站点;<br>
+            文档链接更新;<br>
+            <em>coins </em> 支持缓存，<em>coin </em>支持选择交易所缓存.
+        `
+    },
+    {
         version: 'v3.4.9',
         detail: `
             新增 coin market 插件，查询最新的数字货币价格，包括<em>coin</em> 以及 <em>coins</em>命令；<br>
@@ -318,6 +326,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4.10',
+        detail: `
+            Websites support vuepress sites;<br>
+            Document link update;<br>
+            <em>coins </em> supports caching, <em>coin </em> supports selecting exchange caches.
+        `
+    },
     {
         version: 'v3.4.9',
         detail: `
