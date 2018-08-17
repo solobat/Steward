@@ -2,7 +2,6 @@ import util from '../common/util'
 import { WebsiteList } from '../collection/website'
 import resolveUrl from 'resolve-url'
 import QRCode from 'qrcode'
-import shortUrlCn from 'url-shorten.china'
 import * as ResultHelper from './resultHelper'
 import { generateSocialUrls } from '../../lib/social-share-urls'
 import minimatch from 'minimatch'
@@ -168,11 +167,6 @@ export class Website {
             QRCode.toDataURL(metaInfo.url).then(url => {
                 return ResultHelper.createUrl({
                     url, title: 'QR code', icon: metaInfo.icon, showDesc: true, desc: metaInfo.url
-                });
-            }).then(item => this.urls.push(item));
-            shortUrlCn(metaInfo.url).then(url => {
-                return ResultHelper.createCopy({
-                    url, title: 'Short URL', icon: metaInfo.icon, showDesc: true, desc: url
                 });
             }).then(item => this.urls.push(item));
         }
