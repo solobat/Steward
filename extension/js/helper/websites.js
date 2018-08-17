@@ -5,6 +5,7 @@ import QRCode from 'qrcode'
 import shortUrlCn from 'url-shorten.china'
 import * as ResultHelper from './resultHelper'
 import { generateSocialUrls } from '../../lib/social-share-urls'
+import minimatch from 'minimatch'
 
 const websiteList = new WebsiteList();
 
@@ -305,10 +306,12 @@ function getDefaultSiteInfo(meta) {
     };
 }
 
-export function createWebsites(parentWindow, theHost, meta, general = {}) {
+export function createWebsites(parentWindow, host, meta, general = {}) {
     return helper.init().then(sites => {
         let mixedSites = sites.filter(site => {
-            return theHost.indexOf(site.host) !== -1 && !site.disabled;
+            const isMatch = site.host.startsWith('http') ? minimatch(meta.baseURL, site.host) : host === site.host;
+
+            return isMatch && !site.disabled;
         });
 
         if (general.autoCreateWebsite) {

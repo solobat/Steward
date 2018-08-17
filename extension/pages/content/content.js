@@ -217,6 +217,7 @@ const App = {
             url: window.location.href,
             host: window.location.host,
             pathname: window.location.pathname,
+            baseURL: window.location.origin + window.location.pathname,
             search: window.location.search,
             hash: window.location.hash,
             share: getShareFields(document)

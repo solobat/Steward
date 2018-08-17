@@ -735,7 +735,7 @@
         "message": "Content"
     },
     "settings_fields_host": {
-        "message": "Host"
+        "message": "Patterns"
     },
     "settings_fields_siteicon": {
         "message": "Site Icon"

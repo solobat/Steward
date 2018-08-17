@@ -23,7 +23,7 @@ export default {
                     { type: 'string', required: true, trigger: 'change' }
                 ],
                 host: [
-                    { type: 'string', required: true, trigger: 'change' }
+                    { type: 'string', required: true, trigger: 'change', message: 'Host or minimatch is required' }
                 ]
             }
         };

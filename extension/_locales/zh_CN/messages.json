@@ -741,7 +741,7 @@
         "message": "内容"
     },
     "settings_fields_host": {
-        "message": "域名"
+        "message": "Patterns"
     },
     "settings_fields_siteicon": {
         "message": "站点图标"
