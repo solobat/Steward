@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.4.11',
+        detail: `
+            websites url 匹配支持 minimatch;<br>
+            nt 命令 bug 修复;<br>
+            因 https 证书过期，移除新浪 short url 功能.
+        `
+    },
+    {
         version: 'v3.4.10',
         detail: `
             websites 支持 vuepress 站点;<br>
@@ -326,6 +334,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4.11',
+        detail: `
+            websites url support minimatch;<br>
+            fix bug of nt command;<br>
+            remove short url feature.
+        `
+    },
     {
         version: 'v3.4.10',
         detail: `
