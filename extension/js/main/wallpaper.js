@@ -25,16 +25,16 @@ function updateWallpaper(url, save, isNew) {
     }
 
     if (isNew) {
-        $saveBtn.show();
+        $saveBtn.removeClass('saved');
     } else {
-        $saveBtn.hide();
+        $saveBtn.addClass('saved');
     }
 
     curUrl = url;
     $('html').css({
         '--app-newtab-background-image': `url(${url})`
     });
-    $body.trigger('wallpaper:refreshed');
+    $body.trigger('wallpaper:refreshed', !isNew);
     $body.waitForImages(true).done(function() {
         Toast.clear();
         state.loading = false;
@@ -177,6 +177,17 @@ export function refreshWallpaper(today) {
     });
 }
 
+const saveActionConf = {
+    save: {
+        action: 'save',
+        msg: chrome.i18n.getMessage('wallpaper_save_done')
+    },
+
+    remove: {
+        action: 'remove',
+        msg: chrome.i18n.getMessage('wallpaper_remove_done')
+    }
+};
 function bindEvents() {
     $('#j-refresh-wp').on('click', function() {
         refreshWallpaper();
@@ -187,9 +198,19 @@ function bindEvents() {
     });
 
     $saveBtn.on('click', function() {
-        saveWallpaperLink(curUrl).then(() => {
-            Toast.success(chrome.i18n.getMessage('wallpaper_save_done'));
-            $saveBtn.hide();
+        const action = $(this).hasClass('saved') ? 'remove' : 'save';
+        const conf = saveActionConf[action];
+
+        saveWallpaperLink(curUrl, conf.action).then(() => {
+            Toast.success(conf.msg);
+
+            if (action === 'save') {
+                $saveBtn.addClass('saved');
+                $body.trigger('wallpaper:save');
+            } else {
+                $saveBtn.removeClass('saved');
+                $body.trigger('wallpaper:remove');
+            }
         }).catch(msg => {
             Toast.warning(msg);
         });

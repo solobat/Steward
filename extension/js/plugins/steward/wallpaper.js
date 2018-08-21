@@ -38,6 +38,13 @@ const allActions = [
         type: 'save'
     },
     {
+        icon: chrome.extension.getURL('img/save-red.png'),
+        title: chrome.i18n.getMessage('wallpaper_action_remove_title'),
+        desc: chrome.i18n.getMessage('wallpaper_action_remove_subtitle'),
+        selector: '#j-save-wplink',
+        type: 'remove'
+    },
+    {
         icon: chrome.extension.getURL('img/refresh-red.png'),
         title: chrome.i18n.getMessage('wallpaper_action_refresh_title'),
         desc: chrome.i18n.getMessage('wallpaper_action_refresh_subtitle'),
@@ -72,11 +79,9 @@ function updateActions(saved) {
     const wallpaper = window.localStorage.getItem('wallpaper') || '';
 
     actions = allActions.filter(action => {
-        if (action.type === 'save' && saved) {
-            return false;
-        } else if (action.selector) {
-            return $(action.selector).is(':visible')
-        } else if (action.type === 'upload' && wallpaper.indexOf('sinaimg.cn') !== -1) {
+        if ((saved && action.type === 'save')
+            || (!saved && action.type === 'remove')
+            || (action.type === 'upload' && wallpaper.indexOf('sinaimg.cn') !== -1)) {
             return false;
         } else {
             return true;
@@ -93,14 +98,20 @@ function updateActions(saved) {
     });
 }
 
-function setup() {
-    $('body').on('wallpaper:refreshed', () => {
-        console.log('wallpaper:refreshed');
-        updateActions();
+function updateList(saved) {
+    updateActions(saved);
 
-        if (that && that.command && that.command.orkey === 'wp') {
-            that.showItemList(JSON.parse(JSON.stringify(actions)));
-        }
+    if (that && that.command && that.command.orkey === 'wp') {
+        that.showItemList(JSON.parse(JSON.stringify(actions)));
+    }
+}
+function setup() {
+    $('body').on('wallpaper:refreshed', (event, saved) => {
+        updateList(saved);
+    }).on('wallpaper:save', () => {
+        updateList(true);
+    }).on('wallpaper:remove', () => {
+        updateList(false);
     });
     updateActions();
 }

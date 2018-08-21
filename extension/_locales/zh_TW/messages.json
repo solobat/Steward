@@ -449,6 +449,12 @@
     "wallpaper_action_save_subtitle": {
         "message": "保存當前壁紙原鏈接到你的收藏中"
     },
+    "wallpaper_action_remove_title": {
+        "message": "刪除"
+    },
+    "wallpaper_action_remove_subtitle": {
+        "message": "从你的收藏中刪除當前壁紙原鏈接"
+    },
     "wallpaper_action_refresh_title": {
         "message": "刷新"
     },
@@ -655,6 +661,9 @@
     },
     "wallpaper_save_done": {
         "message": "壁紙保存成功"
+    },
+    "wallpaper_remove_done": {
+        "message": "壁紙刪除成功"
     },
     "wallpaper_update": {
         "message": "壁紙刷新中..."

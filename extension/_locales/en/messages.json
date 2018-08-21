@@ -449,6 +449,12 @@
     "wallpaper_action_save_subtitle": {
         "message": "Save current wallpaper to your collections"
     },
+    "wallpaper_action_remove_title": {
+        "message": "Remove"
+    },
+    "wallpaper_action_remove_subtitle": {
+        "message": "Remove current wallpaper from your collections"
+    },
     "wallpaper_action_refresh_title": {
         "message": "Refresh"
     },
@@ -648,7 +654,10 @@
         "message": "The automatic refresh of the wallpaper has been disabled"
     },
     "wallpaper_save_done": {
-        "message": "save successfully"
+        "message": "Save successfully"
+    },
+    "wallpaper_remove_done": {
+        "message": "Remove successfully"
     },
     "wallpaper_update": {
         "message": "Updating wallpaper..."

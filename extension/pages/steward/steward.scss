@@ -75,12 +75,16 @@ a {
 
 .save-wplink {
     float: left;
-    background: url(../../img/save-blue.png);
+    background: url(../../img/star.png);
     background-size: cover;
+
+    &.saved {
+        background-image: url(../../img/star-fill.png);
+    }
 }
 
 .save-wplink:hover {
-    background-image: url(../../img/save-red.png);
+    background-image: url(../../img/star-fill.png);
 }
 
 .refresh-wp {

@@ -3,21 +3,31 @@ import browser from 'webextension-polyfill'
 import util from '../common/util'
 import _ from 'underscore'
 
-export function saveWallpaperLink(url) {
+export function saveWallpaperLink(url, action = 'save') {
     return util.isStorageSafe(STORAGE.WALLPAPERS).then(() => {
         return browser.storage.sync.get(STORAGE.WALLPAPERS).then(resp => {
             let wallpapers = resp[STORAGE.WALLPAPERS] || [];
 
             if (url) {
-                if (wallpapers.indexOf(url) === -1) {
+                const imgSaved = wallpapers.indexOf(url) !== -1;
+
+                if (!imgSaved && action === 'save') {
                     wallpapers.push(url);
                     wallpapers = _.uniq(wallpapers);
 
                     return {
                         [STORAGE.WALLPAPERS]: wallpapers
                     };
+                } else if (imgSaved && action === 'remove') {
+                    wallpapers.splice(wallpapers.indexOf(url), 1);
+
+                    return {
+                        [STORAGE.WALLPAPERS]: wallpapers
+                    };
                 } else {
-                    return Promise.reject('Duplicate wallpaper!');
+                    const msg = imgSaved && action === 'save' ? 'Duplicate wallpaper!' : 'Invalid action';
+
+                    return Promise.reject(msg);
                 }
             } else {
                 return Promise.reject('Url is empty!');
