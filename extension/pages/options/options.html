@@ -16,7 +16,7 @@
                         <el-collapse-item name="command" :title="i18nTexts.ui.settings.blocks.commandsplugins">
                             <el-row>
                                 <el-col :span="12">
-                                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.cacheLastCmd">
+                                    <el-form-item :label="i18nTexts.general.cacheLastCmd">
                                         <el-switch
                                             v-model="config.general.cacheLastCmd"
                                             on-color="#20a0ff">
@@ -24,7 +24,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="12">
-                                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.autoHideCmd">
+                                    <el-form-item :label="i18nTexts.general.autoHideCmd">
                                         <el-tooltip class="item" effect="dark" :content="i18nTexts.tips.autoHideCmd" placement="top-start">
                                             <el-switch
                                                 v-model="config.general.autoHideCmd"
@@ -36,7 +36,7 @@
                             </el-row>
                             <el-row>
                                 <el-col :span="12">
-                                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.defaultPlugin">
+                                    <el-form-item :label="i18nTexts.general.defaultPlugin">
                                         <el-select v-model="config.general.defaultPlugin" clearable :disabled="config.general.cacheLastCmd" placeholder="please choose">
                                             <el-option
                                                 v-for="item in defaultPlugins"
@@ -48,7 +48,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="12">
-                                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.customCmd">
+                                    <el-form-item :label="i18nTexts.general.customCmd">
                                         <el-input style="width: 200px;" v-model="config.general.customCmd" :disabled="config.general.cacheLastCmd || config.general.defaultPlugin !== 'Other'" placeholder="enter your command">
                                         </el-input>
                                     </el-form-item>
@@ -137,7 +137,7 @@
                         <el-collapse-item name="appearance" :title="i18nTexts.ui.settings.blocks.wallpapers">
                             <el-row>
                                 <el-col :span="12">
-                                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.wallpaperSources">
+                                    <el-form-item :label="i18nTexts.general.wallpaperSources">
                                         <el-select v-model="config.general.wallpaperSources" multiple placeholder="Please choose at least one">
                                             <el-option
                                                 v-for="item in wallpaperSources"
@@ -149,7 +149,7 @@
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="12">
-                                    <el-form-item v-if="extType === 'steward'" :label="i18nTexts.general.enableRandomWallpaper">
+                                    <el-form-item :label="i18nTexts.general.enableRandomWallpaper">
                                         <el-switch
                                             v-model="config.general.enableRandomWallpaper"
                                             on-color="#20a0ff">
@@ -469,7 +469,7 @@
                     </el-col>
                 </el-row>
             </el-tab-pane>
-            <el-tab-pane v-if="extType === 'steward'" :label="i18nTexts.ui.settings.tabs.wallpapers" name="wallpapers">
+            <el-tab-pane :label="i18nTexts.ui.settings.tabs.wallpapers" name="wallpapers">
                 <div class="wallpapers-container">
                     <div class="wallpaper-box">
                         <div class="wallpaper-add-btn" @click="handleAddWallpaperClick">

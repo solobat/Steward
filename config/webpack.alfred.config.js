@@ -12,6 +12,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 const config = {
   entry: {
     content: './extension/pages/content/content.js',
+    steward: './extension/pages/steward/steward.js',
     popup: './extension/pages/popup/popup.js',
     options: './extension/pages/options/options.js',
     background: './extension/pages/background/background.js',
@@ -74,6 +75,12 @@ const config = {
       chunks: ['content']
     }),
     new HtmlWebpackPlugin({
+      title: 'Steward - Extension',
+      template: './extension/pages/steward/steward.html',
+      filename: 'steward.html',
+      chunks: ['steward']
+    }),
+    new HtmlWebpackPlugin({
       title: 'Browser Alfred - Background',
       template: './extension/pages/background/background.html',
       filename: 'background.html',
@@ -110,6 +117,7 @@ const config = {
     new CopyWebpackPlugin([
       {from: 'extension/img', to: 'img'},
       {from: 'extension/css', to: 'css'},
+      {from: 'extension/scripts', to: 'scripts'},
       {from: 'extension/_locales', to: '_locales'},
       {from: 'extension/manifest-alfred.json', to: 'manifest.json'}
     ]),

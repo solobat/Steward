@@ -1,3 +1,4 @@
+/*global EXT_TYPE*/
 import $ from 'jquery'
 import keyboardJS from 'keyboardjs'
 import './content.scss'
@@ -8,6 +9,52 @@ import { ITEM_TYPE } from '../../js/constant/base'
 
 const chrome = window.chrome;
 const pluginHelper = new PluginHelper();
+const shouldInstead = window.location.href === 'https://lai.app/' && EXT_TYPE === 'alfred';
+
+function insertCss() {
+    const customStyles = document.createElement('style');
+
+    customStyles.innerHTML = `
+        body {
+            display: none!important;
+        }
+    `;
+    document.documentElement.insertBefore(customStyles, null);
+}
+
+if (shouldInstead) {
+    insertCss();
+}
+
+function getHtml() {
+    if (shouldInstead) {
+        return getNewTabHtml();
+    } else {
+        return getMainHtml();
+    }
+}
+
+function getMainHtml() {
+    const popupurl = chrome.extension.getURL('popup.html');
+    const html = `
+        <div id="steward-main" class="steward-main">
+            <iframe style="display:none;" id="steward-iframe" src="${popupurl}" name="steward-box" width="530" height="480" frameborder="0"></iframe>
+        </div>
+    `;
+
+    return html;
+}
+
+function getNewTabHtml() {
+    const popupurl = chrome.extension.getURL('steward.html');
+    const html = `
+        <div id="steward-main" class="steward-main newtab">
+            <iframe id="steward-iframe" src="${popupurl}" name="steward-box" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+    `;
+
+    return html;
+}
 
 const App = {
     isInit: false,
@@ -16,14 +63,7 @@ const App = {
 
     initDom() {
         return new Promise(resolve => {
-            const popupurl = chrome.extension.getURL('popup.html');
-            const html = `
-                <div id="steward-main" class="steward-main">
-                    <iframe style="display:none;" id="steward-iframe" src="${popupurl}" name="steward-box" width="530" height="480" frameborder="0"></iframe>
-                </div>
-            `;
-
-            $('html').append(html);
+            $('html').append(getHtml());
             this.$el = $('#steward-main');
             this.$iframe = $('#steward-iframe');
             this.$iframe.on('load', () => {
