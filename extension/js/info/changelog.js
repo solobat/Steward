@@ -1,5 +1,12 @@
 const langZh = [
     {
+        version: 'v3.4.12',
+        detail: `
+            重新设计 Browser Alfred New Tab 模式，请访问 lai.app;<br>
+            壁纸操作优化。
+        `
+    },
+    {
         version: 'v3.4.11',
         detail: `
             websites url 匹配支持 minimatch;<br>
@@ -334,6 +341,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4.12',
+        detail: `
+            Redesign newtab mode of Browser Alfred, please visit website https://lai.app;<br>
+            Optimize the operations of wallpaper.
+        `
+    },
     {
         version: 'v3.4.11',
         detail: `
