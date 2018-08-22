@@ -1,6 +1,6 @@
 import * as apiUtils from '../utils/api'
 
-export const root = 'http://www.bing.com';
+export const root = 'https://www.bing.com';
 const baseParams = {
     format: 'js',
     idx: 0,

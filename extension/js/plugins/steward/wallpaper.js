@@ -252,7 +252,7 @@ function uploadToWeiBoPicBed(imgData) {
                     } catch (e) {
                         reject({
                             msg: '上传失败，请登录微博后再试~',
-                            url: 'http://weibo.com/?topnav=1&mod=logo'
+                            url: 'https://weibo.com/?topnav=1&mod=logo'
                         });
                     }
                 } else {
