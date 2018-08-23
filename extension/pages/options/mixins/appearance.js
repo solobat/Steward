@@ -1,18 +1,9 @@
-/*global EXT_TYPE*/
-
 import CONST from '../../../js/constant'
 import previewHtml from '../preview.html'
 import * as defaultThemems from '../../../js/conf/themes'
 import storage from '../../../js/utils/storage'
 
-const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'steward';
-let appearanceItems;
-
-if (extType === 'steward') {
-    appearanceItems = CONST.OPTIONS.APPEARANCE_ITEMS;
-} else {
-    appearanceItems = CONST.OPTIONS.APPEARANCE_ITEMS.filter(item => item.name !== 'New Tab');
-}
+const appearanceItems = CONST.OPTIONS.APPEARANCE_ITEMS;
 
 function clone(obj) {
     return JSON.parse(JSON.stringify(obj));
