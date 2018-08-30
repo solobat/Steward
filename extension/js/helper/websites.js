@@ -49,7 +49,7 @@ export function getFavicon(context = document, win) {
     }
 }
 
-export function getShareFields(context) {
+export function getShareFields(context, win) {
     const elems = Array.from(context.querySelectorAll('meta[property^="og:"]'));
 
     if (elems.length) {
@@ -70,6 +70,7 @@ export function getShareFields(context) {
 
         info.img = info.image = img;
         info.desc = info.description = desc;
+        info.title = win.getSelection().toString() || info.title;
 
         return info;
     } else {
@@ -123,10 +124,11 @@ export class Website {
     }
 
     init(generalConfig = {}) {
+        this.config = generalConfig;
         requestAnimationFrame(() => {
-            this.handleMetaInfo(generalConfig.websiteUrls);
+            this.handleMetaInfo(this.config.websiteUrls);
 
-            if (generalConfig.websiteShareUrls) {
+            if (this.config.websiteShareUrls) {
                 this.generateShareUrls();
             }
         });
@@ -153,9 +155,7 @@ export class Website {
             } else if (data.action === 'show') {
                 this.handleBoxShow();
             } else if (data.action === 'meta') {
-                if (data.meta.length) {
-                    this.handleMetaItems(data.meta);
-                }
+                this.handleMeta(data.meta, data.rawMeta);
             }
         });
     }
@@ -199,13 +199,17 @@ export class Website {
         this.getAnchors();
     }
 
-    handleMetaItems(meta) {
-        meta.forEach(item => {
+    handleMeta(metaItems = [], rawMeta) {
+        metaItems.forEach(item => {
             item.icon = this.icon;
             item.universal = true;
         });
 
-        this.meta = meta.filter(item => item.desc || item.url);
+        this.meta = metaItems.filter(item => item.desc || item.url);
+        this.pageMeta = rawMeta;
+        if (this.config.websiteShareUrls) {
+            this.generateShareUrls();
+        }
     }
 
     getMeta() {

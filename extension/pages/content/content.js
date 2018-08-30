@@ -260,7 +260,7 @@ const App = {
             baseURL: window.location.origin + window.location.pathname,
             search: window.location.search,
             hash: window.location.hash,
-            share: getShareFields(document)
+            share: getShareFields(document, window)
         };
     },
 
@@ -278,7 +278,8 @@ const App = {
 
         this.postToIframe({
             action: 'meta',
-            meta: list
+            meta: list,
+            rawMeta: meta
         });
     },
 
