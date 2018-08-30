@@ -171,7 +171,7 @@ const exMap = {
         converts: ['btc', 'eth', 'usdt', 'bnb']
     },
     fcoin: {
-        urlFn: (coinSymbol, convertTo) => `https://exchange.fcoin.com/ex/main/${coinSymbol}-${convertTo}`,
+        urlFn: (coinSymbol, convertTo) => `https://exchange.fcoin.com/ex/main/${coinSymbol.toLowerCase()}-${convertTo.toLowerCase()}`,
         converts: ['btc', 'eth', 'usdt']
     }
 };
