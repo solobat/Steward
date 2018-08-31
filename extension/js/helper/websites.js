@@ -52,6 +52,10 @@ export function getFavicon(context = document, win) {
 export function getShareFields(context, win) {
     const elems = Array.from(context.querySelectorAll('meta[property^="og:"]'));
 
+    function getTitle(title) {
+        return encodeURIComponent(win.getSelection().toString()) || title;
+    }
+
     if (elems.length) {
         const info = {};
 
@@ -70,11 +74,20 @@ export function getShareFields(context, win) {
 
         info.img = info.image = img;
         info.desc = info.description = desc;
-        info.title = win.getSelection().toString() || info.title;
+        info.title = getTitle();
 
         return info;
     } else {
-        return null;
+        const imgElem = context.querySelector('img');
+        let img = '';
+
+        if (imgElem) {
+            img = imgElem.getAttribute('src');
+        }
+        return {
+            title: getTitle(),
+            img
+        };
     }
 }
 
@@ -173,7 +186,9 @@ export class Website {
     }
 
     generateShareUrls() {
-        const shareInfo = this.pageMeta.share || this.pageMeta;
+        const shareInfo = Object.assign({}, this.pageMeta, this.pageMeta.share);
+
+        Reflect.deleteProperty(shareInfo, 'share');
 
         generateSocialUrls(shareInfo).then(links => {
             this.shareUrls = links.map(item => {
