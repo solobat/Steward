@@ -54,7 +54,7 @@ export function getShareFields(context, win) {
     const elems = Array.from(context.querySelectorAll('meta[property^="og:"]'));
 
     function getTitle(title) {
-        return encodeURIComponent(win.getSelection().toString()) || title;
+        return win.getSelection().toString() || title;
     }
 
     if (elems.length) {
