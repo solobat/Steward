@@ -372,8 +372,11 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
         return;
     } else if (!box.cmd || item.universal) {
         const result = handleNormalItem(box, dataList, item);
+        const ret = handleEnterResult(result);
 
-        return handleEnterResult(result)
+        box.trigger('afterExecCommand', [item, dataList, box.query]);
+
+        return ret;
     } else {
         let plugin;
         const command = box.command;
@@ -657,6 +660,8 @@ function init() {
             }
         }
     });
+
+    return app;
 }
 
 function classifyPlugins(pluginsData) {
@@ -775,8 +780,9 @@ export default function(themode, isInContent) {
     stewardCache.mode = mode;
 
     return restoreConfig().then(() => {
-        init();
+        window.stewardApp = init();
         document.execCommand('copy');
+        $(document).trigger('stewardReady');
 
         return cmdbox;
     });
