@@ -1,9 +1,10 @@
 import util from '../common/util'
+import $ from 'jquery'
 import { WebsiteList } from '../collection/website'
 import resolveUrl from 'resolve-url'
 import QRCode from 'qrcode'
 import * as ResultHelper from './resultHelper'
-import { generateSocialUrls } from '../../lib/social-share-urls'
+import { generateSocialUrls, addNetworkRecord } from '../../lib/social-share-urls'
 import minimatch from 'minimatch'
 
 const websiteList = new WebsiteList();
@@ -74,7 +75,7 @@ export function getShareFields(context, win) {
 
         info.img = info.image = img;
         info.desc = info.description = desc;
-        info.title = getTitle();
+        info.title = getTitle(info.title);
 
         return info;
     } else {
@@ -85,7 +86,7 @@ export function getShareFields(context, win) {
             img = imgElem.getAttribute('src');
         }
         return {
-            title: getTitle(),
+            title: getTitle(context.title),
             img
         };
     }
@@ -170,6 +171,12 @@ export class Website {
             } else if (data.action === 'meta') {
                 this.handleMeta(data.meta, data.rawMeta);
             }
+        });
+
+        $(document).on('stewardReady', () => {
+            window.stewardApp.box.bind('afterExecCommand', (...args) => {
+                this.afterExecCommand(...args.slice(1));
+            });
         });
     }
 
@@ -285,6 +292,7 @@ export class Website {
 
         const first = text[0];
 
+        this.triggerSymbol = first;
         if (first === TRIGGER_SYMBOL.PATH) {
             if (text === TRIGGER_SYMBOL.PATH) {
                 return Promise.resolve(this.paths.map(mapTo('action')));
@@ -301,6 +309,12 @@ export class Website {
             return Promise.resolve(this.shareUrls.filter(metaFilter));
         } else {
             return Promise.resolve(this.paths.filter(cnNameFilter).map(mapTo('action')));
+        }
+    }
+
+    afterExecCommand(item) {
+        if (this.triggerSymbol === TRIGGER_SYMBOL.SHARE) {
+            addNetworkRecord(item.title);
         }
     }
 }

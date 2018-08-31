@@ -218,6 +218,18 @@ export function saveNetworks(socialNetworks) {
     return browser.storage.sync.set({ socialNetworks: data });
 }
 
+export function addNetworkRecord(network) {
+    return getNetworks().then(list => {
+        const item = list.find(item => item.name === network);
+
+        if (item) {
+            item.count = (item.count || 0) + 1;
+        }
+
+        return saveNetworks(list);
+    });
+}
+
 export function generateSocialUrls(opt) {
     return getNetworks().then(list => {
         if (typeof opt !== 'object') { return false; }
@@ -229,11 +241,15 @@ export function generateSocialUrls(opt) {
                 links.push({
                     name : network.name,
                     class : network.class,
-                    url : generateUrl(network.url, opt)
+                    url : generateUrl(network.url, opt),
+                    count: network.count || 0
                 });
             }
         }
-        return links;
+
+        return links.sort((a, b) => {
+            return a.count > b.count ? -1 : 1;
+        });
     });
 }
 
