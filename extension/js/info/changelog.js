@@ -1,5 +1,12 @@
 const langZh = [
     {
+        version: 'v3.4.13',
+        detail: `
+            website 分享优化，支持分享选中文字 ;<br>
+            website 分享根据使用排序.
+        `
+    },
+    {
         version: 'v3.4.12',
         detail: `
             重新设计 Browser Alfred New Tab 模式，请访问 lai.app;<br>
@@ -341,6 +348,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.4.13',
+        detail: `
+            Website share optimization, support sharing selected text; <br>
+            Website share sorted by usage. 
+        `
+    },
     {
         version: 'v3.4.12',
         detail: `
