@@ -2,7 +2,9 @@
     <div>
         <input class="cmdbox" :class="{'cmdbox-drop': dataList.length}" id="cmdbox" ref="input"
          :value="term" @input="handleInput($event)"
-         autocomplete="off" type="text" spellcheck="false">
+         autocomplete="off" type="text" spellcheck="false"
+         :readonly="disabled"
+         :placeholder="placeholder">
         <div id="list-wrap">
             <div class="ec-itemList" v-if="dataList.length" ref="list">
                 <component v-for="(item, index) in dataList" :key="index"
@@ -26,6 +28,11 @@ export default {
     name: 'easycomplete',
     props: {
         value: String,
+        disabled: {
+            type: Boolean,
+            default: false
+        },
+        placeholder: String,
         autoResizeBoxFontSize: Boolean,
         autoSelectByMouse: Boolean,
         autoScroll: {
@@ -67,9 +74,10 @@ export default {
 
     watch: {
         value(newText) {
-            if (newText !== this.term) {
-                this.render(newText);
-            }
+            this.render(newText);
+        },
+        disabled(newStatus) {
+            this.handleStatusChange(newStatus);
         }
     },
 
@@ -100,8 +108,21 @@ export default {
             });
         },
 
+        handleStatusChange(newStatus) {
+            if (newStatus) {
+                this.empty(true);
+                this.blur();
+            } else {
+                this.focus();
+            }
+        },
+
         focus() {
             this.$refs.input.focus();
+        },
+
+        blur() {
+            this.$refs.input.blur();
         },
 
         autoFocus() {
@@ -252,7 +273,7 @@ export default {
         },
         
         empty(silent) {
-            this.term = '';
+            this.$emit('input', '');
             this.clearList();
 
             if (!silent) {

@@ -1,14 +1,31 @@
-import './popup.scss'
-import extension from '../../js/main/main'
+import { initConfig, globalApi } from '../../js/main/main'
 import keyboardJS from 'keyboardjs'
 import { MODE } from '../../js/constant/base'
 import { createWebsites } from '../../js/helper/websites'
+import Vue from 'vue';
+import App from './App.vue';
+Vue.config.productionTip = false;
 
-if (window.parent === window) {
-    extension(MODE.POPUP);
+function initApp(mode, inContent) {
+    return initConfig(mode, inContent).then(config => {
+        const app = new Vue({
+            el: '#app',
+            data: {
+            config
+            },
+            components: { App },
+            template: '<App />'
+        });
+
+        globalApi(app);
+
+        return config;
+    });
 }
 
-let box;
+if (window.parent === window) {
+    initApp(MODE.POPUP, false);
+}
 
 window.addEventListener('message', function(event) {
     if (event.data.ext_from === 'content') {
@@ -28,21 +45,7 @@ window.addEventListener('message', function(event) {
 });
 
 function changeBoxStatus(disabled, cmd) {
-    if (box) {
-        box.ipt.attr('readonly', disabled);
-
-        if (disabled) {
-            box.empty(true);
-            box.ipt.blur();
-        } else {
-            box.ipt.focus();
-            if (cmd) {
-                requestAnimationFrame(() => {
-                    box.applyCmd(cmd);
-                });
-            }
-        }
-    }
+    window.stewardApp.emit('cmdbox:status', disabled, cmd);
 }
 
 function closeBox() {
@@ -63,13 +66,12 @@ function initForContentPage(parentWindow, lazy, parentHost) {
     window.parentWindow = parentWindow;
     window.parentHost = parentHost;
 
-    extension(MODE.POPUP, true).then(cmdbox => {
-        box = cmdbox;
+    initApp(MODE.POPUP, true).then(() => {
         // if lazy, inputbox should get the focus when init
         changeBoxStatus(!lazy);
 
-        box.bind('shouldCloseBox', closeBox);
-        box.bind('action', handleAction);
+        window.stewardApp.on('shouldCloseBox', closeBox);
+        window.stewardApp.on('action', handleAction);
         keyboardJS.bind('esc', closeBox);
 
         parentWindow.postMessage({

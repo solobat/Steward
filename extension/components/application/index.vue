@@ -136,23 +136,5 @@ export default {
 };
 </script>
 <style lang="scss">
-    #main {
-        margin-top: 40px;
-    }
 
-    .size-large {
-        #main {
-            width: 60%;
-
-            .cmdbox {
-                border: 4px solid rgba(0, 0, 0, 0.8);
-                height: 80px;
-            }
-
-            .ec-itemList {
-                border: 4px solid rgba(0, 0, 0, 0.8);
-                border-top: 0;
-            }
-        }
-    }
 </style>

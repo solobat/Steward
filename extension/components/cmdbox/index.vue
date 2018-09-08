@@ -3,6 +3,7 @@
         <easycomplete ref="easycomplete"
          :autoResizeBoxFontSize="autoResizeBoxFontSize" :autoSelectByMouse="autoSelectByMouse"
          :autoScroll="autoScroll" :fetchSuggestions="queryString" v-model="text"
+         :placeholder="placeholder" :disabled="disabled"
          @init="handleInit" @enter="handleEnter" @empty="handleEmpty"
          @move="handleMove"/>
     </div>
@@ -33,8 +34,15 @@ export default {
             autoSelectByMouse,
             sid: 0,
             text: '',
-            isFirst: false
+            isFirst: false,
+            disabled: false
         };
+    },
+
+    computed: {
+        placeholder() {
+            return this.mode !== CONST.BASE.MODE.NEWTAB ? 'Enter a Command' : '';
+        }   
     },
 
     components: {
@@ -57,6 +65,18 @@ export default {
                 } else {
                     this.$refs.easycomplete.refresh();
                 } 
+            });
+
+            this.$root.$on('cmdbox:status', (disabled, cmd) => {
+                this.disabled = disabled;
+
+                if (!disabled) {
+                    if (cmd) {
+                        requestAnimationFrame(() => {
+                            this.applyCmd(cmd);
+                        });
+                    }
+                }
             });
         },
 
