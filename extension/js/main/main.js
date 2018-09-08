@@ -612,7 +612,7 @@ export function getRandomPlugin() {
     return randomPlugin;
 }
 
-export default function(themode, isInContent) {
+export function initConfig(themode, isInContent) {
     inContent = isInContent;
     mode = themode;
     stewardCache.inContent = isInContent;
@@ -623,4 +623,19 @@ export default function(themode, isInContent) {
 
         return config;
     });
+}
+
+export function globalApi(app) {
+    window.stewardApp = {
+        on(eventName, fn) {
+          app.$on(eventName, fn);
+        },
+
+        emit(...args) {
+          const eventName = args[0];
+          const params = args.slice(1);
+
+          app.$emit(eventName, ...params);
+        }
+    };
 }
