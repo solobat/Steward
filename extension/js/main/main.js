@@ -6,17 +6,14 @@
 /*global stewardCache*/
 
 import $ from 'jquery'
-import EasyComplete from '../common/easycomplete'
 import util from '../common/util'
 import storage from '../common/storage'
 import CONST from '../constant'
 import {plugins} from '../plugins'
-import * as Wallpaper from './wallpaper'
 import _ from 'underscore'
 import { websitesMap } from '../plugins/website'
 import defaultGeneral from '../../js/conf/general'
 import Toast from 'toastr'
-import Application from './application'
 
 const commands = {};
 const regExpCommands = [];
@@ -27,10 +24,16 @@ let plugin4empty;
 let randomPlugin;
 let keys;
 let reg;
-let cmdbox;
 let mode;
 let inContent;
-let app;
+const cmdbox = {
+    str: '',
+    cmd: '',
+    query: '',
+    lastcmd: '',
+    command: null,
+    workflowStack: []
+};
 
 window.stewardCache = {};
 window.slogs = [];
@@ -40,7 +43,7 @@ function findMatchedPlugins(query) {
     let key;
 
     for (key in commands) {
-        if (key.indexOf(query) !== -1) {
+        if (query && key.indexOf(query) !== -1) {
             items.push({
                 key: 'plugins',
                 id: key,
@@ -121,7 +124,7 @@ function alwaysStage() {
     if (alwaysCommand) {
         return callCommand(alwaysCommand, str).then(results => {
             if (results) {
-                app.log({ key: 'calc', str });
+                window.stewardApp.emit('app:log', { key: 'calc', str });
                 return Promise.reject(results);
             } else {
                 return resetBox();
@@ -138,7 +141,7 @@ function regexpStage() {
 
     // handle regexp commands
     if (spCommand) {
-        app.log({ key: 'regexp', str });
+        window.stewardApp.emit('app:log', { key: 'regexp', str });
         return Promise.reject(callCommand(spCommand, str));
     } else {
         return Promise.resolve();
@@ -160,7 +163,7 @@ function searchStage() {
             const searchRes = _.flatten(res.filter(item => item && item.length));
 
             if (searchRes && searchRes.length) {
-                app.log({ key: 'search', str });
+                window.stewardApp.emit('app:log', { key: 'search', str });
                 return Promise.reject(searchRes);
             } else {
                 return Promise.resolve(true);
@@ -194,7 +197,7 @@ function commandStage(gothrough) {
 
         const command = commands[cmdbox.cmd];
 
-        app.log({ key: cmd, str });
+        window.stewardApp.emit('app:log', { key: cmd, str });
 
         return Promise.reject(callCommand(command, key));
     } else {
@@ -204,7 +207,7 @@ function commandStage(gothrough) {
 
 function defaultStage() {
     if (otherCommands.length) {
-        app.log({ key: 'other', str: cmdbox.str });
+        window.stewardApp.emit('app:log', { key: 'other', str: cmdbox.str });
         return callCommand(otherCommands[0], cmdbox.str);
     }
 }
@@ -215,11 +218,7 @@ function handleEnterResult(result) {
     if (result && result instanceof Promise) {
         return result.then(data => {
             if (typeof data === 'string') {
-                if (data) {
-                    cmdbox.render(data);
-                } else {
-                    cmdbox.refresh();
-                }
+                window.stewardApp.emit('cmdbox:refresh', data);
             } else {
                 const isRetain = data === true;
 
@@ -227,33 +226,23 @@ function handleEnterResult(result) {
                     const delay = typeof data === 'number' ? data : delay4close;
 
                     setTimeout(() => {
-                        cmdbox.trigger('shouldCloseBox');
+                        window.stewardApp.emit('shouldCloseBox');
                     }, delay);
                 }
             }
         }).catch(() => {});
     } else {
-        cmdbox.trigger('shouldCloseBox');
+        window.stewardApp.emit('shouldCloseBox');
     }
 }
 
-function handleOnInput(str) {
-    if (!str) {
-        this.empty();
-
-        return;
-    }
-
-    return queryByInput(this, str);
-}
-
-function queryByInput(box, str, background) {
-    box.str = str;
-    box.cmd = '';
-    box.query = '';
+export function queryByInput(str, background) {
+    cmdbox.str = str;
+    cmdbox.cmd = '';
+    cmdbox.query = '';
 
     if (background) {
-        box.background = true;
+        cmdbox.background = true;
     }
 
     return alwaysStage()
@@ -262,74 +251,32 @@ function queryByInput(box, str, background) {
         .then(commandStage)
         .then(defaultStage)
         .catch(msg => {
-            box.isFirst = false;
             if (msg) {
                 return Promise.resolve(msg);
             }
         });
 }
 
-function createItem (index, item) {
-    const contentClass = [
-        'ec-item-content',
-        item.desc ? '' : 'nodesc'
-    ].join(' ');
-    const titleClass = [
-        'ec-item-title',
-        item.isWarn ? 'ec-item-warn' : ''
-    ].join(' ');
-    const enterIconUrl = mode === CONST.BASE.MODE.NEWTAB ? chrome.extension.getURL('img/enter.png') :
-        chrome.extension.getURL('img/enter-white.png');
-    const descStr = item.desc ? `<span class="ec-item-desc ${item.lazyDesc ? 'lazy' : ''}">${item.desc}</span>` : ''
-
-    const html = `
-        <div data-type="${item.key}" data-url="${item.url}" data-index="${index}" data-id="${item.id}" class="ec-item">
-            <img class="ec-item-icon" src="${item.icon}" />
-            <div class="${contentClass}">
-                <span class="${titleClass}">${item.title}</span>
-                ${descStr}
-            </div>
-            <img class="ec-item-icon icon-enter" src="${enterIconUrl}">
-        </div>
-        `;
-
-    return html;
-}
-
-function applyCmd(cmd) {
-    if (cmd) {
-        cmdbox.ipt.val(cmd);
-        cmdbox.render(cmd);
-    }
-}
-
-function handleInit () {
+export function getInitCmd () {
     const config = stewardCache.config;
+    const { cacheLastCmd, defaultPlugin, customCmd } = config.general;
 
-    if (mode === 'newTab') {
-        const { cacheLastCmd, defaultPlugin, customCmd } = config.general;
-        let cmd;
+    if (util.shouldSupportMe()) {
+        return Promise.resolve(Number(new Date()) % 2 ? 'about ' : 'up ');
+    } else if (cacheLastCmd) {
+        return Promise.resolve(storage.h5.get(CONST.STORAGE.LAST_CMD) || 'site ');
+    } else if (defaultPlugin) {
+        if (defaultPlugin === 'Other') {
+            if (customCmd) {
+                return Promise.resolve(config.general.customCmd);
+            }
+        } else if (defaultPlugin === 'Random') {
+            return randomPlugin.getOneCommand();
+        } else {
+            const defaultCommand = Object.values(commands).find(command => command.name === defaultPlugin);
 
-        cmdbox.isFirst = true;
-        if (util.shouldSupportMe()) {
-            cmd = Number(new Date()) % 2 ? 'about ' : 'up ';
-            applyCmd(cmd);
-        } else if (cacheLastCmd) {
-            cmd = storage.h5.get(CONST.STORAGE.LAST_CMD) || 'site ';
-            applyCmd(cmd);
-        } else if (defaultPlugin) {
-            if (defaultPlugin === 'Other') {
-                if (customCmd) {
-                    applyCmd(config.general.customCmd);
-                }
-            } else if (defaultPlugin === 'Random') {
-                randomPlugin.getOneCommand().then(applyCmd);
-            } else {
-                const defaultCommand = Object.values(commands).find(command => command.name === defaultPlugin);
-
-                if (defaultCommand) {
-                    applyCmd(`${defaultCommand.key} `);
-                }
+            if (defaultCommand) {
+                return Promise.resolve(`${defaultCommand.key}`);
             }
         }
     }
@@ -354,16 +301,16 @@ function handleNormalItem(box, dataList, item) {
 
         return Promise.resolve(true);
     } else if (type === ITEM_TYPE.ACTION) {
-        box.trigger('action', {
+        window.stewardApp.emit('action', {
             action: 'command',
             info: item
         });
     } else if (type === ITEM_TYPE.APP) {
-        app.hanldle(item);
+        window.stewardApp.emit('app:handle', item);
     }
 
     if (type !== ITEM_TYPE.PLUGINS) {
-        box.trigger('shouldCloseBox');
+        window.stewardApp.emit('shouldCloseBox');
     }
 }
 
@@ -374,7 +321,7 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
         const result = handleNormalItem(box, dataList, item);
         const ret = handleEnterResult(result);
 
-        box.trigger('afterExecCommand', [item, dataList, box.query]);
+        window.stewardApp.emit('afterExecCommand', [item, dataList, box.query]);
 
         return ret;
     } else {
@@ -419,13 +366,11 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
     }
 }
 
-function handleEnter (event, elem) {
-    const $elem = $(elem);
-    const index = $elem.length ? $elem.index() : 0;
-
+export function handleEnter (dataList, index, shiftKey) {
     cmdbox.workflowStack = [];
+    cmdbox.shiftKey = shiftKey;
 
-    execCommand(cmdbox, this.dataList, this.dataList[index]);
+    execCommand(cmdbox, dataList, dataList[index]);
 }
 
 // should cache
@@ -499,7 +444,7 @@ function execWorkflow(item) {
         console.log(cmds);
         cmds.forEach(cmd => {
             task = task.then(() => {
-                return queryByInput(cmdbox, cmd.input, true);
+                return queryByInput(cmd.input, true);
             }).then(resp => {
                 const { numbers } = cmd;
 
@@ -530,125 +475,17 @@ function execWorkflow(item) {
     }
 }
 
-function handleEmpty() {
-    this.sid = this.sid + 1;
-
+export function handleEmpty() {
     if (plugin4empty) {
-        this.cmd = CONST.BASE.EMPTY_COMMAND;
-        this.command = null;
-        this.searchTimer = setTimeout(() => {
-            Reflect.apply(plugin4empty.onBoxEmpty, this, []);
-        }, this.delay);
+        cmdbox.cmd = CONST.BASE.EMPTY_COMMAND;
+        cmdbox.command = null;
+        cmdbox.searchTimer = setTimeout(() => {
+            Reflect.apply(plugin4empty.onBoxEmpty, cmdbox, []);
+        }, cmdbox.delay);
     }
-}
-
-function handleShow() {
-    this.ipt.addClass('cmdbox-drop');
-}
-
-function handleClear() {
-    this.ipt.removeClass('cmdbox-drop');
-}
-
-function clearQuery() {
-    const newIpt = `${this.cmd} `;
-
-    this.query = '';
-    this.str = this.term = newIpt;
-    this.ipt.val(newIpt);
-}
-
-function prepareBox() {
-    const $cmdbox = $('.cmdbox');
-
-    $cmdbox.focus();
-
-    // force focus in content page
-    if (inContent) {
-        window.addEventListener('focus', () => {
-            $cmdbox.focus();
-        });
-        $cmdbox.blur(function() {
-            $cmdbox.focus();
-        });
-    }
-
-    if (mode === CONST.BASE.MODE.NEWTAB &&
-         window.stewardCache.config.general.autoHideCmd) {
-        $cmdbox.addClass('autohide');
-    }
-}
-
-function initWallpaper() {
-    Wallpaper.init();
-
-    $(document).on('keydown', function(event) {
-        const keyType = util.isMac ? 'metaKey' : 'altKey';
-        const keyCode = event.keyCode;
-
-        if (event[keyType] && keyCode === CONST.KEY.RIGHT) {
-            $('#main, .ec-itemList').fadeToggle();
-
-            cmdbox.ipt.focus();
-        }
-    });
-}
-
-function viewHistory(dir) {
-    if (dir === 'up' && (!cmdbox.ipt.val() || app.viewLog)) {
-        console.log('show latest cmd!');
-        app.applyLatestCmd();
-    } else {
-        app.resetLogView();
-    }
-}
-
-function handleMove(event, dir) {
-    if (window.stewardCache.config.general.storeTypedQuery) {
-        viewHistory(dir);
-    }
-}
-
-function hanldeInput() {
-    app.resetLogView();
 }
 
 function init() {
-    prepareBox();
-
-    const { autoScrollToMiddle, autoResizeBoxFontSize, autoSelectByMouse } = stewardCache.config.general;
-    cmdbox = new EasyComplete({
-        id: 'cmdbox',
-        container: '#list-wrap',
-        onInput: handleOnInput,
-        autoScroll: autoScrollToMiddle,
-        autoResizeBoxFontSize,
-        autoSelectByMouse,
-        createItem
-    });
-
-    app = new Application(cmdbox);
-    app.applyCmd = cmdbox.applyCmd = applyCmd;
-
-    cmdbox.sid = 0;
-    cmdbox.bind('init', handleInit);
-    cmdbox.bind('enter', handleEnter);
-    cmdbox.bind('empty', handleEmpty);
-    cmdbox.bind('show', handleShow);
-    cmdbox.bind('clear', handleClear);
-    cmdbox.bind('move', handleMove);
-    cmdbox.bind('input', hanldeInput);
-    cmdbox.clearQuery = clearQuery;
-
-    cmdbox.init();
-
-    if (mode === CONST.BASE.MODE.NEWTAB) {
-        initWallpaper();
-        $('body').fadeIn(100, function() {
-            cmdbox.ipt.focus();
-        });
-    }
-
     window.addEventListener('storage', function(event) {
         const command = cmdbox.command
 
@@ -660,8 +497,6 @@ function init() {
             }
         }
     });
-
-    return app;
 }
 
 function classifyPlugins(pluginsData) {
@@ -773,17 +608,19 @@ function restoreConfig() {
     });
 }
 
+export function getRandomPlugin() {
+    return randomPlugin;
+}
+
 export default function(themode, isInContent) {
     inContent = isInContent;
     mode = themode;
     stewardCache.inContent = isInContent;
     stewardCache.mode = mode;
 
-    return restoreConfig().then(() => {
-        window.stewardApp = init();
-        document.execCommand('copy');
-        $(document).trigger('stewardReady');
+    return restoreConfig().then(config => {
+        init();
 
-        return cmdbox;
+        return config;
     });
 }

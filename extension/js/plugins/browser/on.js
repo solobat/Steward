@@ -63,8 +63,9 @@ function onInput(query) {
 function onEnter(item) {
     if (item && item.id) {
         setEnabled(item.id, true);
-        this.refresh();
         window.slogs.push(`Enable: ${item.title}`);
+
+        return Promise.resolve('');
     }
 }
 

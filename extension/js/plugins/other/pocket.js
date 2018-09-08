@@ -62,10 +62,8 @@ function onInput(queryString) {
     }
 
     if (!queryString) {
-        getCachedList().then(resp => {
-            if (resp.pocket_list) {
-                this.showItemList(resp.pocket_list);
-            }
+        return getCachedList().then(resp => {
+            return resp.pocket_list || [];
         });
     }
 

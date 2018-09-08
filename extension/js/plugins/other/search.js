@@ -129,7 +129,11 @@ function getSearchEngines() {
 
 function onInput(query, command) {
     if (command.orkey === 'search') {
-        return getSearchLinks(query).then(links => _.sortBy(links, 'count').reverse());
+        if (query) {
+            return getSearchLinks(query).then(links => _.sortBy(links, 'count').reverse());
+        } else {
+            return [];
+        }
     } else {
         if (query) {
             return util.getDefaultResult(command);

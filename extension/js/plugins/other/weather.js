@@ -75,16 +75,18 @@ function onInput(query) {
         return;
     }
 
-    timer = setTimeout(() => {
-        getByCity(cityName).then(resp => {
-            if (resp.error) {
-                this.clearList();
-            } else {
-                this.showItemList(dataFormat(resp.results[0]));
-                window.localStorage.setItem('location', resp.results[0].currentCity);
-            }
-        })
-    }, QUERY_DELAY);
+    return new Promise(resolve => {
+        timer = setTimeout(() => {
+            getByCity(cityName).then(resp => {
+                if (resp.error) {
+                    resolve();
+                } else {
+                    resolve(dataFormat(resp.results[0]));
+                    window.localStorage.setItem('location', resp.results[0].currentCity);
+                }
+            })
+        }, QUERY_DELAY);
+    });
 }
 
 function onEnter() {

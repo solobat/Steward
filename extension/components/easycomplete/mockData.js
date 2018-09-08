@@ -1,0 +1,74 @@
+
+export const dataList = [{
+    key: 'plugins',
+    title: '测试个鬼',
+    icon: chrome.extension.getURL('img/icon.png'),
+    desc: '描述个鬼',
+    url: 'https://baidu.com'
+}, {
+    key: 'plugins',
+    title: '测试个鬼1',
+    icon: chrome.extension.getURL('img/icon.png'),
+    desc: '描述个鬼',
+    url: 'https://baidu.com'
+}, {
+    key: 'plugins',
+    title: '测试个鬼2',
+    icon: chrome.extension.getURL('img/icon.png'),
+    desc: '描述个鬼',
+    url: 'https://baidu.com'
+}, {
+    key: 'plugins',
+    title: '测试个鬼3',
+    icon: chrome.extension.getURL('img/icon.png'),
+    desc: '描述个鬼',
+    url: 'https://baidu.com'
+}, {
+    key: 'plugins',
+    title: '测试个鬼4',
+    icon: chrome.extension.getURL('img/icon.png'),
+    desc: '描述个鬼',
+    url: 'https://baidu.com'
+}, {
+    key: 'plugins',
+    title: '测试个鬼5',
+    icon: chrome.extension.getURL('img/icon.png'),
+    desc: '描述个鬼',
+    url: 'https://baidu.com'
+}, {
+    key: 'plugins',
+    title: '测试个鬼6',
+    icon: chrome.extension.getURL('img/icon.png'),
+    desc: '描述个鬼',
+    url: 'https://baidu.com'
+}, {
+    key: 'plugins',
+    title: '测试个鬼7',
+    icon: chrome.extension.getURL('img/icon.png'),
+    desc: '描述个鬼',
+    url: 'https://baidu.com'
+}, {
+    key: 'plugins',
+    title: '测试个鬼8',
+    icon: chrome.extension.getURL('img/icon.png'),
+    desc: '描述个鬼',
+    url: 'https://baidu.com'
+}, {
+    key: 'plugins',
+    title: '测试个鬼9',
+    icon: chrome.extension.getURL('img/icon.png'),
+    desc: '描述个鬼',
+    url: 'https://baidu.com'
+}, {
+    key: 'plugins',
+    title: '测试个鬼10',
+    icon: chrome.extension.getURL('img/icon.png'),
+    desc: '描述个鬼',
+    url: 'https://baidu.com'
+}, {
+    key: 'plugins',
+    title: '测试个鬼11',
+    icon: chrome.extension.getURL('img/icon.png'),
+    desc: '描述个鬼',
+    url: 'https://baidu.com'
+}];

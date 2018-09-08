@@ -25,8 +25,7 @@ const commands = [{
 
 function onInput(query) {
     let data = [];
-    if (this.term.startsWith('calc ') && query) {
-        this.render(query);
+    if (query.startsWith('calc ') && query) {
         return;
     }
     try {
