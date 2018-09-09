@@ -174,7 +174,7 @@ export class Website {
         });
 
         $(document).on('stewardReady', () => {
-            window.stewardApp.box.bind('afterExecCommand', (...args) => {
+            window.stewardApp.on('afterExecCommand', (...args) => {
                 this.afterExecCommand(...args.slice(1));
             });
         });
@@ -307,7 +307,7 @@ export class Website {
             return Promise.resolve(this.urls.concat(this.meta).filter(metaFilter));
         } else if (first === TRIGGER_SYMBOL.SHARE) {
             return Promise.resolve(this.shareUrls.filter(metaFilter));
-        } else {
+        } else if (first) {
             return Promise.resolve(this.paths.filter(cnNameFilter).map(mapTo('action')));
         }
     }

@@ -289,7 +289,7 @@ function handleNormalItem(box, dataList, item) {
     if (type === ITEM_TYPE.PLUGINS) {
         const key = item.id;
 
-        box.render(`${key} `);
+        window.stewardApp.applyCommand(`${key} `);
     } else if (type === ITEM_TYPE.URL) {
         const url = item.url;
 
@@ -629,6 +629,8 @@ export function globalApi(app) {
     window.stewardApp = {
         on(eventName, fn) {
           app.$on(eventName, fn);
+
+          return this;
         },
 
         emit(...args) {
@@ -636,6 +638,22 @@ export function globalApi(app) {
           const params = args.slice(1);
 
           app.$emit(eventName, ...params);
+
+          return this;
+        },
+
+        applyCommand(cmd) {
+            app.$emit('cmdbox:apply', cmd);
+        },
+
+        updateList(list) {
+            app.$emit('cmdbox:list', list);
+        },
+
+        clearQuery() {
+            this.applyCommand(`${cmdbox.cmd} `);
         }
     };
+
+    $(document).trigger('stewardReady');
 }

@@ -57,7 +57,7 @@ function closeBox() {
     });
 }
 
-function handleAction(event, obj) {
+function handleAction(obj) {
     window.parentWindow.postMessage(obj, '*');
 }
 

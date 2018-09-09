@@ -127,7 +127,7 @@ function listWorkflowLines(box, wid, content) {
     }));
 
     curWid = wid;
-    box.showItemList(list);
+    window.stewardApp.updateList(list);
 }
 
 function handleWorkflowEditEnter(box, item) {

@@ -78,6 +78,14 @@ export default {
                     }
                 }
             });
+
+            this.$root.$on('cmdbox:apply', cmd => {
+                this.applyCmd(cmd);
+            });
+
+            this.$root.$on('cmdbox:list', list => {
+                this.$refs.easycomplete.showItemList(list);
+            });
         },
 
         prepareBox() {

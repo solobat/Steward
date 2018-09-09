@@ -183,10 +183,10 @@ const App = {
             const headerSels = 'h1,h2,h3,h4,h5,h6';
 
             function getLevelSymbol(level) {
-                const spaces = new Array(level).join('&nbsp;&nbsp;');
-                const levelSymbol = ['', '', '&#8729;', '&#9702;', '&#9702;', '&#9702;'];
+                const spaces = new Array(level).join(' ');
+                const levelSymbol = ['', '', '●', '◦', '▪', '▫'];
 
-                return spaces + levelSymbol[level] + new Array(2).join('&nbsp;');
+                return spaces + levelSymbol[level] + new Array(2).join(' ');
             }
 
             const nodes = $.makeArray($(event.data.outlineScope).find(headerSels)) || [];

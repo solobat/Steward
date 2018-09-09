@@ -102,16 +102,20 @@ function updateList(saved) {
     updateActions(saved);
 
     if (that && that.command && that.command.orkey === 'wp') {
-        that.showItemList(JSON.parse(JSON.stringify(actions)));
+        window.stewardApp.updateList(JSON.parse(JSON.stringify(actions)));
     }
 }
 function setup() {
-    $('body').on('wallpaper:refreshed', (event, saved) => {
-        updateList(saved);
-    }).on('wallpaper:save', () => {
-        updateList(true);
-    }).on('wallpaper:remove', () => {
-        updateList(false);
+    $(document).on('stewardReady', function() {
+        window.stewardApp.on('wallpaper:refreshed', isNew => {
+            updateList(!isNew);
+        })
+        window.stewardApp.on('wallpaper:save', () => {
+            updateList(true);
+        })
+        window.stewardApp.on('wallpaper:remove', () => {
+            updateList(false);
+        });
     });
     updateActions();
 }
@@ -337,7 +341,7 @@ function handleWpsEnter(item) {
     const url = item.url;
 
     if (isNewTab()) {
-        $('body').trigger('wallpaper:update', url);
+        window.stewardApp.emit('wallpaper:update', null, url);
     } else {
         window.localStorage.setItem(STORAGE.WALLPAPER, url);
     }

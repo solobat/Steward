@@ -64,7 +64,7 @@ function onInput(text) {
 
     if (text[0] === '/') {
         return Promise.resolve(Websites.filterByPath(paths, text).map(mapTo('action')));
-    } else {
+    } else if (text) {
         return Promise.resolve(paths.filter(cnNameFilter).map(mapTo('action')));
     }
 }
