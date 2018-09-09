@@ -25,20 +25,26 @@ export default {
         }
     },
     data() {
-        const item = this.$props.item;
-        const mode = this.$props.mode;
-        const contentClass = {'ec-item-content': true, 'nodesc': !item.desc};
-        const titleClass = {'ec-item-title': true, 'ec-item-warn': item.isWarn};
-        const enterIconUrl = mode === MODE.NEWTAB ? chrome.extension.getURL('img/enter.png') :
-            chrome.extension.getURL('img/enter-white.png');
-        const descClass = {'ec-item-desc': true, lazy: item.lazyDesc};
-
         return {
-            contentClass,
-            titleClass,
-            enterIconUrl,
-            descClass
         };
+    },
+
+    computed: {
+        enterIconUrl() {
+            return this.mode === MODE.NEWTAB ? chrome.extension.getURL('img/enter.png') :
+            chrome.extension.getURL('img/enter-white.png')
+        },
+        contentClass() {
+            return {'ec-item-content': true, 'nodesc': !this.item.desc};
+        },
+
+        titleClass() {
+            return {'ec-item-title': true, 'ec-item-warn': this.item.isWarn};
+        },
+
+        descClass() {
+            return {'ec-item-desc': true, lazy: this.item.lazyDesc};
+        }
     }
 };
 </script>
