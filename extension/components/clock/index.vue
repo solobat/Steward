@@ -49,7 +49,7 @@ export default {
         .date {
             position: absolute;
             bottom: -10px;
-            right: 0;
+            right: 0.4em;
             text-align: right;
             font-size: 20px;
             color: #fff;
