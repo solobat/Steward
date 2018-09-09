@@ -316,7 +316,7 @@ function saveWallpaper(link, command) {
 
     if (link.match(reg)) {
         return saveWallpaperLink(link).then(() => {
-            updateActions(true);
+            updateList(true);
 
             return `${command.key} `;
         }).catch(msg => {
