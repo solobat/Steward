@@ -54,7 +54,8 @@ export default {
                 position: absolute;
                 right: -5px;
                 top: 0;
-                content: '|'
+                content: '|';
+                transform: scale(0.7);
             }
 
             &:last-child {
