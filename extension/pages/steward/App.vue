@@ -115,6 +115,7 @@ body {
     margin: 0;
     padding: 0;
     height: 100vh;
+    background-color: var(--newtab-background-color);
 
     user-select: none;
     box-sizing: border-box;

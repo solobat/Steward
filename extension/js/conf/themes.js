@@ -1,5 +1,6 @@
 
 export const newtab = {
+    '--newtab-background-color': '#000',
     '--app-background-color': 'rgba(0, 0, 0, .4)',
     '--app-width-size': '560px',
     '--search-input-height': '64px',

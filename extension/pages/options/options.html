@@ -522,6 +522,9 @@
                                                 <el-button type="warning" @click.native.prevent="handleThemeReset(themeMode)">{{i18nTexts.ui.settings.actions.reset}}</el-button>
                                             </div>
                                             <div class="theme-field-type">Background Coloring</div>
+                                            <el-form-item v-if="themeMode === 'newtab'" label="New Tab:">
+                                                <el-color-picker v-model="theme['--newtab-background-color']" :show-alpha="getColorType(themeMode)"></el-color-picker>
+                                            </el-form-item>
                                             <el-form-item label="App:">
                                                 <el-color-picker v-model="theme['--app-background-color']" :show-alpha="getColorType(themeMode)"></el-color-picker>
                                             </el-form-item>
