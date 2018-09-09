@@ -134,7 +134,7 @@
                                 </el-col>
                             </el-row>
                         </el-collapse-item>
-                        <el-collapse-item name="appearance" :title="i18nTexts.ui.settings.blocks.wallpapers">
+                        <el-collapse-item name="appearance" :title="i18nTexts.ui.settings.blocks.newtab">
                             <el-row>
                                 <el-col :span="12">
                                     <el-form-item :label="i18nTexts.general.wallpaperSources">
@@ -156,6 +156,20 @@
                                         </el-switch>
                                     </el-form-item>
                                 </el-col>
+                            </el-row>
+                            <el-row>
+                              <el-col :span="12">
+                                    <el-form-item :label="i18nTexts.general.newtabWidgets">
+                                        <el-select v-model="config.general.newtabWidgets" multiple placeholder="Please choose at least one">
+                                            <el-option
+                                                v-for="item in newtabWidgets"
+                                                :key="item.value"
+                                                :label="item.label"
+                                                :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                              </el-col>
                             </el-row>
                         </el-collapse-item>
                         <el-collapse-item name="performance" :title="i18nTexts.ui.settings.blocks.performance">

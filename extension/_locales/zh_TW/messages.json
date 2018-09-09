@@ -554,6 +554,9 @@
     "general_enableRandomWallpaper": {
         "message": "隨機應用壁紙"
     },
+    "general_newtabWidgets": {
+        "message": "新標籤頁組件"
+    },
     "general_storeTypedQuery": {
         "message": "存儲最近的命令"
     },
@@ -716,8 +719,8 @@
     "settings_blocks_websitesconfiguration": {
         "message": "網站設置"
     },
-    "settings_blocks_wallpapers": {
-        "message": "壁紙設置"
+    "settings_blocks_newtab": {
+        "message": "NewTab 設置"
     },
     "settings_blocks_performance": {
         "message": "性能"

@@ -39,3 +39,9 @@ export const WALLPAPER_SOURCES = [{
     value: 'pixabay',
     tips: 'pixabay.com'
 }];
+
+export const NEWTAB_WIDGETS = [{
+    label: 'Clock',
+    value: 'clock',
+    tips: 'Clock'
+}];

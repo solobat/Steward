@@ -35,7 +35,7 @@ export const settings = {
         commandsplugins: getI18n('settings_blocks_commandsplugins'),
         operationinteraction: getI18n('settings_blocks_operationinteraction'),
         websitesconfiguration: getI18n('settings_blocks_websitesconfiguration'),
-        wallpapers: getI18n('settings_blocks_wallpapers'),
+        newtab: getI18n('settings_blocks_newtab'),
         performance: getI18n('settings_blocks_performance'),
         shortcutconfiguration: getI18n('settings_blocks_shortcutconfiguration'),
         websitebaseinfo: getI18n('settings_blocks_websitebaseinfo'),

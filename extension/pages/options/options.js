@@ -83,6 +83,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                 extType,
                 storeId,
                 helpInfo,
+                newtabWidgets: CONST.OPTIONS.NEWTAB_WIDGETS,
                 config: {
                     general,
                     plugins,

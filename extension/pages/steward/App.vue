@@ -4,7 +4,7 @@
         <transition name="fade">
             <application v-show="visible" mode="newTab" :in-content="false" />
         </transition>
-        <clock />
+        <clock v-if="widgets.includes('clock')" />
         <footer></footer>
         <div class="fixed-tools">
             <span id="j-save-wplink" class="save-wplink action-btn" title="save wallpaper link"
@@ -30,7 +30,8 @@ export default {
             wallpaper: {
                 isNew: true
             },
-            visible: true
+            visible: true,
+            widgets: this.$root.config.general.newtabWidgets || []
         };
     },
     components: {

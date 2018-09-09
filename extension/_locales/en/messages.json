@@ -569,6 +569,9 @@
     "general_enableRandomWallpaper": {
         "message": "Enable random wallpaper"
     },
+    "general_newtabWidgets": {
+        "message": "NewTab Widgets"
+    },
     "general_storeTypedQuery": {
         "message": "Store typed query"
     },
@@ -710,8 +713,8 @@
     "settings_blocks_websitesconfiguration": {
         "message": "Websites configuration"
     },
-    "settings_blocks_wallpapers": {
-        "message": "Wallpapers"
+    "settings_blocks_newtab": {
+        "message": "NewTab configuration"
     },
     "settings_blocks_performance": {
         "message": "Performance"
