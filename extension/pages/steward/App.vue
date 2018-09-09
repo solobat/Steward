@@ -1,7 +1,10 @@
 <template>
     <div class="container">
         <header id="header"></header>
-        <application v-show="visible" mode="newTab" :in-content="false" />
+        <transition name="fade">
+            <application v-show="visible" mode="newTab" :in-content="false" />
+        </transition>
+        <clock />
         <footer></footer>
         <div class="fixed-tools">
             <span id="j-save-wplink" class="save-wplink action-btn" title="save wallpaper link"
@@ -14,6 +17,7 @@
 </template>
 <script>
 import application from '../../components/application/index.vue'
+import clock from '../../components/clock/index.vue'
 import * as Core from '../../js/main/main.js'
 import * as Wallpaper from '../../js/main/wallpaper.js'
 import util from '../../js/common/util'
@@ -30,7 +34,8 @@ export default {
         };
     },
     components: {
-        application
+        application,
+        clock
     },
 
     created() {
@@ -105,10 +110,12 @@ a {
     text-decoration: none;
 }
 
-[data-page="newtab"] {
-    body {
-        // display: none;
-    }
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0
 }
 
 #header {
@@ -121,6 +128,12 @@ a {
     width: 100%;
     padding: 0 10px;
     z-index: 100;
+
+    &:hover {
+        .action-btn {
+            opacity: 1;
+        }
+    }
 }
 
 .action-btn {
@@ -128,6 +141,8 @@ a {
     width: 20px;
     height: 20px;
     cursor: pointer;
+    opacity: 0;
+    transition: all .2s;
 }
 
 .save-wplink {
@@ -172,6 +187,13 @@ a {
             border-top: 0;
         }
     }
+}
+
+.clock {
+    position: fixed;
+    bottom: 33px;
+    right: 14px;
+    z-index: 10;
 }
 </style>
 
