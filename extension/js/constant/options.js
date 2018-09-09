@@ -44,4 +44,8 @@ export const NEWTAB_WIDGETS = [{
     label: 'Clock',
     value: 'clock',
     tips: 'Clock'
+}, {
+    label: 'Shortcuts',
+    value: 'shortcuts',
+    tips: 'Shortcuts'
 }];

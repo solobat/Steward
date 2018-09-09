@@ -79,7 +79,7 @@ export default {
                 }
             });
 
-            this.$root.$on('cmdbox:apply', cmd => {
+            this.$root.$on('apply:command', cmd => {
                 this.applyCmd(cmd);
             });
 

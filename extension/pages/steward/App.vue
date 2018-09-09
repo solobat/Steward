@@ -1,6 +1,8 @@
 <template>
     <div class="container">
-        <header id="header"></header>
+        <header id="header">
+            <shortcuts :shortcuts="shortcuts" v-if="widgets.includes('shortcuts')" />
+        </header>
         <transition name="fade">
             <application v-show="visible" mode="newTab" :in-content="false" />
         </transition>
@@ -18,25 +20,44 @@
 <script>
 import application from '../../components/application/index.vue'
 import clock from '../../components/clock/index.vue'
+import shortcuts from '../../components/shortcuts/index.vue'
 import * as Core from '../../js/main/main.js'
 import * as Wallpaper from '../../js/main/wallpaper.js'
 import util from '../../js/common/util'
 import keyboardJS from 'keyboardjs'
 
+function getShortcuts(shortcutsConfig) {
+    let arr = [];
+
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].forEach(index => {
+        const conf = shortcutsConfig[`pageboxShortcut_${index}`];
+
+        if (conf.cmd) {
+            arr.push(conf.cmd);
+        }
+    });
+
+    return arr.slice(0, 5);
+}
+
 export default {
     name: 'App',
     data() {
+        const general = this.$root.config.general;
+
         return {
             wallpaper: {
                 isNew: true
             },
             visible: true,
-            widgets: this.$root.config.general.newtabWidgets || []
+            widgets: general.newtabWidgets || [],
+            shortcuts: getShortcuts(general.shortcuts)
         };
     },
     components: {
         application,
-        clock
+        clock,
+        shortcuts
     },
 
     created() {
@@ -52,6 +73,10 @@ export default {
 
             this.$root.$on('wallpaper:update', (event, url) => {
                 Wallpaper.update(url, true);
+            });
+
+            this.$root.$on('apply:command', () => {
+                this.visible = true;
             });
 
             const keyType = util.isMac ? 'command' : 'alt';
@@ -188,6 +213,13 @@ a {
             border-top: 0;
         }
     }
+}
+
+.shortcuts {
+    position: fixed;
+    top: 25px;
+    left: 31px;
+    z-index: 10;
 }
 
 .clock {

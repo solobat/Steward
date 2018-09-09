@@ -643,7 +643,7 @@ export function globalApi(app) {
         },
 
         applyCommand(cmd) {
-            app.$emit('cmdbox:apply', cmd);
+            app.$emit('apply:command', cmd);
         },
 
         updateList(list) {
