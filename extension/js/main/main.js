@@ -655,5 +655,11 @@ export function globalApi(app) {
         }
     };
 
-    $(document).trigger('stewardReady');
+    const evt = new CustomEvent('stewardReady', {
+        detail: {
+            app: window.stewardApp
+        }
+    });
+
+    document.dispatchEvent(evt);
 }

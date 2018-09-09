@@ -106,14 +106,16 @@ function updateList(saved) {
     }
 }
 function setup() {
-    $(document).on('stewardReady', function() {
-        window.stewardApp.on('wallpaper:refreshed', isNew => {
+    document.addEventListener('stewardReady', event => {
+        const app = event.detail.app;
+
+        app.on('wallpaper:refreshed', isNew => {
             updateList(!isNew);
         })
-        window.stewardApp.on('wallpaper:save', () => {
+        app.on('wallpaper:save', () => {
             updateList(true);
         })
-        window.stewardApp.on('wallpaper:remove', () => {
+        app.on('wallpaper:remove', () => {
             updateList(false);
         });
     });

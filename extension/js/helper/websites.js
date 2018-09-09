@@ -173,8 +173,10 @@ export class Website {
             }
         });
 
-        $(document).on('stewardReady', () => {
-            window.stewardApp.on('afterExecCommand', (...args) => {
+        document.addEventListener('stewardReady', event => {
+            const app = event.detail.app;
+
+            app.on('afterExecCommand', (...args) => {
                 this.afterExecCommand(...args.slice(1));
             });
         });

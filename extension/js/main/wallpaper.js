@@ -12,6 +12,7 @@ const $body = $('body');
 
 let curUrl = '';
 let state;
+let timer = 0;
 
 function updateSaveStatus(action) {
     const conf = saveActionConf[action];
@@ -210,6 +211,17 @@ const saveActionConf = {
     }
 };
 
+function bindEvents() {
+    document.addEventListener('stewardReady', event => {
+        const app = event.detail.app;
+
+        app.on('beforeleave', () => {
+            console.log('beforeleave');
+            clearInterval(timer);
+        });
+    });
+}
+
 export function init() {
     // restore
     const lastDate = new Date(window.localStorage.getItem(CONST.STORAGE.LASTDATE) || Number(new Date()));
@@ -238,10 +250,11 @@ export function init() {
     }
 
     api.picsum.refreshPicsumList();
+    bindEvents();
 
     // set interval
     if (enableRandomWallpaper) {
-        setInterval(refresh, CONST.NUMBER.WALLPAPER_INTERVAL);
+        timer = setInterval(refresh, CONST.NUMBER.WALLPAPER_INTERVAL);
     } else {
         console.log('disable random');
     }
