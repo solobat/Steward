@@ -26,7 +26,6 @@ export default {
 
     created() {
         this.bindEvents();
-        Wallpaper.init();
     },
 
     methods: {
