@@ -41,7 +41,7 @@
     "translation.js": "^0.7.5",
     "underscore": "^1.8.3",
     "url-regex": "^4.1.1",
-    "vue": "^2.4.4"
+    "vue": "^2.5.17"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
