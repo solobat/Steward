@@ -597,14 +597,14 @@
                     <el-collapse-item name="socialShare" :title="i18nTexts.ui.settings.blocks.socialshareconfig">
                         <el-table :data="socialNetworks" style="width: 100%">
                             <el-table-column prop="class" label="Icon Link" width="100">
-                                <template scope="scope">
+                                <template slot-scope="scope">
                                     <img class="network-icon" :src="networksIconFormatter(scope.row, scope.column)" alt="">
                                 </template>
                             </el-table-column>
                             <el-table-column prop="name" label="Name" width="180"> </el-table-column>
                             <el-table-column prop="url" label="URL"></el-table-column>
                             <el-table-column label="Operation" width="300">
-                                <template scope="scope">
+                                <template slot-scope="scope">
                                     <el-switch v-model="scope.row.enable" @change="handleNetWorkSwitchChange(scope.row)"></el-switch>
                                     <el-button @click="handleNetworkEditClick(scope.row)" type="primary" icon="edit"></el-button>
                                     <el-button @click="handleNetworkDeleteClick(scope.row)" type="danger" icon="delete"></el-button>
