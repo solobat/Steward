@@ -1,24 +1,13 @@
-/*global EXT_TYPE*/
 import Vue from 'vue'
 import ElementUI from 'element-ui'
+import App from './App.vue';
 import 'element-ui/lib/theme-default/index.css'
-import './options.scss'
-import changelog from '../../js/info/changelog'
 import util from '../../js/common/util'
-import { helpInfo } from '../../js/info/help'
 import * as i18n from '../../js/info/i18n'
 import CONST from '../../js/constant'
-import WebsitesMixin from './mixins/websites'
-import AdvancedMixin from './mixins/advanced'
-import AppearanceMixin from './mixins/appearance'
-import WallpapersMixin from './mixins/wallpapers'
-import WorkflowsMixin from './mixins/workflows'
-import PluginsMixin from './mixins/plugins'
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
-const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'steward';
-const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jglmompgeddkbcdamdknmebaimldkkbl';
 
 Vue.use(ElementUI);
 
@@ -75,83 +64,17 @@ function render({general, plugins, lastVersion}, i18nTexts) {
 
     new Vue({
         el: '#app',
-        data: function() {
-            return {
-                activeGeneralConfigName: ['command'],
-                activeName,
-                changelog,
-                extType,
-                storeId,
-                helpInfo,
-                newtabWidgets: CONST.OPTIONS.NEWTAB_WIDGETS,
-                config: {
-                    general,
-                    plugins,
-                    version
-                },
-                i18nTexts
-            }
+        data: {
+            activeName,
+            config: {
+                general,
+                plugins,
+                version
+            },
+            i18nTexts
         },
-
-        mounted: function() {
-            if (activeName === 'update') {
-                this.$nextTick(() => {
-                    this.saveConfig(true);
-                });
-            }
-            this.initTab(this.activeName);
-        },
-
-        mixins: [
-            WebsitesMixin,
-            AdvancedMixin,
-            AppearanceMixin,
-            WallpapersMixin,
-            WorkflowsMixin,
-            PluginsMixin
-        ],
-
-        methods: {
-            initTab(tabname) {
-                if (tabname === 'wallpapers') {
-                    this.loadWallpapersIfNeeded();
-                } else if (tabname === 'appearance') {
-                    if (!this.curApprItem) {
-                        this.loadThemes().then(() => {
-                            this.updateApprItem(this.appearanceItems[0]);
-                        });
-                    } else {
-                        this.applyTheme(this.themeMode);
-                    }
-                } else if (tabname === 'workflows') {
-                    this.loadWorkflowsIfNeeded();
-                } else if (tabname === 'advanced') {
-                    this.initAdvancedIfNeeded();
-                }
-            },
-            handleTabClick: function(tab) {
-                this.initTab(tab.name);
-            },
-
-            saveConfig: function(silent) {
-                const that = this;
-                const newConfig = JSON.parse(JSON.stringify(this.config));
-
-                chrome.storage.sync.set({
-                    [CONST.STORAGE.CONFIG]: newConfig
-                }, function() {
-                    if (silent) {
-                        console.log('save successfully');
-                    } else {
-                        that.$message(chrome.i18n.getMessage('save_ok'));
-                    }
-                });
-            },
-
-            handleGeneralSubmit: function() {
-                this.saveConfig();
-            }
-        }
+        components: { App },
+        template: '<App :config="config" :i18nTexts="i18nTexts" :activeName="activeName" />'
     });
 }
 
