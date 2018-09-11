@@ -1,5 +1,12 @@
 const langZh = [
     {
+        version: 'v3.5',
+        detail: `
+            为 newtab 新增时钟/快捷方式组件，在 设置 --> 通用 --> NewTab 设置中选择使用；<br>
+            重构。
+        `
+    },
+    {
         version: 'v3.4.13',
         detail: `
             website 分享优化，支持分享选中文字 ;<br>
@@ -348,6 +355,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.5',
+        detail: `
+            Add a clock/shortcut component for newtab and you can select them in Settings --> General --> NewTab Settings;<br>
+            Componentized refactoring. 
+        `
+    },
     {
         version: 'v3.4.13',
         detail: `
