@@ -8,6 +8,7 @@ const ImageminPlugin = require('imagemin-webpack-plugin').default
 const cssNano = require('cssnano')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production'
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 const config = {
   entry: {
@@ -30,6 +31,10 @@ const config = {
   },
   module: {
     rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader'
+      },
       {
         test: /\.html$/,
         use: ['html-loader']
@@ -66,6 +71,7 @@ const config = {
     new webpack.DefinePlugin({
       EXT_TYPE: JSON.stringify("alfred")
     }),
+    new VueLoaderPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
     //Generate an HTML5 file that includes all webpack bundles(includes css & js) in the body using script tags
     new HtmlWebpackPlugin({
