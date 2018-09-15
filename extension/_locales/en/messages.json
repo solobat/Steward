@@ -737,6 +737,9 @@
     "settings_blocks_socialshareconfig": {
         "message": "Social Share configuration"
     },
+    "settings_blocks_plugineditor": {
+        "message": "Plugin Editor"
+    },
     "settings_fields_title": {
         "message": "Title"
     },

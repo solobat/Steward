@@ -10,6 +10,7 @@ import util from '../common/util'
 import storage from '../common/storage'
 import CONST from '../constant'
 import {plugins} from '../plugins'
+import { getCustomPlugins } from '../helper/pluginHelper'
 import _ from 'underscore'
 import { websitesMap } from '../plugins/website'
 import defaultGeneral from '../../js/conf/general'
@@ -19,6 +20,7 @@ const commands = {};
 const regExpCommands = [];
 const otherCommands = [];
 const searchContexts = [];
+let allPlugins = [];
 let alwaysCommand = null;
 let plugin4empty;
 let randomPlugin;
@@ -512,7 +514,7 @@ function classifyPlugins(pluginsData) {
         }
     }
 
-    plugins.forEach(plugin => {
+    allPlugins.forEach(plugin => {
         if (!plugin.invalid && isEnabled(plugin)) {
             if (typeof plugin.onBoxEmpty === 'function') {
                 plugin4empty = plugin;
@@ -524,43 +526,41 @@ function classifyPlugins(pluginsData) {
 
             if (plugin.commands instanceof Array) {
                 const pname = plugin.name;
-                const pcmds = pluginsData[pname].commands;
+                const pcmds = pluginsData[pname] ? pluginsData[pname].commands : [];
 
-                if (pcmds) {
-                    // commands in cache is simple version
-                    const realCommands = $.extend(true, plugin.commands, pcmds);
+                // commands in cache is simple version
+                const realCommands = pcmds.length ? $.extend(true, plugin.commands, pcmds) : plugin.commands;
 
-                    realCommands.forEach(command => {
-                        if (!command.mode || (command.mode && command.mode === mode)) {
-                            const cmd = {
-                                ...command,
-                                name: pname,
-                                plugin
-                            };
+                realCommands.forEach(command => {
+                    if (!command.mode || (command.mode && command.mode === mode)) {
+                        const cmd = {
+                            ...command,
+                            name: pname,
+                            plugin
+                        };
 
-                            switch(command.type) {
-                            case PLUGIN_TYPE.ALWAYS:
-                                alwaysCommand = cmd;
-                                break;
-                            case PLUGIN_TYPE.REGEXP:
-                                regExpCommands.push(cmd);
-                                break;
-                            case PLUGIN_TYPE.OTHER:
-                                otherCommands.push(cmd);
-                                break;
-                            case PLUGIN_TYPE.KEYWORD:
-                                commands[command.key] = cmd;
-                                break;
-                            default:
-                                // bugfix
-                                commands[command.key] = cmd;
-                                break;
-                            }
-                        } else {
-                            console.log('not avaiable command: ', command);
+                        switch(command.type) {
+                        case PLUGIN_TYPE.ALWAYS:
+                            alwaysCommand = cmd;
+                            break;
+                        case PLUGIN_TYPE.REGEXP:
+                            regExpCommands.push(cmd);
+                            break;
+                        case PLUGIN_TYPE.OTHER:
+                            otherCommands.push(cmd);
+                            break;
+                        case PLUGIN_TYPE.KEYWORD:
+                            commands[command.key] = cmd;
+                            break;
+                        default:
+                            // bugfix
+                            commands[command.key] = cmd;
+                            break;
                         }
-                    });
-                }
+                    } else {
+                        console.log('not avaiable command: ', command);
+                    }
+                });
             } else {
                 searchContexts.push(plugin);
             }
@@ -588,22 +588,9 @@ function initWebsites() {
 }
 
 function restoreConfig() {
-    return new Promise(resove => {
+    return new Promise(resolve => {
         chrome.storage.sync.get(CONST.STORAGE.CONFIG, function(res) {
-            classifyPlugins(res.config.plugins, inContent);
-            initWebsites();
-
-            keys = Object.keys(commands).join('|');
-            reg = new RegExp(`^((?:${keys}))\\s(.*)$`, 'i');
-
-            stewardCache.commands = commands;
-            stewardCache.config = res.config || {};
-
-            if (!stewardCache.config.general) {
-                stewardCache.config.general = defaultGeneral;
-            }
-
-            resove(stewardCache.config);
+            resolve(res);
         });
     });
 }
@@ -618,10 +605,27 @@ export function initConfig(themode, isInContent) {
     stewardCache.inContent = isInContent;
     stewardCache.mode = mode;
 
-    return restoreConfig().then(config => {
+    return Promise.all([
+        restoreConfig(),
+        getCustomPlugins()
+    ]).then(([res, customPlugins]) => {
+        allPlugins = plugins.concat(customPlugins);
+        classifyPlugins(res.config.plugins, inContent);
+        initWebsites();
+
+        keys = Object.keys(commands).join('|');
+        reg = new RegExp(`^((?:${keys}))\\s(.*)$`, 'i');
+
+        stewardCache.commands = commands;
+        stewardCache.config = res.config || {};
+
+        if (!stewardCache.config.general) {
+            stewardCache.config.general = defaultGeneral;
+        }
+
         init();
 
-        return config;
+        return stewardCache.config;
     });
 }
 

@@ -743,6 +743,9 @@
     "settings_blocks_socialshareconfig": {
         "message": "社会化分享配置"
     },
+    "settings_blocks_plugineditor": {
+        "message": "插件编辑器"
+    },
     "settings_fields_title": {
         "message": "标题"
     },

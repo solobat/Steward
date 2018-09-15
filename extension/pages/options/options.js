@@ -74,7 +74,7 @@ function render({general, plugins, lastVersion}, i18nTexts) {
             i18nTexts
         },
         components: { App },
-        template: '<App :config="config" :i18nTexts="i18nTexts" :activeName="activeName" />'
+        template: '<App :config="config" :i18nTexts="i18nTexts" :tabName="activeName" />'
     });
 }
 

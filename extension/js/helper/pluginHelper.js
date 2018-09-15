@@ -2,6 +2,12 @@
  * @desc pluginHelper
  */
 
+import util from '../common/util'
+import dayjs from 'dayjs'
+import constant from '../constant'
+import { CustomPluginList } from '../collection/plugin'
+import axios from 'axios'
+
 const blockPageUrl = chrome.extension.getURL('urlblock.html');
 
 function PluginHelper() {
@@ -72,3 +78,170 @@ PluginHelper.prototype = {
 }
 
 export default PluginHelper
+
+
+class Plugin {
+    constructor(options = {}) {
+        this.errors = [];
+        this.commands = [];
+        this.init(options);
+    }
+
+    init(options) {
+        const { source } = options;
+
+        if (source) {
+            this.parse(source);
+        } else {
+            this.valid = true;
+        }
+    }
+
+    onInput() { }
+
+    onEnter() { }
+
+    createContext() {
+        return {
+            chrome: chrome,
+            util,
+            dayjs,
+            axios,
+            constant
+        }
+    }
+
+    mergeMeta(meta) {
+        const { id, version, name, category, icon, title, commands, onInput, onEnter } = meta;
+        // plugin's unique id
+        const uid = `${id}/${name}`;
+
+        Object.assign(this, {
+            uid, id, version, name, category, icon, title, commands, onInput, onEnter
+        });
+    }
+
+    getMeta() {
+        const { uid, version, name, category, icon, title, commands, source } = this;
+
+        return {
+            uid, version, name, category, icon, title, commands, source
+        };
+    }
+
+    validate() {
+        const errors = this.errors = [];
+
+        if (!this.id) {
+            errors.push('ID property is required');
+        }
+
+        if (!this.commands || !this.commands.length) {
+            errors.push('The length of the commands cannot be 0.');
+        }
+    }
+
+    parse(source) {
+        const context = this.createContext();
+
+        try {
+            const fn = new Function('steward', source);
+            const meta = fn(context);
+
+            this.source = source;
+            this.mergeMeta(meta);
+            this.validate();
+        } catch (error) {
+            this.errors.push('parse error');
+            console.log(error);
+        } finally {
+            this.valid = this.errors.length === 0;
+        }
+    }
+}
+
+export function pluginFactory(options) {
+    const plugin = new Plugin(options);
+
+    if (plugin.valid) {
+        pluginFactory.errors = [];
+
+        return plugin;
+    } else {
+        pluginFactory.errors = plugin.errors.slice(0);
+
+        return null;
+    }
+}
+
+export function getCustomPlugins() {
+    return customPluginHelper.init().then((list = []) => {
+        return list.map(item => {
+            return pluginFactory(item);
+        }).filter(item => item !== null);
+    });
+}
+
+const customPluginList = new CustomPluginList();
+
+export const customPluginHelper = {
+    create(info) {
+        if (info.uid && info.source) {
+            const plugin = customPluginList.create({
+                ...info
+            });
+
+            return plugin;
+        } else {
+            return 'no id or source';
+        }
+    },
+
+    remove(id) {
+        const model = customPluginList.remove(id);
+        customPluginList.chromeStorage.destroy(model);
+
+        return model;
+    },
+
+    update(attrs) {
+        const plugin = customPluginList.set(attrs, {
+            add: false,
+            remove: false
+        });
+
+        plugin.save();
+
+        return plugin;
+    },
+
+    save(info) {
+        if (info.id) {
+            return this.update(info);
+        } else {
+            return this.create(info);
+        }
+    },
+
+    refresh() {
+        return new Promise((resolve, reject) => {
+            customPluginList.fetch().done(resp => {
+                resolve(resp);
+            }).fail(resp => {
+                reject(resp);
+            });
+        });
+    },
+
+    getCustomPluginList() {
+        return customPluginList.toJSON();
+    },
+
+    init() {
+        return this.refresh().then(() => {
+            const list = this.getCustomPluginList();
+
+            return list;
+        });
+    }
+}

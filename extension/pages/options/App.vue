@@ -615,6 +615,34 @@
                             <el-button icon="plus" @click="handleNewNewworkClick"></el-button>
                         </div>
                     </el-collapse-item>
+                    <el-collapse-item name="pluginEditor" :title="i18nTexts.ui.settings.blocks.plugineditor">
+                        <div class="custom-plugins-container">
+                            <el-row>
+                                <el-col :span="6">
+                                    <div class="custom-plugins">
+                                        <div class="button-bar">
+                                            <el-button type="primary" @click="handleCustomPluginClick()">New Plugin</el-button>
+                                            <div class="plugin-item workflow-item" :class="{'is-selected': plugin === currentCustomPlugin}"
+                                            v-for="(plugin, index) in customPlugins" :key="index" @click="handleCustomPluginClick(plugin)">
+                                                <span class="plugin-name">{{plugin.name}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="custom-plugins-inner">
+                                        </div>
+                                    </div>
+                                </el-col>
+                                <el-col :span="18">
+                                     <div class="code-editor" v-if="currentCustomPlugin">
+                                         <codemirror v-model="currentCustomPlugin.source" :options="cmOptions"></codemirror>
+                                         <div class="bts">
+                                            <el-button type="primary" style="margin-top: 15px;" @click="handleCustomPluginSaveClick">Test and Save</el-button>
+                                            <el-button v-if="currentCustomPlugin.id" type="warning" style="margin-top: 15px;" @click="handleCustomPluginDeleteClick">Remove</el-button>
+                                         </div>
+                                    </div>
+                                </el-col>
+                            </el-row>
+                        </div>
+                    </el-collapse-item>
                 </el-collapse>
             </el-tab-pane>
             <el-tab-pane :label="i18nTexts.ui.settings.tabs.help" name="help">
@@ -688,7 +716,7 @@ const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jg
 
 export default {
     name: 'app',
-    props: ['config', 'i18nTexts', 'activeName'],
+    props: ['config', 'i18nTexts', 'tabName'],
     data: function() {
         return {
             activeGeneralConfigName: ['command'],
@@ -696,7 +724,14 @@ export default {
             extType,
             storeId,
             helpInfo,
+            activeName: this.$props.tabName,
             newtabWidgets: CONST.OPTIONS.NEWTAB_WIDGETS,
+        }
+    },
+
+    watch: {
+        tabName(newTabName) {
+            this.activeName = newTabName;
         }
     },
 
@@ -1176,5 +1211,11 @@ a {
     display: block;
     width: 25px;
     height: 25px;
+}
+
+.code-editor {
+    .CodeMirror {
+        height: 90vh;
+    }
 }
 </style>

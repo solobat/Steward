@@ -42,7 +42,8 @@ export const settings = {
         websitenav: getI18n('settings_blocks_websitenav'),
         inpagenav: getI18n('settings_blocks_inpagenav'),
         exportimport: getI18n('settings_blocks_exportimport'),
-        socialshareconfig: getI18n('settings_blocks_socialshareconfig')
+        socialshareconfig: getI18n('settings_blocks_socialshareconfig'),
+        plugineditor: getI18n('settings_blocks_plugineditor')
     },
     actions: {
         save: getI18n('settings_actions_save'),
