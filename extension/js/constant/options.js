@@ -49,7 +49,7 @@ export const NEWTAB_WIDGETS = [{
     value: 'shortcuts',
     tips: 'Shortcuts'
 }, {
-    label: 'Wallpaper Buttons',
+    label: 'Bottom Buttons',
     value: 'wpbtns',
-    tips: 'Wallpaper Buttons'
+    tips: 'Bottom Buttons'
 }];

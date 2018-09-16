@@ -8,7 +8,7 @@
         </transition>
         <clock v-if="widgets.includes('clock')" />
         <footer></footer>
-        <div class="fixed-tools" v-show="widgets.includes('wpbtns')">
+        <div class="fixed-tools" :class="{'auto-hide': !widgets.includes('wpbtns')}">
             <span id="j-save-wplink" class="save-wplink action-btn" title="save wallpaper link"
                 :class="[wallpaper.isNew ? 'save' : 'saved']"
                 @click="handleWpSaveClick"></span>
@@ -155,6 +155,24 @@ a {
     width: 100%;
     padding: 0 10px;
     z-index: 100;
+
+    &.auto-hide {
+        .action-btn {
+            opacity: 0;
+        }
+
+        &:hover {
+            .action-btn {
+                opacity: 1;
+            }
+        }
+    }
+
+    &:hover {
+        .action-btn {
+            opacity: .7;
+        }
+    }
 }
 
 .action-btn {
@@ -162,6 +180,7 @@ a {
     width: 20px;
     height: 20px;
     cursor: pointer;
+    opacity: 1;
     transition: all .2s;
 }
 
