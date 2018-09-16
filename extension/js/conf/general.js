@@ -9,7 +9,7 @@ export default {
     maxOperandsNum: 5,
     autoResizeBoxFontSize: false,
     wallpaperSources: ['bing', 'favorites'],
-    newtabWidgets: [],
+    newtabWidgets: ['wpbtns'],
     autoSelectByMouse: false,
     enableRandomWallpaper: true,
     storeTypedQuery: true,

@@ -8,7 +8,7 @@
         </transition>
         <clock v-if="widgets.includes('clock')" />
         <footer></footer>
-        <div class="fixed-tools">
+        <div class="fixed-tools" v-show="widgets.includes('wpbtns')">
             <span id="j-save-wplink" class="save-wplink action-btn" title="save wallpaper link"
                 :class="[wallpaper.isNew ? 'save' : 'saved']"
                 @click="handleWpSaveClick"></span>
