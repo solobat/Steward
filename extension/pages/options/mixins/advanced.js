@@ -4,6 +4,12 @@ import { getNetworks, saveNetworks } from '../../../lib/social-share-urls'
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/keymap/vim.js'
 import 'codemirror/mode/javascript/javascript.js'
+import 'codemirror/addon/edit/closebrackets.js'
+import 'codemirror/addon/fold/foldcode.js'
+import 'codemirror/addon/fold/foldgutter.js'
+import 'codemirror/addon/fold/brace-fold.js'
+import 'codemirror/addon/fold/comment-fold.js'
+import 'codemirror/addon/fold/foldgutter.css'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
 import { PLUGIN_DEFAULT } from '../../../js/constant/code'
@@ -49,9 +55,11 @@ export default {
             cmOptions: {
                 tabSize: 2,
                 styleActiveLine: true,
-                foldGutter: true,
+                autoCloseBrackets: true,
                 styleSelectedText: true,
                 matchBrackets: true,
+                foldGutter: true,
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
                 keyMap: 'vim',
                 mode: 'text/javascript',
                 theme: 'monokai',
