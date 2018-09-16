@@ -77,6 +77,14 @@ function getSyncEngines() {
     }
 }
 
+function getIcon(engineName, rawIcon) {
+    if (defaultSearchEngines[engineName]) {
+        return defaultSearchEngines[engineName].icon;
+    } else {
+        return rawIcon;
+    }
+}
+
 function getSearchLinks(query) {
     return getSyncEngines().then(engines => {
         return Object.keys(engines).map(engine => {
@@ -86,7 +94,7 @@ function getSearchLinks(query) {
                 engine,
                 count: engines[engine].count || 0,
                 engineUrl: engines[engine].url,
-                icon: engines[engine].icon,
+                icon: getIcon(engine, engines[engine].icon),
                 title: `Search ${engine} for: ${query}`
             };
         });
