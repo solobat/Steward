@@ -138,7 +138,7 @@ export default {
             if (icon.startsWith('http')) {
                 return icon;
             } else {
-                return chrome.extension.getURL(`img/share-icons/${icon}.jpg`);
+                return chrome.extension.getURL(`iconfont/share-icons/${icon}.svg`);
             }
         },
 

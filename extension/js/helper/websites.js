@@ -206,7 +206,7 @@ export class Website {
                 if (item.class.startsWith('http')) {
                     icon = item.class;
                 } else {
-                    icon = chrome.extension.getURL(`img/share-icons/${item.class}.jpg`);
+                    icon = chrome.extension.getURL(`iconfont/share-icons/${item.class}.svg`);
                 }
 
                 return ResultHelper.createUrl({

@@ -16,7 +16,7 @@ const Networks = [
     },
     {
         name: 'Google+',
-        class: 'google.plus',
+        class: 'google_plus',
         enable: true,
         url: 'https://plus.google.com/share?url={url}'
     },
@@ -154,7 +154,7 @@ const Networks = [
     },
     {
         name: 'Telegram.me',
-        class: 'telegram.me',
+        class: 'telegram_me',
         enable: true,
         url: 'https://telegram.me/share/url?url={url}&text={title}',
     },
