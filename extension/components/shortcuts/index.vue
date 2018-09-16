@@ -43,11 +43,11 @@ export default {
             color: #fff;
             font-weight: 100;
             cursor: pointer;
-            opacity: .7;
+            opacity: 1;
             transition: all .2s;
 
             &:hover {
-                opacity: 1;
+                opacity: 0.7;
             }
 
             &::after {
