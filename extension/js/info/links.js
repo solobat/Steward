@@ -90,7 +90,7 @@ const upLinks = {
         {
             title: '其它作品：单词小卡片微信小程序',
             desc: 'tomasy 的作品，必是灵感之作 - 随心制作小卡片，云端保存，分享+1，传递+1',
-            icon: chrome.extension.getURL('img/wxcard.jpg'),
+            icon: chrome.extension.getURL('iconfont/miniapp.svg'),
             url: 'https://minapp.com/miniapp/4333/'
         },
         {
