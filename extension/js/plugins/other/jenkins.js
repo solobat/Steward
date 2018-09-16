@@ -18,7 +18,7 @@ const keys = [
     { key: 'jkset' }
 ];
 const type = 'keyword';
-const icon = chrome.extension.getURL('img/jenkins.png')
+const icon = chrome.extension.getURL('iconfont/jenkins.svg')
 const title = chrome.i18n.getMessage(`${name}_title`);
 let SERVER_URL = window.localStorage.jenkins_url || ''
 const commands = util.genCommands(name, icon, keys, type);

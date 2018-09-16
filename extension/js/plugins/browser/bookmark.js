@@ -14,7 +14,7 @@ const keys = [
     { key: 'bmd' }
 ];
 const type = 'keyword';
-const icon = chrome.extension.getURL('img/bookmark.png');
+const icon = chrome.extension.getURL('iconfont/bookmark.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const commands = util.genCommands(name, icon, keys, type);
 

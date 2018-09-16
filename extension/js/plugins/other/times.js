@@ -17,7 +17,7 @@ const keys = [
     { key: 'tsd' }
 ];
 const type = 'keyword';
-const icon = chrome.extension.getURL('img/plusone.png');
+const icon = chrome.extension.getURL('iconfont/plusone.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const commands = util.genCommands(name, icon, keys, type);
 const formatWarningMsg = chrome.i18n.getMessage('times_ts_warn_format');

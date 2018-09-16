@@ -13,7 +13,7 @@ const name = 'search';
 const key = 'search';
 const version = 2;
 const type = 'other';
-const icon = chrome.extension.getURL('img/google.png');
+const icon = chrome.extension.getURL('iconfont/google.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const commands = [{
@@ -35,19 +35,19 @@ const commands = [{
 const defaultSearchEngines = {
     'Google': {
         url: 'https://www.google.com/search?q=%s',
-        icon: chrome.extension.getURL('img/google.png')
+        icon: chrome.extension.getURL('iconfont/google.svg')
     },
     'Baidu': {
         url: 'https://www.baidu.com/s?wd=%s',
-        icon: chrome.extension.getURL('img/baidu.png')
+        icon: chrome.extension.getURL('iconfont/baidu.svg')
     },
     'Bing': {
         url: 'https://bing.com/search?q=%s',
-        icon: chrome.extension.getURL('img/bing.png')
+        icon: chrome.extension.getURL('iconfont/bing.svg')
     },
     'Stack Overflow': {
         url: 'https://stackoverflow.com/search?q=%s',
-        icon: chrome.extension.getURL('img/stackoverflow.png')
+        icon: chrome.extension.getURL('iconfont/stackoverflow.svg')
     }
 };
 

@@ -20,45 +20,45 @@ const keys = [
 ];
 const version = 3;
 const type = 'keyword';
-const icon = chrome.extension.getURL('img/wallpaper-icon.png');
+const icon = chrome.extension.getURL('iconfont/wallpaper-icon.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const commands = util.genCommands(name, icon, keys, type);
 const allActions = [
     {
-        icon: chrome.extension.getURL('img/weibo-red.png'),
+        icon: chrome.extension.getURL('iconfont/weibo-red.svg'),
         title: chrome.i18n.getMessage('wallpaper_action_upload_title'),
         desc: chrome.i18n.getMessage('wallpaper_action_upload_subtitle'),
         type: 'upload'
     },
     {
-        icon: chrome.extension.getURL('img/save-red.png'),
+        icon: chrome.extension.getURL('iconfont/save-red.svg'),
         title: chrome.i18n.getMessage('wallpaper_action_save_title'),
         desc: chrome.i18n.getMessage('wallpaper_action_save_subtitle'),
         selector: '#j-save-wplink',
         type: 'save'
     },
     {
-        icon: chrome.extension.getURL('img/save-red.png'),
+        icon: chrome.extension.getURL('iconfont/save-red.svg'),
         title: chrome.i18n.getMessage('wallpaper_action_remove_title'),
         desc: chrome.i18n.getMessage('wallpaper_action_remove_subtitle'),
         selector: '#j-save-wplink',
         type: 'remove'
     },
     {
-        icon: chrome.extension.getURL('img/refresh-red.png'),
+        icon: chrome.extension.getURL('iconfont/refresh-red.svg'),
         title: chrome.i18n.getMessage('wallpaper_action_refresh_title'),
         desc: chrome.i18n.getMessage('wallpaper_action_refresh_subtitle'),
         selector: '#j-refresh-wp',
         type: 'refresh'
     },
     {
-        icon: chrome.extension.getURL('img/download-red.png'),
+        icon: chrome.extension.getURL('iconfont/download-red.svg'),
         title: chrome.i18n.getMessage('wallpaper_action_download_title'),
         desc: chrome.i18n.getMessage('wallpaper_action_download_subtitle'),
         type: 'download'
     },
     {
-        icon: chrome.extension.getURL('img/copy.png'),
+        icon: chrome.extension.getURL('iconfont/copy.svg'),
         title: chrome.i18n.getMessage('wallpaper_action_copy_title'),
         desc: '',
         url: '',

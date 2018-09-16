@@ -14,7 +14,7 @@ const keys = [
     { key: 'wfe', shiftKey: true }
 ];
 const type = 'keyword';
-const icon = chrome.extension.getURL('img/workflow.png');
+const icon = chrome.extension.getURL('iconfont/workflow.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const commands = util.genCommands(name, icon, keys, type);
 let curWid;

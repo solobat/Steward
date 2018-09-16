@@ -9,7 +9,7 @@ import * as Websites from '../../helper/websites'
 const version = 1;
 const name = 'github';
 const type = 'search';
-const icon = chrome.extension.getURL('img/github.png');
+const icon = chrome.extension.getURL('iconfont/github.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const host = 'github.com';
 

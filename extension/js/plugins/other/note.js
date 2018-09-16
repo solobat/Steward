@@ -17,7 +17,7 @@ const keys = [
     { key: 'notes', shiftKey: true }
 ];
 const type = 'keyword';
-const icon = chrome.extension.getURL('img/note.png')
+const icon = chrome.extension.getURL('iconfont/note.svg')
 const title = chrome.i18n.getMessage(`${name}_title`);
 const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const tagReg = /#([a-zA-Z\u4e00-\u9fa5]+)/ig

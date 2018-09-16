@@ -16,7 +16,7 @@ const keys = [
     { key: ':', keyname: 'say', shiftKey: true }
 ];
 const type = 'keyword';
-const icon = chrome.extension.getURL('img/diary.png')
+const icon = chrome.extension.getURL('iconfont/diary.svg')
 const title = chrome.i18n.getMessage(`${name}_title`);
 const commands = util.genCommands(name, icon, keys, type);
 const messages = [];

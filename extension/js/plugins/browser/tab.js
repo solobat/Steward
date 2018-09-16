@@ -18,7 +18,7 @@ const keys = [
     { key: 'tabp', allowBatch: true }
 ];
 const type = 'keyword';
-const icon = chrome.extension.getURL('img/tab.png');
+const icon = chrome.extension.getURL('iconfont/tab.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const commands = util.genCommands(name, icon, keys, type);
 

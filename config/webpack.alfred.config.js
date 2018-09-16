@@ -56,10 +56,6 @@ const config = {
         })
       },
       {
-        test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
-        loader: 'file-loader'
-      },
-      {
         test: /\.(jpe?g|png|gif)$/i,
         use: [
           'file-loader?name=[name].[ext]&outputPath=img/&publicPath=./'
@@ -122,6 +118,7 @@ const config = {
     }),
     new CopyWebpackPlugin([
       {from: 'extension/img', to: 'img'},
+      {from: 'extension/svg', to: 'iconfont'},
       {from: 'extension/css', to: 'css'},
       {from: 'extension/scripts', to: 'scripts'},
       {from: 'extension/_locales', to: '_locales'},

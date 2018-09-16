@@ -78,7 +78,7 @@ const upLinks = {
         {
             title: 'Star: Steward on Github',
             desc: 'Stars 是程序员的通行证',
-            icon: chrome.extension.getURL('img/github.png'),
+            icon: chrome.extension.getURL('iconfont/github.svg'),
             url: 'https://github.com/solobat/Steward'
         },
         {
@@ -96,25 +96,25 @@ const upLinks = {
         {
             title: '点赞评论: 少数派文章',
             desc: '陆续会有一系列的跟 Steward 相关的文章会发布在上面',
-            icon: chrome.extension.getURL('img/sspai.png'),
+            icon: chrome.extension.getURL('iconfont/sspai.svg'),
             url: 'https://sspai.com/user/784469/posts'
         },
         {
             title: '点赞评论: Chrome Web Store',
             desc: '让更多的人知道 Steward',
-            icon: chrome.extension.getURL('img/chrome.png'),
+            icon: chrome.extension.getURL('iconfont/chrome.svg'),
             url: 'https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd/reviews'
         },
         {
             title: '关注: Steward 开发者微博',
             desc: '关注开发者动态，了解更多 Steward 的技巧',
-            icon: chrome.extension.getURL('img/weibo.png'),
+            icon: chrome.extension.getURL('iconfont/weibo.svg'),
             url: 'https://weibo.com/soloooo?is_all=1'
         },
         {
             title: '关注: Steward 开发者知乎',
             desc: '关注开发者动态，了解更多 Steward 的技巧',
-            icon: chrome.extension.getURL('img/zhihu.png'),
+            icon: chrome.extension.getURL('iconfont/zhihu.svg'),
             url: 'https://www.zhihu.com/people/woodpea'
         }
     ],
@@ -127,13 +127,13 @@ const upLinks = {
         {
             title: 'Star: Steward on Github',
             desc: "Stars is the programmer's pass",
-            icon: chrome.extension.getURL('img/github.png'),
+            icon: chrome.extension.getURL('iconfont/github.svg'),
             url: 'https://github.com/solobat/Steward'
         },
         {
             title: 'Like and comment: Chrome Web Store',
             desc: 'Let more people know Steward',
-            icon: chrome.extension.getURL('img/chrome.png'),
+            icon: chrome.extension.getURL('iconfont/svg.png'),
             url: 'https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd/reviews'
         }
     ]

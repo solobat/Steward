@@ -16,7 +16,7 @@ const keys = [
     { key: 'done', shiftKey: true }
 ];
 const type = 'keyword';
-const icon = chrome.extension.getURL('img/todo.png');
+const icon = chrome.extension.getURL('iconfont/todo.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const commands = util.genCommands(name, icon, keys, type);
 

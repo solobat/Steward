@@ -13,7 +13,7 @@ const name = 'wordcard';
 const key = 'wd';
 const type = 'keyword';
 const icon = chrome.extension.getURL('img/wordcard.png');
-const tagIcon = chrome.extension.getURL('img/exts/wordcard/tag.png');
+const tagIcon = chrome.extension.getURL('iconfont/exts/wordcard/tag.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const commands = [{
@@ -27,7 +27,7 @@ const commands = [{
 }];
 
 let extID;
-const levelIcons = [0, 1, 2, 3, 4, 5].map(level => chrome.extension.getURL(`img/exts/wordcard/level${level}.png`));
+const levelIcons = [0, 1, 2, 3, 4, 5].map(level => chrome.extension.getURL(`iconfont/exts/wordcard/level${level}.svg`));
 
 const wordsFormat = (item => {
     return {

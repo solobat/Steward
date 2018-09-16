@@ -16,7 +16,7 @@ const keys = [
     { key: 'ntm' }
 ];
 const NOTES_KEY = 'titleNotes';
-const icon = chrome.extension.getURL('img/new-tab.png');
+const icon = chrome.extension.getURL('iconfont/new-tab.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const commands = util.genCommands(name, icon, keys, type);
 const allActions = [

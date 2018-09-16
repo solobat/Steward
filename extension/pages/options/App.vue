@@ -278,7 +278,7 @@
                                                 <span style="color: #878d99">⇧</span>
                                             </el-tooltip>
                                             <el-tooltip v-if="command.allowBatch" class="item" effect="dark" :content="i18nTexts.tips.allowBatch" placement="top-start">
-                                                <img src="/img/allowbatch.png" class="icon-batch" alt="">
+                                                <img src="/iconfont/allowbatch.svg" class="icon-batch" alt="">
                                             </el-tooltip>
                                         </el-form-item>
                                         <el-form-item v-if="currentPlugin.canDisabled" label="Disable">
@@ -484,15 +484,15 @@
                 <div class="wallpapers-container">
                     <div class="wallpaper-box">
                         <div class="wallpaper-add-btn" @click="handleAddWallpaperClick">
-                            <img src="/img/plus.png" alt="">
+                            <img src="/iconfont/plus.svg" alt="">
                         </div>
                     </div>
                     <div v-for="(wallpaper, index) in wallpapers" :key="index"
                         @click="chooseWallpaper(wallpaper)"
                         :class="['wallpaper-box', {'is-selected': selectedWallpaper === wallpaper}]">
                         <img class="wallpaper-img" :ref="`wp${index}`" :src="wallpaper" alt="">
-                        <img v-if="selectedWallpaper === wallpaper" class="selected-icon" src="/img/selected-icon.png" alt="">
-                        <img src="/img/delete-icon.png" alt="" class="delete-wp icon" @click.stop="confirmDeleteWallpaper(wallpaper)">
+                        <img v-if="selectedWallpaper === wallpaper" class="selected-icon" src="/iconfont/selected-icon.svg" alt="">
+                        <img src="/iconfont/delete-icon.svg" alt="" class="delete-wp icon" @click.stop="confirmDeleteWallpaper(wallpaper)">
                     </div>
                 </div>
             </el-tab-pane>
@@ -686,10 +686,10 @@
         <header class="topbar">
             <div class="links">
                 <a href="https://github.com/solobat/steward" class="github" target="_blank">
-                    <img src="/img/github.png" alt="">
+                    <img src="/iconfont/github.svg" alt="">
                 </a>
                 <a href="http://bbs.oksteward.com" class="steward_bbs" target="_blank">
-                    <img src="/img/bbs.png" alt="">
+                    <img src="/iconfont/bbs.svg" alt="">
                 </a>
                 <a href="http://oksteward.com" class="steward" target="_blank">
                     <img src="/img/icon.png" alt="">

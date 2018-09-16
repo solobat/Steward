@@ -155,12 +155,6 @@ a {
     width: 100%;
     padding: 0 10px;
     z-index: 100;
-
-    &:hover {
-        .action-btn {
-            opacity: 1;
-        }
-    }
 }
 
 .action-btn {
@@ -168,32 +162,31 @@ a {
     width: 20px;
     height: 20px;
     cursor: pointer;
-    opacity: 0;
     transition: all .2s;
 }
 
 .save-wplink {
     float: left;
-    background: url(../../img/star.png);
+    background: url(../../svg/star.svg);
     background-size: cover;
 
     &.saved {
-        background-image: url(../../img/star-fill.png);
+        background-image: url(../../svg/star-fill.svg);
     }
 }
 
 .save-wplink:hover {
-    background-image: url(../../img/star-fill.png);
+    background-image: url(../../svg/star-fill.svg);
 }
 
 .refresh-wp {
     float: right;
-    background: url(../../img/refresh-white.png);
+    background: url(../../svg/refresh.svg);
     background-size: cover;
 }
 
 .refresh-wp:hover {
-    background-image: url(../../img/refresh-red.png);
+    opacity: .7;
 }
 
 #main {

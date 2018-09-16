@@ -11,7 +11,7 @@ import * as Websites from '../../helper/websites'
 const version = 1;
 const name = 'zhihu';
 const type = 'search';
-const icon = chrome.extension.getURL('img/zhihu.png');
+const icon = chrome.extension.getURL('iconfont/zhihu.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const host = 'www.zhihu.com';
 
