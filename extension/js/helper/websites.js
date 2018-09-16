@@ -177,7 +177,7 @@ export class Website {
             const app = event.detail.app;
 
             app.on('afterExecCommand', (...args) => {
-                this.afterExecCommand(...args.slice(1));
+                this.afterExecCommand(...args);
             });
         });
     }
@@ -315,6 +315,7 @@ export class Website {
     }
 
     afterExecCommand(item) {
+        console.log(item);
         if (this.triggerSymbol === TRIGGER_SYMBOL.SHARE) {
             addNetworkRecord(item.title);
         }

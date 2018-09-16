@@ -323,7 +323,7 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
         const result = handleNormalItem(box, dataList, item);
         const ret = handleEnterResult(result);
 
-        window.stewardApp.emit('afterExecCommand', [item, dataList, box.query]);
+        window.stewardApp.emit('afterExecCommand', item, dataList, box.query);
 
         return ret;
     } else {
