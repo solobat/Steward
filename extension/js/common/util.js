@@ -268,5 +268,6 @@ export default {
     isStorageSafe,
     shouldSupportMe,
     simTemplate,
-    getData
+    getData,
+    toast: Toast
 };

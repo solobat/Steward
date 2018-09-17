@@ -3,6 +3,7 @@
  */
 
 import util from '../common/util'
+import $ from 'jquery'
 import dayjs from 'dayjs'
 import constant from '../constant'
 import { CustomPluginList } from '../collection/plugin'
@@ -106,6 +107,7 @@ class Plugin {
             chrome: chrome,
             util,
             dayjs,
+            $,
             axios,
             constant
         }
