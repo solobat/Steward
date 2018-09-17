@@ -147,12 +147,20 @@ class Plugin {
         const context = this.createContext();
 
         try {
-            const fn = new Function('steward', source);
-            const meta = fn(context);
+            const pluginModule = { exports: null };
+            const fn = new Function('module', source);
 
-            this.source = source;
-            this.mergeMeta(meta);
-            this.validate();
+            fn(pluginModule);
+
+            if (pluginModule.exports) {
+                const meta = pluginModule.exports(context);
+
+                this.source = source;
+                this.mergeMeta(meta);
+                this.validate();
+            } else {
+                throw new Error('module.exports is null');
+            }
         } catch (error) {
             this.errors.push('parse error');
             console.log(error);
