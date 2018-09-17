@@ -1,6 +1,6 @@
 
 export const PLUGIN_DEFAULT = `
-// function (steward) {
+// module.exports = function (steward) {
 const version = 1;
 const id = 'solobat';
 const name = 'yourPlugin';
