@@ -56,6 +56,10 @@ const config = {
         })
       },
       {
+        test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
+        loader: 'file-loader?name=[name].[ext]&outputPath=iconfont/&publicPath=./'
+      },
+      {
         test: /\.(jpe?g|png|gif)$/i,
         use: [
           'file-loader?name=[name].[ext]&outputPath=img/&publicPath=./'
