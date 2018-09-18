@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.5.1',
+        detail: `
+            开放插件 api, 允许用户自行编写插件，在 设置 --> 高级 --> 插件编辑中使用；<br>
+            优化包大小；<br>
+            New Tab 底部按钮组件化配置。
+        `
+    },
+    {
         version: 'v3.5',
         detail: `
             为 newtab 新增时钟/快捷方式组件，在 设置 --> 通用 --> NewTab 设置中选择使用；<br>
@@ -355,6 +363,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.5.1',
+        detail: `
+            Open plugin api, allows users to write their own plugins -- Settings --> Advanced --> Plugin Editing;<br>
+            Optimize package size;<br>
+            New Tab bottom button componentized configuration. 
+        `
+    },
     {
         version: 'v3.5',
         detail: `
