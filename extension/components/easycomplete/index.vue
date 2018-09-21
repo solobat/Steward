@@ -154,7 +154,6 @@ export default {
 
         render(text) {
             this.term = text;
-            console.log(this.term);
             this.refresh();
 
             if (this.autoResizeBoxFontSize) {
