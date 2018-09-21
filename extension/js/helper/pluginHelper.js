@@ -92,6 +92,9 @@ class Plugin {
         const { source } = options;
 
         if (source) {
+            if (options.id) {
+                this._id = options.id;
+            }
             this.parse(source);
         } else {
             this.valid = true;
@@ -117,17 +120,18 @@ class Plugin {
         const { id, version, name, category, icon, title, commands, onInput, onEnter } = meta;
         // plugin's unique id
         const uid = `${id}/${name}`;
+        const author = id;
 
         Object.assign(this, {
-            uid, id, version, name, category, icon, title, commands, onInput, onEnter
+            uid, id, version, name, category, icon, title, commands, onInput, onEnter, author
         });
     }
 
     getMeta() {
-        const { uid, version, name, category, icon, title, commands, source } = this;
+        const { uid, version, name, category, icon, title, commands, source, author } = this;
 
         return {
-            uid, version, name, category, icon, title, commands, source
+            uid, version, name, category, icon, title, commands, source, author
         };
     }
 
@@ -212,6 +216,14 @@ export const customPluginHelper = {
         customPluginList.chromeStorage.destroy(model);
 
         return model;
+    },
+
+    isInstalled(plugin) {
+        const result = this.getCustomPluginList().find(item => {
+            return item.uid === plugin.uid;
+        });
+
+        return Boolean(result);
     },
 
     update(attrs) {

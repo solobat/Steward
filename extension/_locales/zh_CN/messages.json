@@ -389,6 +389,30 @@
     "openurl_subtitle": {
         "message": "打开输入的网址"
     },
+    "spm_title": {
+        "message": "Steward 插件管理"
+    },
+    "spm_subtitle": {
+        "message": "list 查看所有，install 安装, uninstall 卸载"
+    },
+    "spm_list_title": {
+        "message": "spm list"
+    },
+    "spm_list_subtitle": {
+        "message": "Steward 插件列表，数据来自 https://github.com/steward-launcher/steward-plugins"
+    },
+    "spm_install_title": {
+        "message": "spm install"
+    },
+    "spm_install_subtitle": {
+        "message": "Steward 插件安装"
+    },
+    "spm_uninstall_title": {
+        "message": "spm uninstall"
+    },
+    "spm_uninstall_subtitle": {
+        "message": "Steward 插件卸载"
+    },
     "newtab_title": {
         "message": "New Tab 的一些本地设置"
     },

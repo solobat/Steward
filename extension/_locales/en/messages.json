@@ -389,6 +389,30 @@
     "openurl_subtitle": {
         "message": "Open the typed url"
     },
+    "spm_title": {
+        "message": "Steward plugin management"
+    },
+    "spm_subtitle": {
+        "message": "spm list to view all, spm install to install, spm uninstall to uninstall"
+    },
+    "spm_list_title": {
+        "message": "spm list"
+    },
+    "spm_list_subtitle": {
+        "message": "Steward plugin list, data from https://github.com/steward-launcher/steward-plugins"
+    },
+    "spm_install_title": {
+        "message": "spm install"
+    },
+    "spm_install_subtitle": {
+        "message": "Steward plugin installation"
+    },
+    "spm_uninstall_title": {
+        "message": "spm uninstall"
+    },
+    "spm_uninstall_subtitle": {
+        "message": "Steward plugin uninstallation"
+    },
     "newtab_title": {
         "message": "Some settings for New Tab"
     },
