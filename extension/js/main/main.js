@@ -630,8 +630,14 @@ export function initConfig(themode, isInContent) {
     });
 }
 
+const stewardApp = window.stewardApp = {};
+
+export function globalData(data) {
+    Object.assign(stewardApp, data);
+}
+
 export function globalApi(app) {
-    window.stewardApp = {
+    Object.assign(stewardApp, {
         on(eventName, fn) {
           app.$on(eventName, fn);
 
@@ -658,7 +664,7 @@ export function globalApi(app) {
         clearQuery() {
             this.applyCommand(`${cmdbox.cmd} `);
         }
-    };
+    });
 
     const evt = new CustomEvent('stewardReady', {
         detail: {

@@ -1,4 +1,4 @@
-import { initConfig, globalApi } from '../../js/main/main'
+import { initConfig, globalData, globalApi } from '../../js/main/main'
 import keyboardJS from 'keyboardjs'
 import { MODE } from '../../js/constant/base'
 import { createWebsites } from '../../js/helper/websites'
@@ -6,12 +6,18 @@ import Vue from 'vue';
 import App from './App.vue';
 Vue.config.productionTip = false;
 
-function initApp(mode, inContent) {
+function initApp(mode, inContent, meta) {
+    globalData({
+        mode,
+        data: { page: meta }
+    });
     return initConfig(mode, inContent).then(config => {
+        globalData({ config });
+
         const app = new Vue({
             el: '#app',
             data: {
-            config
+                config
             },
             components: { App },
             template: '<App />'
@@ -38,7 +44,7 @@ window.addEventListener('message', function(event) {
                 if (site) {
                     window.matchedSite = site;
                 }
-                initForContentPage(event.source, event.data.lazy, event.data.host);
+                initForContentPage(event.source, event.data.lazy, event.data.host, meta);
             });
         }
     }
@@ -61,12 +67,12 @@ function handleAction(obj) {
     window.parentWindow.postMessage(obj, '*');
 }
 
-function initForContentPage(parentWindow, lazy, parentHost) {
+function initForContentPage(parentWindow, lazy, parentHost, meta) {
     document.documentElement.className += ' content-page';
     window.parentWindow = parentWindow;
     window.parentHost = parentHost;
 
-    initApp(MODE.POPUP, true).then(() => {
+    initApp(MODE.POPUP, true, meta).then(() => {
         // if lazy, inputbox should get the focus when init
         changeBoxStatus(!lazy);
 
