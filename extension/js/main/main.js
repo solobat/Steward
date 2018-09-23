@@ -292,6 +292,7 @@ function handleNormalItem(box, dataList, item) {
         const key = item.id;
 
         window.stewardApp.applyCommand(`${key} `);
+        return Promise.resolve(true);
     } else if (type === ITEM_TYPE.URL) {
         const url = item.url;
 
