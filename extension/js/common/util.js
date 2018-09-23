@@ -77,6 +77,14 @@ function getDefaultResult(command) {
     }];
 }
 
+function getEmptyResult(command, msg) {
+    return [{
+        isDefault: true,
+        icon: command.icon,
+        title: msg || 'No query results...'
+    }];
+}
+
 function copyToClipboard(text, showMsg) {
     document.addEventListener('copy', event => {
         event.preventDefault();
@@ -256,6 +264,7 @@ export default {
     getTextMsg,
     genCommands,
     getDefaultResult,
+    getEmptyResult,
     copyToClipboard,
     getMatches,
     getParameterByName,
