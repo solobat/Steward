@@ -219,12 +219,20 @@ export const customPluginHelper = {
         return model;
     },
 
-    isInstalled(plugin) {
+    checkPluginStatus(plugin) {
         const result = this.getCustomPluginList().find(item => {
             return item.uid === plugin.uid;
         });
 
-        return Boolean(result);
+        if (result) {
+            if (plugin.version > result.version) {
+                return constant.BASE.PLUGIN_STATUS.NEWVESION;
+            } else {
+                return constant.BASE.PLUGIN_STATUS.INSTALLED;
+            }
+        } else {
+            return constant.BASE.PLUGIN_STATUS.NOTINSTALL;
+        }
     },
 
     update(attrs) {

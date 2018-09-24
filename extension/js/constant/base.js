@@ -27,6 +27,12 @@ export const EXTENSION = {
     STEWARD: 'steward'
 };
 
+export const PLUGIN_STATUS = {
+    NOTINSTALL: 0,
+    NEWVESION: 1,
+    INSTALLED: 2
+};
+
 export const alfredTabs = ['Alfred', 'General', 'Plugins', 'Workflows', 'Websites', 'Wallpapers', 'Appearance', 'Advanced', 'Help', 'Update'];
 
 export const stewardTabs = ['Steward', 'General', 'Plugins', 'Workflows', 'Websites', 'Wallpapers', 'Appearance', 'Advanced', 'Help', 'Update'];

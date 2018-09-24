@@ -7,6 +7,7 @@
 import util from '../../common/util'
 import axios from 'axios'
 import { pluginFactory, getCustomPlugins, customPluginHelper } from '../../helper/pluginHelper'
+import constant from '../../constant';
 
 const version = 1;
 const name = 'spm';
@@ -22,7 +23,7 @@ const commands = [{
     icon
 }];
 
-const subCommandKeys = ['list', 'install', 'uninstall'];
+const subCommandKeys = ['install', 'uninstall', 'list'];
 const subCommands = subCommandKeys.map(item => {
     return {
         key: 'plugins',
@@ -36,7 +37,6 @@ const subCommands = subCommandKeys.map(item => {
 const LIST_URL = 'https://raw.githubusercontent.com/Steward-launcher/steward-plugins/master/data.json';
 
 let plugins;
-
 
 function filterPlugins(list, query) {
     if (query) {
@@ -115,10 +115,14 @@ function installPlugin(item) {
 
         if (plugin) {
             const meta = plugin.getMeta();
+            const status = customPluginHelper.checkPluginStatus(meta);
 
-            if (!customPluginHelper.isInstalled(meta)) {
+            if (status === constant.BASE.PLUGIN_STATUS.NOTINSTALL) {
                 customPluginHelper.create(meta);
                 util.toast.success('Plugin has been installed successfully!');
+            } else if (status === constant.BASE.PLUGIN_STATUS.NEWVESION) {
+                customPluginHelper.update(meta);
+                util.toast.success('Plugin has been updated successfully!');
             } else {
                 util.toast.warning('Plugin has been installed');
             }
