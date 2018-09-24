@@ -118,13 +118,12 @@ class Plugin {
     }
 
     mergeMeta(meta) {
-        const { id, version, name, category, icon, title, commands, onInput, onEnter } = meta;
+        const { author, version, name, category, icon, title, commands, onInput, onEnter } = meta;
         // plugin's unique id
-        const uid = `${id}/${name}`;
-        const author = id;
+        const uid = `${author}/${name}`;
 
         Object.assign(this, {
-            uid, id, version, name, category, icon, title, commands, onInput, onEnter, author
+            uid, version, name, category, icon, title, commands, onInput, onEnter, author
         });
     }
 
@@ -139,8 +138,8 @@ class Plugin {
     validate() {
         const errors = this.errors = [];
 
-        if (!this.id) {
-            errors.push('ID property is required');
+        if (!this.author) {
+            errors.push('Author property is required');
         }
 
         if (!this.commands || !this.commands.length) {
@@ -220,12 +219,20 @@ export const customPluginHelper = {
     },
 
     checkPluginStatus(plugin) {
+        let uid = plugin.uid;
+
+        if (!uid) {
+            uid = `${plugin.author}/${plugin.name}`;
+        }
+
         const result = this.getCustomPluginList().find(item => {
-            return item.uid === plugin.uid;
+            return item.uid === uid;
         });
 
         if (result) {
             if (plugin.version > result.version) {
+                plugin.id = result.id;
+
                 return constant.BASE.PLUGIN_STATUS.NEWVESION;
             } else {
                 return constant.BASE.PLUGIN_STATUS.INSTALLED;

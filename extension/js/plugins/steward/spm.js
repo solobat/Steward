@@ -66,13 +66,33 @@ function queryPlugins(query) {
     }
 }
 
+function getStatusText(item) {
+    const status = customPluginHelper.checkPluginStatus(item);
+
+    if (status === constant.BASE.PLUGIN_STATUS.INSTALLED) {
+        return '✓';
+    } else if (status === constant.BASE.PLUGIN_STATUS.NEWVESION) {
+        return '↑';
+    }
+}
+
 function dataFormat(list, subcmd) {
     return list.map(item => {
+        let desc = `${item.title} -- by ${item.author}`;
+
+        if (subcmd === 'install') {
+            const result = getStatusText(item);
+
+            if (result) {
+                desc = `${result} ${desc}`;
+            }
+        }
+
         return {
             id: item._id,
             icon: item.icon,
             title: item.name,
-            desc: `${item.title} -- by ${item.author}`,
+            desc,
             source: item.source,
             subcmd
         };
@@ -107,7 +127,11 @@ function onInput(query) {
 }
 
 function installPlugin(item) {
-    axios.get(item.source).then(results => {
+    axios.get(item.source, {
+        params: {
+            t: Number(new Date())
+        }
+    }).then(results => {
         const resp = results.data;
         const plugin = pluginFactory({
             source: resp

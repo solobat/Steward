@@ -2,7 +2,7 @@
 export const PLUGIN_DEFAULT = `
 module.exports = function (steward) {
     const version = 1;
-    const id = 'solobat';
+    const author = 'solobat';
     const name = 'yourPlugin';
     const key = 'xxx';
     const type = 'keyword';
@@ -40,7 +40,7 @@ module.exports = function (steward) {
     }
 
     return {
-        id,
+        author,
         version,
         name,
         category: 'other',
