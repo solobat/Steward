@@ -1,5 +1,12 @@
 const langZh = [
     {
+        version: 'v3.5.2',
+        detail: `
+            新增 spm 插件，spm install / spm uninstal 命令安装、卸载插件；<br>
+            更新 plugin api。
+        `
+    },
+    {
         version: 'v3.5.1',
         detail: `
             开放插件 api, 允许用户自行编写插件，在 设置 --> 高级 --> 插件编辑中使用；<br>
@@ -363,6 +370,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.5.2',
+        detail: `
+            Add spm plugin, spm install / spm uninstal command to install and uninstall plugins;<br>
+            Update the plugin api. 
+        `
+    },
     {
         version: 'v3.5.1',
         detail: `
