@@ -103,7 +103,11 @@ export default {
         },
 
         applyCmd(cmd) {
-            this.text = cmd;
+            if (this.text === cmd) {
+                this.$refs.easycomplete.render(cmd);
+            } else {
+                this.text = cmd;
+            }
         },
 
         handleInit() {
