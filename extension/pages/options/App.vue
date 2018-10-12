@@ -471,6 +471,7 @@
                                         </el-form-item>
                                         <el-form-item>
                                             <el-button type="primary" @click.native.prevent="handleWebsiteSubmit">{{i18nTexts.ui.settings.actions.save}}</el-button>
+                                            <el-button v-if="currentWebsite.id" @click="handleWebsiteExportClick" type="info">{{i18nTexts.ui.settings.actions.export}}</el-button>
                                             <el-button v-if="currentWebsite.id" type="warning" @click.native.prevent="handleWebsiteDelete(currentWebsite.id)">{{i18nTexts.ui.settings.actions.delete}}</el-button>
                                         </el-form-item>
                                     </el-form>

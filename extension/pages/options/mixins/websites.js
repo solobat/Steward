@@ -1,5 +1,6 @@
 import websiteHelper from '../../../js/helper/websites'
 import util from '../../../js/common/util'
+import { downloadAsJson } from '../../../js/helper'
 
 export default {
     data() {
@@ -191,6 +192,10 @@ export default {
                     this.submitWebsite();
                 }
             });
+        },
+
+        handleWebsiteExportClick() {
+            downloadAsJson(this.currentWebsite, `${this.currentWebsite.title} website`);
         },
 
         handleWebsiteDelete(id) {

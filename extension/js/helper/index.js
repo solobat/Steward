@@ -13,7 +13,7 @@ const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'steward';
 
 export const dataHelpers = [configHelper, workflowHelper, websitesHelper, wallpaperHelper, themeHelper];
 
-function downloadAsJson(exportObj, exportName) {
+export function downloadAsJson(exportObj, exportName) {
     const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(exportObj))}`;
     const downloadAnchorNode = document.createElement('a');
 
