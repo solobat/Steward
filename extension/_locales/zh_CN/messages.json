@@ -413,6 +413,30 @@
     "spm_uninstall_subtitle": {
         "message": "Steward 插件卸载"
     },
+    "wsm_title": {
+        "message": "Steward websites 管理"
+    },
+    "wsm_subtitle": {
+        "message": "list 查看所有，install 安装, uninstall 卸载"
+    },
+    "wsm_list_title": {
+        "message": "wsm list"
+    },
+    "wsm_list_subtitle": {
+        "message": "Steward website 列表，数据来自 https://github.com/steward-launcher/steward-websites"
+    },
+    "wsm_install_title": {
+        "message": "wsm install"
+    },
+    "wsm_install_subtitle": {
+        "message": "Steward website 安装"
+    },
+    "wsm_uninstall_title": {
+        "message": "wsm uninstall"
+    },
+    "wsm_uninstall_subtitle": {
+        "message": "Steward website 卸载"
+    },
     "newtab_title": {
         "message": "New Tab 的一些本地设置"
     },

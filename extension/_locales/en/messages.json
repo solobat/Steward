@@ -413,6 +413,30 @@
     "spm_uninstall_subtitle": {
         "message": "Steward plugin uninstallation"
     },
+    "wsm_title": {
+        "message": "Steward websites management"
+    },
+    "wsm_subtitle": {
+        "message": "wsm list to view all, wsm install to install, wsm uninstall to uninstall"
+    },
+    "wsm_list_title": {
+        "message": "wsm list"
+    },
+    "wsm_list_subtitle": {
+        "message": "Steward website list, data from https://github.com/steward-launcher/steward-websites"
+    },
+    "wsm_install_title": {
+        "message": "wsm install"
+    },
+    "wsm_install_subtitle": {
+        "message": "Steward website installation"
+    },
+    "wsm_uninstall_title": {
+        "message": "wsm uninstall"
+    },
+    "wsm_uninstall_subtitle": {
+        "message": "Steward website uninstallation"
+    },
     "newtab_title": {
         "message": "Some settings for New Tab"
     },

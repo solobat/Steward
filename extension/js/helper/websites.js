@@ -1,11 +1,12 @@
 import util from '../common/util'
 import $ from 'jquery'
-import { WebsiteList } from '../collection/website'
+import { Website as WebsiteModel, WebsiteList } from '../collection/website'
 import resolveUrl from 'resolve-url'
 import QRCode from 'qrcode'
 import * as ResultHelper from './resultHelper'
 import { generateSocialUrls, addNetworkRecord } from '../../lib/social-share-urls'
 import minimatch from 'minimatch'
+import constant from '../constant'
 
 const websiteList = new WebsiteList();
 
@@ -361,11 +362,15 @@ const helper = {
 
     create(info) {
         if (info.title && info.host) {
-            const website = websiteList.create({
-                ...info
-            });
+            const website = new WebsiteModel();
 
-            return website;
+            website.set(info);
+
+            return websiteList.chromeStorage.create(website).then(() => {
+                return this.refresh().then(() => {
+                    return website;
+                });
+            });
         } else {
             return 'no title or host';
         }
@@ -374,9 +379,9 @@ const helper = {
     remove(id) {
         const model = websiteList.remove(id);
 
-        websiteList.chromeStorage.destroy(model);
-
-        return model;
+        return websiteList.chromeStorage.destroy(model).then(() => {
+            return this.refresh();
+        });
     },
 
     update(attrs) {
@@ -385,9 +390,9 @@ const helper = {
             remove: false
         });
 
-        diary.save();
-
-        return diary;
+        return diary.save().then(() => {
+            return diary;
+        });
     },
 
     save(info) {
@@ -406,6 +411,27 @@ const helper = {
                 reject(resp);
             });
         });
+    },
+
+    checkWebsiteStatus(website) {
+        const uid = `${website.author}/${website.host}`;
+        const result = this.getWebsiteList().find(item => {
+            const theUid = `${item.author}/${item.host}`;
+
+            return theUid === uid;
+        });
+
+        if (result) {
+            if (website.version > result.version) {
+                website.id = result.id;
+
+                return constant.BASE.WEBSITE_STATUS.NEWVESION;
+            } else {
+                return constant.BASE.WEBSITE_STATUS.INSTALLED;
+            }
+        } else {
+            return constant.BASE.WEBSITE_STATUS.NOTINSTALL;
+        }
     },
 
     getWebsiteList() {

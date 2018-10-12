@@ -167,10 +167,11 @@ export default {
 
         submitWebsite() {
             const data = this.handleWebsiteBeforeSave();
-            const website = websiteHelper.save(data);
 
-            this.afterWebsiteSubmit(website.toJSON());
-            this.$message(chrome.i18n.getMessage('save_ok'));
+            return websiteHelper.save(data).then(website => {
+                this.afterWebsiteSubmit(website.toJSON());
+                this.$message(chrome.i18n.getMessage('save_ok'));
+            });
         },
 
         refreshWebsites() {

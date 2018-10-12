@@ -40,6 +40,7 @@ import steward from './steward/steward'
 import wallpaper from './steward/wallpaper'
 import workflow from './steward/workflow'
 import spm from './steward/spm'
+import wsm from './steward/wsm'
 
 const pluginList = [
     about,
@@ -76,6 +77,7 @@ const pluginList = [
     random,
     workflow,
     spm,
+    wsm,
     ...extPlugins
 ]
 
