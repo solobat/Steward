@@ -2,7 +2,6 @@
 import $ from 'jquery'
 import keyboardJS from 'keyboardjs'
 import './content.scss'
-import { websitesMap } from '../../js/plugins/website'
 import PluginHelper from '../../js/helper/pluginHelper'
 import { getFavicon, getShareFields } from '../../js/helper/websites'
 import { ITEM_TYPE } from '../../js/constant/base'
@@ -305,11 +304,6 @@ const App = {
 
     bindEvents() {
         const that = this;
-        const host = window.location.host;
-
-        if (websitesMap[host]) {
-            websitesMap[host].setup();
-        }
 
         keyboardJS.bind('esc', function() {
             that.closeBox();
