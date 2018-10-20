@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.5.3',
+        detail: `
+            新增 wsm 插件，wsm install / wsm uninstal 命令安装、卸载 website 配置；<br>
+            website 社区驱动，参考: http://bbs.oksteward.com/topic/5bc065860f590c684784a411<br>
+            优化页面模式的 outline 功能。
+        `
+    },
+    {
         version: 'v3.5.2',
         detail: `
             新增 spm 插件，spm install / spm uninstal 命令安装、卸载插件；<br>
@@ -370,6 +378,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.5.3',
+        detail: `
+            Added wsm plugin, wsm install / wsm uninstal command to install and uninstall website configuration;<br>
+            Website changed to community driven, Reference: http://bbs.oksteward.com/topic/5bc065860f590c684784a411<br>
+            Optimize the outline function of the page mode.
+        `
+    },
     {
         version: 'v3.5.2',
         detail: `
