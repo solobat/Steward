@@ -184,7 +184,7 @@ const App = {
 
             function getLevelSymbol(level) {
                 const spaces = new Array(level).join(' ');
-                const levelSymbol = ['', '', '●', '◦', '▪', '▫'];
+                const levelSymbol = ['', '', '-', ' -', '  -', '   -'];
 
                 return spaces + levelSymbol[level] + new Array(2).join(' ');
             }
