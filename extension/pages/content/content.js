@@ -26,6 +26,15 @@ if (shouldInstead) {
     insertCss();
 }
 
+$.fn.isInViewport = function() {
+    const elementTop = $(this).offset().top;
+    const elementBottom = elementTop + $(this).outerHeight();
+    const viewportTop = $(window).scrollTop();
+    const viewportBottom = viewportTop + $(window).height();
+
+    return elementBottom > viewportTop && elementTop < viewportBottom;
+};
+
 function getHtml() {
     if (shouldInstead) {
         return getNewTabHtml();
@@ -193,16 +202,27 @@ const App = {
 
             this.headerElems = nodes;
 
+            const inViewPortIndexes = [];
             const items = nodes.filter(elem => {
                 return elem.innerText !== '';
             }).map((elem, index) => {
                 const level = Number(elem.tagName[1]);
+
+                if ($(elem).isInViewport()) {
+                    inViewPortIndexes.push(index);
+                }
 
                 return {
                     name: getLevelSymbol(level) + elem.innerText,
                     index: index
                 }
             });
+
+            if (inViewPortIndexes.length) {
+                items[inViewPortIndexes.pop()].isCurrent = true;
+            }
+
+            console.log(items);
 
             this.postToIframe({
                 action: 'outline',

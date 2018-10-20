@@ -275,6 +275,7 @@ export class Website {
                 desc: item.path,
                 path: item.path,
                 deps: item.deps,
+                isCurrent: item.isCurrent,
                 custom: true
             }
         };
