@@ -265,8 +265,14 @@ export default {
                 } else if (JSON.stringify(dataList) === JSON.stringify(this.dataList)) {
                     console.log('datalist is same...');
                 } else {
-                    this.selectedIndex = 0;
+                    let currentIndex = dataList.findIndex(item => item.isCurrent);
+
+                    if (currentIndex === -1) {
+                        currentIndex = 0;
+                    }
+
                     this.dataList = dataList;
+                    this.selectItemByIndex(currentIndex)
                 }
             }
         },
