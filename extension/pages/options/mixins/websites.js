@@ -72,6 +72,7 @@ export default {
                 navs: 'nav a',
                 disabled: false,
                 outlineScope: '',
+                vars: {},
                 anchors: []
             };
         },
@@ -98,6 +99,32 @@ export default {
             }
         },
 
+        updateVars() {
+            const vars = {};
+            const reg = /\{\{([A-Za-z0-9_]+)\}\}/g;
+            const theVars = this.currentWebsite.vars || {};
+
+            this.currentWebsite.paths.forEach(path => {
+                const match = path.urlPattern.match(reg);
+
+                if (match) {
+                    match.map(item => item.replace(/[{}]/g, '')).forEach(key => {
+                        if (!vars[key]) {
+                            vars[key] = 'var';
+                        }
+                    });
+                }
+            });
+
+            for (const key in vars) {
+                if (theVars[key]) {
+                    vars[key] = theVars[key];
+                }
+            }
+
+            this.currentWebsite.vars = vars;
+        },
+
         handleNewPathAddClick() {
             const msg = this.validateNewPath();
 
@@ -105,6 +132,7 @@ export default {
                 this.$message(msg);
             } else {
                 this.currentWebsite.paths.push(this.newPath);
+                this.updateVars();
                 this.newPath = {
                     title: '',
                     urlPattern: '',
@@ -115,6 +143,12 @@ export default {
 
         handleNewPathDeleteClick(index) {
             this.currentWebsite.paths.splice(index, 1);
+            this.updateVars();
+        },
+
+        handlePathEditClick(path) {
+            path.editable = !path.editable;
+            this.updateVars();
         },
 
         validateNewAnchor() {

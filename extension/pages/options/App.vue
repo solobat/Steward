@@ -239,7 +239,7 @@
             </el-tab-pane>
             <el-tab-pane :label="i18nTexts.ui.settings.tabs.plugins" name="plugins">
                 <el-row>
-                    <el-col :span="6">
+                    <el-col :span="5">
                         <div class="grid-content plugin-list">
                             <div class="plugin-searchbar">
                                 <el-input placeholder="Search" icon="search" v-model="pluginSearchText">
@@ -253,7 +253,7 @@
                             </div>
                         </div>
                     </el-col>
-                    <el-col :span="18">
+                    <el-col :span="19">
                         <div class="grid-content bg-black plugin-editor">
                             <div v-if="currentPlugin" class="plugin-editor-container">
                                 <div class="plugin-editor-header">
@@ -299,7 +299,7 @@
             </el-tab-pane>
             <el-tab-pane :label="i18nTexts.ui.settings.tabs.workflows" name="workflows">
                 <el-row>
-                    <el-col :span="6">
+                    <el-col :span="5">
                         <div class="grid-content plugin-list">
                             <div class="plugin-searchbar">
                                 <el-input placeholder="Search" icon="search" v-model="workflowSearchText">
@@ -314,7 +314,7 @@
                             </div>
                         </div>
                     </el-col>
-                    <el-col :span="18">
+                    <el-col :span="19">
                         <div class="grid-content bg-black plugin-editor">
                             <div v-if="currentWorkflow" class="plugin-editor-container">
                                 <div class="plugin-editor-header">
@@ -352,7 +352,7 @@
             </el-tab-pane>
             <el-tab-pane :label="i18nTexts.ui.settings.tabs.websites" name="websites">
                 <el-row>
-                    <el-col :span="6">
+                    <el-col :span="5">
                         <div class="grid-content plugin-list">
                             <div class="plugin-searchbar">
                                 <el-input placeholder="Search" icon="search" v-model="websiteSearchText">
@@ -369,7 +369,7 @@
                             </div>
                         </div>
                     </el-col>
-                    <el-col :span="18">
+                    <el-col :span="19">
                         <div class="grid-content bg-black plugin-editor">
                             <div v-if="currentWebsite" class="plugin-editor-container">
                                 <div class="plugin-editor-header">
@@ -416,7 +416,7 @@
                                                                 <el-input v-model="path.urlPattern" placeholder="URL Pattern" :disabled="!path.editable"></el-input>
                                                             </el-col>
                                                             <el-col :span="4" :offset="1">
-                                                                <el-button @click="path.editable = !path.editable" type="primary" :icon="path.editable ? 'check' : 'edit'"></el-button>
+                                                                <el-button @click="handlePathEditClick(path)" type="primary" :icon="path.editable ? 'check' : 'edit'"></el-button>
                                                                 <el-button @click="handleNewPathDeleteClick(index)" type="primary" icon="delete"></el-button>
                                                             </el-col>
                                                         </el-row>
