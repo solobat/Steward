@@ -8,6 +8,7 @@ import util from '../../common/util'
 import axios from 'axios'
 import { pluginFactory, getCustomPlugins, customPluginHelper } from '../../helper/pluginHelper'
 import constant from '../../constant';
+import dayjs from 'dayjs'
 
 const version = 1;
 const name = 'spm';
@@ -54,7 +55,7 @@ function queryPlugins(query) {
     } else {
         return axios.get(LIST_URL, {
             params: {
-                t: Number(new Date())
+                t: dayjs().format('YYYYMMDD')
             }
         }).then(results => {
             const items = results.data.plugins;
