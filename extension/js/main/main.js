@@ -12,7 +12,6 @@ import CONST from '../constant'
 import {plugins} from '../plugins'
 import { getCustomPlugins } from '../helper/pluginHelper'
 import _ from 'underscore'
-import { websitesMap } from '../plugins/website'
 import defaultGeneral from '../../js/conf/general'
 import Toast from 'toastr'
 
@@ -572,18 +571,13 @@ function classifyPlugins(pluginsData) {
 function initWebsites() {
     if (inContent) {
         const site = window.matchedSite;
-        const sitePlugin = websitesMap[window.parentHost];
 
         if (site) {
             if (!site.isDefault) {
                 searchContexts.push(site);
-            } else if (sitePlugin) {
-                searchContexts.push(sitePlugin);
             } else {
                 searchContexts.push(site);
             }
-        } else if (sitePlugin) {
-            searchContexts.push(sitePlugin);
         }
     }
 }
