@@ -422,6 +422,17 @@
                                                         </el-row>
                                                     </div>
                                                 </el-form-item>
+                                                <el-form-item label="Path Variables" v-if="currentWebsite.vars">
+                                                    <div class="vars-container">
+                                                        <el-row v-for="(value, key) in currentWebsite.vars" :key="key">
+                                                          <el-col :span="6">
+                                                                <el-input v-model="currentWebsite.vars[key]" placeholder="">
+                                                                    <template slot="prepend">{{key}}</template>
+                                                                </el-input>
+                                                          </el-col>
+                                                        </el-row>
+                                                    </div>
+                                                </el-form-item>
                                                 <el-form-item :label="i18nTexts.ui.settings.fields.navigations">
                                                     <el-col :span="17">
                                                         <el-input type="textarea" :rows="2" autosize placeholder="such as: nav > ul > li > a" v-model="currentWebsite.navs"></el-input>

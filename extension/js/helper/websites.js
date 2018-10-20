@@ -93,25 +93,11 @@ export function getShareFields(context, win) {
     }
 }
 
-export function handlePath(path, info, deps) {
-    if (info.deps) {
-        let realPath = path;
-
-        info.deps.forEach(field => {
-            realPath = realPath.replace(`{{${field}}}`, deps[field]);
-        });
-
-        window.location.href = realPath;
-    } else {
-        window.location.href = path;
-    }
-}
-
-function handlePaths(paths) {
+function handlePaths(paths, vars) {
     return paths.map(path => {
         return {
             name: path.title,
-            path: path.urlPattern
+            path: util.simTemplate(path.urlPattern, vars || {})
         };
     });
 }
@@ -126,7 +112,7 @@ export class Website {
         this.navs = options.navs || 'nav ul li a';
         this.outlineScope = options.outlineScope || '';
         this.paths = [];
-        this.customPaths = handlePaths(options.paths, options.deps) || [];
+        this.customPaths = handlePaths(options.paths, options.vars) || [];
         this.anchors = [];
         this.anchorsConfig = options.anchors || [];
         this.isDefault = options.isDefault;
@@ -360,26 +346,11 @@ export function createWebsites(parentWindow, host, meta, general = {}) {
 const helper = {
     key: 'websites',
 
-    resolveVars(attrs) {
-        const vars = attrs.vars;
-        const paths = attrs.paths;
-
-        if (vars && paths && paths.length) {
-            try {
-                paths.forEach(item => {
-                    item.urlPattern = util.simTemplate(item.urlPattern, vars);
-                });
-            } catch (error) {
-                console.error(error);
-            }
-        }
-    },
-
     create(info) {
         if (info.title && info.host) {
             const website = new WebsiteModel();
 
-            website.set(this.resolveVars(info));
+            website.set(info);
 
             return websiteList.chromeStorage.create(website).then(() => {
                 return this.refresh().then(() => {
@@ -400,7 +371,7 @@ const helper = {
     },
 
     update(attrs) {
-        const diary = websiteList.set(this.resolveVars(attrs), {
+        const diary = websiteList.set(attrs, {
             add: false,
             remove: false
         });
