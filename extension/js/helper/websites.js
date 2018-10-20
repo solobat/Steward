@@ -360,11 +360,26 @@ export function createWebsites(parentWindow, host, meta, general = {}) {
 const helper = {
     key: 'websites',
 
+    resolveVars(attrs) {
+        const vars = attrs.vars;
+        const paths = attrs.paths;
+
+        if (vars && paths && paths.length) {
+            try {
+                paths.forEach(item => {
+                    item.urlPattern = util.simTemplate(item.urlPattern, vars);
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    },
+
     create(info) {
         if (info.title && info.host) {
             const website = new WebsiteModel();
 
-            website.set(info);
+            website.set(this.resolveVars(info));
 
             return websiteList.chromeStorage.create(website).then(() => {
                 return this.refresh().then(() => {
@@ -385,7 +400,7 @@ const helper = {
     },
 
     update(attrs) {
-        const diary = websiteList.set(attrs, {
+        const diary = websiteList.set(this.resolveVars(attrs), {
             add: false,
             remove: false
         });
