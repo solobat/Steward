@@ -359,7 +359,7 @@ const helper = {
                 });
             });
         } else {
-            return 'no title or host';
+            return Promise.reject('no title or host');
         }
     },
 
@@ -370,6 +370,8 @@ const helper = {
             return this.refresh();
         });
     },
+
+    getDefaultSiteInfo,
 
     update(attrs) {
         const diary = websiteList.set(attrs, {
@@ -416,6 +418,18 @@ const helper = {
             } else {
                 return constant.BASE.WEBSITE_STATUS.INSTALLED;
             }
+        } else {
+            return constant.BASE.WEBSITE_STATUS.NOTINSTALL;
+        }
+    },
+
+    checkWebsiteByHost(host) {
+        const result = this.getWebsiteList().find(item => {
+            return item.host === host;
+        });
+
+        if (result) {
+            return constant.BASE.WEBSITE_STATUS.INSTALLED;
         } else {
             return constant.BASE.WEBSITE_STATUS.NOTINSTALL;
         }

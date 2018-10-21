@@ -419,6 +419,12 @@
     "wsm_subtitle": {
         "message": "list 查看所有，install 安裝, uninstall 卸載"
     },
+    "wsm_create_title": {
+        "message": "wsm create"
+    },
+    "wsm_create_subtitle": {
+        "message": "為當前站點創建 website 配置"
+    },
     "wsm_list_title": {
         "message": "wsm list"
     },

@@ -9,7 +9,8 @@ Vue.config.productionTip = false;
 function initApp(mode, inContent, meta) {
     globalData({
         mode,
-        data: { page: meta }
+        data: { page: meta },
+        inContent
     });
     return initConfig(mode, inContent).then(config => {
         globalData({ config });

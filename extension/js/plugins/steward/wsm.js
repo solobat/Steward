@@ -35,6 +35,7 @@ const subCommands = subCommandKeys.map(item => {
         desc: chrome.i18n.getMessage(`${name}_${item}_subtitle`)
     };
 });
+
 const LIST_URL = 'https://raw.githubusercontent.com/Steward-launcher/steward-websites/master/data.json';
 
 let websites;
@@ -45,6 +46,15 @@ function initWebsites() {
         websitesHelper.init().then(() => {
             websitesHelper.inited = true;
         });
+
+        if (window.stewardApp.inContent) {
+            subCommands.push({
+                id: 'create',
+                icon,
+                title: chrome.i18n.getMessage(`${name}_create_title`),
+                desc: chrome.i18n.getMessage(`${name}_create_subtitle`)
+            });
+        }
     }
 }
 
@@ -129,7 +139,7 @@ function onInput(query) {
             return queryWebsites(subquery).then(list => {
                 return dataFormat(list, subcmd);
             });
-        } else {
+        } else if (subcmd === 'uninstall') {
             return queryInstalledWebsites(subquery).then(list => {
                 return dataFormat(list, subcmd);
             });
@@ -161,21 +171,49 @@ function uninstallWebsite(item) {
     });
 }
 
+function createWebsite(data) {
+    const status = websitesHelper.checkWebsiteByHost(data.host);
+
+    if (status === constant.BASE.WEBSITE_STATUS.NOTINSTALL) {
+        websitesHelper.create(Object.assign(websitesHelper.getDefaultSiteInfo(data), {
+            author: 'solobat',
+            version: 1,
+            isDefault: false
+        })).then(() => {
+            const baseURL = chrome.extension.getURL('options.html');
+
+            chrome.tabs.create({
+                url: `${baseURL}?tab=websites`
+            });
+
+            util.toast.success('Create successfully');
+            return 3000;
+        });
+    } else {
+        util.toast.warning('The configuration of the current site already exists');
+        return Promise.resolve(3000);
+    }
+}
+
 function onEnter(item) {
     const subcmd = item.subcmd;
 
-    if (subcmd === 'install') {
-        const result = installWebsite(item.data, item.status);
+    if (item.subcmd) {
+        if (subcmd === 'install') {
+            const result = installWebsite(item.data, item.status);
 
-        if (result) {
-            return result.then(() => {
-                window.stewardApp.applyCommand('wsm install');
+            if (result) {
+                return result.then(() => {
+                    window.stewardApp.applyCommand('wsm install');
+                });
+            }
+        } else if (subcmd === 'uninstall') {
+            return uninstallWebsite(item.data).then(() => {
+                window.stewardApp.applyCommand('wsm uninstall');
             });
         }
-    } else if (subcmd === 'uninstall') {
-        return uninstallWebsite(item.data).then(() => {
-            window.stewardApp.applyCommand('wsm uninstall');
-        });
+    } else if (item.id === 'create') {
+        return createWebsite(window.stewardApp.data.page);
     }
 }
 
