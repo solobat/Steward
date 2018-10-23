@@ -9,7 +9,7 @@
 
 ***
 
-#### Install：
+### Install：
 - [Chrome WebStore](https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd)
 - [Offline](http://owsjc7iz3.bkt.clouddn.com/steward-3.5.3.crx)。
 
@@ -22,8 +22,8 @@
 ---
 #### Screenshots:
 ![help](https://i.imgur.com/r0zZGR0.png)
-![content box](https://i.imgur.com/4GL01Ir.png)
 ![workflows](https://i.imgur.com/JefFHhT.png)
+![install plugins](https://i.imgur.com/ilfYn97.png)
 
 
 #### Videos:
@@ -40,9 +40,22 @@
     - Windows and Linux: <kbd>Ctrl</kbd> + <kbd>J</kbd>
 - Alternatively, in Google Chrome, you can go to the URL `chrome://extensions` and scroll to the bottom and click **Keyboard shortcuts**
 
-#### Development
-[api document](https://quip.com/CxbOA1bQf6Su)
+#### Install plugins
+[plugins repo](https://github.com/Steward-launcher/steward-plugins)
 
+```
+## install
+spm install
+
+## uninstall
+spm uninstall
+```
+
+#### Development
+##### Plugins
+[plugin api](http://oksteward.com/steward-documents/plugins/plugins.html#plugin-development)
+
+##### Steward
 Please start with the develop branch
 ````
 # node >= v7.5
