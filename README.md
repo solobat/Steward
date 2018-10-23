@@ -22,9 +22,16 @@
 ---
 #### Screenshots:
 ![help](https://i.imgur.com/r0zZGR0.png)
-![workflows](https://i.imgur.com/JefFHhT.png)
-![install plugins](https://i.imgur.com/ilfYn97.png)
+newtab mode
 
+![content box](https://i.imgur.com/pWDNBEV.png)
+page mode
+
+![workflows](https://i.imgur.com/JefFHhT.png)
+workflows
+
+![plugins](https://i.imgur.com/QfOJ2oD.png)
+install plugins
 
 #### Videos:
 - [youtube](https://www.youtube.com/watch?v=SJ8T_Mbiyes)
