@@ -17,12 +17,12 @@ const aboutLinks = {
         {
             title: '攻略',
             desc: '看了攻略，才能更好的了解 Steward 的精髓所在',
-            url: 'http://oksteward.com/steward-document-zh/%E6%94%BB%E7%95%A5.html'
+            url: 'http://oksteward.com/steward-documents/zh/articles.html'
         },
         {
             title: '帮助文档',
             desc: '详细的 Steward 帮助文档',
-            url: 'http://oksteward.com/steward-document-zh/'
+            url: 'http://oksteward.com/steward-documents/zh/'
         },
         {
             title: 'QQ群',

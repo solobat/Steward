@@ -3,7 +3,7 @@
  */
 
 const langZh = `
-<a href="http://oksteward.com/steward-document-zh/" target="_blank">帮助文档</a>
+<a href="http://oksteward.com/steward-documents/zh/" target="_blank">帮助文档</a>
 <a href="http://bbs.oksteward.com" target="_blank" style="margin-left: 12px;">论坛</a>
 <a href="https://t.me/chromesteward" target="_blank" style="margin-left: 12px;">Telegram</a>
 <br>
