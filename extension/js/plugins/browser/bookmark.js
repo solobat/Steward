@@ -7,7 +7,7 @@
 import util from '../../common/util'
 
 const chrome = window.chrome;
-const version = 5;
+const version = 6;
 const name = 'bookmark';
 const keys = [
     { key: 'bm', shiftKey: true, allowBatch: true },
@@ -18,62 +18,70 @@ const icon = chrome.extension.getURL('iconfont/bookmark.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const commands = util.genCommands(name, icon, keys, type);
 
-function searchBookmark(query, callback) {
-    if (!query) {
-        chrome.bookmarks.getRecent(10, function (bookMarkList) {
-            callback(bookMarkList || []);
-        });
+let bookmarks;
 
-        return;
+function getRecent() {
+    if (bookmarks) {
+        return Promise.resolve(bookmarks);
+    } else {
+        return new Promise(resolve => {
+            chrome.bookmarks.getRecent(2147483647, items => {
+                bookmarks = items.filter(item => Boolean(item.url));
+
+                resolve(bookmarks);
+            });
+        });
+    }
+}
+
+function searchBookmark(query) {
+    return getRecent().then(items => {
+        if (query) {
+            return util.getMatches(items, query, 'title');
+        } else {
+            return items.slice(0, 20);
+        }
+    });
+}
+
+function dataFormat(bookMarkList, command) {
+    let wrapDesc;
+
+    if (command.shiftKey) {
+        wrapDesc = util.wrapWithMaxNumIfNeeded('url');
     }
 
-    chrome.bookmarks.search(query, function (data) {
-        let bookMarkList = data || [];
+    const arr = [];
+    let i;
 
-        bookMarkList = bookMarkList.filter(function (bookmark) {
-            return typeof bookmark.url !== 'undefined';
+    for (i in bookMarkList) {
+        const item = bookMarkList[i];
+        let desc = item.url;
+
+        if (wrapDesc) {
+            desc = wrapDesc(item, i);
+        }
+
+        arr.push({
+            key: command.key,
+            id: item.id,
+            icon,
+            url: item.url,
+            title: item.title,
+            desc,
+            isWarn: false
         });
+    }
 
-        callback(bookMarkList);
-    });
+    return arr;
 }
 
 function onInput(query, command) {
     if (query === '/' && window.parentHost) {
         return `${command.key} ${window.parentHost}`;
     } else {
-        return new Promise(resolve => {
-            searchBookmark(query, bookMarkList => {
-                let wrapDesc;
-
-                if (command.shiftKey) {
-                    wrapDesc = util.wrapWithMaxNumIfNeeded('url');
-                }
-
-                const arr = [];
-                let i;
-
-                for (i in bookMarkList) {
-                    const item = bookMarkList[i];
-                    let desc = item.url;
-
-                    if (wrapDesc) {
-                        desc = wrapDesc(item, i);
-                    }
-
-                    arr.push({
-                        key: command.key,
-                        id: item.id,
-                        icon,
-                        url: item.url,
-                        title: item.title,
-                        desc,
-                        isWarn: false
-                    });
-                }
-
-                resolve(arr);
-            });
+        return searchBookmark(query).then(bookMarkList => {
+            return dataFormat(bookMarkList, command);
         });
     }
 }
