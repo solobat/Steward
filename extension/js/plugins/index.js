@@ -17,7 +17,6 @@ import { extPlugins } from './extension'
 
 // other plugins
 import calculate from './other/calculate'
-import coin from './other/coin'
 import diary from './other/diary'
 import note from './other/note'
 import openurl from './other/openurl'
@@ -63,7 +62,6 @@ const pluginList = [
     help,
     topsites,
     weather,
-    coin,
     openurl,
     newtab,
     wallpaper,
