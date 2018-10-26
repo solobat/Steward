@@ -9,6 +9,7 @@ import constant from '../constant'
 import { CustomPluginList } from '../collection/plugin'
 import axios from 'axios'
 import storage from '../utils/storage'
+import browser from 'webextension-polyfill'
 
 const blockPageUrl = chrome.extension.getURL('urlblock.html');
 
@@ -115,7 +116,8 @@ class Plugin {
             $,
             axios,
             constant,
-            storage
+            storage,
+            browser
         }
     }
 
