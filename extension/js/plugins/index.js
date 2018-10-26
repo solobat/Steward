@@ -17,14 +17,11 @@ import { extPlugins } from './extension'
 
 // other plugins
 import calculate from './other/calculate'
-import coin from './other/coin'
 import diary from './other/diary'
-import jenkins from './other/jenkins'
 import note from './other/note'
 import openurl from './other/openurl'
 import pocket from './other/pocket'
 import search from './other/search'
-import times from './other/times'
 import todo from './other/todo'
 import urlblock from './other/urlblock'
 import weather from './other/weather'
@@ -44,7 +41,6 @@ import wsm from './steward/wsm'
 
 const pluginList = [
     about,
-    jenkins,
     note,
     diary,
     tab,
@@ -57,7 +53,6 @@ const pluginList = [
     bookmark,
     yd,
     todo,
-    times,
     pocket,
     calculate,
     urlblock,
@@ -65,7 +60,6 @@ const pluginList = [
     help,
     topsites,
     weather,
-    coin,
     openurl,
     newtab,
     wallpaper,

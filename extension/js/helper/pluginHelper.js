@@ -8,6 +8,8 @@ import dayjs from 'dayjs'
 import constant from '../constant'
 import { CustomPluginList } from '../collection/plugin'
 import axios from 'axios'
+import storage from '../utils/storage'
+import browser from 'webextension-polyfill'
 
 const blockPageUrl = chrome.extension.getURL('urlblock.html');
 
@@ -113,7 +115,9 @@ class Plugin {
             dayjs,
             $,
             axios,
-            constant
+            constant,
+            storage,
+            browser
         }
     }
 
