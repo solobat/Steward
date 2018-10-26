@@ -22,7 +22,6 @@ import note from './other/note'
 import openurl from './other/openurl'
 import pocket from './other/pocket'
 import search from './other/search'
-import times from './other/times'
 import todo from './other/todo'
 import urlblock from './other/urlblock'
 import weather from './other/weather'
@@ -54,7 +53,6 @@ const pluginList = [
     bookmark,
     yd,
     todo,
-    times,
     pocket,
     calculate,
     urlblock,
