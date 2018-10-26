@@ -122,12 +122,12 @@ class Plugin {
     }
 
     mergeMeta(meta) {
-        const { author, version, name, category, icon, title, commands, onInput, onEnter } = meta;
+        const { author, version, name, category, icon, title, commands, onInput, onEnter, type } = meta;
         // plugin's unique id
         const uid = `${author}/${name}`;
 
         Object.assign(this, {
-            uid, version, name, category, icon, title, commands, onInput, onEnter, author
+            uid, version, name, category, icon, title, commands, onInput, onEnter, author, type
         });
     }
 
@@ -144,10 +144,6 @@ class Plugin {
 
         if (!this.author) {
             errors.push('Author property is required');
-        }
-
-        if (!this.commands || !this.commands.length) {
-            errors.push('The length of the commands cannot be 0.');
         }
     }
 
