@@ -19,7 +19,6 @@ import { extPlugins } from './extension'
 import calculate from './other/calculate'
 import coin from './other/coin'
 import diary from './other/diary'
-import jenkins from './other/jenkins'
 import note from './other/note'
 import openurl from './other/openurl'
 import pocket from './other/pocket'
@@ -44,7 +43,6 @@ import wsm from './steward/wsm'
 
 const pluginList = [
     about,
-    jenkins,
     note,
     diary,
     tab,
