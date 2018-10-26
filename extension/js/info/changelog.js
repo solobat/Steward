@@ -1,5 +1,14 @@
 const langZh = [
     {
+        version: 'v3.5.4',
+        detail: `
+            优化 Bookmark 插件性能；<br>
+            将 jenkins / coin / times 插件转至 plugins 仓库，请使用 spm 安装；<br>
+            plugin api 增强；<br>
+            修复一些 bug;<br>
+        `
+    },
+    {
         version: 'v3.5.3',
         detail: `
             新增 wsm 插件，wsm install / wsm uninstal 命令安装、卸载 website 配置；<br>
@@ -378,6 +387,15 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.5.4',
+        detail: `
+            Optimize Bookmark plugin performance;<br>
+            Move the jenkins / coin / times plugin to the plugins repository, use spm to install;<br>
+            Plugin api enhancement;<br>
+            Fix some bugs;<br>
+        `
+    },
     {
         version: 'v3.5.3',
         detail: `
