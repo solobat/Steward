@@ -79,7 +79,12 @@ function callCommand(command, key) {
     }
     cmdbox.command = command;
 
-    return Reflect.apply(command.plugin.onInput, cmdbox, [key, command, inContent]);
+    try {
+        return Reflect.apply(command.plugin.onInput, cmdbox, [key, command, inContent]);
+    } catch (error) {
+        console.error(error);
+        return Promise.resolve();
+    }
 }
 
 function searchInContext(query) {
@@ -94,12 +99,16 @@ function searchInContext(query) {
     }
 
     contexts.forEach(context => {
-        const searchRet = context.onInput(query);
+        try {
+            const searchRet = context.onInput(query);
 
-        if (searchRet instanceof Promise || typeof searchRet.then === 'function') {
-            tasks.push(searchRet);
-        } else if (searchRet && searchRet.length) {
-            res.concat(searchRet);
+            if (searchRet && (searchRet instanceof Promise || typeof searchRet.then === 'function')) {
+                tasks.push(searchRet);
+            } else if (searchRet && searchRet.length) {
+                res.concat(searchRet);
+            }
+        } catch (error) {
+            console.error(error);
         }
     });
 
@@ -342,7 +351,12 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
                     box.command = command;
                     box.background = false;
 
-                    return Reflect.apply(plugin.onEnter, box, [item, command, box.query, box.shiftKey, dataList]);
+                    try {
+                        return Reflect.apply(plugin.onEnter, box, [item, command, box.query, box.shiftKey, dataList]);
+                    } catch (error) {
+                        console.log(error);
+                        return;
+                    }
                 });
             } else {
                 console.log('Avoid recursive execution of the same workflow');
@@ -355,14 +369,20 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
                 partial = item[0];
             }
 
-            const result = Reflect.apply(plugin.onEnter, box, [partial, box.command, box.query, box.shiftKey, dataList]);
+            try {
+                const result = Reflect.apply(plugin.onEnter, box, [partial, box.command, box.query, box.shiftKey, dataList]);
 
-            if (!fromWorkflow) {
-                const enterResult = handleEnterResult(result);
+                if (!fromWorkflow) {
+                    const enterResult = handleEnterResult(result);
 
-                return enterResult;
-            } else {
-                return result;
+                    return enterResult;
+                } else {
+                    return result;
+                }
+            } catch (error) {
+                console.log(error);
+
+                return;
             }
         }
     }
