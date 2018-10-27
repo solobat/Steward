@@ -10,7 +10,8 @@
 ***
 
 ### Install：
-- [Chrome WebStore](https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd)
+- [Steward](https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd)
+- [Browser Alfred -- Without NewTab](https://chrome.google.com/webstore/detail/browser-alfred-a-command/jglmompgeddkbcdamdknmebaimldkkbl)
 - [Offline](http://owsjc7iz3.bkt.clouddn.com/steward-3.5.4.crx)。
 
 ### Usage
