@@ -1,4 +1,4 @@
-import { initConfig, globalData, globalApi } from '../../js/main/main'
+import { initConfig, globalData, globalApi, clearToasts } from '../../js/main/main'
 import keyboardJS from 'keyboardjs'
 import { MODE } from '../../js/constant/base'
 import { createWebsites } from '../../js/helper/websites'
@@ -58,6 +58,7 @@ function changeBoxStatus(disabled, cmd) {
 function closeBox() {
     changeBoxStatus(true);
     requestAnimationFrame(() => {
+        clearToasts();
         window.parentWindow.postMessage({
             action: 'closeBox'
         }, '*');

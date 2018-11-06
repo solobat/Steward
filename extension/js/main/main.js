@@ -688,3 +688,7 @@ export function globalApi(app) {
 
     document.dispatchEvent(evt);
 }
+
+export function clearToasts() {
+    Toast.clear();
+}
