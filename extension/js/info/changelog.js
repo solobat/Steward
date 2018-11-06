@@ -1,5 +1,11 @@
 const langZh = [
     {
+        version: 'v3.5.5',
+        detail: `
+            修复一些 bug;<br>
+        `
+    },
+    {
         version: 'v3.5.4',
         detail: `
             优化 Bookmark 插件性能；<br>
@@ -387,6 +393,12 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.5.5',
+        detail: `
+            Fix some bugs;<br>
+        `
+    },
     {
         version: 'v3.5.4',
         detail: `
