@@ -524,7 +524,7 @@
                             <template v-if="curApprItem">
                                 <div class="themes-container" :style="themeContainerStyles">
                                     <div class="themes-info">
-                                        <div class="preview" v-html="previewHtml"></div>
+                                        <div class="preview steward" v-html="previewHtml"></div>
                                     </div>
                                     <div class="theme-editor">
                                         <el-form v-if="themeMode" :model="theme" label-width="258px">
