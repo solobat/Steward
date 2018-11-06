@@ -205,11 +205,17 @@ function onEnter(item) {
             if (result) {
                 return result.then(() => {
                     window.stewardApp.applyCommand('wsm install');
+
+                    return true;
                 });
+            } else {
+                return Promise.resolve(true);
             }
         } else if (subcmd === 'uninstall') {
             return uninstallWebsite(item.data).then(() => {
                 window.stewardApp.applyCommand('wsm uninstall');
+                
+                return true;
             });
         }
     } else if (item.id === 'create') {

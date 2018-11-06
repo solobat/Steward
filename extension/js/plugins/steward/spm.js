@@ -128,7 +128,7 @@ function onInput(query) {
 }
 
 function installPlugin(item) {
-    axios.get(item.source, {
+    return axios.get(item.source, {
         params: {
             t: Number(new Date())
         }
@@ -137,16 +137,17 @@ function installPlugin(item) {
         const plugin = pluginFactory({
             source: resp
         });
+        let result = true;
 
         if (plugin) {
             const meta = plugin.getMeta();
             const status = customPluginHelper.checkPluginStatus(meta);
 
             if (status === constant.BASE.PLUGIN_STATUS.NOTINSTALL) {
-                customPluginHelper.create(meta);
+                result = customPluginHelper.create(meta);
                 util.toast.success('Plugin has been installed successfully!');
             } else if (status === constant.BASE.PLUGIN_STATUS.NEWVESION) {
-                customPluginHelper.update(meta);
+                result = customPluginHelper.update(meta);
                 util.toast.success('Plugin has been updated successfully!');
             } else {
                 util.toast.warning('Plugin has been installed');
@@ -154,6 +155,8 @@ function installPlugin(item) {
         } else {
             util.toast.error('Plugin is broken!');
         }
+
+        return result;
     });
 }
 
@@ -168,9 +171,17 @@ function onEnter(item) {
     const subcmd = item.subcmd;
 
     if (subcmd === 'install') {
-        installPlugin(item);
+        return installPlugin(item).then(() => {
+            window.stewardApp.applyCommand('spm install');
+
+            return true;
+        });
     } else if (subcmd === 'uninstall') {
-        return uninstallPlugin(item);
+        return uninstallPlugin(item).then(() => {
+            window.stewardApp.applyCommand('spm uninstall');
+
+            return true;
+        });
     }
 }
 
