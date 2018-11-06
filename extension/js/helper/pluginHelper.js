@@ -6,7 +6,7 @@ import util from '../common/util'
 import $ from 'jquery'
 import dayjs from 'dayjs'
 import constant from '../constant'
-import { CustomPluginList } from '../collection/plugin'
+import { CustomPlugin as CustomPluginModel, CustomPluginList } from '../collection/plugin'
 import axios from 'axios'
 import storage from '../utils/storage'
 import browser from 'webextension-polyfill'
@@ -201,21 +201,26 @@ const customPluginList = new CustomPluginList();
 export const customPluginHelper = {
     create(info) {
         if (info.uid && info.source) {
-            const plugin = customPluginList.create({
-                ...info
-            });
+            const plugin = new CustomPluginModel();
 
-            return plugin;
+            plugin.set(info);
+
+            return Promise.resolve(customPluginList.chromeStorage.create(plugin).then(() => {
+                return this.refresh().then(() => {
+                    return plugin;
+                });
+            }));
         } else {
-            return 'no id or source';
+            return Promise.reject('no id or source');
         }
     },
 
     remove(id) {
         const model = customPluginList.remove(id);
-        customPluginList.chromeStorage.destroy(model);
 
-        return model;
+        return Promise.resolve(customPluginList.chromeStorage.destroy(model).then(() => {
+            return this.refresh();
+        }));
     },
 
     checkPluginStatus(plugin) {
@@ -248,9 +253,9 @@ export const customPluginHelper = {
             remove: false
         });
 
-        plugin.save();
-
-        return plugin;
+        return Promise.resolve(plugin.save().then(() => {
+            return plugin;
+        }));
     },
 
     save(info) {
