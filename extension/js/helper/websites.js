@@ -353,11 +353,11 @@ const helper = {
 
             website.set(info);
 
-            return websiteList.chromeStorage.create(website).then(() => {
+            return Promise.resolve(websiteList.chromeStorage.create(website).then(() => {
                 return this.refresh().then(() => {
                     return website;
                 });
-            });
+            }));
         } else {
             return Promise.reject('no title or host');
         }
@@ -366,9 +366,9 @@ const helper = {
     remove(id) {
         const model = websiteList.remove(id);
 
-        return websiteList.chromeStorage.destroy(model).then(() => {
+        return Promise.resolve(websiteList.chromeStorage.destroy(model).then(() => {
             return this.refresh();
-        });
+        }));
     },
 
     getDefaultSiteInfo,
@@ -379,9 +379,9 @@ const helper = {
             remove: false
         });
 
-        return diary.save().then(() => {
+        return Promise.resolve(diary.save().then(() => {
             return diary;
-        });
+        }));
     },
 
     save(info) {
