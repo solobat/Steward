@@ -167,7 +167,11 @@ export default {
             if (dataList) {
                 if (dataList instanceof Promise || typeof dataList.then === 'function') {
                     dataList.then(resp => {
-                        this.handleInputResult(resp);
+                        if (resp.isValid) {
+                            this.handleInputResult(resp.data);
+                        } else {
+                            console.log(`invalid promise`);
+                        }
                     });
                 } else {
                     this.handleInputResult(dataList);

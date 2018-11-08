@@ -262,7 +262,12 @@ export function queryByInput(str, background) {
         .then(defaultStage)
         .catch(msg => {
             if (msg) {
-                return Promise.resolve(msg);
+                return Promise.resolve(msg).then(result => {
+                    return {
+                        query: str,
+                        data: result
+                    }
+                });
             }
         });
 }
