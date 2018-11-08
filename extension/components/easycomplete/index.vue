@@ -154,10 +154,14 @@ export default {
 
         render(text) {
             this.term = text;
-            this.refresh();
+            if (text) {
+                this.refresh();
 
-            if (this.autoResizeBoxFontSize) {
-                this.resizeUI(this.term);
+                if (this.autoResizeBoxFontSize) {
+                    this.resizeUI(this.term);
+                }
+            } else {
+                this.empty();
             }
         },
 
