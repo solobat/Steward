@@ -4,6 +4,7 @@ export default {
     LASTDATE: 'lastDate',
     WALLPAPER: 'wallpaper',
     WALLPAPERS: 'wallpapers',
+    WALLPAPER_BLACKLIST: 'wallpaper_blacklist',
     THEMES: 'themes',
     TODO: 'todo',
     DONE: 'done',

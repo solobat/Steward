@@ -7,7 +7,7 @@
 /*global EXT_TYPE */
 import $ from 'jquery'
 import Toast from 'toastr'
-import { saveWallpaperLink, getDataURI } from '../../helper/wallpaper'
+import { saveWallpaperLink, getDataURI, addToBlackList } from '../../helper/wallpaper'
 import { MODE } from '../../constant/base'
 import STORAGE from '../../constant/storage'
 import util from '../../common/util'
@@ -24,6 +24,13 @@ const icon = chrome.extension.getURL('iconfont/wallpaper-icon.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const commands = util.genCommands(name, icon, keys, type);
 const allActions = [
+    {
+        icon: chrome.extension.getURL('iconfont/refresh-red.svg'),
+        title: chrome.i18n.getMessage('wallpaper_action_refresh_title'),
+        desc: chrome.i18n.getMessage('wallpaper_action_refresh_subtitle'),
+        selector: '#j-refresh-wp',
+        type: 'refresh'
+    },
     {
         icon: chrome.extension.getURL('iconfont/weibo-red.svg'),
         title: chrome.i18n.getMessage('wallpaper_action_upload_title'),
@@ -45,11 +52,10 @@ const allActions = [
         type: 'remove'
     },
     {
-        icon: chrome.extension.getURL('iconfont/refresh-red.svg'),
-        title: chrome.i18n.getMessage('wallpaper_action_refresh_title'),
-        desc: chrome.i18n.getMessage('wallpaper_action_refresh_subtitle'),
-        selector: '#j-refresh-wp',
-        type: 'refresh'
+        icon: chrome.extension.getURL('iconfont/notshow.svg'),
+        title: chrome.i18n.getMessage('wallpaper_action_block_title'),
+        desc: chrome.i18n.getMessage('wallpaper_action_block_subtitle'),
+        type: 'block'
     },
     {
         icon: chrome.extension.getURL('iconfont/download-red.svg'),
@@ -193,6 +199,13 @@ function handleWallpaperAction(action, command) {
         return saveImage('upload', command);
     } else if (action.type === 'download') {
         saveImage('download', command);
+    } else if (action.type === 'block') {
+        addToBlackList(localStorage.wallpaper).then(() => {
+            Toast.success('Add to blacklist successfully');
+            $('#j-refresh-wp').click();
+        }).catch(() => {
+            Toast.warning('Failed!');
+        });
     }
 }
 

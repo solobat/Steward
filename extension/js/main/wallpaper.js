@@ -4,7 +4,7 @@ import * as api from '../api/index'
 import * as date from '../utils/date'
 import storage from '../utils/storage'
 import Toast from 'toastr'
-import { saveWallpaperLink } from '../helper/wallpaper'
+import { saveWallpaperLink, shouldShow } from '../helper/wallpaper'
 import browser from 'webextension-polyfill'
 import 'jquery.waitforimages'
 
@@ -157,10 +157,13 @@ function recordSource(source) {
     window.localStorage.setItem('wallpaper_source', source);
 }
 
-export function refresh(today) {
+export function refresh(today, silent) {
     const method = today ? 'today' : 'rand';
     const server = getSources(method);
-    Toast.info(chrome.i18n.getMessage('wallpaper_update'), { timeOut: 20000 });
+
+    if (!silent) {
+        Toast.info(chrome.i18n.getMessage('wallpaper_update'), { timeOut: 20000 });
+    }
 
     state.loading = true;
 
@@ -185,8 +188,13 @@ export function refresh(today) {
         }
 
         if (!/\.html$/.test(wp)) {
-            recordSource(type);
-            return update(wp, true, isNew);
+            shouldShow(wp).then(() => {
+                recordSource(type);
+
+                return update(wp, true, isNew);
+            }).catch(() => {
+                refresh(false, true);
+            });
         } else {
             state.loading = false;
             Toast.clear();

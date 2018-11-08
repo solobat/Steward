@@ -509,6 +509,12 @@
     "wallpaper_action_remove_subtitle": {
         "message": "从你的收藏中删除壁纸原链接"
     },
+    "wallpaper_action_block_title": {
+        "message": "不再显示"
+    },
+    "wallpaper_action_block_subtitle": {
+        "message": "将此壁纸加入黑名单，以后不再显示"
+    },
     "wallpaper_action_refresh_title": {
         "message": "刷新"
     },
