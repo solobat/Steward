@@ -674,7 +674,7 @@
                         </template>
                     </section>
                     <div style="margin-top: 12px;">
-                        <a style="margin-left: 12px;" :href="'http://owsjc7iz3.bkt.clouddn.com/' + extType + '-' + config.version + '.crx'">{{i18nTexts.ui.settings.actions.downloadcrx}}</a>
+                        <a style="margin-left: 12px;" :href="'http://static.oksteward.com/' + extType + '-' + config.version + '.crx'">{{i18nTexts.ui.settings.actions.downloadcrx}}</a>
                     </div>
                 </div>
             </el-tab-pane>

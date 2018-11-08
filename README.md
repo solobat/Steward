@@ -1,17 +1,17 @@
-<p align="center"><img src="http://owsjc7iz3.bkt.clouddn.com/440_280.jpg" /></p>
+<p align="center"><img src="http://static.oksteward.com/440_280.jpg" /></p>
 <h1 align="center">Steward</h1>
 <p align="center">A command launcher for Chrome</p>
 <p align="center">
    <a href="https://github.com/solobat/Steward/releases"><img src="https://img.shields.io/badge/lastest_version-3.5.5-blue.svg"></a>
    <a target="_blank" href="https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd"><img src="https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg"></a>
-   <a href="http://owsjc7iz3.bkt.clouddn.com/Steward-3.5.5.crx"><img src="https://img.shields.io/badge/download-_crx-brightgreen.svg"></a>
+   <a href="http://static.oksteward.com/steward-3.5.5.crx"><img src="https://img.shields.io/badge/download-_crx-brightgreen.svg"></a>
 </p>
 
 ***
 
 ### Install：
 - [Chrome WebStore](https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd)
-- [Offline](http://owsjc7iz3.bkt.clouddn.com/steward-3.5.5.crx)。
+- [Offline](http://static.oksteward.com/steward-3.5.5.crx)。
 
 ### Usage
 > Use the commands to complete most of the operation in the browser
@@ -86,11 +86,11 @@ npm run prod:alfred
 <div style="display: flex;justify-content: space-around;">
     <div>
         <h4>WeChat</h4>
-        <img src="http://owsjc7iz3.bkt.clouddn.com/IMG_2180.jpg" width="250" alt="WeChat" />
+        <img src="http://static.oksteward.com/IMG_2180.jpg" width="250" alt="WeChat" />
     </div>
     <div>
         <h4>Alipay</h4>
-        <img src="http://owsjc7iz3.bkt.clouddn.com/alipay3.jpg" width="250" alt="Alipay" />
+        <img src="http://static.oksteward.com/alipay3.jpg" width="250" alt="Alipay" />
     </div>
 </div>
 <div>
@@ -113,6 +113,6 @@ npm run prod:alfred
 [chrome-badge]:     https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg
 [chrome-link]:      https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd
 [offline-badge]:    https://img.shields.io/badge/download-_crx-brightgreen.svg
-[offline-link]:     http://owsjc7iz3.bkt.clouddn.com/Steward-3.5.5.crx
+[offline-link]:     http://static.oksteward.com/steward-3.5.5.crx
 [license-badge]:    https://img.shields.io/github/license/mashape/apistatus.svg
 [license-link]:     https://opensource.org/licenses/MIT
