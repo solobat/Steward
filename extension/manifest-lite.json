@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
-    "name": "Browser Alfred - a command launcher",
-    "short_name": "Alfred",
+    "name": "Steward Lite - __MSG_extName__",
+    "short_name": "Steward Lite",
     "version": "3.5.5",
     "description": "__MSG_extDesc__",
     "default_locale": "en",
@@ -10,7 +10,7 @@
     },
     "browser_action": {
         "default_icon": "img/icon.png",
-        "default_title": "Alfred",
+        "default_title": "Steward Lite",
         "default_popup": "popup.html"
     },
     "content_scripts": [{

@@ -723,7 +723,7 @@ import changelog from '../../js/info/changelog'
 import util from '../../js/common/util'
 import * as i18n from '../../js/info/i18n'
 import CONST from '../../js/constant'
-const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'steward';
+const extType = EXT_TYPE === 'stewardlite' ? 'Steward Lite' : 'steward';
 const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jglmompgeddkbcdamdknmebaimldkkbl';
 
 export default {

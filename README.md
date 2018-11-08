@@ -71,14 +71,14 @@ npm install
 # dev for steward
 npm run dev
 
-# dev for browser alfred
-npm run dev:alfred
+# dev for Steward Lite
+npm run dev:lite
 
 # build for steward(MacOS)
 npm run prod
 
-# build for browser alfred(MacOS)
-npm run prod:alfred
+# build for Steward Lite(MacOS)
+npm run prod:lite
 ````
 
 #### Sponsor:

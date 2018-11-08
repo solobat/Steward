@@ -54,7 +54,7 @@ const langZh = [
     {
         version: 'v3.4.12',
         detail: `
-            重新设计 Browser Alfred New Tab 模式，请访问 lai.app;<br>
+            重新设计 Steward Lite New Tab 模式，请访问 lai.app;<br>
             壁纸操作优化。
         `
     },
@@ -448,7 +448,7 @@ const langEn = [
     {
         version: 'v3.4.12',
         detail: `
-            Redesign newtab mode of Browser Alfred, please visit website https://lai.app;<br>
+            Redesign newtab mode of Steward Lite, please visit website https://lai.app;<br>
             Optimize the operations of wallpaper.
         `
     },

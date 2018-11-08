@@ -1,6 +1,6 @@
 {
     "extName": {
-        "message": "extension management/app launcher/tab management"
+        "message": "a command launcher"
     },
     "extDesc": {
         "message": "a command launcher with extension management/app launcher/tab management/history search/alfred"

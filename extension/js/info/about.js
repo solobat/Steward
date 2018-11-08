@@ -5,7 +5,7 @@
 
 import stat from './stat'
 
-const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'Steward';
+const extType = EXT_TYPE === 'stewardlite' ? 'Steward Lite' : 'Steward';
 const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jglmompgeddkbcdamdknmebaimldkkbl';
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;

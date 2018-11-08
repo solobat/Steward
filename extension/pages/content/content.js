@@ -8,7 +8,7 @@ import { ITEM_TYPE } from '../../js/constant/base'
 
 const chrome = window.chrome;
 const pluginHelper = new PluginHelper();
-const shouldInstead = window.location.href === 'https://lai.app/' && EXT_TYPE === 'alfred';
+const shouldInstead = window.location.href === 'https://lai.app/' && EXT_TYPE === 'stewardlite';
 
 function insertCss() {
     const customStyles = document.createElement('style');
