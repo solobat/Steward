@@ -2,6 +2,13 @@ const langZh = [
     {
         version: 'v3.5.5',
         detail: `
+            壁纸插件新增不再显示选项，点击将壁纸加入黑名单;<br>
+            修复一些 bug.<br>
+        `
+    },
+    {
+        version: 'v3.5.5',
+        detail: `
             修复一些 bug;<br>
         `
     },
@@ -393,6 +400,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.5.6',
+        detail: `
+            Add blacklist option for wallpaer plugin, click it to add the wallpaper to the blacklist;<br>
+            Fix some bugs.<br> 
+        `
+    },
     {
         version: 'v3.5.5',
         detail: `

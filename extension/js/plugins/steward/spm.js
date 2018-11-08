@@ -172,13 +172,13 @@ function onEnter(item) {
 
     if (subcmd === 'install') {
         return installPlugin(item).then(() => {
-            window.stewardApp.applyCommand('spm install');
+            window.stewardApp.refresh();
 
             return true;
         });
     } else if (subcmd === 'uninstall') {
         return uninstallPlugin(item).then(() => {
-            window.stewardApp.applyCommand('spm uninstall');
+            window.stewardApp.refresh();
 
             return true;
         });

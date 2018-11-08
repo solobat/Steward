@@ -94,9 +94,9 @@ function onEnter(item, { orkey, key }, query, shiftKey, list) {
             chrome.bookmarks.remove(item.id, () => {
                 // clear cache
                 bookmarks = null;
-                window.stewardApp.applyCommand(`${key} `);
+                window.stewardApp.refresh();
                 window.slogs.push(`delete bookmark: ${item.url}`);
-                
+
                 util.toast.success('Delete successfully');
 
                 resolve(true);

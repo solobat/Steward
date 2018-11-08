@@ -44,7 +44,7 @@ function onEnter(item, command, query) {
                 }
             }
         });
-        this.render(query);
+        window.stewardApp.applyCommand(query);
         Toast.success(chrome.i18n.getMessage('save_ok'));
     } else {
         Toast.warning(chrome.i18n.getMessage('custom_warning_notempty'));

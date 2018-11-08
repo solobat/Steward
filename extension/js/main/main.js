@@ -676,6 +676,10 @@ export function globalApi(app) {
             app.$emit('apply:command', cmd);
         },
 
+        refresh() {
+            app.$emit('apply:command', cmdbox.str);
+        },
+
         updateList(list) {
             app.$emit('cmdbox:list', list);
         },
