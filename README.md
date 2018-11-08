@@ -11,6 +11,7 @@
 
 ### Install：
 - [Chrome WebStore](https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd)
+- [Steward Lite](https://chrome.google.com/webstore/detail/jglmompgeddkbcdamdknmebaimldkkbl)
 - [Offline](http://static.oksteward.com/steward-3.5.6.crx)。
 
 ### Usage
