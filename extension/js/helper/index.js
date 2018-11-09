@@ -9,7 +9,7 @@ import themeHelper from './themeHelper'
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
-const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'steward';
+const extType = EXT_TYPE === 'stewardlite' ? 'Steward Lite' : 'steward';
 
 export const dataHelpers = [configHelper, workflowHelper, websitesHelper, wallpaperHelper, themeHelper];
 

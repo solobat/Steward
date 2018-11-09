@@ -86,14 +86,20 @@ function onInput(query, command) {
     }
 }
 
-function onEnter(item, { orkey }, query, shiftKey, list) {
+function onEnter(item, { orkey, key }, query, shiftKey, list) {
     if (orkey === 'bm') {
         util.batchExecutionIfNeeded(shiftKey, util.tabCreateExecs, [list, item]);
     } else if (orkey === 'bmd') {
         return new Promise(resolve => {
             chrome.bookmarks.remove(item.id, () => {
-                resolve('');
+                // clear cache
+                bookmarks = null;
+                window.stewardApp.refresh();
                 window.slogs.push(`delete bookmark: ${item.url}`);
+
+                util.toast.success('Delete successfully');
+
+                resolve(true);
             });
         });
     }

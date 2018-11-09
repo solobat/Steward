@@ -104,7 +104,7 @@ function onEnter(item, command, query, shiftKey, list) {
 
     const tasks = util.batchExecutionIfNeeded(shiftKey, disableExecs, [list, items]);
     return tasks.then(() => {
-        return '';
+        window.stewardApp.refresh();
     });
 }
 

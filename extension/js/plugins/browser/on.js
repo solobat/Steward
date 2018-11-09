@@ -64,8 +64,7 @@ function onEnter(item) {
     if (item && item.id) {
         setEnabled(item.id, true);
         window.slogs.push(`Enable: ${item.title}`);
-
-        return Promise.resolve('');
+        window.stewardApp.refresh();
     }
 }
 

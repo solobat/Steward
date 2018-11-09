@@ -5,7 +5,7 @@
 
 import stat from './stat'
 
-const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'Steward';
+const extType = EXT_TYPE === 'stewardlite' ? 'Steward Lite' : 'Steward';
 const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jglmompgeddkbcdamdknmebaimldkkbl';
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -21,11 +21,11 @@ const langZh = `
 <div class="qrcodes">
     <div>
         <h3>微信</h3>
-        <img src="http://owsjc7iz3.bkt.clouddn.com/IMG_2180.jpg" alt="" class="wx-pay qrcode">
+        <img src="http://static.oksteward.com/IMG_2180.jpg" alt="" class="wx-pay qrcode">
     </div>
     <div>
         <h3>支付宝</h3>
-        <img src="http://owsjc7iz3.bkt.clouddn.com/alipay3.jpg" alt="" class="ali-pay qrcode">
+        <img src="http://static.oksteward.com/alipay3.jpg" alt="" class="ali-pay qrcode">
     </div>
 </div>
 `;

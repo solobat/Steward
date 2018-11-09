@@ -1,5 +1,12 @@
 const langZh = [
     {
+        version: 'v3.5.6',
+        detail: `
+            壁纸插件新增不再显示选项，点击将壁纸加入黑名单;<br>
+            修复一些 bug.<br>
+        `
+    },
+    {
         version: 'v3.5.5',
         detail: `
             修复一些 bug;<br>
@@ -54,7 +61,7 @@ const langZh = [
     {
         version: 'v3.4.12',
         detail: `
-            重新设计 Browser Alfred New Tab 模式，请访问 lai.app;<br>
+            重新设计 Steward Lite New Tab 模式，请访问 lai.app;<br>
             壁纸操作优化。
         `
     },
@@ -394,6 +401,13 @@ const langZh = [
 
 const langEn = [
     {
+        version: 'v3.5.6',
+        detail: `
+            Add blacklist option for wallpaer plugin, click it to add the wallpaper to the blacklist;<br>
+            Fix some bugs.<br> 
+        `
+    },
+    {
         version: 'v3.5.5',
         detail: `
             Fix some bugs;<br>
@@ -448,7 +462,7 @@ const langEn = [
     {
         version: 'v3.4.12',
         detail: `
-            Redesign newtab mode of Browser Alfred, please visit website https://lai.app;<br>
+            Redesign newtab mode of Steward Lite, please visit website https://lai.app;<br>
             Optimize the operations of wallpaper.
         `
     },

@@ -91,6 +91,8 @@ function handleNtEnter(item) {
     } else if (actionType === 'string') {
         setNewValueFromUserInput(item);
     }
+
+    window.location.reload();
 }
 
 function addRandomItem(text) {

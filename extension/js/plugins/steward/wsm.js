@@ -204,7 +204,7 @@ function onEnter(item) {
 
             if (result) {
                 return result.then(() => {
-                    window.stewardApp.applyCommand('wsm install');
+                    window.stewardApp.refresh();
 
                     return true;
                 });
@@ -213,8 +213,8 @@ function onEnter(item) {
             }
         } else if (subcmd === 'uninstall') {
             return uninstallWebsite(item.data).then(() => {
-                window.stewardApp.applyCommand('wsm uninstall');
-                
+                window.stewardApp.refresh();
+
                 return true;
             });
         }

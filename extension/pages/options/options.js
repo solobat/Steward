@@ -62,6 +62,10 @@ function render({general, plugins, lastVersion}, i18nTexts) {
         activeName = fromTab.toLowerCase();
     }
 
+    if (activeName === 'steward') {
+        activeName = 'general';
+    }
+
     new Vue({
         el: '#app',
         data: {

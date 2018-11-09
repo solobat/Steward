@@ -26,9 +26,9 @@ const commands = [{
     editable: true
 }];
 
-function onInput(query) {
+function onInput(query, command) {
     if (emptyReg.test(query)) {
-        return;
+        return util.getDefaultResult(command);
     }
 
     return getTranslation(query);

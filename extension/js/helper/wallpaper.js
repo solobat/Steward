@@ -73,6 +73,36 @@ export function getDataURI(url) {
     });
 }
 
+const checkBlacklist = (predicate = Boolean) => imgurl => {
+    return browser.storage.local.get(STORAGE.WALLPAPER_BLACKLIST).then(resp => {
+        const list = resp[STORAGE.WALLPAPER_BLACKLIST] || [];
+
+        if (list.indexOf(imgurl) === -1) {
+            list.push(imgurl);
+
+            return predicate(list);
+        } else {
+            return Promise.reject('');
+        }
+    });
+}
+
+export const shouldShow = checkBlacklist();
+
+const getBlacklistIfNotRepeat = checkBlacklist(list => list);
+
+export function addToBlackList(imgurl) {
+    if (imgurl) {
+        return getBlacklistIfNotRepeat(imgurl).then(list => {
+            return browser.storage.local.set({
+                [STORAGE.WALLPAPER_BLACKLIST]: list
+            });
+        });
+    } else {
+        return Promise.reject('');
+    }
+}
+
 export default {
     key: STORAGE.WALLPAPERS,
 

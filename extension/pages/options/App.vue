@@ -674,7 +674,7 @@
                         </template>
                     </section>
                     <div style="margin-top: 12px;">
-                        <a style="margin-left: 12px;" :href="'http://owsjc7iz3.bkt.clouddn.com/' + extType + '-' + config.version + '.crx'">{{i18nTexts.ui.settings.actions.downloadcrx}}</a>
+                        <a style="margin-left: 12px;" :href="'http://static.oksteward.com/' + extType + '-' + config.version + '.crx'">{{i18nTexts.ui.settings.actions.downloadcrx}}</a>
                     </div>
                 </div>
             </el-tab-pane>
@@ -723,7 +723,7 @@ import changelog from '../../js/info/changelog'
 import util from '../../js/common/util'
 import * as i18n from '../../js/info/i18n'
 import CONST from '../../js/constant'
-const extType = EXT_TYPE === 'alfred' ? 'Browser Alfred' : 'steward';
+const extType = EXT_TYPE === 'stewardlite' ? 'Steward Lite' : 'steward';
 const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jglmompgeddkbcdamdknmebaimldkkbl';
 
 export default {

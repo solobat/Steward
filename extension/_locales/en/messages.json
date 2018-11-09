@@ -1,6 +1,6 @@
 {
     "extName": {
-        "message": "extension management/app launcher/tab management"
+        "message": "a command launcher"
     },
     "extDesc": {
         "message": "a command launcher with extension management/app launcher/tab management/history search/alfred"
@@ -508,6 +508,12 @@
     },
     "wallpaper_action_remove_subtitle": {
         "message": "Remove current wallpaper from your collections"
+    },
+    "wallpaper_action_block_title": {
+        "message": "Nerver show"
+    },
+    "wallpaper_action_block_subtitle": {
+        "message": "Add to the blacklist, and never show"
     },
     "wallpaper_action_refresh_title": {
         "message": "Refresh"
