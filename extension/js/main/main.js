@@ -260,6 +260,7 @@ export function queryByInput(str, background) {
         .then(searchStage)
         .then(commandStage)
         .then(defaultStage)
+        .then(data => Promise.reject(data))
         .catch(msg => {
             if (msg) {
                 return Promise.resolve(msg).then(result => {
