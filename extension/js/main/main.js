@@ -260,6 +260,7 @@ export function queryByInput(str, background) {
         .then(searchStage)
         .then(commandStage)
         .then(defaultStage)
+        .then(data => Promise.reject(data))
         .catch(msg => {
             if (msg) {
                 return Promise.resolve(msg).then(result => {
@@ -474,21 +475,22 @@ function execWorkflow(item) {
                 return queryByInput(cmd.input, true);
             }).then(resp => {
                 const { numbers } = cmd;
+                const data = resp.data;
 
                 cmdbox.shiftKey = cmd.withShift;
 
-                if (resp && resp.length) {
+                if (data && data.length) {
                     if (numbers === NUM_ALL) {
-                        return execCommand(cmdbox, resp, resp, fromWorkflow);
+                        return execCommand(cmdbox, data, data, fromWorkflow);
                     } else if (numbers instanceof Array) {
                         const [from, to] = fixNumbers(numbers);
 
-                        return execCommand(cmdbox, resp, resp.slice(from, to + 1), fromWorkflow);
+                        return execCommand(cmdbox, data, data.slice(from, to + 1), fromWorkflow);
                     } else {
-                        return execCommand(cmdbox, resp, resp[fixNumber(numbers)], fromWorkflow);
+                        return execCommand(cmdbox, data, data[fixNumber(numbers)], fromWorkflow);
                     }
                 } else {
-                    return execCommand(cmdbox, resp, false, fromWorkflow);
+                    return execCommand(cmdbox, data, false, fromWorkflow);
                 }
             });
         });
