@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Steward Lite - __MSG_extName__",
     "short_name": "Steward Lite",
-    "version": "3.5.6",
+    "version": "3.5.6.1",
     "description": "__MSG_extDesc__",
     "default_locale": "en",
     "background": {
