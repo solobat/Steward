@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "Steward - __MSG_extName__",
+    "name": "Steward",
     "short_name": "Steward",
     "version": "3.5.6.2",
     "description": "__MSG_extDesc__",
