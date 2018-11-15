@@ -27,7 +27,7 @@ let keys;
 let reg;
 let mode;
 let inContent;
-const cmdbox = {
+let state = {
     str: '',
     cmd: '',
     query: '',
@@ -64,23 +64,45 @@ function findRegExpMatched(str) {
     });
 }
 
+function setState(attrs = {}) {
+    const newState = Object.assign({}, state, attrs);
+
+    if (newState.command !== state.command) {
+        if (state.command) {
+            const onLeave = state.command.plugin.onLeave;
+
+            if (typeof onLeave === 'function') {
+                Reflect.apply(onLeave, state, [...newState]);
+            }
+        }
+
+        if (newState.command) {
+            const plugin = newState.command.plugin;
+            const onInit = newState.command.plugin.onInit;
+
+            if (typeof onInit === 'function') {
+                if (!plugin.inited) {
+                    Reflect.apply(onInit, state, [...newState]);
+                    plugin.inited = true;
+                }
+            }
+        }
+    }
+
+    state = newState;
+}
+
 function callCommand(command, key) {
     if (!command) {
         return;
     }
 
-    cmdbox.cmd = command.key;
-    if (cmdbox.command && cmdbox.command !== command) {
-        const onLeave = cmdbox.command.plugin.onLeave;
-
-        if (typeof onLeave === 'function') {
-            Reflect.apply(onLeave, cmdbox, [key, command, inContent]);
-        }
+    if (command.type !== CONST.BASE.PLUGIN_TYPE.ALWAYS) {
+        setState({ cmd: command.key, command });
     }
-    cmdbox.command = command;
 
     try {
-        return Reflect.apply(command.plugin.onInput, cmdbox, [key, command, inContent]);
+        return Reflect.apply(command.plugin.onInput, state, [key, command, inContent]);
     } catch (error) {
         console.error(error);
         return Promise.resolve();
@@ -121,15 +143,19 @@ function searchInContext(query) {
     }
 }
 
-function resetBox() {
-    cmdbox.cmd = '';
-    cmdbox.command = null;
+function resetBox(lastKey, lastCommand) {
+    setState({
+        cmd: lastKey,
+        command: lastCommand
+    });
 
     return Promise.resolve();
 }
 
 function alwaysStage() {
-    const str = cmdbox.str;
+    const str = state.str;
+    const lastCommand = state.command;
+    const lastKey = state.key;
 
     if (alwaysCommand) {
         return callCommand(alwaysCommand, str).then(results => {
@@ -137,7 +163,7 @@ function alwaysStage() {
                 window.stewardApp.emit('app:log', { key: 'calc', str });
                 return Promise.reject(results);
             } else {
-                return resetBox();
+                return resetBox(lastKey, lastCommand);
             }
         });
     } else {
@@ -146,7 +172,7 @@ function alwaysStage() {
 }
 
 function regexpStage() {
-    const str = cmdbox.str;
+    const str = state.str;
     const spCommand = findRegExpMatched(str);
 
     // handle regexp commands
@@ -159,7 +185,7 @@ function regexpStage() {
 }
 
 function searchStage() {
-    const str = cmdbox.str;
+    const str = state.str;
 
     // match commands && search in contexts
     if (str.indexOf(' ') === -1) {
@@ -174,6 +200,10 @@ function searchStage() {
 
             if (searchRes && searchRes.length) {
                 window.stewardApp.emit('app:log', { key: 'search', str });
+                setState({
+                    command: null
+                });
+
                 return Promise.reject(searchRes);
             } else {
                 return Promise.resolve(true);
@@ -186,39 +216,43 @@ function searchStage() {
 
 function commandStage(gothrough) {
     if (gothrough) {
-        return Promise.resolve(cmdbox);
+        return Promise.resolve(state);
     }
 
-    const str = cmdbox.str;
+    const str = state.str;
     const mArr = str.match(reg) || [];
     const cmd = mArr[1];
     const key = mArr[2];
 
     // search in context && handle other commands
     if (cmd) {
-        cmdbox.cmd = cmd;
-        cmdbox.query = key;
+        setState({
+            cmd,
+            query: key
+        });
 
         storage.h5.set(CONST.STORAGE.LAST_CMD, str);
 
-        if (cmdbox.lastcmd !== cmdbox.cmd) {
-            cmdbox.lastcmd = cmdbox.cmd;
+        if (state.lastcmd !== state.cmd) {
+            setState({
+                lastcmd: state.cmd
+            });
         }
 
-        const command = commands[cmdbox.cmd];
+        const command = commands[state.cmd];
 
         window.stewardApp.emit('app:log', { key: cmd, str });
 
         return Promise.reject(callCommand(command, key));
     } else {
-        return Promise.resolve(cmdbox);
+        return Promise.resolve(state);
     }
 }
 
 function defaultStage() {
     if (otherCommands.length) {
-        window.stewardApp.emit('app:log', { key: 'other', str: cmdbox.str });
-        return callCommand(otherCommands[0], cmdbox.str);
+        window.stewardApp.emit('app:log', { key: 'other', str: state.str });
+        return callCommand(otherCommands[0], state.str);
     }
 }
 
@@ -247,12 +281,14 @@ function handleEnterResult(result) {
 }
 
 export function queryByInput(str, background) {
-    cmdbox.str = str;
-    cmdbox.cmd = '';
-    cmdbox.query = '';
+    setState({
+        str,
+        cmd: '',
+        query: ''
+    });
 
     if (background) {
-        cmdbox.background = true;
+        setState({ background: true });
     }
 
     return alwaysStage()
@@ -352,7 +388,7 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
         }
 
         if (item && item.key === 'workflow') {
-            if (cmdbox.workflowStack.indexOf(item.wid) === -1) {
+            if (state.workflowStack.indexOf(item.wid) === -1) {
                 return execWorkflow(item).then(() => {
                     box.command = command;
                     box.background = false;
@@ -395,10 +431,12 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
 }
 
 export function handleEnter (dataList, index, shiftKey) {
-    cmdbox.workflowStack = [];
-    cmdbox.shiftKey = shiftKey;
+    setState({
+        workflowStack: [],
+        shiftKey
+    });
 
-    execCommand(cmdbox, dataList, dataList[index]);
+    execCommand(state, dataList, dataList[index]);
 }
 
 // should cache
@@ -462,7 +500,7 @@ function fixNumber(number) {
 const NUM_ALL = -1;
 function execWorkflow(item) {
     if (item.content) {
-        cmdbox.workflowStack.push(item.wid);
+        state.workflowStack.push(item.wid);
         window.slogs = [`Workflow ${item.title}`];
 
         const cmds = parseWorkflow(item.content);
@@ -477,20 +515,22 @@ function execWorkflow(item) {
                 const { numbers } = cmd;
                 const data = resp.data;
 
-                cmdbox.shiftKey = cmd.withShift;
+                setState({
+                    shiftKey: cmd.withShift
+                });
 
                 if (data && data.length) {
                     if (numbers === NUM_ALL) {
-                        return execCommand(cmdbox, data, data, fromWorkflow);
+                        return execCommand(state, data, data, fromWorkflow);
                     } else if (numbers instanceof Array) {
                         const [from, to] = fixNumbers(numbers);
 
-                        return execCommand(cmdbox, data, data.slice(from, to + 1), fromWorkflow);
+                        return execCommand(state, data, data.slice(from, to + 1), fromWorkflow);
                     } else {
-                        return execCommand(cmdbox, data, data[fixNumber(numbers)], fromWorkflow);
+                        return execCommand(state, data, data[fixNumber(numbers)], fromWorkflow);
                     }
                 } else {
-                    return execCommand(cmdbox, data, false, fromWorkflow);
+                    return execCommand(state, data, false, fromWorkflow);
                 }
             });
         });
@@ -506,23 +546,29 @@ function execWorkflow(item) {
 
 export function handleEmpty() {
     if (plugin4empty) {
-        cmdbox.cmd = CONST.BASE.EMPTY_COMMAND;
-        cmdbox.command = null;
-        cmdbox.searchTimer = setTimeout(() => {
-            Reflect.apply(plugin4empty.onBoxEmpty, cmdbox, []);
-        }, cmdbox.delay);
+        setState({
+            cmd: CONST.BASE.EMPTY_COMMAND,
+            command: null,
+            searchTimer: setTimeout(() => {
+                Reflect.apply(plugin4empty.onBoxEmpty, state, []);
+            }, state.delay)
+        });
+    } else {
+        setState({
+            command: null
+        });
     }
 }
 
 function init() {
     window.addEventListener('storage', function(event) {
-        const command = cmdbox.command
+        const command = state.command
 
         if (command) {
             const onStorageChange = command.plugin.onStorageChange;
 
             if (onStorageChange) {
-                Reflect.apply(onStorageChange, cmdbox, [event, command]);
+                Reflect.apply(onStorageChange, state, [event, command]);
             }
         }
     });
@@ -679,7 +725,7 @@ export function globalApi(app) {
         },
 
         refresh() {
-            app.$emit('apply:command', cmdbox.str);
+            app.$emit('apply:command', state.str);
         },
 
         updateList(list) {
@@ -687,7 +733,18 @@ export function globalApi(app) {
         },
 
         clearQuery() {
-            this.applyCommand(`${cmdbox.cmd} `);
+            this.applyCommand(`${state.cmd} `);
+        },
+
+        notice(...args) {
+            const command = state.command;
+
+            if (command && command.plugin && command.plugin.onNotice) {
+                const eventName = args[0];
+                const params = args.slice(1);
+
+                command.plugin.onNotice(eventName, ...params);
+            }
         }
     });
 

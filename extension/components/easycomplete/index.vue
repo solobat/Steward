@@ -93,7 +93,7 @@ export default {
                     if (event.shiftKey) {
                         this.selectInput();
                     } else if (event.metaKey) {
-
+                        window.stewardApp.notice('action:down:metakey');
                     } else {
                         this.move('down');
                         this.$emit('move', 'down');
@@ -106,7 +106,7 @@ export default {
                     if (event.shiftKey) {
                         this.selectInput();
                     } else if (event.metaKey) {
-
+                        window.stewardApp.notice('action:up:metakey');
                     } else {
                         this.move('up');
                         this.$emit('move', 'up');

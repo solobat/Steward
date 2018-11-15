@@ -103,9 +103,15 @@ class Plugin {
         }
     }
 
+    onInit() { }
+
     onInput() { }
 
     onEnter() { }
+
+    onNotice() { }
+
+    onLeave() { }
 
     createContext() {
         return {
@@ -122,12 +128,14 @@ class Plugin {
     }
 
     mergeMeta(meta) {
-        const { author, version, name, category, icon, title, commands, onInput, onEnter, type } = meta;
+        const { author, version, name, category, icon, title, commands,
+             onInit, onInput, onEnter, onLeave, onNotice, type } = meta;
         // plugin's unique id
         const uid = `${author}/${name}`;
 
         Object.assign(this, {
-            uid, version, name, category, icon, title, commands, onInput, onEnter, author, type
+            uid, version, name, category, icon, title, commands, 
+            onInit, onInput, onEnter, onLeave, onNotice, author, type
         });
     }
 
