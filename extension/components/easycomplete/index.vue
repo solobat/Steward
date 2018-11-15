@@ -98,9 +98,7 @@ export default {
             keyboardJS.bind(['down', 'tab', 'ctrl + n'], event => {
                 event.preventDefault();
                 if (this.isVisible()) {
-                    if (event.shiftKey) {
-                        this.selectInput();
-                    } else if (event.metaKey) {
+                    if (event.metaKey) {
                         window.stewardApp.notice('action:down:metakey');
                     } else {
                         this.move('down');
@@ -111,9 +109,7 @@ export default {
             keyboardJS.bind(['up', 'shift + tab', 'ctrl + p'], (event) => {
                 event.preventDefault();
                 if (this.isVisible()) {
-                    if (event.shiftKey) {
-                        this.selectInput();
-                    } else if (event.metaKey) {
+                    if (event.metaKey) {
                         window.stewardApp.notice('action:up:metakey');
                     } else {
                         this.move('up');
