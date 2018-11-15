@@ -82,19 +82,35 @@ export default {
     },
 
     methods: {
+        selectInput() {
+            this.$refs.input.select();
+        },
+
         bindEvents() {
             keyboardJS.bind(['down', 'tab', 'ctrl + n'], event => {
                 event.preventDefault();
                 if (this.isVisible()) {
-                    this.move('down');
-                    this.$emit('move', 'down');
+                    if (event.shiftKey) {
+                        this.selectInput();
+                    } else if (event.metaKey) {
+
+                    } else {
+                        this.move('down');
+                        this.$emit('move', 'down');
+                    }
                 }
             });
             keyboardJS.bind(['up', 'shift + tab', 'ctrl + p'], (event) => {
                 event.preventDefault();
                 if (this.isVisible()) {
-                    this.move('up');
-                    this.$emit('move', 'up');
+                    if (event.shiftKey) {
+                        this.selectInput();
+                    } else if (event.metaKey) {
+
+                    } else {
+                        this.move('up');
+                        this.$emit('move', 'up');
+                    }
                 }
             });
             keyboardJS.bind('enter', (event) => {
