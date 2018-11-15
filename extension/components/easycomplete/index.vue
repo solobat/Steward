@@ -191,8 +191,12 @@ export default {
 
             if (dataList) {
                 if (dataList instanceof Promise || typeof dataList.then === 'function') {
-                    this.showItemList(util.getLoadingResult());
+                    const timer = setTimeout(() => {
+                        this.showItemList(util.getLoadingResult());
+                    }, 16);
+
                     dataList.then(resp => {
+                        clearTimeout(timer);
                         if (resp.isValid) {
                             this.handleInputResult(resp.data);
                         } else {
