@@ -90,7 +90,7 @@ function onInput(query, command) {
             return queryWorkflows('', command);
         } else {
             getWorkflow(curWid).then(model => {
-                listWorkflowLines(this, model.id, model.content);
+                listWorkflowLines(model.id, model.content);
             });
         }
     }
@@ -108,7 +108,7 @@ function parseContent(content) {
         .filter(line => line && !line.match(/^[\s\t]+$/))
 }
 
-function listWorkflowLines(box, wid, content) {
+function listWorkflowLines(wid, content) {
     const lines = parseContent(content);
 
     const backToWorkflow = [{
@@ -130,8 +130,8 @@ function listWorkflowLines(box, wid, content) {
     window.stewardApp.updateList(list);
 }
 
-function handleWorkflowEditEnter(box, item) {
-    listWorkflowLines(box, item.wid, item.content);
+function handleWorkflowEditEnter(item) {
+    listWorkflowLines(item.wid, item.content);
 
     return Promise.resolve('');
 }
@@ -184,7 +184,7 @@ function deleteWorkflowLine(item, list) {
     });
 }
 
-function handleWorkflowLineEditEnter(box, item, command, query, shiftKey, list) {
+function handleWorkflowLineEditEnter(item, command, query, shiftKey, list) {
     if (!query && item.action === 'backto') {
         curWid = '';
 
@@ -208,11 +208,11 @@ function handleWorkflowLineEditEnter(box, item, command, query, shiftKey, list) 
     }
 }
 
-function handleWfeEnter(box, item, command, query, shiftKey, list) {
+function handleWfeEnter(item, command, query, shiftKey, list) {
     if (!curWid) {
-        return handleWorkflowEditEnter(box, item, command);
+        return handleWorkflowEditEnter(item, command);
     } else {
-        return handleWorkflowLineEditEnter(box, item, command, query, shiftKey, list);
+        return handleWorkflowLineEditEnter(item, command, query, shiftKey, list);
     }
 }
 
@@ -220,9 +220,9 @@ function onEnter(item, command, query, shiftKey, list) {
     const { orkey } = command;
 
     if (orkey === 'wf') {
-        return handleWfEnter(this, item);
+        return handleWfEnter(item);
     } else if (orkey === 'wfe') {
-        return handleWfeEnter(this, item, command, query, shiftKey, list);
+        return handleWfeEnter(item, command, query, shiftKey, list);
     }
 }
 

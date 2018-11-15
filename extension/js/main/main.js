@@ -367,22 +367,23 @@ function handleNormalItem(box, dataList, item) {
     }
 }
 
-function execCommand(box, dataList = [], item, fromWorkflow) {
-    if (item && item.isDefault && !box.query) {
+function execCommand(dataList = [], item, fromWorkflow) {
+    console.log(state, dataList, item, fromWorkflow);
+    if (item && item.isDefault && !state.query) {
         return;
-    } else if (!box.cmd || item.universal) {
-        const result = handleNormalItem(box, dataList, item);
+    } else if (!state.cmd || item.universal) {
+        const result = handleNormalItem(state, dataList, item);
         const ret = handleEnterResult(result);
 
-        window.stewardApp.emit('afterExecCommand', item, dataList, box.query);
+        window.stewardApp.emit('afterExecCommand', item, dataList, state.query);
 
         return ret;
     } else {
         let plugin;
-        const command = box.command;
+        const command = state.command;
 
-        if (box.command) {
-            plugin = box.command.plugin
+        if (state.command) {
+            plugin = state.command.plugin
         } else if (plugin4empty) {
             plugin = plugin4empty;
         }
@@ -390,11 +391,11 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
         if (item && item.key === 'workflow') {
             if (state.workflowStack.indexOf(item.wid) === -1) {
                 return execWorkflow(item).then(() => {
-                    box.command = command;
-                    box.background = false;
+                    state.command = command;
+                    state.background = false;
 
                     try {
-                        return Reflect.apply(plugin.onEnter, box, [item, command, box.query, box.shiftKey, dataList]);
+                        return Reflect.apply(plugin.onEnter, state, [item, command, state.query, state.shiftKey, dataList]);
                     } catch (error) {
                         console.log(error);
                         return;
@@ -407,12 +408,12 @@ function execCommand(box, dataList = [], item, fromWorkflow) {
         } else {
             let partial = item;
 
-            if (box.command && !box.command.allowBatch && item instanceof Array) {
+            if (state.command && !state.command.allowBatch && item instanceof Array) {
                 partial = item[0];
             }
 
             try {
-                const result = Reflect.apply(plugin.onEnter, box, [partial, box.command, box.query, box.shiftKey, dataList]);
+                const result = Reflect.apply(plugin.onEnter, state, [partial, state.command, state.query, state.shiftKey, dataList]);
 
                 if (!fromWorkflow) {
                     const enterResult = handleEnterResult(result);
@@ -436,7 +437,7 @@ export function handleEnter (dataList, index, shiftKey) {
         shiftKey
     });
 
-    execCommand(state, dataList, dataList[index]);
+    execCommand(dataList, dataList[index]);
 }
 
 // should cache
@@ -507,7 +508,6 @@ function execWorkflow(item) {
         const fromWorkflow = true;
         let task = Promise.resolve();
 
-        console.log(cmds);
         cmds.forEach(cmd => {
             task = task.then(() => {
                 return queryByInput(cmd.input, true);
@@ -521,16 +521,16 @@ function execWorkflow(item) {
 
                 if (data && data.length) {
                     if (numbers === NUM_ALL) {
-                        return execCommand(state, data, data, fromWorkflow);
+                        return execCommand(data, data, fromWorkflow);
                     } else if (numbers instanceof Array) {
                         const [from, to] = fixNumbers(numbers);
 
-                        return execCommand(state, data, data.slice(from, to + 1), fromWorkflow);
+                        return execCommand(data, data.slice(from, to + 1), fromWorkflow);
                     } else {
-                        return execCommand(state, data, data[fixNumber(numbers)], fromWorkflow);
+                        return execCommand(data, data[fixNumber(numbers)], fromWorkflow);
                     }
                 } else {
-                    return execCommand(state, data, false, fromWorkflow);
+                    return execCommand(data, false, fromWorkflow);
                 }
             });
         });
