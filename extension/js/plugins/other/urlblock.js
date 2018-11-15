@@ -20,7 +20,9 @@ function onInput(key, command, inContent) {
         return Reflect.apply(showBlacklist, this, [command]);
     } else {
         if (key === '/' && inContent) {
-            this.render(`${command.key} ${window.parentHost}`);
+            window.stewardApp.applyCommand(`${command.key} ${window.parentHost}`);
+        } else {
+            return util.getDefaultResult(command);
         }
     }
 }
