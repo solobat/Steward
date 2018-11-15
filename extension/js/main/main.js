@@ -753,6 +753,10 @@ export function globalApi(app) {
 
                 command.plugin.onNotice(eventName, ...params);
             }
+        },
+
+        getCurrentCommand() {
+            return state.command;
         }
     });
 

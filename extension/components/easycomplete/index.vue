@@ -21,6 +21,7 @@ import keyboardJS from 'keyboardjs'
 import CONSTANT from '../../js/constant'
 import easycompleteItem from './easycompleteItem.vue'
 import { dataList } from './mockData.js'
+import util from '../../js/common/util.js'
 
 Vue.component(easycompleteItem.name, easycompleteItem);
 
@@ -190,6 +191,7 @@ export default {
 
             if (dataList) {
                 if (dataList instanceof Promise || typeof dataList.then === 'function') {
+                    this.showItemList(util.getLoadingResult());
                     dataList.then(resp => {
                         if (resp.isValid) {
                             this.handleInputResult(resp.data);

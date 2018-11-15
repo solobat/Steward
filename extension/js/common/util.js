@@ -77,6 +77,31 @@ function getDefaultResult(command) {
     }];
 }
 
+const loadingIcon = chrome.extension.getURL('iconfont/loading.svg');
+
+function getLoadingResult(command) {
+    let theCommand;
+
+    if (!command) {
+        theCommand = window.stewardApp.getCurrentCommand();
+    }
+
+    if (theCommand) {
+        return [{
+            icon: theCommand.icon,
+            title: theCommand.title,
+            desc: 'Loading...',
+            isDefault: true
+        }];
+    } else {
+        return [{
+            icon: loadingIcon,
+            title: 'Loading....',
+            isDefault: true
+        }];
+    }
+}
+
 function getEmptyResult(command, msg) {
     return [{
         isDefault: true,
@@ -264,6 +289,7 @@ export default {
     getTextMsg,
     genCommands,
     getDefaultResult,
+    getLoadingResult,
     getEmptyResult,
     copyToClipboard,
     getMatches,
