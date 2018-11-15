@@ -128,7 +128,7 @@ function moveTab(tabId, query) {
     }
 }
 
-function onEnter(item, {key, orkey}, query, shiftKey, list) {
+function onEnter(item, {key, orkey}, query, { shiftKey }, list) {
     if (orkey === 'tab') {
         updateTab(item.id, {
             active: true

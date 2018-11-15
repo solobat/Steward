@@ -216,7 +216,7 @@ function handleWfeEnter(item, command, query, shiftKey, list) {
     }
 }
 
-function onEnter(item, command, query, shiftKey, list) {
+function onEnter(item, command, query, { shiftKey }, list) {
     const { orkey } = command;
 
     if (orkey === 'wf') {

@@ -59,7 +59,7 @@ function add2wordcard(wordName, transStr) {
     }
 }
 
-function onEnter(item, command, query, shiftKey) {
+function onEnter(item, command, query, { shiftKey }) {
     if (query) {
         if (shiftKey) {
             add2wordcard(query, item.title);

@@ -124,7 +124,7 @@ function query(str, callback) {
     });
 }
 
-function onEnter(item, command, q, shiftKey, list) {
+function onEnter(item, command, q, { shiftKey }, list) {
     function resolveUrl(it) {
         if (shiftKey) {
             return it.resolved_url;

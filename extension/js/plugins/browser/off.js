@@ -93,7 +93,7 @@ function getSortedList(list) {
     return list;
 }
 
-function onEnter(item, command, query, shiftKey, list) {
+function onEnter(item, command, query, { shiftKey }, list) {
     let items;
 
     if (item instanceof Array) {

@@ -35,7 +35,7 @@ module.exports = function (steward) {
         ]);
     }
 
-    function onEnter(item, command, query, shiftKey, list) {
+    function onEnter(item, command, query, keyStatus, list) {
         steward.util.copyToClipboard(item.title, true);
     }
 

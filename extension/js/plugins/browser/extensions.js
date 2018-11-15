@@ -75,7 +75,7 @@ function onInput(query, command) {
     }
 }
 
-function onEnter({ id, homepage }, command, query, shiftKey) {
+function onEnter({ id, homepage }, command, query, { shiftKey }) {
     if (shiftKey && homepage) {
         chrome.tabs.create({
             url: homepage

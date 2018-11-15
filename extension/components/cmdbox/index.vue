@@ -121,8 +121,8 @@ export default {
             }
         },
 
-        handleEnter(dataList, index, shiftKey) {
-            Core.handleEnter(dataList, index, shiftKey);
+        handleEnter(dataList, index, keys) {
+            Core.handleEnter(dataList, index, keys);
         },
 
         handleEmpty() {

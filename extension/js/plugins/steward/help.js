@@ -51,7 +51,7 @@ function onInput(query) {
     return getPlugins(query);
 }
 
-function onEnter(item, command, query, shiftKey) {
+function onEnter(item, command, query, { shiftKey }) {
     if (shiftKey) {
         chrome.tabs.create({
             url: util.getDocumentURL(item.name, item.category)

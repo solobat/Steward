@@ -51,7 +51,7 @@ function onInput() {
     });
 }
 
-function onEnter(item, command, query, shiftKey, list) {
+function onEnter(item, command, query, { shiftKey }, list) {
     util.batchExecutionIfNeeded(shiftKey, util.tabCreateExecs, [list, item]);
     return Promise.resolve('');
 }

@@ -160,7 +160,7 @@ function handleDiaryEnter(item, shiftKey) {
     }
 }
 
-function onEnter(item, command, query, shiftKey) {
+function onEnter(item, command, query, { shiftKey }) {
     const { orkey } = command;
 
     if (orkey === ':') {

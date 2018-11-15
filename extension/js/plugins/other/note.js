@@ -160,7 +160,7 @@ function handleNotesEnter(item, shiftKey) {
     }
 }
 
-function onEnter(item, { orkey }, query, shiftKey) {
+function onEnter(item, { orkey }, query, { shiftKey }) {
     if (orkey === '#') {
         return handleTagEnter(item);
     } else if (orkey === 'note') {

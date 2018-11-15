@@ -228,7 +228,7 @@ function handleEnginesUpdate(item, query, command) {
     }
 }
 
-function onEnter(item, command, query, shiftKey, list) {
+function onEnter(item, command, query, { shiftKey }, list) {
     if (command.orkey === 'se') {
         return handleEnginesUpdate(item, query, command);
     } else {

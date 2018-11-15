@@ -68,7 +68,7 @@ function handleTodoEnter(item, command, query) {
     }
 }
 
-function handleDoneEnter(item, command, query, shiftKey) {
+function handleDoneEnter(item, command, query, { shiftKey }) {
     if (item) {
         const todo = {
             id: item.id,

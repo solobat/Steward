@@ -150,7 +150,7 @@ function onInput(query) {
     return queryFromExt(query.trim());
 }
 
-function onEnter(item, command, query, shiftKey) {
+function onEnter(item, command, query, { shiftKey }) {
     const str = query.trim();
 
     if (str) {

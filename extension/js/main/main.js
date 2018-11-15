@@ -33,7 +33,13 @@ let state = {
     query: '',
     lastcmd: '',
     command: null,
-    workflowStack: []
+    workflowStack: [],
+    keyStatus: {
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        altKey: false
+    }
 };
 
 window.stewardCache = {};
@@ -395,7 +401,7 @@ function execCommand(dataList = [], item, fromWorkflow) {
                     state.background = false;
 
                     try {
-                        return Reflect.apply(plugin.onEnter, state, [item, command, state.query, state.shiftKey, dataList]);
+                        return Reflect.apply(plugin.onEnter, state, [item, command, state.query, state.keyStatus, dataList]);
                     } catch (error) {
                         console.log(error);
                         return;
@@ -413,7 +419,7 @@ function execCommand(dataList = [], item, fromWorkflow) {
             }
 
             try {
-                const result = Reflect.apply(plugin.onEnter, state, [partial, state.command, state.query, state.shiftKey, dataList]);
+                const result = Reflect.apply(plugin.onEnter, state, [partial, state.command, state.query, state.keyStatus, dataList]);
 
                 if (!fromWorkflow) {
                     const enterResult = handleEnterResult(result);
@@ -431,10 +437,10 @@ function execCommand(dataList = [], item, fromWorkflow) {
     }
 }
 
-export function handleEnter (dataList, index, shiftKey) {
+export function handleEnter (dataList, index, keyStatus) {
     setState({
         workflowStack: [],
-        shiftKey
+        keyStatus
     });
 
     execCommand(dataList, dataList[index]);
@@ -516,7 +522,9 @@ function execWorkflow(item) {
                 const data = resp.data;
 
                 setState({
-                    shiftKey: cmd.withShift
+                    keyStatus: {
+                        shiftKey: cmd.withShift
+                    }
                 });
 
                 if (data && data.length) {

@@ -86,6 +86,14 @@ export default {
             this.$refs.input.select();
         },
 
+        getKeyStatusByEvent(event) {
+            const { shiftKey, ctrlKey, metaKey, altKey } = event;
+
+            return {
+                shiftKey, ctrlKey, metaKey, altKey
+            };
+        },
+
         bindEvents() {
             keyboardJS.bind(['down', 'tab', 'ctrl + n'], event => {
                 event.preventDefault();
@@ -116,7 +124,7 @@ export default {
             keyboardJS.bind('enter', (event) => {
                 event.preventDefault();
                 if (this.isVisible()) {
-                    this.exec(this.dataList[this.selectedIndex], this.selectedIndex, event.shiftKey);
+                    this.exec(this.dataList[this.selectedIndex], this.selectedIndex, this.getKeyStatusByEvent(event));
                 }
             });
             keyboardJS.bind('esc', () => {
@@ -213,11 +221,11 @@ export default {
 
         select(event, item, index) {
             this.selectItemByIndex(index);
-            this.exec(item, index, event.shiftKey);
+            this.exec(item, index, this.getKeyStatusByEvent(event));
         },
 
-        exec(item, index, shiftKey) {
-            this.$emit('enter', this.dataList, index, shiftKey);
+        exec(item, index, keyStatus) {
+            this.$emit('enter', this.dataList, index, keyStatus);
         },
 
         move: function (direction) {
