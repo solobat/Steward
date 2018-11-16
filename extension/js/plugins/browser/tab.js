@@ -9,7 +9,7 @@ import Toast from 'toastr'
 import _ from 'underscore'
 import browser from 'webextension-polyfill'
 
-const version = 6;
+const version = 7;
 const name = 'tabs';
 const keys = [
     { key: 'tab' },
@@ -22,32 +22,34 @@ const icon = chrome.extension.getURL('iconfont/tab.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const commands = util.genCommands(name, icon, keys, type);
 
-function getTabsByWindows(query, win) {
-    return new Promise(resolve => {
-        chrome.tabs.getAllInWindow(win.id, function (tabs) {
-            const tabList = tabs.filter(function (tab) {
-                return util.matchText(query, `${tab.title}${tab.url}`);
-            });
-
-            resolve(tabList);
-        });
-    });
-}
-
 function getAllTabs(query, callback) {
-    chrome.windows.getAll(function (wins) {
-        if (!wins.length) {
-            return;
-        }
-        const tasks = [];
+    chrome.windows.getAll({ populate: true }, function (wins) {
+        if (wins.length) {
+            let curWin;
 
-        for (let i = 0, len = wins.length; i < len; i = i + 1) {
-            tasks.push(getTabsByWindows(query, wins[i]));
-        }
+            curWin = wins.find(win => win.focused);
 
-        Promise.all(tasks).then(resp => {
-            callback(_.flatten(resp));
-        });
+            function getTabs() {
+                const tabList = curWin.tabs.filter(function (tab) {
+                    return util.matchText(query, `${tab.title}${tab.url}`);
+                });
+
+                callback(tabList);
+            }
+
+            if (!curWin) {
+                // popup mode
+                chrome.windows.getLastFocused({ populate: true }, result => {
+                    curWin = result;
+
+                    getTabs();
+                })
+            } else {
+                getTabs();
+            }
+        } else {
+            callback([]);
+        }
     });
 }
 
