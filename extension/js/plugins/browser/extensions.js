@@ -75,15 +75,11 @@ function onInput(query, command) {
     }
 }
 
-function onEnter({ id, homepage }, command, query, { shiftKey }) {
-    if (shiftKey && homepage) {
-        chrome.tabs.create({
-            url: homepage
-        });
+function onEnter({ id, homepage }, command, query, keyStatus) {
+    if (keyStatus.shiftKey && homepage) {
+        util.createTab({ url: homepage }, keyStatus);
     } else {
-        chrome.tabs.create({
-            url: `chrome://extensions/?id=${id}`
-        });
+        util.createTab({ url: `chrome://extensions/?id=${id}` }, keyStatus);
     }
 }
 

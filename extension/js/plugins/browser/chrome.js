@@ -33,10 +33,8 @@ function onInput(text) {
     return Promise.resolve(pages.concat(actions));
 }
 
-function onEnter({ url }) {
-    chrome.tabs.create({
-        url
-    });
+function onEnter(item, command, query, keyStatus) {
+    util.createTab(item, keyStatus);
 }
 
 export default {

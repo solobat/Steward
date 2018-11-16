@@ -340,7 +340,7 @@ export function getInitCmd () {
     }
 }
 
-function handleNormalItem(box, dataList, item) {
+function handleNormalItem(box, dataList, item, keyStatus) {
     const ITEM_TYPE = CONST.BASE.ITEM_TYPE;
     const type = item.key;
 
@@ -350,11 +350,7 @@ function handleNormalItem(box, dataList, item) {
         window.stewardApp.applyCommand(`${key} `);
         return Promise.resolve(true);
     } else if (type === ITEM_TYPE.URL) {
-        const url = item.url;
-
-        chrome.tabs.create({
-            url
-        });
+        util.createTab(item, keyStatus);
     } else if (type === ITEM_TYPE.COPY) {
         util.copyToClipboard(item.url || item.desc || item.title, true);
 
@@ -373,12 +369,12 @@ function handleNormalItem(box, dataList, item) {
     }
 }
 
-function execCommand(dataList = [], item, fromWorkflow) {
+function execCommand(dataList = [], item, fromWorkflow, keyStatus) {
     console.log(state, dataList, item, fromWorkflow);
     if (item && item.isDefault && !state.query) {
         return;
     } else if (!state.cmd || item.universal) {
-        const result = handleNormalItem(state, dataList, item);
+        const result = handleNormalItem(state, dataList, item, keyStatus);
         const ret = handleEnterResult(result);
 
         window.stewardApp.emit('afterExecCommand', item, dataList, state.query);
@@ -443,7 +439,7 @@ export function handleEnter (dataList, index, keyStatus) {
         keyStatus
     });
 
-    execCommand(dataList, dataList[index]);
+    execCommand(dataList, dataList[index], false, keyStatus);
 }
 
 // should cache

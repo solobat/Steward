@@ -51,11 +51,11 @@ function onInput(query) {
     return getPlugins(query);
 }
 
-function onEnter(item, command, query, { shiftKey }) {
+function onEnter(item, command, query, keyStatus) {
+    const { shiftKey } = keyStatus;
+
     if (shiftKey) {
-        chrome.tabs.create({
-            url: util.getDocumentURL(item.name, item.category)
-        });
+        util.createTab({ url: util.getDocumentURL(item.name, item.category) }, keyStatus);
     } else {
         return Promise.resolve(`${String(item.id.split(',')[0])} `);
     }

@@ -166,7 +166,7 @@ function updateEngineStat(engine) {
     return browser.storage.sync.set({ engines: searchEngines });
 }
 
-function gotoSearch(item, query) {
+function gotoSearch(item, query, keyStatus) {
     const searchUrl = searchEngines[item.engine].url;
     const fixedQuery = query.split(' ').join('+');
     let url;
@@ -177,9 +177,7 @@ function gotoSearch(item, query) {
         url = searchUrl + fixedQuery;
     }
 
-    chrome.tabs.create({
-        url
-    });
+    util.createTab({ url }, keyStatus);
 
     updateEngineStat(item.engine);
 }
@@ -228,14 +226,16 @@ function handleEnginesUpdate(item, query, command) {
     }
 }
 
-function onEnter(item, command, query, { shiftKey }, list) {
+function onEnter(item, command, query, keyStatus, list) {
+    const { shiftKey } = keyStatus;
+
     if (command.orkey === 'se') {
         return handleEnginesUpdate(item, query, command);
     } else {
         if (shiftKey) {
             list.forEach(eitem => gotoSearch(eitem, this.str));
         } else {
-            gotoSearch(item, this.str);
+            gotoSearch(item, this.str, keyStatus);
         }
     }
 }

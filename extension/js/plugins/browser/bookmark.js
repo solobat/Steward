@@ -86,9 +86,9 @@ function onInput(query, command) {
     }
 }
 
-function onEnter(item, { orkey, key }, query, { shiftKey }, list) {
+function onEnter(item, { orkey, key }, query, keyStatus, list) {
     if (orkey === 'bm') {
-        util.batchExecutionIfNeeded(shiftKey, util.tabCreateExecs, [list, item]);
+        util.batchExecutionIfNeeded(keyStatus.shiftKey, util.tabCreateExecs, [list, item], keyStatus);
     } else if (orkey === 'bmd') {
         return new Promise(resolve => {
             chrome.bookmarks.remove(item.id, () => {

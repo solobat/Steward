@@ -5,6 +5,7 @@
  */
 
 import urlRegex from 'url-regex'
+import util from '../../common/util'
 
 const version = 3;
 const name = 'openurl';
@@ -37,15 +38,13 @@ function onInput(url) {
     return data;
 }
 
-function onEnter({ url }) {
+function onEnter({ url }, command, query, keyStatus) {
     let theurl = url;
 
     if (!/^https?/.test(url)) {
         theurl = `http://${url}`;
     }
-    chrome.tabs.create({
-        url: theurl
-    });
+    util.createTab({ url: theurl }, keyStatus);
 }
 
 export default {

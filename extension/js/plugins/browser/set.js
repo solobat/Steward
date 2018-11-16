@@ -22,19 +22,14 @@ const commands = [{
     editable: true
 }];
 
-function openOptionPage(item, cb) {
+function openOptionPage(item, keyStatus) {
     const url = item.url;
 
     if (!url) {
-        Reflect.apply(cb, null, []);
         return;
     }
 
-    chrome.tabs.create({
-        url: url
-    }, function () {
-        Reflect.apply(cb, null, []);
-    });
+    util.createTab({ url: url }, keyStatus);
 }
 
 // get all
@@ -72,10 +67,8 @@ function onInput(query) {
     });
 }
 
-function onEnter(item) {
-    openOptionPage(item, function () {
-        // cb
-    });
+function onEnter(item, command, query, keyStatus) {
+    openOptionPage(item, keyStatus);
 }
 
 export default {

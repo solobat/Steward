@@ -124,7 +124,9 @@ function query(str, callback) {
     });
 }
 
-function onEnter(item, command, q, { shiftKey }, list) {
+function onEnter(item, command, q, keyStatus, list) {
+    const { shiftKey } = keyStatus;
+
     function resolveUrl(it) {
         if (shiftKey) {
             return it.resolved_url;
@@ -138,7 +140,7 @@ function onEnter(item, command, q, { shiftKey }, list) {
             window.slogs.push(`open pocket ${it.title}`);
         },
         it => {
-            chrome.tabs.create({ url: resolveUrl(it) });
+            util.createTab({ url: resolveUrl(it) }, keyStatus);
             window.slogs.push(`open pocket ${it.title}`);
         }
     ], [list, item]);
