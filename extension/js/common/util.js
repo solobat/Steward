@@ -162,7 +162,7 @@ const wrapWithMaxNumIfNeeded = (field,
     return ret;
 }
 
-const batchExecutionIfNeeded = (predicate, [exec4batch, exec], [list, item],
+const batchExecutionIfNeeded = (predicate, [exec4batch, exec], [list, item], keyStatus,
     maxOperandsNum = window.stewardCache.config.general.maxOperandsNum) => {
     const results = [];
 
@@ -171,10 +171,28 @@ const batchExecutionIfNeeded = (predicate, [exec4batch, exec], [list, item],
 
         results.push(list.slice(0, num).forEach(exec4batch));
     } else {
-        results.push(exec(item));
+        results.push(exec(item, keyStatus));
     }
 
     return Promise.all(results);
+}
+
+const createTab = (item, keyStatus = {}) => {
+    const { mode, inContent } = window.stewardApp;
+
+    if (mode === 'popup' && !inContent) {
+        chrome.tabs.create({ url: item.url });
+    } else {
+        if (keyStatus.metaKey) {
+            chrome.tabs.getCurrent(tab => {
+                chrome.tabs.update(tab.id, {
+                    url: item.url
+                });
+            });
+        } else {
+            chrome.tabs.create({ url: item.url });
+        }
+    }
 }
 
 const tabCreateExecs = [
@@ -182,8 +200,9 @@ const tabCreateExecs = [
         chrome.tabs.create({ url: item.url, active: false });
         window.slogs.push(`open ${item.url}`);
     },
-    item => {
-        chrome.tabs.create({ url: item.url });
+    (item, keyStatus = {}) => {
+        createTab(item, keyStatus);
+        
         window.slogs.push(`open ${item.url}`);
     }
 ];
@@ -304,5 +323,6 @@ export default {
     shouldSupportMe,
     simTemplate,
     getData,
+    createTab,
     toast: Toast
 };
