@@ -1,5 +1,14 @@
 const langZh = [
     {
+        version: 'v3.5.7',
+        detail: `
+            重构主流程，更新插件 api;<br>
+            添加查询 loading 状态提示;<br>
+            metakey + click/enter 在当前标签页打开链接;<br>
+            优化 tab 插件.
+        `
+    },
+    {
         version: 'v3.5.6',
         detail: `
             壁纸插件新增不再显示选项，点击将壁纸加入黑名单;<br>
@@ -400,6 +409,15 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.5.7',
+        detail: `
+            Refactor the main process, update the plugin api;<br>
+            Add query loading status for plugins;<br>
+            Metakey[Command / Windows] + click/enter opens the link in the current tab;<br>
+            Optimize the tab plugin.
+        `
+    },
     {
         version: 'v3.5.6',
         detail: `
