@@ -13,7 +13,7 @@
 
 ### Install：
 - [Chrome WebStore](https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd)
-- [CRX Download](http://static.oksteward.com/steward-3.5.7.crx)。
+- [crx Download](http://static.oksteward.com/steward-3.5.7.crx)
 
 - [Firefox Addons](https://addons.mozilla.org/firefox/addon/steward-a-command-launcher/)
 
