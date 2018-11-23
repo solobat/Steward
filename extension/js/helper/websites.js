@@ -19,7 +19,8 @@ const TRIGGER_SYMBOL = {
     ANCHOR: '#',
     META: `'`,
     URL: ',',
-    SHARE: '@'
+    SHARE: '@',
+    ACTION: ';'
 };
 
 export function getFavicon(context = document, win) {
@@ -120,11 +121,11 @@ export class Website {
         this.urls = [];
         this.pageMeta = pageMeta || {};
         this.shareUrls = [];
-        this.init(generalConfig);
+        this.init(generalConfig, options);
         this.bindEvents();
     }
 
-    init(generalConfig = {}) {
+    init(generalConfig = {}, options) {
         this.config = generalConfig;
         requestAnimationFrame(() => {
             this.handleMetaInfo(this.config.websiteUrls);
@@ -133,6 +134,19 @@ export class Website {
                 this.generateShareUrls();
             }
         });
+        const actions = options.actions;
+
+        if (actions && actions.length) {
+            this.initActions(actions);
+        }
+    }
+
+    initActions(actions) {
+        const results = actions.filter(action => {
+            return minimatch(this.pageMeta.pathname, action.pattern);
+        });
+
+        this.actions = results;
     }
 
     bindEvents() {
@@ -260,6 +274,19 @@ export class Website {
         }
     }
 
+    mapActions(actions) {
+        return actions.map(action => {
+            return {
+                icon: this.icon,
+                key: 'action',
+                title: action.title,
+                subType: action.actionType,
+                selector: action.selector,
+                extend: action.extend
+            };
+        });
+    }
+
     onInput(text) {
         const cnNameFilter = item => util.matchText(text, item.name + item.path);
         const outlineNameFilter = item => util.matchText(text.slice(1), item.name);
@@ -297,6 +324,8 @@ export class Website {
             return Promise.resolve(this.urls.concat(this.meta).filter(metaFilter));
         } else if (first === TRIGGER_SYMBOL.SHARE) {
             return Promise.resolve(this.shareUrls.filter(metaFilter));
+        } else if (first === TRIGGER_SYMBOL.ACTION) {
+            return Promise.resolve(this.mapActions(this.actions.filter(metaFilter)));
         } else if (first) {
             return Promise.resolve(this.paths.filter(cnNameFilter).map(mapTo('action')));
         }

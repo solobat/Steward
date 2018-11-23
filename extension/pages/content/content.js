@@ -5,6 +5,7 @@ import './content.scss'
 import PluginHelper from '../../js/helper/pluginHelper'
 import { getFavicon, getShareFields } from '../../js/helper/websites'
 import { ITEM_TYPE } from '../../js/constant/base'
+import util from '../../js/common/util'
 
 const chrome = window.chrome;
 const pluginHelper = new PluginHelper();
@@ -254,12 +255,23 @@ const App = {
     },
 
     handleCommand(event) {
-        const { subType, index, path, custom } = event.data.info;
+        const { subType, index, path, custom, selector, extend = {} } = event.data.info;
 
         if (subType === 'outline') {
             this.headerElems[index].scrollIntoView();
         } else if (subType === 'anchor') {
             this.anchorNodes[index].scrollIntoView();
+        } else if (subType === 'click') {
+            document.querySelector(selector).click();
+        } else if (subType === 'copy') {
+            const elem = document.querySelector(selector);
+            let text = elem.value || elem.innerText;
+
+            if (extend.prefix) {
+                text = extend.prefix + text;
+            }
+            
+            util.copyToClipboard(text, true);
         } else if (custom) {
             if (path) {
                 window.location.href = path;
