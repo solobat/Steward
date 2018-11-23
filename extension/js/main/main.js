@@ -370,8 +370,9 @@ function handleNormalItem(box, dataList, item, keyStatus) {
 }
 
 function execCommand(dataList = [], item, fromWorkflow, keyStatus) {
-    console.log(state, dataList, item, fromWorkflow);
-    if (item && item.isDefault && !state.query) {
+    if (!item) {
+        return;
+    } else if (item && item.isDefault && !state.query) {
         return;
     } else if (!state.cmd || item.universal) {
         const result = handleNormalItem(state, dataList, item, keyStatus);
