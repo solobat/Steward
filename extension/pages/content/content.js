@@ -262,16 +262,28 @@ const App = {
         } else if (subType === 'anchor') {
             this.anchorNodes[index].scrollIntoView();
         } else if (subType === 'click') {
-            document.querySelector(selector).click();
+            const elem = document.querySelector(selector);
+
+            if (elem) {
+                elem.scrollIntoView();
+                elem.click();
+            } else {
+                util.toast('Element not found');
+            }
         } else if (subType === 'copy') {
             const elem = document.querySelector(selector);
-            let text = elem.value || elem.innerText;
 
-            if (extend.prefix) {
-                text = extend.prefix + text;
+            if (elem) {
+                let text = elem.value || elem.innerText;
+
+                if (extend.template) {
+                    text = util.simTemplate(extend.template, { text });
+                }
+
+                util.copyToClipboard(text, true);
+            } else {
+                util.toast('Element not found');
             }
-            
-            util.copyToClipboard(text, true);
         } else if (custom) {
             if (path) {
                 window.location.href = path;
