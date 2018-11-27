@@ -350,7 +350,11 @@ function handleNormalItem(box, dataList, item, keyStatus) {
         window.stewardApp.applyCommand(`${key} `);
         return Promise.resolve(true);
     } else if (type === ITEM_TYPE.URL) {
-        util.createTab(item, keyStatus);
+        if (state.command && state.command.shiftKey) {
+            util.batchExecutionIfNeeded(keyStatus.shiftKey, util.tabCreateExecs, [dataList, item], keyStatus);
+        } else {
+            util.createTab(item, keyStatus);
+        }
     } else if (type === ITEM_TYPE.COPY) {
         util.copyToClipboard(item.url || item.desc || item.title, true);
 
