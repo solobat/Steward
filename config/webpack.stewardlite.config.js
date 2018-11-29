@@ -69,7 +69,8 @@ const config = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      EXT_TYPE: JSON.stringify("stewardlite")
+      EXT_TYPE: JSON.stringify("stewardlite"),
+      PLATFORM: JSON.stringify("chrome")
     }),
     new VueLoaderPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),

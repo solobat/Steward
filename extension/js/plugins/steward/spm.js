@@ -23,7 +23,7 @@ const commands = [{
     subtitle,
     icon
 }];
-
+const platform = PLATFORM || 'chrome';
 const subCommandKeys = ['install', 'uninstall', 'list'];
 const subCommands = subCommandKeys.map(item => {
     return {
@@ -60,7 +60,7 @@ function queryPlugins(query) {
         }).then(results => {
             const items = results.data.plugins;
 
-            plugins = items;
+            plugins = items.filter(item => (!item.platform || item.platform === platform));
 
             return filterPlugins(plugins, query);
         });
