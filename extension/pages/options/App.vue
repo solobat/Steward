@@ -378,114 +378,124 @@
                                     </div>
                                 </div>
                                 <div class="plugin-editor-config" style="max-height: 560px; overflow-y: auto;">
-                                    <el-form style="margin: 20px;padding: 12px; min-height: 150px;" ref="websiteForm" :model="currentWebsite" :rules="websiteFormRuels" label-width="200px">
-                                        <el-collapse v-model="activeFieldsName">
-                                            <el-collapse-item name="meta" :title="i18nTexts.ui.settings.blocks.websitebaseinfo">
-                                                <el-form-item :label="i18nTexts.ui.settings.fields.title" prop="title">
-                                                    <el-input type="text" style="width: 300px;" v-model="currentWebsite.title">
-                                                    </el-input>
+                                    <el-tabs type="border-card" @tab-click="handleWebsiteTabClick">
+                                        <el-tab-pane label="UI Editor">
+                                            <el-form style="margin: 20px;padding: 12px; min-height: 150px;" ref="websiteForm" :model="currentWebsite" :rules="websiteFormRuels" label-width="200px">
+                                                <el-collapse v-model="activeFieldsName">
+                                                    <el-collapse-item name="meta" :title="i18nTexts.ui.settings.blocks.websitebaseinfo">
+                                                        <el-form-item :label="i18nTexts.ui.settings.fields.title" prop="title">
+                                                            <el-input type="text" style="width: 300px;" v-model="currentWebsite.title">
+                                                            </el-input>
+                                                        </el-form-item>
+                                                        <el-form-item :label="i18nTexts.ui.settings.fields.host" prop="host">
+                                                            <el-input type="text" style="width: 300px;" v-model="currentWebsite.host">
+                                                            </el-input>
+                                                        </el-form-item>
+                                                        <el-form-item :label="i18nTexts.ui.settings.fields.siteicon">
+                                                            <el-input type="text" style="width: 300px;" v-model="currentWebsite.icon" placeholder="https://baidu.com/favicon.ico">
+                                                            </el-input>
+                                                        </el-form-item>
+                                                    </el-collapse-item>
+                                                    <el-collapse-item :title="i18nTexts.ui.settings.blocks.websitenav" name="site">
+                                                        <el-form-item :label="i18nTexts.ui.settings.fields.paths">
+                                                            <div class="paths-container">
+                                                                <el-row>
+                                                                    <el-col :span="6">
+                                                                        <el-input v-model="newPath.title" placeholder="Title" @keyup.enter.native="handleNewPathAddClick"></el-input>
+                                                                    </el-col>
+                                                                    <el-col :span="10" :offset="1">
+                                                                        <el-input v-model="newPath.urlPattern" placeholder="URL Pattern" @keyup.enter.native="handleNewPathAddClick"></el-input>
+                                                                    </el-col>
+                                                                    <el-col :span="4" :offset="1">
+                                                                        <el-button @click="handleNewPathAddClick" type="primary" icon="plus"></el-button>
+                                                                    </el-col>
+                                                                </el-row>
+                                                                <el-row v-for="(path, index) in this.currentWebsite.paths" :key="index">
+                                                                    <el-col :span="6">
+                                                                        <el-input v-model="path.title" placeholder="Title" :disabled="!path.editable"></el-input>
+                                                                    </el-col>
+                                                                    <el-col :span="10" :offset="1">
+                                                                        <el-input v-model="path.urlPattern" placeholder="URL Pattern" :disabled="!path.editable"></el-input>
+                                                                    </el-col>
+                                                                    <el-col :span="4" :offset="1">
+                                                                        <el-button @click="handlePathEditClick(path)" type="primary" :icon="path.editable ? 'check' : 'edit'"></el-button>
+                                                                        <el-button @click="handleNewPathDeleteClick(index)" type="primary" icon="delete"></el-button>
+                                                                    </el-col>
+                                                                </el-row>
+                                                            </div>
+                                                        </el-form-item>
+                                                        <el-form-item label="Path Variables" v-if="currentWebsite.vars">
+                                                            <div class="vars-container">
+                                                                <el-row v-for="(value, key) in currentWebsite.vars" :key="key">
+                                                                <el-col :span="6">
+                                                                        <el-input v-model="currentWebsite.vars[key]" placeholder="">
+                                                                            <template slot="prepend">{{key}}</template>
+                                                                        </el-input>
+                                                                </el-col>
+                                                                </el-row>
+                                                            </div>
+                                                        </el-form-item>
+                                                        <el-form-item :label="i18nTexts.ui.settings.fields.navigations">
+                                                            <el-col :span="17">
+                                                                <el-input type="textarea" :rows="2" autosize placeholder="such as: nav > ul > li > a" v-model="currentWebsite.navs"></el-input>
+                                                            </el-col>
+                                                        </el-form-item>
+                                                    </el-collapse-item>
+                                                    <el-collapse-item name="inpage" :title="i18nTexts.ui.settings.blocks.inpagenav">
+                                                        <el-form-item :label="i18nTexts.ui.settings.fields.outlinescope">
+                                                            <el-col :span="17">
+                                                                <el-input placeholder="such as: .markdown-body" v-model="currentWebsite.outlineScope"></el-input>
+                                                            </el-col>
+                                                        </el-form-item>
+                                                        <el-form-item :label="i18nTexts.ui.settings.fields.anchors">
+                                                            <div class="paths-container">
+                                                                <el-row>
+                                                                    <el-col :span="6">
+                                                                        <el-input v-model="newAnchor.title" placeholder="Title" @keyup.enter.native="handleNewAnchorAddClick"></el-input>
+                                                                    </el-col>
+                                                                    <el-col :span="10" :offset="1">
+                                                                        <el-input v-model="newAnchor.selector" placeholder="CSS Selector" @keyup.enter.native="handleNewAnchorAddClick"></el-input>
+                                                                    </el-col>
+                                                                    <el-col :span="4" :offset="1">
+                                                                        <el-button @click="handleNewAnchorAddClick" type="primary" icon="plus"></el-button>
+                                                                    </el-col>
+                                                                </el-row>
+                                                                <el-row v-for="(anchor, index) in this.currentWebsite.anchors" :key="index">
+                                                                    <el-col :span="6">
+                                                                        <el-input v-model="anchor.title" placeholder="Title" :disabled="!anchor.editable"></el-input>
+                                                                    </el-col>
+                                                                    <el-col :span="10" :offset="1">
+                                                                        <el-input v-model="anchor.selector" placeholder="CSS Selector" :disabled="!anchor.editable"></el-input>
+                                                                    </el-col>
+                                                                    <el-col :span="4" :offset="1">
+                                                                        <el-button @click="anchor.editable = !anchor.editable" type="primary" :icon="anchor.editable ? 'check' : 'edit'"></el-button>
+                                                                        <el-button @click="handleNewAnchorDeleteClick(index)" type="primary" icon="delete"></el-button>
+                                                                    </el-col>
+                                                                </el-row>
+                                                            </div>
+                                                        </el-form-item>
+                                                    </el-collapse-item>
+                                                </el-collapse>
+                                                <el-form-item :label="i18nTexts.ui.settings.fields.disable">
+                                                    <el-switch
+                                                        v-model="currentWebsite.disabled"
+                                                        on-color="#20a0ff">
+                                                    </el-switch>
                                                 </el-form-item>
-                                                <el-form-item :label="i18nTexts.ui.settings.fields.host" prop="host">
-                                                    <el-input type="text" style="width: 300px;" v-model="currentWebsite.host">
-                                                    </el-input>
+                                                <el-form-item>
+                                                    <el-button type="primary" @click.native.prevent="handleWebsiteSubmit">{{i18nTexts.ui.settings.actions.save}}</el-button>
+                                                    <el-button v-if="currentWebsite.id" @click="handleWebsiteExportClick" type="info">{{i18nTexts.ui.settings.actions.export}}</el-button>
+                                                    <el-button v-if="currentWebsite.id" type="warning" @click.native.prevent="handleWebsiteDelete(currentWebsite.id)">{{i18nTexts.ui.settings.actions.delete}}</el-button>
                                                 </el-form-item>
-                                                <el-form-item :label="i18nTexts.ui.settings.fields.siteicon">
-                                                    <el-input type="text" style="width: 300px;" v-model="currentWebsite.icon" placeholder="https://baidu.com/favicon.ico">
-                                                    </el-input>
-                                                </el-form-item>
-                                            </el-collapse-item>
-                                            <el-collapse-item :title="i18nTexts.ui.settings.blocks.websitenav" name="site">
-                                                <el-form-item :label="i18nTexts.ui.settings.fields.paths">
-                                                    <div class="paths-container">
-                                                        <el-row>
-                                                            <el-col :span="6">
-                                                                <el-input v-model="newPath.title" placeholder="Title" @keyup.enter.native="handleNewPathAddClick"></el-input>
-                                                            </el-col>
-                                                            <el-col :span="10" :offset="1">
-                                                                <el-input v-model="newPath.urlPattern" placeholder="URL Pattern" @keyup.enter.native="handleNewPathAddClick"></el-input>
-                                                            </el-col>
-                                                            <el-col :span="4" :offset="1">
-                                                                <el-button @click="handleNewPathAddClick" type="primary" icon="plus"></el-button>
-                                                            </el-col>
-                                                        </el-row>
-                                                        <el-row v-for="(path, index) in this.currentWebsite.paths" :key="index">
-                                                            <el-col :span="6">
-                                                                <el-input v-model="path.title" placeholder="Title" :disabled="!path.editable"></el-input>
-                                                            </el-col>
-                                                            <el-col :span="10" :offset="1">
-                                                                <el-input v-model="path.urlPattern" placeholder="URL Pattern" :disabled="!path.editable"></el-input>
-                                                            </el-col>
-                                                            <el-col :span="4" :offset="1">
-                                                                <el-button @click="handlePathEditClick(path)" type="primary" :icon="path.editable ? 'check' : 'edit'"></el-button>
-                                                                <el-button @click="handleNewPathDeleteClick(index)" type="primary" icon="delete"></el-button>
-                                                            </el-col>
-                                                        </el-row>
-                                                    </div>
-                                                </el-form-item>
-                                                <el-form-item label="Path Variables" v-if="currentWebsite.vars">
-                                                    <div class="vars-container">
-                                                        <el-row v-for="(value, key) in currentWebsite.vars" :key="key">
-                                                          <el-col :span="6">
-                                                                <el-input v-model="currentWebsite.vars[key]" placeholder="">
-                                                                    <template slot="prepend">{{key}}</template>
-                                                                </el-input>
-                                                          </el-col>
-                                                        </el-row>
-                                                    </div>
-                                                </el-form-item>
-                                                <el-form-item :label="i18nTexts.ui.settings.fields.navigations">
-                                                    <el-col :span="17">
-                                                        <el-input type="textarea" :rows="2" autosize placeholder="such as: nav > ul > li > a" v-model="currentWebsite.navs"></el-input>
-                                                    </el-col>
-                                                </el-form-item>
-                                            </el-collapse-item>
-                                            <el-collapse-item name="inpage" :title="i18nTexts.ui.settings.blocks.inpagenav">
-                                                <el-form-item :label="i18nTexts.ui.settings.fields.outlinescope">
-                                                    <el-col :span="17">
-                                                        <el-input placeholder="such as: .markdown-body" v-model="currentWebsite.outlineScope"></el-input>
-                                                    </el-col>
-                                                </el-form-item>
-                                                <el-form-item :label="i18nTexts.ui.settings.fields.anchors">
-                                                    <div class="paths-container">
-                                                        <el-row>
-                                                            <el-col :span="6">
-                                                                <el-input v-model="newAnchor.title" placeholder="Title" @keyup.enter.native="handleNewAnchorAddClick"></el-input>
-                                                            </el-col>
-                                                            <el-col :span="10" :offset="1">
-                                                                <el-input v-model="newAnchor.selector" placeholder="CSS Selector" @keyup.enter.native="handleNewAnchorAddClick"></el-input>
-                                                            </el-col>
-                                                            <el-col :span="4" :offset="1">
-                                                                <el-button @click="handleNewAnchorAddClick" type="primary" icon="plus"></el-button>
-                                                            </el-col>
-                                                        </el-row>
-                                                        <el-row v-for="(anchor, index) in this.currentWebsite.anchors" :key="index">
-                                                            <el-col :span="6">
-                                                                <el-input v-model="anchor.title" placeholder="Title" :disabled="!anchor.editable"></el-input>
-                                                            </el-col>
-                                                            <el-col :span="10" :offset="1">
-                                                                <el-input v-model="anchor.selector" placeholder="CSS Selector" :disabled="!anchor.editable"></el-input>
-                                                            </el-col>
-                                                            <el-col :span="4" :offset="1">
-                                                                <el-button @click="anchor.editable = !anchor.editable" type="primary" :icon="anchor.editable ? 'check' : 'edit'"></el-button>
-                                                                <el-button @click="handleNewAnchorDeleteClick(index)" type="primary" icon="delete"></el-button>
-                                                            </el-col>
-                                                        </el-row>
-                                                    </div>
-                                                </el-form-item>
-                                            </el-collapse-item>
-                                        </el-collapse>
-                                        <el-form-item :label="i18nTexts.ui.settings.fields.disable">
-                                            <el-switch
-                                                v-model="currentWebsite.disabled"
-                                                on-color="#20a0ff">
-                                            </el-switch>
-                                        </el-form-item>
-                                        <el-form-item>
-                                            <el-button type="primary" @click.native.prevent="handleWebsiteSubmit">{{i18nTexts.ui.settings.actions.save}}</el-button>
-                                            <el-button v-if="currentWebsite.id" @click="handleWebsiteExportClick" type="info">{{i18nTexts.ui.settings.actions.export}}</el-button>
-                                            <el-button v-if="currentWebsite.id" type="warning" @click.native.prevent="handleWebsiteDelete(currentWebsite.id)">{{i18nTexts.ui.settings.actions.delete}}</el-button>
-                                        </el-form-item>
-                                    </el-form>
+                                            </el-form>
+                                        </el-tab-pane>
+                                        <el-tab-pane label="Code Editor">
+                                            <codemirror v-model="currentWebsiteSource" :options="websiteCmOptions"></codemirror>                                            
+                                            <div class="buttons" style="margin-top: 20px;">
+                                                <el-button type="primary" @click.native.prevent="handleWebsiteCodeSubmit">{{i18nTexts.ui.settings.actions.save}}</el-button>
+                                            </div>
+                                        </el-tab-pane>
+                                    </el-tabs>
                                 </div>
                             </div>
                         </div>

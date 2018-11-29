@@ -1,6 +1,15 @@
 import websiteHelper from '../../../js/helper/websites'
 import util from '../../../js/common/util'
 import { downloadAsJson } from '../../../js/helper'
+import { codemirror } from 'vue-codemirror'
+import 'codemirror/keymap/vim.js'
+import 'codemirror/addon/edit/closebrackets.js'
+import 'codemirror/addon/fold/foldcode.js'
+import 'codemirror/addon/fold/foldgutter.js'
+import 'codemirror/addon/fold/brace-fold.js'
+import 'codemirror/addon/fold/foldgutter.css'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/theme/monokai.css'
 
 export default {
     data() {
@@ -8,6 +17,21 @@ export default {
             websiteSearchText: '',
             websites: [],
             currentWebsite: null,
+            currentWebsiteSource: '',
+            websiteCmOptions: {
+                tabSize: 2,
+                styleActiveLine: true,
+                autoCloseBrackets: true,
+                styleSelectedText: true,
+                matchBrackets: true,
+                foldGutter: true,
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                keyMap: 'vim',
+                mode: 'application/json',
+                theme: 'monokai',
+                lineNumbers: true,
+                line: true
+            },
             activeFieldsName: ['meta'],
             newPath: {
                 title: '',
@@ -61,6 +85,17 @@ export default {
             });
 
             this.currentWebsite = data;
+            this.updateCurrentSource();
+        },
+
+        updateCurrentSource() {
+            this.currentWebsiteSource = JSON.stringify(this.currentWebsite || {});
+        },
+
+        handleWebsiteTabClick(tab) {
+            if (tab.label === 'Code Editor') {
+                this.updateCurrentSource();
+            }
         },
 
         resetCurrentWebsite() {
@@ -75,6 +110,7 @@ export default {
                 vars: {},
                 anchors: []
             };
+            this.updateCurrentSource();
         },
 
         handleNewWebsiteClick() {
@@ -216,6 +252,7 @@ export default {
         afterWebsiteSubmit(website) {
             this.refreshWebsites();
             this.currentWebsite = website;
+            this.updateCurrentSource();
         },
 
         handleWebsiteSubmit() {
@@ -226,6 +263,15 @@ export default {
                     this.submitWebsite();
                 }
             });
+        },
+
+        handleWebsiteCodeSubmit() {
+            try {
+                this.currentWebsite = JSON.parse(this.currentWebsiteSource);
+                this.submitWebsite();
+            } catch (error) {
+                console.error(error);
+            }
         },
 
         handleWebsiteExportClick() {
@@ -242,9 +288,14 @@ export default {
                 websiteHelper.remove(id);
                 this.refreshWebsites();
                 this.currentWebsite = null;
+                this.updateCurrentSource();
             }).catch(() => {
 
             });
         }
+    },
+
+    components: {
+        codemirror
     }
 }
