@@ -103,6 +103,13 @@ function handlePaths(paths, vars) {
     });
 }
 
+const defaultActions = [{
+    title: 'Toggle protection status',
+    actionType: 'pageprotect',
+    protected: false,
+    desc: 'Not protected'
+}];
+
 export class Website {
     constructor(options, parentWindow, pageMeta, generalConfig) {
         this.name = options.name;
@@ -136,17 +143,15 @@ export class Website {
         });
         const actions = options.actions;
 
-        if (actions && actions.length) {
-            this.initActions(actions);
-        }
+        this.initActions(actions);
     }
 
-    initActions(actions) {
+    initActions(actions = []) {
         const results = actions.filter(action => {
             return minimatch(this.pageMeta.pathname, action.pattern);
         });
 
-        this.actions = results;
+        this.actions = results.concat(defaultActions);
     }
 
     bindEvents() {
@@ -282,7 +287,8 @@ export class Website {
                 title: action.title,
                 subType: action.actionType,
                 selector: action.selector,
-                extend: action.extend
+                extend: action.extend,
+                desc: action.desc
             };
         });
     }
@@ -331,10 +337,24 @@ export class Website {
         }
     }
 
+    togglePageProtectionState() {
+        const action = this.actions[this.actions.length - 1];
+
+        action.protected = !action.protected;
+
+        action.desc = action.protected ? 'protected' : 'not protected';
+    }
+
     afterExecCommand(item) {
         console.log(item);
         if (this.triggerSymbol === TRIGGER_SYMBOL.SHARE) {
             addNetworkRecord(item.title);
+        }
+
+        if (this.triggerSymbol === TRIGGER_SYMBOL.ACTION) {
+            if (item.subType === 'pageprotect') {
+                this.togglePageProtectionState();
+            }
         }
     }
 }

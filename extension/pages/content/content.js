@@ -284,6 +284,8 @@ const App = {
             } else {
                 util.toast('Element not found');
             }
+        } else if (subType === 'pageprotect') {
+            this.toggleProtect();
         } else if (custom) {
             if (path) {
                 window.location.href = path;
@@ -324,6 +326,16 @@ const App = {
             meta: list,
             rawMeta: meta
         });
+    },
+
+    toggleProtect() {
+        if (window.onbeforeunload) {
+            window.onbeforeunload = null;
+        } else {
+            window.onbeforeunload = function() {
+                return "This page has been protect by yourself";
+            }
+        }
     },
 
     bindEvents() {
