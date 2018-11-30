@@ -232,7 +232,7 @@
                             </el-row>
                         </el-collapse-item>
                     </el-collapse>
-                    <el-form-item style="margin-top: 20px;">
+                    <el-form-item style="margin-top: 20px;margin-left: 20px;">
                         <el-button type="primary" @click.native.prevent="handleGeneralSubmit">{{i18nTexts.ui.settings.actions.save}}</el-button>
                     </el-form-item>
                 </el-form>
