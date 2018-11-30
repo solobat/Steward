@@ -10,6 +10,13 @@ import 'codemirror/addon/fold/brace-fold.js'
 import 'codemirror/addon/fold/foldgutter.css'
 import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
+import '../../../lib/codemirror/formatter.js'
+
+function autoFormat(editor) {
+    const totalLines = editor.lineCount();
+
+    editor.autoFormatRange({line:0, ch:0}, {line:totalLines});
+}
 
 export default {
     data() {
@@ -26,11 +33,13 @@ export default {
                 matchBrackets: true,
                 foldGutter: true,
                 gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-                keyMap: 'vim',
                 mode: 'application/json',
                 theme: 'monokai',
                 lineNumbers: true,
-                line: true
+                line: true,
+                extraKeys: {
+                    "F7": autoFormat
+                }
             },
             activeFieldsName: ['meta'],
             newPath: {
@@ -92,8 +101,12 @@ export default {
             this.currentWebsiteSource = JSON.stringify(this.currentWebsite || {});
         },
 
+        onWebsiteCodeMirrorFocus(editor) {
+            autoFormat(editor);
+        },
+
         handleWebsiteTabClick(tab) {
-            if (tab.label === 'Code Editor') {
+            if (tab.index === 1) {
                 this.updateCurrentSource();
             }
         },

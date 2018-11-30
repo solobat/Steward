@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="root-container">
         <el-tabs v-model="activeName" @tab-click="handleTabClick">
             <el-tab-pane :label="i18nTexts.ui.settings.tabs.general" name="general" class="general-panel">
                 <el-form style="margin: 20px 0; min-height: 150px;" ref="general" :model="config.general">
@@ -377,10 +377,10 @@
                                         <p class="plugin-editor-title">{{i18nTexts.ui.settings.notion.website}} - {{currentWebsite.title}}</p>
                                     </div>
                                 </div>
-                                <div class="plugin-editor-config" style="max-height: 560px; overflow-y: auto;">
-                                    <el-tabs type="border-card" @tab-click="handleWebsiteTabClick">
-                                        <el-tab-pane label="UI Editor">
-                                            <el-form style="margin: 20px;padding: 12px; min-height: 150px;" ref="websiteForm" :model="currentWebsite" :rules="websiteFormRuels" label-width="200px">
+                                <div class="plugin-editor-config" style="overflow-y: auto;">
+                                    <el-tabs style="height: 100%;" type="border-card" @tab-click="handleWebsiteTabClick">
+                                        <el-tab-pane label="Simple Editor">
+                                            <el-form style="padding: 12px; min-height: 150px;" ref="websiteForm" :model="currentWebsite" :rules="websiteFormRuels" label-width="200px">
                                                 <el-collapse v-model="activeFieldsName">
                                                     <el-collapse-item name="meta" :title="i18nTexts.ui.settings.blocks.websitebaseinfo">
                                                         <el-form-item :label="i18nTexts.ui.settings.fields.title" prop="title">
@@ -489,8 +489,8 @@
                                                 </el-form-item>
                                             </el-form>
                                         </el-tab-pane>
-                                        <el-tab-pane label="Code Editor">
-                                            <codemirror v-model="currentWebsiteSource" :options="websiteCmOptions"></codemirror>                                            
+                                        <el-tab-pane label="Advance Editor">
+                                            <codemirror v-model="currentWebsiteSource" @focus="onWebsiteCodeMirrorFocus" :options="websiteCmOptions"></codemirror>                                            
                                             <div class="buttons" style="margin-top: 20px;">
                                                 <el-button type="primary" @click.native.prevent="handleWebsiteCodeSubmit">{{i18nTexts.ui.settings.actions.save}}</el-button>
                                             </div>
@@ -919,7 +919,7 @@ a {
 
 .plugin-list,
 .plugin-editor {
-    height: 600px;
+    height: calc(100vh - 57px);
     overflow-y: auto;
 }
 
@@ -1049,14 +1049,14 @@ a {
 }
 
 .appearance-item-panel {
-    height: 600px;
+    height: calc(100vh - 57px);
 }
 
 .themes-container {
     display: flex;
-    height: 600px;
     padding: 15px;
     box-sizing: border-box;
+    height: 100%;
 }
 
 .themes-info {
@@ -1070,7 +1070,7 @@ a {
     margin-left: 15px;
     background: #333;
     color: #fff;
-    height: 570px;
+    height: 100%;
     overflow: auto;
 
     .el-form {
