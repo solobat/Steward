@@ -23,7 +23,11 @@
 }
 
 body {
-    background: var(--app-newtab-background-image) center center / cover no-repeat fixed;
+    background: var(--app-newtab-background-image);
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .use-filter {
