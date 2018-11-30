@@ -38,6 +38,9 @@ export const WALLPAPER_SOURCES = [{
     label: 'Pixabay',
     value: 'pixabay',
     tips: 'pixabay.com'
+}, {
+    label: 'Solid Colors',
+    value: 'solidcolor'
 }];
 
 export const NEWTAB_WIDGETS = [{

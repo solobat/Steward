@@ -53,9 +53,20 @@ export function update(url, toSave, isNew) {
     }
 
     curUrl = url;
-    $('html').css({
-        '--app-newtab-background-image': `url(${url})`
-    });
+    let styles;
+
+    if (url.startsWith('#')) {
+        styles = {
+            '--app-newtab-background-image': url,
+            '--newtab-background-color': url
+        };
+    } else {
+        styles = {
+            '--app-newtab-background-image': `url(${url})`
+        };
+    }
+
+    $('html').css(styles);
     window.stewardApp.emit('wallpaper:refreshed', isNew);
     $body.waitForImages(true).done(function() {
         Toast.clear();
@@ -83,6 +94,25 @@ function getRandomOne(list) {
         return list[index];
     }
 }
+
+const SOLID_COLORS = [
+    '#009688',
+    '#00acc1',
+    '#0f6cb2',
+    '#0f6bb3',
+    '#19a5aa',
+    '#3f51b5',
+    '#303f9f',
+    '#423c92',
+    '#424242',
+    '#5e35b1',
+    '#607d8b',
+    '#7e57c2',
+    '#c5cae9',
+    '#ff8f00',
+    '#ff9e80',
+    '#ff6e40'
+];
 
 const sourcesInfo = {
     bing: {
@@ -114,6 +144,11 @@ const sourcesInfo = {
         api: () => api.pixabay.getPageList(),
         handle: result => getRandomOne(result.hits).largeImageURL,
         weight: 3
+    },
+    solidcolor: {
+        api: () => SOLID_COLORS,
+        handle: result => getRandomOne(result),
+        weight: 2
     }
 };
 
@@ -191,7 +226,7 @@ export function refresh(today, silent) {
             shouldShow(wp).then(() => {
                 recordSource(type);
 
-                return update(wp, true, isNew);
+                return update(wp, true, isNew, type);
             }).catch(() => {
                 refresh(false, true);
             });

@@ -14,7 +14,10 @@
                 const theme = themes[mode];
                 const bg = getBg();
 
-                if (bg) {
+                if (bg.startsWith('#')) {
+                    theme['--app-newtab-background-image'] = bg;
+                    theme['--newtab-background-color'] = bg;
+                } else {
                     theme['--app-newtab-background-image'] = `url(${bg})`;
                 }
 
