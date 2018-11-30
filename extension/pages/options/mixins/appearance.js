@@ -1,5 +1,6 @@
 import CONST from '../../../js/constant'
 import previewHtml from '../preview.html'
+import { downloadAsJson, readFile } from '../../../js/helper'
 import * as defaultThemems from '../../../js/conf/themes'
 import storage from '../../../js/utils/storage'
 
@@ -106,6 +107,37 @@ export default {
 
                 document.querySelector('html').style.cssText = cssText;
             }
+        },
+
+        handleThemeExportClick() {
+            downloadAsJson(this.theme, `${this.themeMode}-theme`);
+        },
+
+        handleThemeBackupBeforeUpload(file) {
+            if (file.type === 'application/json') {
+                readFile(file).then(content => {
+                    let data;
+
+                    try {
+                        data = JSON.parse(content);
+
+                        return Promise.resolve(data);
+                    } catch (error) {
+                        this.$message.error(chrome.i18n.getMessage('file_content_error'));
+
+                        return Promise.reject('File content is wrong');
+                    }
+                }).then(data => {
+                    if (data && data['--app-background-color']) {
+                        this.themes[this.themeMode] = data;
+                        this.handleThemeSave(this.themeMode);
+                    }
+                });
+            } else {
+                this.$message.error(chrome.i18n.getMessage('file_type_wrong'));
+            }
+
+            return false; 
         }
     }
 }

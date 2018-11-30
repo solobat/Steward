@@ -5,7 +5,7 @@ import './content.scss'
 import PluginHelper from '../../js/helper/pluginHelper'
 import { getFavicon, getShareFields } from '../../js/helper/websites'
 import { ITEM_TYPE } from '../../js/constant/base'
-import util from '../../js/common/util'
+import * as pageService from './pageService'
 
 const chrome = window.chrome;
 const pluginHelper = new PluginHelper();
@@ -262,30 +262,15 @@ const App = {
         } else if (subType === 'anchor') {
             this.anchorNodes[index].scrollIntoView();
         } else if (subType === 'click') {
-            const elem = document.querySelector(selector);
-
-            if (elem) {
-                elem.scrollIntoView();
-                elem.click();
-            } else {
-                util.toast('Element not found');
-            }
+            pageService.handleClickCommand(selector, extend);
+        } else if (subType === 'hide') {
+            pageService.handleHideCommand(selector, extend);
+        } else if (subType === 'show') {
+            pageService.handleShowCommand(selector, extend);
         } else if (subType === 'copy') {
-            const elem = document.querySelector(selector);
-
-            if (elem) {
-                let text = elem.value || elem.innerText;
-
-                if (extend.template) {
-                    text = util.simTemplate(extend.template, { text });
-                }
-
-                util.copyToClipboard(text, true);
-            } else {
-                util.toast('Element not found');
-            }
+            pageService.handleCopyCommand(selector, extend);
         } else if (subType === 'pageprotect') {
-            this.toggleProtect();
+            pageService.toggleProtect();
         } else if (custom) {
             if (path) {
                 window.location.href = path;
@@ -326,16 +311,6 @@ const App = {
             meta: list,
             rawMeta: meta
         });
-    },
-
-    toggleProtect() {
-        if (window.onbeforeunload) {
-            window.onbeforeunload = null;
-        } else {
-            window.onbeforeunload = function() {
-                return "This page has been protect by yourself";
-            }
-        }
     },
 
     bindEvents() {

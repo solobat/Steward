@@ -541,6 +541,10 @@
                                             <div>
                                                 <el-button type="primary" @click.native.prevent="handleThemeSave(themeMode)">{{i18nTexts.ui.settings.actions.applysave}}</el-button>
                                                 <el-button type="warning" @click.native.prevent="handleThemeReset(themeMode)">{{i18nTexts.ui.settings.actions.reset}}</el-button>
+                                                <el-button @click="handleThemeExportClick" type="primary">{{i18nTexts.ui.settings.actions.export}}</el-button>
+                                                <el-upload style="display: inline-block;margin-left: 12px;" accept="text/json" action="/" :before-upload="handleThemeBackupBeforeUpload">
+                                                    <el-button type="primary">{{i18nTexts.ui.settings.actions.import}}</el-button>
+                                                </el-upload>
                                             </div>
                                             <div class="theme-field-type">Background Coloring</div>
                                             <el-form-item v-if="themeMode === 'newtab'" label="New Tab:">

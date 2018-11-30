@@ -23,6 +23,22 @@ export function downloadAsJson(exportObj, exportName) {
     downloadAnchorNode.remove();
 }
 
+export function readFile(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+            resolve(event.target.result);
+        };
+
+        reader.onerror = function(event) {
+            reject(`File could not be read! Code ${event.target.error.code}`);
+        };
+
+        reader.readAsText(file);
+    })
+}
+
 export function backup() {
     const tasks = dataHelpers.map(helper => helper.getData());
 
