@@ -126,6 +126,7 @@ export class Website {
         this.isDefault = options.isDefault;
         this.meta = [];
         this.urls = [];
+        this.outline = [];
         this.pageMeta = pageMeta || {};
         this.shareUrls = [];
         this.init(generalConfig, options);
