@@ -106,7 +106,9 @@
     }
 
     window.addEventListener('beforeunload', function () {
-        window.stewardApp && window.stewardApp.emit('beforeleave');
+        if (window.stewardApp && window.stewardApp.emit) {
+            window.stewardApp.emit('beforeleave');
+        }
         document.querySelector('#main').style.display = 'none';
     });
 })();
