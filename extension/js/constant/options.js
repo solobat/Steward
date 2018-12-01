@@ -41,6 +41,9 @@ export const WALLPAPER_SOURCES = [{
 }, {
     label: 'Solid Colors',
     value: 'solidcolor'
+}, {
+    label: "Author's Selection",
+    value: 'selection'
 }];
 
 export const NEWTAB_WIDGETS = [{
