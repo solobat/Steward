@@ -78,7 +78,7 @@ function dataFormat(bookMarkList, command) {
 
 function onInput(query, command) {
     if (query === '/' && window.parentHost) {
-        return `${command.key} ${window.parentHost}`;
+        window.stewardApp.applyCommand(`${command.key} ${window.parentHost}`);
     } else {
         return searchBookmark(query).then(bookMarkList => {
             return dataFormat(bookMarkList, command);
