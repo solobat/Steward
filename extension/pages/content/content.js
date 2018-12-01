@@ -281,8 +281,12 @@ const App = {
     },
 
     getMeta() {
+        const title = document.title || '';
+
         return {
-            title: document.title,
+            title,
+            shortTitle: title.split(' ')[0],
+            selection: (window.getSelection() || '').toString(),
             icon: getFavicon(document, window),
             url: window.location.href,
             host: window.location.host,

@@ -464,6 +464,16 @@ function parseNumbers(part) {
     }
 }
 
+function resolveTemplate(text = '') {
+    const pageData = stewardApp.data.page;
+
+    if (text.indexOf('{{') !== -1 && stewardApp.inContent && pageData) {
+        return util.simTemplate(text, pageData);
+    } else {
+        return text;
+    }
+}
+
 function parseLine(line) {
     const realLine = line.replace(/^[\s\t]+/, '');
     const parts = realLine.split(/[|,，]/).slice(0, 3);
@@ -475,7 +485,7 @@ function parseLine(line) {
         } else if (part.toLowerCase() === 'shift') {
             withShift = true;
         } else {
-            input = part;
+            input = resolveTemplate(part);
         }
     });
 
