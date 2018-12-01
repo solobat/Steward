@@ -15,3 +15,12 @@ export function getPageList() {
 
     return apiUtils.fetch(URL, options);
 }
+
+export default function(getRandomOne) {
+    return {
+        name: 'pixabay',
+        api: () => getPageList(),
+        handle: result => getRandomOne(result.hits).largeImageURL,
+        weight: 3
+    }
+}

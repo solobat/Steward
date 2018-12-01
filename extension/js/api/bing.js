@@ -23,3 +23,15 @@ export const rand = () => {
         idx: getRandom()
     }));
 };
+
+const api = {
+    today,
+    rand
+}
+
+export default {
+    name: 'bing',
+    api: method => () => api[method](),
+    handle: result => (root + result.images[0].url),
+    weight: 1
+}

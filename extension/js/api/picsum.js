@@ -45,3 +45,10 @@ export function getRandomImage() {
         return Promise.resolve(`${IMAGE_BASE_URL}0`);
     }
 }
+
+export default {
+    name: 'picsum',
+    api: () => getRandomImage(),
+    handle: result => result,
+    weight: 2
+}
