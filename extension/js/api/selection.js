@@ -1,6 +1,6 @@
 import * as apiUtils from '../utils/api'
 
-const URL = 'http://static.oksteward.com/steward-wallpaper.json';
+const URL = `http://static.oksteward.com/steward-wallpaper.json?t=${Number(new Date())}`;
 
 let cached;
 
