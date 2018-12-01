@@ -143,7 +143,11 @@ export default {
         queryString(query) {
             return Core.queryByInput(query).then(resp => {
                 this.isFirst = false;
-                resp.isValid = resp.query === this.text;
+                if (resp) {
+                    resp.isValid = resp.query === this.text;
+                } else {
+                    resp = { isValid: false };
+                }
                 
                 return resp;
             });
