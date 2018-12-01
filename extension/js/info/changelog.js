@@ -1,5 +1,14 @@
 const langZh = [
     {
+        version: 'v3.6',
+        detail: `
+            Workflow 支持变量, plugin shiftkey 通用支持;<br>
+            主题导出、导入;<br>
+            Wallpaer 新增纯色背景以及作者精选集;<br>
+            Websites 新增 actions 功能，默认添加页面保护的 action, websites 两种编辑模式。
+        `
+    },
+    {
         version: 'v3.5.7',
         detail: `
             重构主流程，更新插件 api;<br>
@@ -409,6 +418,15 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.6',
+        detail: `
+        Workflow support variables, shiftkey support for plugins;<br>
+        Theme export and import; <br>
+        Add solid colors background and author' selection for wallpaper;<br>
+        Add actions feature for websites, provide page protection action and two editing modes.
+        `
+    },
     {
         version: 'v3.5.7',
         detail: `
