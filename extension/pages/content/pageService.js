@@ -185,15 +185,26 @@ export function handleShowCommand(selector, options) {
 }
 
 export function handleCopyCommand(selector, options) {
-    const elem = getElemsBySelector(selector, options, 'copy')[0];
+    const data = {
+        ...getMeta()
+    };
+    let text;
 
-    if (elem) {
-        let text = elem.value || elem.innerText;
+    if (selector) {
+        const elem = getElemsBySelector(selector, options, 'copy')[0];
 
-        if (options.template) {
-            text = util.simTemplate(options.template, { text });
+        text = elem.value || elem.innerText;
+
+        if (elem) {
+            data.text = text;
         }
+    }
 
+    if (options.template) {
+        text = util.simTemplate(options.template, data);
+    }
+
+    if (text) {
         util.copyToClipboard(text, true);
     } else {
         util.toast.warning('Element not found');
