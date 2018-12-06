@@ -34,11 +34,31 @@ if (window.parent === window) {
     initApp(MODE.POPUP, false);
 }
 
+function toggleBookmark({ url, title, tag }) {
+    chrome.bookmarks.search({ url }, resp => {
+        if (resp && resp.length) {
+            chrome.bookmarks.remove(resp[0].id, () => {});
+        } else {
+            const newTitle = `${tag}${title}`;
+
+            chrome.bookmarks.create({
+                title: newTitle,
+                url
+            });
+        }
+    });
+}
+
 window.addEventListener('message', function(event) {
     if (event.data.ext_from === 'content') {
-        if (event.data.action === 'show') {
+        const action = event.data.action;
+        const data = event.data.data;
+
+        console.log(`action: ${action}`);
+
+        if (action === 'show') {
             changeBoxStatus(false, event.data.cmd);
-        } else {
+        } else if (action === 'init') {
             const { host, meta, general } = event.data;
 
             createWebsites(event.source, host, meta, general).then(site => {
@@ -47,6 +67,8 @@ window.addEventListener('message', function(event) {
                 }
                 initForContentPage(event.source, event.data.lazy, event.data.host, meta);
             });
+        } else if (action === 'toggleBookmark') {
+            toggleBookmark(data);
         }
     }
 });

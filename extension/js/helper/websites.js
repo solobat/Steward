@@ -104,6 +104,9 @@ function handlePaths(paths, vars) {
 }
 
 const defaultActions = [{
+    title: 'Toggle TODO',
+    actionType: 'toggleTodo'
+}, {
     title: 'Toggle protection status',
     actionType: 'pageprotect',
     protected: false,

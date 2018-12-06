@@ -3,10 +3,11 @@ import $ from 'jquery'
 import keyboardJS from 'keyboardjs'
 import './content.scss'
 import PluginHelper from '../../js/helper/pluginHelper'
-import { getFavicon, getShareFields } from '../../js/helper/websites'
+import Enums from '../../js/enum'
 import { ITEM_TYPE } from '../../js/constant/base'
 import * as pageService from './pageService'
 
+const { MessageType, PageCommand, PageAction } = Enums;
 const chrome = window.chrome;
 const pluginHelper = new PluginHelper();
 const shouldInstead = window.location.href === 'https://lai.app/' && EXT_TYPE === 'stewardlite';
@@ -76,15 +77,14 @@ const App = {
             this.$el = $('#steward-main');
             this.$iframe = $('#steward-iframe');
             this.$iframe.on('load', () => {
-                const iframeWindow = document.getElementById('steward-iframe').contentWindow;
-
-                iframeWindow.postMessage({
+                pageService.noticeApp({
                     ext_from: 'content',
+                    action: MessageType.INIT,
                     lazy: this.isLazy,
                     host: window.location.host,
-                    meta: this.getMeta(),
+                    meta: pageService.getMeta(),
                     general: this.config.general
-                }, '*');
+                });
 
                 resolve();
             });
@@ -99,20 +99,12 @@ const App = {
 
         this.$iframe.show().focus();
         setTimeout(() => {
-            const iframeWindow = document.getElementById('steward-iframe').contentWindow;
-
-            iframeWindow.postMessage({
+            pageService.noticeApp({
                 ext_from: 'content',
-                action: 'show',
+                action: MessageType.SHOW,
                 cmd: cmd
-            }, '*');
+            });
         }, 25);
-    },
-
-    postToIframe(msg) {
-        const iframeWindow = document.getElementById('steward-iframe').contentWindow;
-
-        iframeWindow.postMessage(msg, '*');
     },
 
     closeBox() {
@@ -129,53 +121,10 @@ const App = {
 
     handleQueryNavs(event) {
         if (event.data.selectors) {
-            const items = $.makeArray($(event.data.selectors)).map(elem => {
-                let text;
-                const isLink = elem.tagName === 'A';
+            const validItems = pageService.queryNavs(event.data.selectors);
 
-                if (elem.childNodes.length === 1) {
-                    text = elem.innerText || elem.text;
-                } else {
-                    const lastNode = elem.childNodes[elem.childNodes.length - 1];
-
-                    if (lastNode) {
-                        text = lastNode.innerText || lastNode.text;
-                    }
-
-                    if (!text) {
-                        $(elem.childNodes).each((index, node) => {
-                            const title = node.innerText || node.text || node.textContent;
-
-                            if (title) {
-                                text = title;
-
-                                return false;
-                            }
-                        });
-                    }
-                }
-
-                return {
-                    name: text,
-                    path: elem.getAttribute('href'),
-                    elem,
-                    isLink
-                }
-            });
-
-            const validItems = items.filter(item => {
-                if (item.isLink) {
-                    // eslint-disable-next-line
-                    return item.name && item.path && item.path.indexOf('javascript:') === -1;
-                } else {
-                    return item.name;
-                }
-            });
-
-            this.navItems = validItems;
-
-            this.postToIframe({
-                action: 'navs',
+            pageService.noticeApp({
+                action: MessageType.NAVS,
                 navs: validItems.map(({ name, path}, index) => {
                         return {
                             name,
@@ -189,43 +138,10 @@ const App = {
 
     handleGenOutline(event) {
         if (event.data.outlineScope) {
-            const headerSels = 'h1,h2,h3,h4,h5,h6';
+            const items = pageService.generateOutline(event.data.outlineScope);
 
-            function getLevelSymbol(level) {
-                const spaces = new Array(level).join(' ');
-                const levelSymbol = ['', '', '-', ' -', '  -', '   -'];
-
-                return spaces + levelSymbol[level] + new Array(2).join(' ');
-            }
-
-            const nodes = $.makeArray($(event.data.outlineScope).find(headerSels)) || [];
-
-            this.headerElems = nodes;
-
-            const inViewPortIndexes = [];
-            const items = nodes.filter(elem => {
-                return elem.innerText !== '';
-            }).map((elem, index) => {
-                const level = Number(elem.tagName[1]);
-
-                if ($(elem).isInViewport()) {
-                    inViewPortIndexes.push(index);
-                }
-
-                return {
-                    name: getLevelSymbol(level) + elem.innerText,
-                    index: index
-                }
-            });
-
-            if (inViewPortIndexes.length) {
-                items[inViewPortIndexes.pop()].isCurrent = true;
-            }
-
-            console.log(items);
-
-            this.postToIframe({
-                action: 'outline',
+            pageService.noticeApp({
+                action: MessageType.OUTLINE,
                 outline: items
             });
         }
@@ -233,17 +149,10 @@ const App = {
 
     handleGetAnchors(event) {
         if (event.data.anchorsConfig) {
-            const anchorsConfig = event.data.anchorsConfig;
-            const items = anchorsConfig.map(conf => {
-                return {
-                    name: conf.title,
-                    node: document.querySelector(conf.selector)
-                };
-            }).filter(item => item.node !== null);
-            this.anchorNodes = items.map(item => item.node);
+            const items = pageService.getAnchors(event.data.anchorsConfig);
 
-            this.postToIframe({
-                action: 'anchors',
+            pageService.noticeApp({
+                action: MessageType.ANCHORS,
                 anchors: items.map((item, index) => {
                     return {
                         name: item.name,
@@ -257,49 +166,33 @@ const App = {
     handleCommand(event) {
         const { subType, index, path, custom, selector, extend = {} } = event.data.info;
 
-        if (subType === 'outline') {
-            this.headerElems[index].scrollIntoView();
-        } else if (subType === 'anchor') {
-            this.anchorNodes[index].scrollIntoView();
-        } else if (subType === 'click') {
+        if (subType === PageCommand.OUTLINE) {
+            pageService.scrollToOutline(index);
+        } else if (subType === PageCommand.ANCHOR) {
+            pageService.scrollToAnchor(index);
+        } else if (subType === PageCommand.CLICK) {
             pageService.handleClickCommand(selector, extend);
-        } else if (subType === 'hide') {
+        } else if (subType === PageCommand.HIDE) {
             pageService.handleHideCommand(selector, extend);
-        } else if (subType === 'show') {
+        } else if (subType === PageCommand.SHOW) {
             pageService.handleShowCommand(selector, extend);
-        } else if (subType === 'copy') {
+        } else if (subType === PageCommand.COPY) {
             pageService.handleCopyCommand(selector, extend);
-        } else if (subType === 'pageprotect') {
+        } else if (subType === PageCommand.PAGE_PROTECT) {
             pageService.toggleProtect();
+        } else if (subType === PageCommand.TOGGLE_TODO) {
+            pageService.toggleTodo(pageService.getMeta());
         } else if (custom) {
             if (path) {
                 window.location.href = path;
             } else {
-                this.navItems[index].elem.click();
+                pageService.gotoNav(index);
             }
         }
     },
 
-    getMeta() {
-        const title = document.title || '';
-
-        return {
-            title,
-            shortTitle: title.split(' ')[0],
-            selection: (window.getSelection() || '').toString(),
-            icon: getFavicon(document, window),
-            url: window.location.href,
-            host: window.location.host,
-            pathname: window.location.pathname,
-            baseURL: window.location.origin + window.location.pathname,
-            search: window.location.search,
-            hash: window.location.hash,
-            share: getShareFields(document, window)
-        };
-    },
-
     handleGetMeta() {
-        const meta = this.getMeta();
+        const meta = pageService.getMeta();
         const list = [
             { title: 'Title', desc: meta.title, key: ITEM_TYPE.COPY },
             { title: 'URL', desc: meta.url, key: ITEM_TYPE.COPY },
@@ -310,7 +203,7 @@ const App = {
             { title: 'Source', desc: `open view-source:${meta.url}`, url: `view-source:${meta.url}`, key: ITEM_TYPE.URL }
         ];
 
-        this.postToIframe({
+        pageService.noticeApp({
             action: 'meta',
             meta: list,
             rawMeta: meta
@@ -327,19 +220,19 @@ const App = {
         window.addEventListener('message', event => {
             const action = event.data.action;
 
-            if (action === 'closeBox') {
+            if (action === PageAction.CLOSE_BOX) {
                 this.closeBox();
-            } else if (action === 'boxInited') {
+            } else if (action === PageAction.BOX_INITED) {
                 this.handleBoxInited();
-            } else if (action === 'command') {
+            } else if (action === PageAction.COMMAND) {
                 this.handleCommand(event);
-            } else if (action === 'queryNavs') {
+            } else if (action === PageAction.QUERY_NAVS) {
                 this.handleQueryNavs(event);
-            } else if (action === 'genOutline') {
+            } else if (action === PageAction.GEN_OUTLINE) {
                 this.handleGenOutline(event);
-            } else if (action === 'getAnchors') {
+            } else if (action === PageAction.GET_ANCHORS) {
                 this.handleGetAnchors(event);
-            } else if (action === 'getMeta') {
+            } else if (action === PageAction.GET_META) {
                 this.handleGetMeta();
             }
         });
