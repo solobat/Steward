@@ -7,6 +7,7 @@ import * as ResultHelper from './resultHelper'
 import { generateSocialUrls, addNetworkRecord } from '../../lib/social-share-urls'
 import minimatch from 'minimatch'
 import constant from '../constant'
+import { getGlobalActions } from './actionHelper'
 
 const websiteList = new WebsiteList();
 
@@ -103,16 +104,6 @@ function handlePaths(paths, vars) {
     });
 }
 
-const defaultActions = [{
-    title: 'Toggle TODO',
-    actionType: 'toggleTodo'
-}, {
-    title: 'Toggle protection status',
-    actionType: 'pageprotect',
-    protected: false,
-    desc: 'Not protected'
-}];
-
 export class Website {
     constructor(options, parentWindow, pageMeta, generalConfig) {
         this.name = options.name;
@@ -150,12 +141,13 @@ export class Website {
         this.initActions(actions);
     }
 
-    initActions(actions = []) {
+    async initActions(actions = []) {
         const results = actions.filter(action => {
             return minimatch(this.pageMeta.pathname, action.pattern);
         });
+        const globalActions = await getGlobalActions();
 
-        this.actions = results.concat(defaultActions);
+        this.actions = results.concat(globalActions);
     }
 
     bindEvents() {
