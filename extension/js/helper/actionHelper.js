@@ -19,8 +19,10 @@ const defaultActions = [{
 }, {
     title: 'Toggle protection status',
     actionType: PageCommand.PAGE_PROTECT,
-    protected: false,
-    desc: 'Not protected'
+    desc: 'Not protected',
+    extend: {
+        protected: false,
+    }
 }];
 
 function getUserActions() {

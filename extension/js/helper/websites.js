@@ -337,9 +337,9 @@ export class Website {
     togglePageProtectionState() {
         const action = this.actions[this.actions.length - 1];
 
-        action.protected = !action.protected;
+        action.extend.protected = !action.extend.protected;
 
-        action.desc = action.protected ? 'protected' : 'not protected';
+        action.desc = action.extend.protected ? 'protected' : 'not protected';
     }
 
     afterExecCommand(item) {
