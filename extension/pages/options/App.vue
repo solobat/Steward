@@ -641,6 +641,13 @@
                             <el-button icon="plus" @click="handleNewNewworkClick"></el-button>
                         </div>
                     </el-collapse-item>
+                    <el-collapse-item name="actionEditor" title="Action Editor">
+                        <codemirror v-model="globalActions" :options="actionCmOptions"
+                            @focus="onGlobalActionsCodeMirrorFocus" ></codemirror>
+                        <div class="bts">
+                            <el-button type="primary" style="margin-top: 15px;" @click="handleGlobalActionsSaveClick">Test and Save</el-button>
+                        </div>
+                    </el-collapse-item>
                     <el-collapse-item name="pluginEditor" :title="i18nTexts.ui.settings.blocks.plugineditor">
                         <div class="custom-plugins-container">
                             <el-row>

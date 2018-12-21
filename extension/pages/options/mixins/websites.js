@@ -15,7 +15,7 @@ import '../../../lib/codemirror/formatter.js'
 function autoFormat(editor) {
     const totalLines = editor.lineCount();
 
-    editor.autoFormatRange({line:0, ch:0}, {line:totalLines});
+    editor.autoFormatRange({line: 0, ch: 0}, {line: totalLines});
 }
 
 export default {

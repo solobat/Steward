@@ -14,6 +14,14 @@ import 'codemirror/lib/codemirror.css'
 import 'codemirror/theme/monokai.css'
 import { PLUGIN_DEFAULT } from '../../../js/constant/code'
 import { customPluginHelper, pluginFactory } from '../../../js/helper/pluginHelper'
+import { getAllGlobalActions, setGlobalActions } from '../../../js/helper/actionHelper'
+import util from '../../../js/common/util';
+
+function autoFormat(editor) {
+    const totalLines = editor.lineCount();
+
+    editor.autoFormatRange({line: 0, ch: 0}, {line: totalLines});
+}
 
 function readFile(file) {
     return new Promise((resolve, reject) => {
@@ -65,12 +73,30 @@ export default {
                 theme: 'monokai',
                 lineNumbers: true,
                 line: true
+            },
+            globalActions: '',
+            actionCmOptions: {
+                tabSize: 2,
+                styleActiveLine: true,
+                autoCloseBrackets: true,
+                styleSelectedText: true,
+                matchBrackets: true,
+                foldGutter: true,
+                gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+                mode: 'application/json',
+                theme: 'monokai',
+                lineNumbers: true,
+                line: true,
+                extraKeys: {
+                    "F7": autoFormat
+                }
             }
         };
     },
 
     created() {
         this.fetchCustomPlugins();
+        this.fetchGlobalActions();
     },
 
     methods: {
@@ -78,6 +104,24 @@ export default {
             customPluginHelper.refresh().then(resp => {
                 console.log(resp);
                 this.customPlugins = resp || [];
+            });
+        },
+
+        fetchGlobalActions() {
+            getAllGlobalActions().then(resp => {
+                this.globalActions = JSON.stringify(resp);
+            });
+        },
+
+        onGlobalActionsCodeMirrorFocus(editor) {
+            autoFormat(editor);
+        },
+
+        handleGlobalActionsSaveClick() {
+            setGlobalActions(this.globalActions).then(() => {
+                util.toast.success('save successfully!');
+            }).catch(msg => {
+                util.toast.error(msg);
             });
         },
 
