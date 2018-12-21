@@ -237,8 +237,24 @@ export function toggleTodo(info) {
     toggleBookmark(info, BookmarkTag.TODO);
 }
 
+export function replaceURL(url) {
+    noticeBackground({
+        ext_from: 'content',
+        action: MessageType.REPLACE_URL,
+        data: {
+            url
+        }
+    });
+}
+
 export function noticeApp(msg) {
     const iframeWindow = document.getElementById('steward-iframe').contentWindow;
 
     iframeWindow.postMessage(msg, '*');
+}
+
+export function noticeBackground(msg) {
+    chrome.runtime.sendMessage(msg, resp => {
+        console.log(resp);
+    });
 }

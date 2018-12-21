@@ -13,5 +13,6 @@ export default {
     NOTES: 'notes',
     TAGS: 'tags',
     TIMES: 'times',
-    DIARY: 'diary'
+    DIARY: 'diary',
+    URLBLOCK_REPLACE_PAGE: 'urlblock_replace_page'
 };

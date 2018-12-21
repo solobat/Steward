@@ -5,10 +5,12 @@
  */
 
 import util from '../../common/util'
+import browser from 'webextension-polyfill'
+import constant from '../../constant'
 
 const version = 5;
 const name = 'urlblock';
-const keys = [{ key: 'bk', allowBatch: true }, { key: 'bk8', allowBatch: true }];
+const keys = [{ key: 'bk', allowBatch: true }, { key: 'bk8', allowBatch: true }, { key: 'bkseturl' }];
 const type = 'keyword';
 const icon = chrome.extension.getURL('iconfont/urlblock.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
@@ -27,11 +29,23 @@ function onInput(key, command, inContent) {
     }
 }
 
-function onEnter(item, command) {
-    if (this.query) {
-        return Reflect.apply(addBlacklist, this, [command.key, this.query, command.orkey]);
+function setBlockedSiteReplaceURL(query) {
+    browser.storage.sync.set({
+        [constant.STORAGE.URLBLOCK_REPLACE_PAGE]: query.trim()
+    }).then(() => {
+        util.toast.success(chrome.i18n.getMessage('set_ok'));
+    });
+}
+
+function onEnter(item, command, query) {
+    if (command.orkey === 'bkseturl') {
+        return setBlockedSiteReplaceURL(query);
     } else {
-        return Reflect.apply(removeBlacklist, this, [item]);
+        if (this.query) {
+            return Reflect.apply(addBlacklist, this, [command.key, this.query, command.orkey]);
+        } else {
+            return Reflect.apply(removeBlacklist, this, [item]);
+        }
     }
 }
 

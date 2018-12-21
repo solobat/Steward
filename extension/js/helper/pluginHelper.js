@@ -10,6 +10,7 @@ import { CustomPlugin as CustomPluginModel, CustomPluginList } from '../collecti
 import axios from 'axios'
 import storage from '../utils/storage'
 import browser from 'webextension-polyfill'
+import { replaceURL } from '../../pages/content/pageService'
 
 const blockPageUrl = chrome.extension.getURL('urlblock.html');
 
@@ -40,7 +41,13 @@ PluginHelper.prototype = {
         const url = window.location.href;
 
         window.history.pushState({}, document.title, url);
-        window.location.href = `${blockPageUrl}?original=${url}`
+        browser.storage.sync.get(constant.STORAGE.URLBLOCK_REPLACE_PAGE).then(resp => {
+            if (resp[constant.STORAGE.URLBLOCK_REPLACE_PAGE]) {
+                replaceURL(resp[constant.STORAGE.URLBLOCK_REPLACE_PAGE]);
+            } else {
+                window.location.href = `${blockPageUrl}?original=${url}`
+            }
+        });
     },
 
     unblock() {

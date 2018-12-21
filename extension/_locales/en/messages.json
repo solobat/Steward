@@ -353,6 +353,12 @@
     "urlblock_bk8_subtitle": {
         "message": "Block the specified URL for 8 hours"
     },
+    "urlblock_bkseturl_title": {
+        "message": "Set a replacement page for blocked sites"
+    },
+    "urlblock_bkseturl_subtitle": {
+        "message": "Please enter a url, such as chrome://newtab"
+    },
     "urlblock_unbk_subtitle": {
         "message": "Press Enter or Return to unblock"
     },

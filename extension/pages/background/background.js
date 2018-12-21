@@ -12,6 +12,15 @@ let config = {};
 let todos = [];
 let blockedUrls = [];
 
+function replaceURL(req, sender) {
+    console.log('should change url...');
+    if (req.data.url) {
+        chrome.tabs.update(sender.tab.id, {
+            url: req.data.url
+        });
+    }
+}
+
 function addEvents() {
     chrome.runtime.onMessage.addListener((req, sender, resp) => {
         switch (req.action) {
@@ -60,6 +69,10 @@ function addEvents() {
                 break;
             case 'removeWorkflow':
                 resp({ msg: 'removeWorkflow', data: workflowHelper.remove(req.data) });
+                break;
+            case 'replaceURL':
+                replaceURL(req, sender);
+                resp({ msg: 'ok' });
                 break;
             default:
                 break;

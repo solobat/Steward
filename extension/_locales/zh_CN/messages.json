@@ -353,6 +353,12 @@
     "urlblock_bk8_subtitle": {
         "message": "屏蔽指定网址8小时"
     },
+    "urlblock_bkseturl_title": {
+        "message": "设置被屏蔽网站的替换页面"
+    },
+    "urlblock_bkseturl_subtitle": {
+        "message": "输入 url，比如 chrome://newtab"
+    },
     "urlblock_unbk_subtitle": {
         "message": "按 Enter 键或 Return 键可以解除屏蔽"
     },

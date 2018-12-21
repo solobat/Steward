@@ -5,5 +5,6 @@ export default {
     INIT: 'init',
     NAVS: 'navs',
     OUTLINE: 'outline',
-    ANCHORS: 'anchors'
+    ANCHORS: 'anchors',
+    REPLACE_URL: 'replaceURL'
 }
