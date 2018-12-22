@@ -1,4 +1,4 @@
-<p align="center"><img src="https://user-images.githubusercontent.com/1894203/50374546-a5b4e680-062a-11e9-8880-d08129b8d918.png" /></p>
+<p align="center"><img src="https://user-images.githubusercontent.com/1894203/50375271-c898c800-0635-11e9-9b48-6e87191cab7f.png" /></p>
 <h1 align="center">Steward</h1>
 <p align="center">A command launcher for Chrome/Firefox</p>
 <p align="center">
