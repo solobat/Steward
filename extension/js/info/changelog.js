@@ -1,5 +1,12 @@
 const langZh = [
     {
+        version: 'v3.6.1',
+        detail: `
+            新增全局 Actions，在设置 --> 高级 --> Action Editor 里编辑；<br>
+            urlblock 插件新增 bkseturl 命令，设置 block 替换页。
+        `
+    },
+    {
         version: 'v3.6',
         detail: `
             Workflow 支持变量, plugin shiftkey 通用支持;<br>
@@ -418,6 +425,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.6.1',
+        detail: `
+            Add global Actions, edit in Settings --> Advanced --> Action Editor;<br>
+            The urlblock plugin adds the bkseturl command to set the block replacement page. 
+        `
+    },
     {
         version: 'v3.6',
         detail: `
