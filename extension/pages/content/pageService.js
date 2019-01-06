@@ -2,17 +2,9 @@ import util from '../../js/common/util'
 import $ from 'jquery'
 import Enums from '../../js/enum'
 import { getFavicon, getShareFields } from '../../js/helper/websites'
+import 'is-in-viewport'
 
 const { MessageType, BookmarkTag } = Enums;
-
-$.fn.isInViewport = function() {
-    const elementTop = $(this).offset().top;
-    const elementBottom = elementTop + $(this).outerHeight();
-    const viewportTop = $(window).scrollTop();
-    const viewportBottom = viewportTop + $(window).height();
-
-    return elementBottom > viewportTop && elementTop < viewportBottom;
-};
 
 export function getMeta() {
     const title = document.title || '';
@@ -122,7 +114,7 @@ export function generateOutline(outlineScope) {
     }).map((elem, index) => {
         const level = Number(elem.tagName[1]);
 
-        if ($(elem).isInViewport()) {
+        if ($(elem).isInViewport().length) {
             inViewPortIndexes.push(index);
         }
 
