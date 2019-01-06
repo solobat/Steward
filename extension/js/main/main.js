@@ -318,9 +318,12 @@ export function queryByInput(str, background) {
 export function getInitCmd () {
     const config = stewardCache.config;
     const { cacheLastCmd, defaultPlugin, customCmd } = config.general;
+    const paramCmd = util.getParameterByName('cmd');
 
     if (util.shouldSupportMe()) {
         return Promise.resolve(Number(new Date()) % 2 ? 'about ' : 'up ');
+    } else if (paramCmd) {
+        return Promise.resolve(paramCmd);
     } else if (cacheLastCmd) {
         return Promise.resolve(storage.h5.get(CONST.STORAGE.LAST_CMD) || 'site ');
     } else if (defaultPlugin) {

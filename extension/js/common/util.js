@@ -9,6 +9,7 @@ import Toast from 'toastr'
 import fuzzaldrinPlus from 'fuzzaldrin-plus'
 import '../../../node_modules/toastr/toastr.scss'
 import { QUOTA_BYTES_PER_ITEM } from '../constant/number'
+import URLSearchParams from '@ungap/url-search-params'
 
 function getPinyin(name) {
     return pinyin(name, {
@@ -299,6 +300,16 @@ function getTextMsg(tplKey, textKey) {
     return getTplMsg(tplKey, data);
 }
 
+function getURLParams(keys, search = window.location.search) {
+    const searchParams = new URLSearchParams(search);
+
+    return keys.reduce((obj, key) => {
+      obj[key] = searchParams.get(key);
+
+      return obj;
+    }, {});
+}
+
 export default {
     matchText,
     isMac,
@@ -324,5 +335,6 @@ export default {
     simTemplate,
     getData,
     createTab,
-    toast: Toast
+    toast: Toast,
+    getURLParams
 };
