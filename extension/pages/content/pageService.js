@@ -30,6 +30,8 @@ export function getElemsBySelector(selector, options = {}) {
 
     if (scope === 'visible') {
         elems = $(`${selector}:visible`);
+    } else if (scope === 'viewport') {
+        elems = $(`${selector}:in-viewport`);
     } else {
         elems = $(selector);
     }
@@ -114,7 +116,7 @@ export function generateOutline(outlineScope) {
     }).map((elem, index) => {
         const level = Number(elem.tagName[1]);
 
-        if ($(elem).isInViewport().length) {
+        if ($(elem).is(':in-viewport')) {
             inViewPortIndexes.push(index);
         }
 
