@@ -19,6 +19,29 @@ function PluginHelper() {
     this.original = '';
 }
 
+
+const storageKey = constant.STORAGE.URLBLOCK_REPLACE_PAGE;
+
+function getSitesList() {
+    return browser.storage.sync.get(storageKey).then(resp => {
+        const arr = resp[storageKey] || [];
+
+        if (arr instanceof Array) {
+            return arr;
+        } else {
+            return [arr];
+        }
+    });
+}
+
+function getRandomOne(list) {
+    if (list && list.length) {
+        const index = Math.round(Math.random() * (list.length - 1));
+
+        return list[index];
+    }
+}
+
 PluginHelper.prototype = {
     constructor: PluginHelper,
 
@@ -41,9 +64,9 @@ PluginHelper.prototype = {
         const url = window.location.href;
 
         window.history.pushState({}, document.title, url);
-        browser.storage.sync.get(constant.STORAGE.URLBLOCK_REPLACE_PAGE).then(resp => {
-            if (resp[constant.STORAGE.URLBLOCK_REPLACE_PAGE]) {
-                replaceURL(resp[constant.STORAGE.URLBLOCK_REPLACE_PAGE]);
+        getSitesList().then(list => {
+            if (list.length) {
+                replaceURL(getRandomOne(list));
             } else {
                 window.location.href = `${blockPageUrl}?original=${url}`
             }

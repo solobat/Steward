@@ -17,29 +17,95 @@ const title = chrome.i18n.getMessage(`${name}_title`);
 const BLOCK_EXPIRED = 8 * 60 * 60 * 1000;
 const commands = util.genCommands(name, icon, keys, type);
 
-function onInput(key, command, inContent) {
-    if (!key) {
-        return Reflect.apply(showBlacklist, this, [command]);
+function onSeturlInput(key, command) {
+    if (key) {
+        return util.getDefaultResult(command);
     } else {
-        if (key === '/' && inContent) {
-            window.stewardApp.applyCommand(`${command.key} ${window.parentHost}`);
+        return getSitesList().then(list => {
+            if (list.length) {
+                return list.map((url, index) => {
+                    return {
+                        key: 'bkseturl',
+                        title: `URL ${index + 1}`,
+                        desc: url,
+                        icon,
+                        url
+                    };
+                });
+            } else {
+                return util.getDefaultResult(command);
+            }
+        });
+    }
+}
+
+function onInput(key, command, inContent) {
+    if (command.orkey === 'bkseturl') {
+        return onSeturlInput(key, command);
+    } else {
+        if (!key) {
+            return Reflect.apply(showBlacklist, this, [command]);
         } else {
-            return util.getDefaultResult(command);
+            if (key === '/' && inContent) {
+                window.stewardApp.applyCommand(`${command.key} ${window.parentHost}`);
+            } else {
+                return util.getDefaultResult(command);
+            }
         }
     }
 }
 
-function setBlockedSiteReplaceURL(query) {
-    browser.storage.sync.set({
-        [constant.STORAGE.URLBLOCK_REPLACE_PAGE]: query.trim()
+const storageKey = constant.STORAGE.URLBLOCK_REPLACE_PAGE;
+
+function getSitesList() {
+    return browser.storage.sync.get(storageKey).then(resp => {
+        const arr = resp[storageKey] || [];
+
+        if (arr instanceof Array) {
+            return arr;
+        } else {
+            return [arr];
+        }
+    });
+}
+
+function addBlockedSiteReplaceURL(query) {
+    return getSitesList().then(list => {
+        if (list.indexOf(query) === -1) {
+            list.push(query);
+
+            return browser.storage.sync.set({
+                [storageKey]: list
+            });
+        } else {
+            return Promise.reject();
+        }
     }).then(() => {
         util.toast.success(chrome.i18n.getMessage('set_ok'));
+
+        window.stewardApp.applyCommand('bkseturl ');
+    });
+}
+
+function removeBlockedSiteReplaceURL(item) {
+    return getSitesList().then(list => {
+        const arr = list.filter(url => url !== item.url);
+
+        return browser.storage.sync.set({
+            [storageKey]: arr
+        });
+    }).then(() => {
+        window.stewardApp.applyCommand('bkseturl ');
     });
 }
 
 function onEnter(item, command, query) {
     if (command.orkey === 'bkseturl') {
-        return setBlockedSiteReplaceURL(query);
+        if (query) {
+            return addBlockedSiteReplaceURL(query);
+        } else {
+            return removeBlockedSiteReplaceURL(item);
+        }
     } else {
         if (this.query) {
             return Reflect.apply(addBlacklist, this, [command.key, this.query, command.orkey]);
