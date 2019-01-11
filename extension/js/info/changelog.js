@@ -1,5 +1,11 @@
 const langZh = [
     {
+        version: 'v3.6.3',
+        detail: `
+            Action update。
+        `
+    },
+    {
         version: 'v3.6.2',
         detail: `
             newtab 支持参数传递 command；<br>
@@ -433,6 +439,12 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.6.3',
+        detail: `
+            Action update。
+        `
+    },
     {
         version: 'v3.6.2',
         detail: `

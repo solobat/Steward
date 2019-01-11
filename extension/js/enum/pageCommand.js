@@ -7,5 +7,6 @@ export default {
     SHOW: 'show',
     COPY: 'copy',
     PAGE_PROTECT: 'pageprotect',
-    TOGGLE_TODO: 'toggleTodo'
+    TOGGLE_TODO: 'toggleTodo',
+    ENGLISH_SYNTAX_HIGHLIGHT: 'englishSyntaxHighlight'
 }
