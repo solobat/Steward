@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.6.2',
+        detail: `
+            newtab 支持参数传递 command；<br>
+            bkseturl 支持多个 url，随机展示;<br>
+            更新 inViewport，新增 viewport 的 scope。
+        `
+    },
+    {
         version: 'v3.6.1',
         detail: `
             新增全局 Actions，在设置 --> 高级 --> Action Editor 里编辑；<br>
@@ -425,6 +433,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.6.2',
+        detail: `
+            Newtab supports cmd parameter;<br>
+            bkseturl supports multiple urls, randomly applied;<br>
+            Update inViewport to add the scope of the viewport.
+        `
+    },
     {
         version: 'v3.6.1',
         detail: `
