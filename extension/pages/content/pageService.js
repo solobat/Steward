@@ -1,4 +1,5 @@
 import util from '../../js/common/util'
+import axios from 'axios'
 import $ from 'jquery'
 import Enums from '../../js/enum'
 import { getFavicon, getShareFields } from '../../js/helper/websites'
@@ -229,6 +230,30 @@ export function toggleBookmark({ url, title }, tag) {
 
 export function toggleTodo(info) {
     toggleBookmark(info, BookmarkTag.TODO);
+}
+
+function highlightEnglish(text) {
+    const params = new URLSearchParams();
+
+    params.append('text', text);
+
+    return axios.post('https://english.edward.io/parse', params);
+}
+
+export function highlightEnglishSyntax(info) {
+    const $elem = $(info.selector);
+
+    if ($elem.length) {
+        const text = $elem[0].innerText;
+
+        if (text) {
+            highlightEnglish(text).then(resp => {
+                if (resp.data) {
+                    $elem.html(resp.data);
+                }
+            });
+        }
+    }
 }
 
 export function replaceURL(url) {
