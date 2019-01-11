@@ -241,7 +241,7 @@ function highlightEnglish(text) {
 }
 
 export function highlightEnglishSyntax(info) {
-    const $elem = $(info.selector);
+    const $elem = getElemsBySelector(info.selector, info.extend);
 
     if ($elem.length) {
         const text = $elem[0].innerText;
