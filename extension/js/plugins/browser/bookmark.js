@@ -26,7 +26,11 @@ function getRecent() {
     } else {
         return new Promise(resolve => {
             chrome.bookmarks.getRecent(2147483647, items => {
-                bookmarks = items.filter(item => Boolean(item.url));
+                bookmarks = items.filter(item => Boolean(item.url)).map(item => {
+                    item.mixed = `${item.title}!${item.url}`;
+                    
+                    return item;
+                });
 
                 resolve(bookmarks);
             });
@@ -37,7 +41,7 @@ function getRecent() {
 function searchBookmark(query) {
     return getRecent().then(items => {
         if (query) {
-            return util.getMatches(items, query, 'title');
+            return util.getMatches(items, query, 'mixed');
         } else {
             return items.slice(0, 20);
         }
