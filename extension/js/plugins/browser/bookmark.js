@@ -18,30 +18,12 @@ const icon = chrome.extension.getURL('iconfont/bookmark.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const commands = util.genCommands(name, icon, keys, type);
 
-let bookmarks;
-
-function getRecent() {
-    if (bookmarks) {
-        return Promise.resolve(bookmarks);
-    } else {
-        return new Promise(resolve => {
-            chrome.bookmarks.getRecent(2147483647, items => {
-                bookmarks = items.filter(item => Boolean(item.url));
-
-                resolve(bookmarks);
-            });
-        });
-    }
-}
-
 function searchBookmark(query) {
-    return getRecent().then(items => {
-        if (query) {
-            return util.getMatches(items, query, 'title');
-        } else {
-            return items.slice(0, 20);
-        }
-    });
+    return new Promise(resolve => {
+        chrome.bookmarks.search(query, res => {
+            resolve(res)
+        })
+    })
 }
 
 function dataFormat(bookMarkList, command) {
@@ -93,7 +75,6 @@ function onEnter(item, { orkey, key }, query, keyStatus, list) {
         return new Promise(resolve => {
             chrome.bookmarks.remove(item.id, () => {
                 // clear cache
-                bookmarks = null;
                 window.stewardApp.refresh();
                 window.slogs.push(`delete bookmark: ${item.url}`);
 
