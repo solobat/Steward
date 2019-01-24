@@ -1,5 +1,12 @@
 const langZh = [
     {
+        version: 'v3.6.4',
+        detail: `
+            优化 bookmark plugin；<br>
+            chrome url 更改。
+        `
+    },
+    {
         version: 'v3.6.3',
         detail: `
             Action update。
@@ -439,6 +446,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.6.4',
+        detail: `
+            Optimize bookmark plugin;<br>
+            Chrome url update.
+        `
+    },
     {
         version: 'v3.6.3',
         detail: `
