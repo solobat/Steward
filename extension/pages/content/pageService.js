@@ -259,12 +259,18 @@ export function highlightEnglishSyntax(info) {
 
 function hideSiblings($el) {
     if ($el && $el.length) {
-        $el.siblings().css('visibility', 'hidden').addClass('s-a-rm-hn');
+        $el.siblings().css({
+            visibility: 'hidden',
+            opacity: 0
+        }).addClass('s-a-rm-hn');
         hideSiblings($el.parent())
     } else {
         console.log('Enter reading mode');
         keyboardJS.bind('esc', function showNode() {
-            $('.s-a-rm-hn').css('visibility', 'visible').removeClass('s-a-rm-hn');
+            $('.s-a-rm-hn').css({
+                visibility: 'visible',
+                opacity: 1
+            }).removeClass('s-a-rm-hn');
             console.log('Exit reading mode');
             keyboardJS.unbind('esc', showNode);
         });
