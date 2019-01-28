@@ -1,5 +1,11 @@
 const langZh = [
     {
+        version: 'v3.6.5',
+        detail: `
+            新增 <em>readMode</em> action。
+        `
+    },
+    {
         version: 'v3.6.4',
         detail: `
             优化 bookmark plugin；<br>
@@ -447,10 +453,16 @@ const langZh = [
 
 const langEn = [
     {
+        version: 'v3.6.5',
+        detail: `
+            Add <em>readMode</em> action.
+        `
+    },
+    {
         version: 'v3.6.4',
         detail: `
             Optimize bookmark plugin;<br>
-            Chrome url update.
+            Chrome url update.
         `
     },
     {
