@@ -175,6 +175,8 @@ const App = {
             pageService.toggleTodo(pageService.getMeta());
         } else if (subType === PageCommand.ENGLISH_SYNTAX_HIGHLIGHT) {
             pageService.highlightEnglishSyntax(event.data.info);
+        } else if (subType === PageCommand.READ_MODE) {
+            pageService.readMode(event.data.info);
         } else if (custom) {
             if (path) {
                 window.location.href = path;

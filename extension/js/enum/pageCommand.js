@@ -8,5 +8,6 @@ export default {
     COPY: 'copy',
     PAGE_PROTECT: 'pageprotect',
     TOGGLE_TODO: 'toggleTodo',
-    ENGLISH_SYNTAX_HIGHLIGHT: 'englishSyntaxHighlight'
+    ENGLISH_SYNTAX_HIGHLIGHT: 'englishSyntaxHighlight',
+    READ_MODE: 'readMode'
 }

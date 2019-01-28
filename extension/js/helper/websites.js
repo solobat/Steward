@@ -143,7 +143,15 @@ export class Website {
 
     async initActions(actions = []) {
         const results = actions.filter(action => {
-            return minimatch(this.pageMeta.pathname, action.pattern);
+            let patterns;
+
+            if (typeof action.pattern === 'string') {
+                patterns = [action.pattern];
+            } else if (!action.pattern instanceof Array) {
+                patterns = [];
+            }
+
+            return patterns.some(pattern => minimatch(this.pageMeta.pathname, pattern));
         });
         const globalActions = await getGlobalActions();
 

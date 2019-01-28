@@ -1,4 +1,5 @@
 import util from '../../js/common/util'
+import keyboardJS from 'keyboardjs'
 import axios from 'axios'
 import $ from 'jquery'
 import Enums from '../../js/enum'
@@ -254,6 +255,26 @@ export function highlightEnglishSyntax(info) {
             });
         }
     }
+}
+
+function hideSiblings($el) {
+    if ($el && $el.length) {
+        $el.siblings().css('visibility', 'hidden').addClass('s-a-rm-hn');
+        hideSiblings($el.parent())
+    } else {
+        console.log('Enter reading mode');
+        keyboardJS.bind('esc', function showNode() {
+            $('.s-a-rm-hn').css('visibility', 'visible').removeClass('s-a-rm-hn');
+            console.log('Exit reading mode');
+            keyboardJS.unbind('esc', showNode);
+        });
+    }
+}
+
+export function readMode(info) {
+    const $elem = getElemsBySelector(info.selector, info.extend);
+
+    hideSiblings($elem);
 }
 
 export function replaceURL(url) {
