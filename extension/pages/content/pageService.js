@@ -275,6 +275,7 @@ export function readMode(info) {
     const $elem = getElemsBySelector(info.selector, info.extend);
 
     hideSiblings($elem);
+    $elem[0].scrollIntoView();
 }
 
 export function replaceURL(url) {
