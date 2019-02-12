@@ -278,7 +278,7 @@ function hideSiblings($el) {
 }
 
 export function readMode(info) {
-    const $elem = getElemsBySelector(info.selector, info.extend);
+    const $elem = getElemsBySelector(info.selector, info.extend).last();
 
     hideSiblings($elem);
     $elem[0].scrollIntoView();
