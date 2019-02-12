@@ -8,6 +8,7 @@ import { generateSocialUrls, addNetworkRecord } from '../../lib/social-share-url
 import minimatch from 'minimatch'
 import constant from '../constant'
 import { getGlobalActions } from './actionHelper'
+import sortby from 'lodash.sortby'
 
 const websiteList = new WebsiteList();
 
@@ -293,7 +294,8 @@ export class Website {
                 subType: action.actionType,
                 selector: action.selector,
                 extend: action.extend,
-                desc: action.desc
+                desc: action.desc,
+                ref: action
             };
         });
     }
@@ -336,7 +338,7 @@ export class Website {
         } else if (first === TRIGGER_SYMBOL.SHARE) {
             return Promise.resolve(this.shareUrls.filter(metaFilter));
         } else if (first === TRIGGER_SYMBOL.ACTION) {
-            return Promise.resolve(this.mapActions(this.actions.filter(metaFilter)));
+            return Promise.resolve(this.mapActions(sortby(this.actions.filter(metaFilter), ['count']).reverse()));
         } else if (first) {
             return Promise.resolve(this.paths.filter(cnNameFilter).map(mapTo('action')));
         }
@@ -351,12 +353,12 @@ export class Website {
     }
 
     afterExecCommand(item) {
-        console.log(item);
         if (this.triggerSymbol === TRIGGER_SYMBOL.SHARE) {
             addNetworkRecord(item.title);
         }
 
         if (this.triggerSymbol === TRIGGER_SYMBOL.ACTION) {
+            item.ref.count = Number(item.ref.count) + 1;
             if (item.subType === 'pageprotect') {
                 this.togglePageProtectionState();
             }
