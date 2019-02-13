@@ -259,7 +259,7 @@ export function highlightEnglishSyntax(info) {
 
 function hideSiblings($el) {
     if ($el && $el.length) {
-        $el.siblings().css({
+        $el.siblings().not('#steward-main').css({
             visibility: 'hidden',
             opacity: 0
         }).addClass('s-a-rm-hn');
