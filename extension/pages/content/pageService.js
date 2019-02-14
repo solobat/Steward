@@ -33,7 +33,7 @@ export function getElemsBySelector(selector, options = {}) {
     if (scope === 'visible') {
         elems = $(`${selector}:visible`);
     } else if (scope === 'viewport') {
-        elems = $(`${selector}:in-viewport`);
+        elems = $(selector).filter(':in-viewport');
     } else {
         elems = $(selector);
     }
@@ -257,6 +257,18 @@ export function highlightEnglishSyntax(info) {
     }
 }
 
+let actionCache = {
+    $elem: null,
+    subActions: null
+};
+
+function resetActionCache() {
+    actionCache = {
+        $elem: null,
+        subActions: null
+    };
+}
+
 function hideSiblings($el) {
     if ($el && $el.length) {
         $el.siblings().not('#steward-main').css({
@@ -272,16 +284,53 @@ function hideSiblings($el) {
                 opacity: 1
             }).removeClass('s-a-rm-hn');
             console.log('Exit reading mode');
+            execSubActions(actionCache.$elem, actionCache.subActions, 'leave');
+            resetActionCache();
             keyboardJS.unbind('esc', showNode);
         });
     }
 }
 
+function getSuitableNode($elems) {
+    const length = $elems.length;
+
+    if (length < 2) {
+        return $elems;
+    } else if (length === 2) {
+        return $elems.last();
+    } else if (length > 2) {
+        return $elems.eq(Math.floor(length / 2));
+    } 
+}
+
+function execSubActions($elem, subActions, lifecycle = 'enter') {
+    if ($elem && subActions) {
+        subActions
+            .filter(action => action.lifecycle === lifecycle)
+            .forEach(action => {
+                if (action.actionType && action.selector) {
+                    try {
+                        $elem.find(action.selector)[action.actionType](); 
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+            });
+    }
+}
+
 export function readMode(info) {
-    const $elem = getElemsBySelector(info.selector, info.extend).last();
+    const $elem = getSuitableNode(getElemsBySelector(info.selector, info.extend));
+
+    actionCache.$elem = $elem;
+    actionCache.subActions = info.extend && info.extend.subActions;
 
     hideSiblings($elem);
     $elem[0].scrollIntoView();
+
+    if (info.extend && info.extend.subActions) {
+        execSubActions($elem, info.extend.subActions);
+    }
 }
 
 export function replaceURL(url) {
