@@ -271,7 +271,7 @@ function resetActionCache() {
 
 function hideSiblings($el) {
     if ($el && $el.length) {
-        $el.siblings().not('#steward-main').css({
+        $el.siblings().not('#steward-main,#wordcard-main').css({
             visibility: 'hidden',
             opacity: 0
         }).addClass('s-a-rm-hn');
