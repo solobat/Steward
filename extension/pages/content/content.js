@@ -33,7 +33,8 @@ const App = {
     isLazy: false,
 
     cache: {
-        shorturl: ''
+        shorturl: '',
+        mouseTarget: null
     },
 
     initDom() {
@@ -148,9 +149,9 @@ const App = {
         } else if (subType === PageCommand.TOGGLE_TODO) {
             pageService.toggleTodo(pageService.getMeta());
         } else if (subType === PageCommand.ENGLISH_SYNTAX_HIGHLIGHT) {
-            pageService.highlightEnglishSyntax(event.data.info);
+            pageService.highlightEnglishSyntax(event.data.info, this.cache.mouseTarget);
         } else if (subType === PageCommand.READ_MODE) {
-            pageService.readMode(event.data.info);
+            pageService.readMode(event.data.info, this.cache.mouseTarget);
         } else if (custom) {
             if (path) {
                 window.location.href = path;
@@ -234,6 +235,12 @@ const App = {
         $(document).on('click', function(e) {
             if (that.isOpen && e.target.id !== 'steward-main') {
                 that.closeBox();
+            }
+        });
+
+        $(document).on('mouseover', function(e) {
+            if (that.isInit && !that.isOpen) {
+                that.cache.mouseTarget = e.target;
             }
         });
     },

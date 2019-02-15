@@ -241,8 +241,8 @@ function highlightEnglish(text) {
     return axios.post('https://english.edward.io/parse', params);
 }
 
-export function highlightEnglishSyntax(info) {
-    const $elem = getElemsBySelector(info.selector, info.extend);
+export function highlightEnglishSyntax(info, mouseTarget) {
+    const $elem = getSuitableNode(getElemsBySelector(info.selector, info.extend), mouseTarget);
 
     if ($elem.length) {
         const text = $elem[0].innerText;
@@ -291,16 +291,24 @@ function hideSiblings($el) {
     }
 }
 
-function getSuitableNode($elems) {
-    const length = $elems.length;
+function getSuitableNode($elems, mouseTarget) {
+    const elemHasFocus = Array.from($elems).find(elem => {
+        return $.contains(elem, mouseTarget);
+    });
 
-    if (length < 2) {
-        return $elems;
-    } else if (length === 2) {
-        return $elems.last();
-    } else if (length > 2) {
-        return $elems.eq(Math.floor(length / 2));
-    } 
+    if (elemHasFocus) {
+        return $(elemHasFocus);
+    } else {
+        const length = $elems.length;
+
+        if (length < 2) {
+            return $elems;
+        } else if (length === 2) {
+            return $elems.last();
+        } else if (length > 2) {
+            return $elems.eq(Math.floor(length / 2));
+        }
+    }
 }
 
 function execSubActions($elem, subActions, lifecycle = 'enter') {
@@ -319,8 +327,8 @@ function execSubActions($elem, subActions, lifecycle = 'enter') {
     }
 }
 
-export function readMode(info) {
-    const $elem = getSuitableNode(getElemsBySelector(info.selector, info.extend));
+export function readMode(info, mouseTarget) {
+    const $elem = getSuitableNode(getElemsBySelector(info.selector, info.extend), mouseTarget);
 
     actionCache.$elem = $elem;
     actionCache.subActions = info.extend && info.extend.subActions;
