@@ -10,29 +10,9 @@ import * as pageService from './pageService'
 const { MessageType, PageCommand, PageAction } = Enums;
 const chrome = window.chrome;
 const pluginHelper = new PluginHelper();
-const shouldInstead = window.location.href === 'https://lai.app/' && EXT_TYPE === 'stewardlite';
-
-function insertCss() {
-    const customStyles = document.createElement('style');
-
-    customStyles.innerHTML = `
-        body {
-            display: none!important;
-        }
-    `;
-    document.documentElement.insertBefore(customStyles, null);
-}
-
-if (shouldInstead) {
-    insertCss();
-}
 
 function getHtml() {
-    if (shouldInstead) {
-        return getNewTabHtml();
-    } else {
-        return getMainHtml();
-    }
+    return getMainHtml();
 }
 
 function getMainHtml() {
@@ -40,17 +20,6 @@ function getMainHtml() {
     const html = `
         <div id="steward-main" class="steward-main">
             <iframe style="display:none;" id="steward-iframe" src="${popupurl}" name="steward-box" width="530" height="480" frameborder="0"></iframe>
-        </div>
-    `;
-
-    return html;
-}
-
-function getNewTabHtml() {
-    const popupurl = chrome.extension.getURL('steward.html');
-    const html = `
-        <div id="steward-main" class="steward-main newtab">
-            <iframe id="steward-iframe" src="${popupurl}" name="steward-box" width="100%" height="100%" frameborder="0"></iframe>
         </div>
     `;
 
