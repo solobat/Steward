@@ -6,6 +6,7 @@ import PluginHelper from '../../js/helper/pluginHelper'
 import Enums from '../../js/enum'
 import { ITEM_TYPE } from '../../js/constant/base'
 import * as pageService from './pageService'
+import { shorten } from '../../lib/shorturl'
 
 const { MessageType, PageCommand, PageAction } = Enums;
 const chrome = window.chrome;
@@ -30,6 +31,10 @@ const App = {
     isInit: false,
     isOpen: false,
     isLazy: false,
+
+    cache: {
+        shorturl: ''
+    },
 
     initDom() {
         return new Promise(resolve => {
@@ -155,6 +160,18 @@ const App = {
         }
     },
 
+    getShorturl(url) {
+        if (this.cache.shorturl) {
+            return Promise.resolve(this.cache.shorturl);
+        } else {
+            return shorten(url).then(resp => {
+                this.cache.shorturl = resp;
+
+                return resp;
+            }); 
+        }
+    },
+
     handleGetMeta() {
         const meta = pageService.getMeta();
         const list = [
@@ -167,10 +184,23 @@ const App = {
             { title: 'Source', desc: `open view-source:${meta.url}`, url: `view-source:${meta.url}`, key: ITEM_TYPE.URL }
         ];
 
-        pageService.noticeApp({
-            action: 'meta',
-            meta: list,
-            rawMeta: meta
+        function notice() {
+            pageService.noticeApp({
+                action: 'meta',
+                meta: list,
+                rawMeta: meta
+            });
+        }
+
+        this.getShorturl(meta.url).then(shorturl => {
+            list.unshift({
+                title: 'Short url',
+                desc: shorturl,
+                key: ITEM_TYPE.COPY
+            });
+            notice();
+        }).catch(() => {
+            notice();
         });
     },
 
