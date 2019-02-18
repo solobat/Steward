@@ -1,5 +1,14 @@
 const langZh = [
     {
+        version: 'v3.7',
+        detail: `
+            优化 readMode，自动选择合适的 node，不隐藏 Steward box 本身<br>
+            action 在当前 session 内排序<br>
+            subactions 支持<br>
+            恢复 shorten url<br>
+        `
+    },
+    {
         version: 'v3.6.5',
         detail: `
             新增 <em>readMode</em> action。
@@ -452,6 +461,15 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.7',
+        detail: `
+            Optimize readMode to automatically select the appropriate node, not hiding the Steward box itself<br>
+            Sort actions in one session<br>
+            Subactions support<br>
+            Shorten url.
+        `
+    },
     {
         version: 'v3.6.5',
         detail: `
