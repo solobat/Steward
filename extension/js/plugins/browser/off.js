@@ -35,7 +35,8 @@ function setEnabled(id, enabled) {
 function getExtensions(query, enabled, callback) {
     chrome.management.getAll(function (extList) {
         const matchExts = extList.filter(function (ext) {
-            return util.matchText(query, ext.name) && ext.enabled === enabled;
+            return ext.type === 'extension'
+                && util.matchText(query, ext.name) && ext.enabled === enabled;
         });
 
         callback(matchExts);
