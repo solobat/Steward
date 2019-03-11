@@ -14,6 +14,7 @@ import { getCustomPlugins } from '../helper/pluginHelper'
 import _ from 'underscore'
 import defaultGeneral from '../../js/conf/general'
 import Toast from 'toastr'
+import TextAlias from '../helper/aliasHelper'
 
 const commands = {};
 const regExpCommands = [];
@@ -56,7 +57,8 @@ function findMatchedPlugins(query) {
                 id: key,
                 icon: commands[key].icon,
                 title: `${key}: ${commands[key].title}`,
-                desc: commands[key].subtitle || ''
+                desc: commands[key].subtitle || '',
+                weight: 10
             });
         }
     }
@@ -118,12 +120,12 @@ function callCommand(command, key) {
 function searchInContext(query) {
     const res = [];
     const tasks = [];
-    let contexts;
+    let contexts = [TextAlias];
 
     if (inContent) {
-        contexts = _.sortBy(searchContexts, 'host');
+        contexts = contexts.concat(_.sortBy(searchContexts, 'host'));
     } else {
-        contexts = searchContexts;
+        contexts = contexts.concat(searchContexts);
     }
 
     contexts.forEach(context => {
@@ -202,7 +204,8 @@ function searchStage() {
             matchedPlugins,
             searched
         ]).then(res => {
-            const searchRes = _.flatten(res.filter(item => item && item.length));
+            const items = _.flatten(res.filter(item => item && item.length));
+            const searchRes = _.sortBy(items, 'weight').reverse();
 
             if (searchRes && searchRes.length) {
                 window.stewardApp.emit('app:log', { key: 'search', str });

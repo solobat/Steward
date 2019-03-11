@@ -1,5 +1,6 @@
 import { restoreConfig } from '../../../js/common/config'
 import { backup, restoreData } from '../../../js/helper'
+import { saveTextAlias, getTextAlias } from '../../../js/helper/aliasHelper'
 import { getNetworks, saveNetworks } from '../../../lib/social-share-urls'
 import { codemirror } from 'vue-codemirror'
 import 'codemirror/keymap/vim.js'
@@ -74,6 +75,7 @@ export default {
                 lineNumbers: true,
                 line: true
             },
+            textAlias: '',
             globalActions: '',
             actionCmOptions: {
                 tabSize: 2,
@@ -96,6 +98,7 @@ export default {
 
     created() {
         this.fetchCustomPlugins();
+        this.fetchTextAlias();
         this.fetchGlobalActions();
     },
 
@@ -107,9 +110,21 @@ export default {
             });
         },
 
+        fetchTextAlias() {
+            getTextAlias().then(text => {
+                this.textAlias = text || '';
+            });
+        },
+
         fetchGlobalActions() {
             getAllGlobalActions().then(resp => {
                 this.globalActions = JSON.stringify(resp);
+            });
+        },
+
+        handleTextAliasSaveClick() {
+            saveTextAlias(this.textAlias).then(() => {
+                util.toast.success('Save successfully!');
             });
         },
 

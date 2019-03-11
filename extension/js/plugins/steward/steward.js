@@ -39,7 +39,8 @@ function onInput(text) {
             icon,
             key: isBackup ? 'app' : itemType,
             title: item,
-            url: item === extType ? baseUrl : `${baseUrl}?tab=${item}`
+            url: item === extType ? baseUrl : `${baseUrl}?tab=${item}`,
+            weight: 2
         }
     };
 

@@ -23,7 +23,8 @@ function onInput(text) {
             key,
             title: item.split('//')[1].replace('/', ' '),
             desc: item,
-            url: item
+            url: item,
+            weight: 3
         }
     };
 

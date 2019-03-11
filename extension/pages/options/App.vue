@@ -641,6 +641,13 @@
                             <el-button icon="plus" @click="handleNewNewworkClick"></el-button>
                         </div>
                     </el-collapse-item>
+                    <el-collapse-item name="textAlias" title="URL Alias">
+                        <el-input type="textarea" v-model="textAlias" style="width: 500px;"
+                            placeholder="One line per alias, such as: g https://google.com, " autosize></el-input>
+                        <div class="bts">
+                            <el-button type="primary" style="margin-top: 15px;" @click="handleTextAliasSaveClick">Save</el-button>
+                        </div>
+                    </el-collapse-item>
                     <el-collapse-item name="actionEditor" title="Action Editor">
                         <codemirror v-model="globalActions" :options="actionCmOptions"
                             @focus="onGlobalActionsCodeMirrorFocus" ></codemirror>
