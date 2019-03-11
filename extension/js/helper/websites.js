@@ -316,6 +316,7 @@ export class Website {
                 path: item.path,
                 deps: item.deps,
                 isCurrent: item.isCurrent,
+                weight: 11,
                 custom: true
             }
         };

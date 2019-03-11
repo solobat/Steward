@@ -1,7 +1,7 @@
 import util from '../common/util'
 import browser from 'webextension-polyfill'
 
-const icon = chrome.extension.getURL('img/icon.png');
+const icon = chrome.extension.getURL('iconfont/alias.svg');
 
 function format(list) {
     return list.map(item => {
