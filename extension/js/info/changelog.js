@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.7.1',
+        detail: `
+            新增 URL alias 功能<br>
+            Download 插件增强，新增状态、进度显示，以及暂停、恢复、取消的交互<br>
+            修复 off 命令错误关闭主题的问题<br>
+        `
+    },
+    {
         version: 'v3.7',
         detail: `
             优化 readMode，自动选择合适的 node，不隐藏 Steward box 本身<br>
@@ -461,6 +469,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.7.1',
+        detail: `
+            Added URL alias feature<br>
+            Enhance the Download plugin, add status, progress display, and pause, resume, cancel, etc.<br>
+            Bugfix<br>
+        `
+    },
     {
         version: 'v3.7',
         detail: `
