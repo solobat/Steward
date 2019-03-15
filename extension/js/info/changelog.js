@@ -1,5 +1,11 @@
 const langZh = [
     {
+        version: 'v3.7.2',
+        detail: `
+            Steward 更名为 Steward Plus, Steward Lite 更名为 Steward.
+        `
+    },
+    {
         version: 'v3.7.1',
         detail: `
             新增 URL alias 功能<br>
@@ -469,6 +475,12 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.7.2',
+        detail: `
+            Rename Steward to Steward Plus and rename Steward Lite to Steward.
+        `
+    },
     {
         version: 'v3.7.1',
         detail: `
