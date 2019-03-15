@@ -6,7 +6,7 @@
 
 /*global EXT_TYPE*/
 import util from '../../common/util'
-import { stewardTabs, stewardLiteTabs } from '../../constant/base'
+import { stewardTabs, stewardPlusTabs } from '../../constant/base'
 
 const version = 1;
 const name = 'steward';
@@ -17,8 +17,8 @@ const baseUrl = chrome.extension.getURL('options.html');
 
 let optionTabs;
 
-if (EXT_TYPE === 'stewardlite') {
-    optionTabs = stewardLiteTabs;
+if (EXT_TYPE === 'stewardplus') {
+    optionTabs = stewardPlusTabs;
 } else {
     optionTabs = stewardTabs;
 }

@@ -23,8 +23,8 @@ export const MODE = {
 };
 
 export const EXTENSION = {
-    STEWARDLITE: 'stewardlite',
-    STEWARD: 'steward'
+    STEWARD: 'steward',
+    STEWARDPLUS: 'stewardplus'
 };
 
 export const PLUGIN_STATUS = {
@@ -39,6 +39,6 @@ export const WEBSITE_STATUS = {
     INSTALLED: 2
 };
 
-export const stewardLiteTabs = ['Steward', 'General', 'Plugins', 'Workflows', 'Websites', 'Wallpapers', 'Appearance', 'Advanced', 'Help', 'Update'];
-
 export const stewardTabs = ['Steward', 'General', 'Plugins', 'Workflows', 'Websites', 'Wallpapers', 'Appearance', 'Advanced', 'Help', 'Update'];
+
+export const stewardPlusTabs = ['Steward', 'General', 'Plugins', 'Workflows', 'Websites', 'Wallpapers', 'Appearance', 'Advanced', 'Help', 'Update'];

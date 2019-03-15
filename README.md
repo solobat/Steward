@@ -3,7 +3,7 @@
 <p align="center">A command launcher for Chrome/Firefox</p>
 <p align="center">
    <a href="https://github.com/solobat/Steward/releases"><img src="https://img.shields.io/badge/lastest_version-3.7.1-blue.svg"></a>
-   <a target="_blank" href="https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd"><img src="https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg"></a>
+   <a target="_blank" href="https://chrome.google.com/webstore/detail/jglmompgeddkbcdamdknmebaimldkkbl"><img src="https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg"></a>
    <a href="http://static.oksteward.com/steward-3.7.1.crx"><img src="https://img.shields.io/badge/download-_crx-brightgreen.svg"></a>
    <a target="_blank" href="https://addons.mozilla.org/firefox/addon/steward-a-command-launcher/"><img src="https://img.shields.io/badge/download-_firefox_addon-DD512A.svg"></a>
 
@@ -12,7 +12,8 @@
 ***
 
 ### Install：
-- [Chrome WebStore](https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd)
+- [Chrome WebStore](https://chrome.google.com/webstore/detail/jglmompgeddkbcdamdknmebaimldkkbl)
+- [Chrome WebStore -- Steward Plus](https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd)
 - [crx Download](http://static.oksteward.com/steward-3.7.1.crx)
 
 - [Firefox Addons](https://addons.mozilla.org/firefox/addon/steward-a-command-launcher/)
@@ -72,17 +73,17 @@ Please start with the develop branch
 # node >= v7.5
 npm install
 
-# dev for steward
+# dev for steward plus
+npm run dev:plus
+
+# dev for Steward
 npm run dev
 
-# dev for Steward Lite
-npm run dev:lite
+# build for steward plus(MacOS)
+npm run prod:plus
 
-# build for steward(MacOS)
+# build for Steward(MacOS)
 npm run prod
-
-# build for Steward Lite(MacOS)
-npm run prod:lite
 ````
 
 #### Sponsor:
@@ -115,7 +116,7 @@ npm run prod:lite
 [version-badge]:    https://img.shields.io/badge/lastest_version-3.7.1-blue.svg
 [version-link]:     https://github.com/solobat/Steward
 [chrome-badge]:     https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg
-[chrome-link]:      https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd
+[chrome-link]:      https://chrome.google.com/webstore/detail/jglmompgeddkbcdamdknmebaimldkkbl
 [offline-badge]:    https://img.shields.io/badge/download-_crx-brightgreen.svg
 [offline-link]:     http://static.oksteward.com/steward-3.7.1.crx
 [license-badge]:    https://img.shields.io/github/license/mashape/apistatus.svg

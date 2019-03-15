@@ -1,23 +1,25 @@
 {
     "manifest_version": 2,
-    "name": "Steward Lite",
-    "short_name": "Steward Lite",
+    "name": "Steward Plus",
+    "short_name": "Steward Plus",
     "version": "3.7.1",
     "description": "__MSG_extDesc__",
     "default_locale": "en",
+    "chrome_url_overrides" : {
+        "newtab": "steward.html"
+    },
     "background": {
         "page": "background.html"
     },
     "browser_action": {
         "default_icon": "img/icon.png",
-        "default_title": "Steward Lite",
+        "default_title": "Steward",
         "default_popup": "popup.html"
     },
     "content_scripts": [{
         "matches": ["<all_urls>"],
         "css": ["content.css"],
-        "js": ["manifest.js", "vendor.js", "content.js"],
-        "run_at": "document_start"
+        "js": ["manifest.js", "vendor.js", "content.js"]
     }],
     "icons": {
         "16": "img/icon16.png",
@@ -26,7 +28,6 @@
     },
     "web_accessible_resources": [
         "img/*",
-        "steward.html",
         "urlblock.html",
         "login.html",
         "popup.html"

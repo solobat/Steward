@@ -127,7 +127,7 @@ const config = {
       {from: 'extension/css', to: 'css'},
       {from: 'extension/scripts', to: 'scripts'},
       {from: 'extension/_locales', to: '_locales'},
-      {from: 'extension/manifest.json'}
+      {from: 'extension/manifest.json', to: 'manifest.json'}
     ]),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({

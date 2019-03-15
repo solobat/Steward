@@ -21,7 +21,7 @@ const config = {
     urlblock: './extension/pages/urlblock/urlblock.js'
   },
   output: {
-    path: path.resolve(__dirname, '../output/steward_lite/'),
+    path: path.resolve(__dirname, '../output/steward_plus/'),
     filename: '[name].js'
   },
   resolve: {
@@ -69,50 +69,50 @@ const config = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      EXT_TYPE: JSON.stringify("stewardlite"),
+      EXT_TYPE: JSON.stringify("stewardplus"),
       PLATFORM: JSON.stringify("chrome")
     }),
     new VueLoaderPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
     //Generate an HTML5 file that includes all webpack bundles(includes css & js) in the body using script tags
     new HtmlWebpackPlugin({
-      title: 'Steward Lite - Content',
+      title: 'Steward Plus - Content',
       template: './extension/pages/content/content.html',
       filename: 'content.html',
       chunks: ['manifest', 'vendor', 'content']
     }),
     new HtmlWebpackPlugin({
-      title: 'Steward - Extension',
+      title: 'Steward Plus - Extension',
       template: './extension/pages/steward/steward.html',
       filename: 'steward.html',
       chunks: ['manifest', 'vendor', 'steward']
     }),
     new HtmlWebpackPlugin({
-      title: 'Steward Lite - Background',
+      title: 'Steward Plus - Background',
       template: './extension/pages/background/background.html',
       filename: 'background.html',
       chunks: ['manifest', 'vendor', 'background']
     }),
     new HtmlWebpackPlugin({
-      title: 'Steward Lite - Popup',
+      title: 'Steward Plus - Popup',
       template: './extension/pages/popup/popup.html',
       filename: 'popup.html',
       chunks: ['manifest', 'vendor', 'popup']
     }),
     new HtmlWebpackPlugin({
-      title: 'Steward Lite - Options',
+      title: 'Steward Plus - Options',
       template: './extension/pages/options/options.html',
       filename: 'options.html',
       chunks: ['manifest', 'vendor', 'options']
     }),
     new HtmlWebpackPlugin({
-      title: 'Steward Lite - Login',
+      title: 'Steward Plus - Login',
       template: './extension/pages/login/login.html',
       filename: 'login.html',
       chunks: ['manifest', 'vendor', 'login']
     }),
     new HtmlWebpackPlugin({
-      title: 'Steward Lite - URLBlock',
+      title: 'Steward Plus - URLBlock',
       template: './extension/pages/urlblock/urlblock.html',
       filename: 'urlblock.html',
       chunks: ['manifest', 'vendor', 'urlblock']
@@ -127,7 +127,7 @@ const config = {
       {from: 'extension/css', to: 'css'},
       {from: 'extension/scripts', to: 'scripts'},
       {from: 'extension/_locales', to: '_locales'},
-      {from: 'extension/manifest-lite.json', to: 'manifest.json'}
+      {from: 'extension/manifest-plus.json', to: 'manifest.json'}
     ]),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({

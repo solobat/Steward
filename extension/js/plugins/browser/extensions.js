@@ -23,7 +23,7 @@ const commands = [{
     shiftKey: true,
     editable: true
 }];
-const extType = EXT_TYPE === 'stewardlite' ? 'Steward Lite' : 'Steward';
+const extType = EXT_TYPE === 'stewardplus' ? 'Steward Plus' : 'Steward';
 
 function getExtensions(query, callback) {
     chrome.management.getAll(function (extList) {
