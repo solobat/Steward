@@ -26,9 +26,6 @@
 - [论坛](http://bbs.oksteward.com)
 ---
 #### Screenshots:
-![help](https://i.imgur.com/r0zZGR0.png)
-newtab mode
-
 ![content box](https://i.imgur.com/pWDNBEV.png)
 page mode
 
