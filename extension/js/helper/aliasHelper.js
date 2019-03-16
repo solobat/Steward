@@ -8,7 +8,7 @@ function format(list) {
         return {
             key: 'url',
             url: item.value,
-            title: `${item.label}: ${item.value}`,
+            title: `${item.label}: ${item.desc || item.value}`,
             desc: item.lable,
             icon,
             weight: 100
@@ -18,11 +18,12 @@ function format(list) {
 
 function parseLine(line) {
     const realLine = line.trim();
-    const parts = realLine.split(/[\s]+/).slice(0, 2);
+    const parts = realLine.split(/[\s]+/).slice(0, 3);
 
     return {
         label: parts[0],
-        value: parts[1]
+        value: parts[1],
+        desc: parts[2]
     };
 }
 
