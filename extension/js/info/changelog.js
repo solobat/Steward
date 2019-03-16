@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.7.3',
+        detail: `
+            Action 排序使用优化，可以自行修改 weight 权重;<br>
+            URL Alias 可以添加注释描述，在上面一行以<em>##</em>开头;<br>
+            新增 tab mute 命令，trigger 为<em>mute </em>.
+        `
+    },
+    {
         version: 'v3.7.2',
         detail: `
             Steward 更名为 Steward Plus, Steward Lite 更名为 Steward.
@@ -475,6 +483,14 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.7.3',
+        detail: `
+            Optimize the actions of websites, and you can modify the weight of an action<br>
+            You can add a comment description for URL Alias, starting with <em>##</em> in the above line<br>
+            Added tab mute command with trigger <em>mute </em>.
+        `
+    },
     {
         version: 'v3.7.2',
         detail: `
