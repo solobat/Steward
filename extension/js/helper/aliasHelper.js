@@ -8,7 +8,7 @@ function format(list) {
         return {
             key: 'url',
             url: item.value,
-            title: `${item.label}: ${item.desc || item.value}`,
+            title: `${item.desc || item.value}[${item.label}]`,
             desc: item.lable,
             icon,
             weight: 100
