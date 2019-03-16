@@ -16,15 +16,27 @@ function format(list) {
     });
 }
 
+let comment;
+
 function parseLine(line) {
     const realLine = line.trim();
-    const parts = realLine.split(/[\s]+/).slice(0, 3);
 
-    return {
-        label: parts[0],
-        value: parts[1],
-        desc: parts[2]
-    };
+    if (realLine.startsWith('##')) {
+        comment = realLine.substring(2).trim();
+
+        return null;
+    } else {
+        const parts = realLine.split(/[\s]+/).slice(0, 2);
+        const desc = comment;
+
+        comment = null;
+
+        return {
+            label: parts[0],
+            value: parts[1],
+            desc
+        };
+    }
 }
 
 const STORAGE_KEY = 'text_alias';
@@ -36,7 +48,7 @@ const TextAlias = {
         return text.split('\n')
             .filter(line => line && !line.match(/^[\s\t]+$/))
             .map(parseLine)
-            .filter(line => Boolean(line.label));
+            .filter(line => line && Boolean(line.label));
     },
 
     getItems() {
