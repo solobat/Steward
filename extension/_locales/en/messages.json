@@ -1,6 +1,9 @@
 {
     "extName": {
-        "message": "a command launcher"
+        "message": "Steward"
+    },
+    "extNamePlus": {
+        "message": "Steward Plus"
     },
     "extDesc": {
         "message": "a command launcher with extension management/app launcher/tab management/history search/alfred"

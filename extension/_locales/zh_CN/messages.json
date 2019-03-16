@@ -1,6 +1,9 @@
 {
     "extName": {
-        "message": "命令启动器"
+        "message": "全能启动器 - Steward"
+    },
+    "extNamePlus": {
+        "message": "全能启动器 - Steward Plus"
     },
     "extDesc": {
         "message": "启动器/便捷管理扩展/应用/标签/历史记录等"
