@@ -213,6 +213,8 @@ function searchStage() {
                     command: null
                 });
 
+                console.log(searchRes);
+
                 return Promise.reject(searchRes);
             } else {
                 return Promise.resolve(true);

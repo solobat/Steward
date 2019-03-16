@@ -1,5 +1,4 @@
 import util from '../common/util'
-import $ from 'jquery'
 import { Website as WebsiteModel, WebsiteList } from '../collection/website'
 import resolveUrl from 'resolve-url'
 import QRCode from 'qrcode'
@@ -8,7 +7,6 @@ import { generateSocialUrls, addNetworkRecord } from '../../lib/social-share-url
 import minimatch from 'minimatch'
 import constant from '../constant'
 import { getGlobalActions } from './actionHelper'
-import sortby from 'lodash.sortby'
 
 const websiteList = new WebsiteList();
 
@@ -24,6 +22,7 @@ const TRIGGER_SYMBOL = {
     SHARE: '@',
     ACTION: ';'
 };
+const DEFAULT_WEIGHT = 11;
 
 export function getFavicon(context = document, win) {
     let favicon = '/favicon.ico';
@@ -286,6 +285,7 @@ export class Website {
     }
 
     mapActions(actions) {
+        debugger
         return actions.map(action => {
             return {
                 icon: this.icon,
@@ -295,6 +295,7 @@ export class Website {
                 selector: action.selector,
                 extend: action.extend,
                 desc: action.desc,
+                weight: action.weight || DEFAULT_WEIGHT,
                 ref: action
             };
         });
@@ -316,7 +317,7 @@ export class Website {
                 path: item.path,
                 deps: item.deps,
                 isCurrent: item.isCurrent,
-                weight: 11,
+                weight: DEFAULT_WEIGHT,
                 custom: true
             }
         };
@@ -339,7 +340,7 @@ export class Website {
         } else if (first === TRIGGER_SYMBOL.SHARE) {
             return Promise.resolve(this.shareUrls.filter(metaFilter));
         } else if (first === TRIGGER_SYMBOL.ACTION) {
-            return Promise.resolve(this.mapActions(sortby(this.actions.filter(metaFilter), ['count']).reverse()));
+            return Promise.resolve(this.mapActions(this.actions.filter(metaFilter)));
         } else if (first) {
             return Promise.resolve(this.paths.filter(cnNameFilter).map(mapTo('action')));
         }
@@ -359,7 +360,7 @@ export class Website {
         }
 
         if (this.triggerSymbol === TRIGGER_SYMBOL.ACTION) {
-            item.ref.count = Number(item.ref.count) + 1;
+            item.ref.weight = Number(item.ref.weight || DEFAULT_WEIGHT) + 1;
             if (item.subType === 'pageprotect') {
                 this.togglePageProtectionState();
             }
