@@ -278,6 +278,12 @@
     "tabs_tabm_subtitle": {
         "message": "请输入从 >=1 的数字，0则移动到window末尾"
     },
+    "tabs_mute_title": {
+        "message": "Mute Tab"
+    },
+    "tabs_mute_subtitle": {
+        "message": "切换选中 Tab 的 muted 状态"
+    },
     "tabs_tabp_title": {
         "message": "切换 tab 的锁定状态"
     },

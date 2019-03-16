@@ -15,7 +15,8 @@ const keys = [
     { key: 'tab' },
     { key: 'tabc', shiftKey: true, allowBatch: true },
     { key: 'tabm' },
-    { key: 'tabp', allowBatch: true }
+    { key: 'tabp', allowBatch: true },
+    { key: 'mute' }
 ];
 const type = 'keyword';
 const icon = chrome.extension.getURL('iconfont/tab.svg');
@@ -57,7 +58,7 @@ function getListByCommand(rawList, command) {
     let list;
     const { orkey } = command;
 
-    if (orkey === 'tabm' || orkey === 'tabp') {
+    if (orkey === 'tabm' || orkey === 'tabp' || orkey === 'mute') {
         list = _.sortBy(rawList, 'active').reverse();
     } else {
         list = _.sortBy(rawList, 'active');
@@ -83,6 +84,7 @@ function dataFormat(rawList, command) {
             id: item.id,
             icon: item.favIconUrl || chrome.extension.getURL('img/icon.png'),
             title: tabTitle,
+            muted: item.mutedInfo.muted,
             desc,
             isWarn: item.active,
             raw: item
@@ -171,6 +173,12 @@ function onEnter(item, {key, orkey}, query, { shiftKey }, list) {
             tab => updateTab(tab.id, { pinned: !tab.raw.pinned })
         ];
         return util.batchExecutionIfNeeded(shiftKey, exces, [list, item]).then(() => '');
+    } else if (orkey === 'mute') {
+        updateTab(item.id, {
+            muted: !item.muted
+        }).then(() => {
+            window.stewardApp.refresh();
+        });
     }
 }
 
