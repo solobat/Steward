@@ -1,5 +1,24 @@
 <template>
     <div class="root-container">
+        <header class="topbar">
+            <div class="links">
+                <a href="https://github.com/solobat/steward" class="github" target="_blank">
+                    <img src="/iconfont/github.svg" alt="">
+                </a>
+                <a href="http://oksteward.com" class="steward" target="_blank">
+                    <img src="/img/icon.png" alt="">
+                </a>
+                <a href="https://weibo.com/soloooo" class="steward_weibo" target="_blank">
+                    <img src="/iconfont/share-icons/weibo.svg" alt="">
+                </a>
+                <a href="https://twitter.com/fmlycls" class="steward_twitter" target="_blank">
+                    <img src="/iconfont/share-icons/twitter.svg" alt="">
+                </a>
+                <a href="http://oksteward.com/donate.html" class="steward" target="_blank">
+                    <img src="/iconfont/btc.svg" alt="">
+                </a>
+            </div>
+        </header>
         <el-tabs v-model="activeName" @tab-click="handleTabClick">
             <el-tab-pane :label="i18nTexts.ui.settings.tabs.general" name="general" class="general-panel">
                 <el-form style="margin: 20px 0; min-height: 150px;" ref="general" :model="config.general">
@@ -642,7 +661,7 @@
                         </div>
                     </el-collapse-item>
                     <el-collapse-item name="textAlias" title="URL Alias">
-                        <el-input type="textarea" v-model="textAlias" style="width: 500px;"
+                        <el-input type="textarea" v-model="textAlias" style="width: 800px;"
                             placeholder="One line per alias, such as: g https://google.com, " autosize></el-input>
                         <div class="bts">
                             <el-button type="primary" style="margin-top: 15px;" @click="handleTextAliasSaveClick">Save</el-button>
@@ -723,19 +742,6 @@
                 </div>
             </el-form>
         </el-dialog>
-        <header class="topbar">
-            <div class="links">
-                <a href="https://github.com/solobat/steward" class="github" target="_blank">
-                    <img src="/iconfont/github.svg" alt="">
-                </a>
-                <a href="http://bbs.oksteward.com" class="steward_bbs" target="_blank">
-                    <img src="/iconfont/bbs.svg" alt="">
-                </a>
-                <a href="http://oksteward.com" class="steward" target="_blank">
-                    <img src="/img/icon.png" alt="">
-                </a>
-            </div>
-        </header>     
     </div>    
 </template>
 
@@ -863,7 +869,6 @@ a {
 }
 
 .topbar {
-    display: none;
     width: 1200px;
     height: 40px;
     margin: 0 auto;
