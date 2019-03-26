@@ -20,7 +20,8 @@ const TRIGGER_SYMBOL = {
     META: `'`,
     URL: ',',
     SHARE: '@',
-    ACTION: ';'
+    ACTION: ';',
+    IFRAME: '!'
 };
 const DEFAULT_WEIGHT = 11;
 
@@ -121,6 +122,7 @@ export class Website {
         this.meta = [];
         this.urls = [];
         this.outline = [];
+        this.iframes = [];
         this.pageMeta = pageMeta || {};
         this.shareUrls = [];
         this.init(generalConfig, options);
@@ -180,6 +182,8 @@ export class Website {
                 this.handleBoxShow();
             } else if (data.action === 'meta') {
                 this.handleMeta(data.meta, data.rawMeta);
+            } else if (data.action === 'iframes') {
+                this.iframes = data.iframes;
             }
         });
 
@@ -231,6 +235,7 @@ export class Website {
         this.findNavs();
         this.genOutline();
         this.getAnchors();
+        this.getIframes();
     }
 
     handleMeta(metaItems = [], rawMeta) {
@@ -282,6 +287,12 @@ export class Website {
                 anchorsConfig: this.anchorsConfig
             }, '*');
         }
+    }
+
+    getIframes() {
+        this.parentWindow.postMessage({
+            action: 'getIframes'
+        }, '*');
     }
 
     mapActions(actions) {
@@ -341,6 +352,8 @@ export class Website {
             return Promise.resolve(this.shareUrls.filter(metaFilter));
         } else if (first === TRIGGER_SYMBOL.ACTION) {
             return Promise.resolve(this.mapActions(this.actions.filter(metaFilter)));
+        } else if (first === TRIGGER_SYMBOL.IFRAME) {
+            return Promise.resolve(this.iframes);
         } else if (first) {
             return Promise.resolve(this.paths.filter(cnNameFilter).map(mapTo('action')));
         }
