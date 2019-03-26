@@ -296,7 +296,6 @@ export class Website {
     }
 
     mapActions(actions) {
-        debugger
         return actions.map(action => {
             return {
                 icon: this.icon,
