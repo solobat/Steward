@@ -213,8 +213,6 @@ function searchStage() {
                     command: null
                 });
 
-                console.log(searchRes);
-
                 return Promise.reject(searchRes);
             } else {
                 return Promise.resolve(true);
@@ -757,6 +755,14 @@ export function globalApi(app) {
 
         updateList(list) {
             app.$emit('cmdbox:list', list);
+        },
+
+        updateListForCommand(orkey, list) {
+            if (state.command && state.command.orkey === orkey) {
+                app.$emit('cmdbox:list', list);
+            } else {
+                console.log('command has changed...');
+            }
         },
 
         clearQuery() {
