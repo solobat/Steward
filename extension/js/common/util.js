@@ -52,7 +52,7 @@ const simpleCommand = ({key, orkey}) => {
 
 function genCommands(name, icon, items, type) {
     return items.map(item => {
-        const {key, editable, keyname, allowBatch, shiftKey, workflow} = item;
+        const {key, editable, keyname, allowBatch, shiftKey, workflow, weight} = item;
 
         return {
             key: item.key,
@@ -63,6 +63,7 @@ function genCommands(name, icon, items, type) {
             icon,
             allowBatch,
             workflow,
+            weight,
             shiftKey,
             editable: editable !== false
         };

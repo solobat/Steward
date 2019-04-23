@@ -10,7 +10,7 @@ const chrome = window.chrome;
 const version = 3;
 const name = 'workflow';
 const keys = [
-    { key: 'wf', workflow: true },
+    { key: 'wf', workflow: true, weight: 1 },
     { key: 'wfe', shiftKey: true }
 ];
 const type = 'keyword';

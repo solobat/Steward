@@ -52,13 +52,15 @@ function findMatchedPlugins(query) {
 
     for (key in commands) {
         if (query && key.indexOf(query) !== -1) {
+            const command = commands[key];
+
             items.push({
                 key: 'plugins',
                 id: key,
-                icon: commands[key].icon,
-                title: `${key}: ${commands[key].title}`,
-                desc: commands[key].subtitle || '',
-                weight: 10
+                icon: command.icon,
+                title: `${key}: ${command.title}`,
+                desc: command.subtitle || '',
+                weight: (command.weight || 0) + 10
             });
         }
     }
