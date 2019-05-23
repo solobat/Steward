@@ -3,6 +3,7 @@
 github: # Replace with up to 4 GitHub Sponsors-enabled usernames e.g., [user1, user2]
 patreon: # Replace with a single Patreon username
 open_collective: # Replace with a single Open Collective username
-ko_fi: tomasy# Replace with a single Ko-fi username
+ko_fi: tomasy
 tidelift: # Replace with a single Tidelift platform-name/package-name e.g., npm/babel
-custom: # Replace with a single custom sponsorship URL
+paypal: https://paypal.me/tomasy/5
+tippin: https://tippin.me/@fmlycls
