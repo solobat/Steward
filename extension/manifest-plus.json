@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "__MSG_extNamePlus__",
     "short_name": "Steward Plus",
-    "version": "3.7.3",
+    "version": "3.7.4",
     "description": "__MSG_extDesc__",
     "default_locale": "en",
     "chrome_url_overrides" : {

@@ -1,5 +1,13 @@
 const langZh = [
     {
+        version: 'v3.7.4',
+        detail: `
+            页面模式下使用 <em>!</em> 进行 iframe 链接探查;<br>
+            wp 插件干扰其它命令的问题;<br>
+            wfe / wf 排序.
+        `
+    },
+    {
         version: 'v3.7.3',
         detail: `
             Action 排序使用优化，可以自行修改 weight 权重;<br>
@@ -483,6 +491,13 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.7.4',
+        detail: `
+            Use <em>!</em> in page mode for iframe link exploration;<br>
+            fix bug of wallpaper.
+        `
+    },
     {
         version: 'v3.7.3',
         detail: `
