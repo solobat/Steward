@@ -169,7 +169,7 @@ const App = {
                 this.cache.shorturl = resp;
 
                 return resp;
-            }); 
+            });
         }
     },
 
@@ -205,6 +205,28 @@ const App = {
         });
     },
 
+    handleGetIframes() {
+        const iframes = Array.from(document.querySelectorAll('iframe')).map(node => {
+            return {
+                title: node.src,
+                icon: chrome.extension.getURL('iconfont/iframe.svg'),
+                url: node.src,
+                key: ITEM_TYPE.URL
+            };
+        }).filter(item => {
+            if (item.url && !item.url.match(/^chrome-extension:\/\//)) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        pageService.noticeApp({
+            action: MessageType.IFRAMES,
+            iframes
+        });
+    },
+
     bindEvents() {
         const that = this;
 
@@ -229,6 +251,8 @@ const App = {
                 this.handleGetAnchors(event);
             } else if (action === PageAction.GET_META) {
                 this.handleGetMeta();
+            } else if (action === PageAction.GET_IFRAMES) {
+                this.handleGetIframes();
             }
         });
 

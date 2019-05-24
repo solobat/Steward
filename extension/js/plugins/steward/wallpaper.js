@@ -79,8 +79,6 @@ const tips = [{
     desc: 'Press Enter to add the link to your collections'
 }];
 
-let that;
-
 function updateActions(saved) {
     const wallpaper = window.localStorage.getItem('wallpaper') || '';
 
@@ -107,10 +105,9 @@ function updateActions(saved) {
 function updateList(saved) {
     updateActions(saved);
 
-    if (that && that.command && that.command.orkey === 'wp') {
-        window.stewardApp.updateList(JSON.parse(JSON.stringify(actions)));
-    }
+    window.stewardApp.updateListForCommand('wp', JSON.parse(JSON.stringify(actions)));
 }
+
 function setup() {
     document.addEventListener('stewardReady', event => {
         const app = event.detail.app;
@@ -182,7 +179,6 @@ function handleWpsInput(query, command) {
 }
 
 function onInput(query, command) {
-    that = this;
     const orkey = command.orkey;
 
     if (orkey === 'wp') {

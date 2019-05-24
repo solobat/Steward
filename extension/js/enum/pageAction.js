@@ -6,5 +6,6 @@ export default {
     QUERY_NAVS: 'queryNavs',
     GEN_OUTLINE: 'genOutline',
     GET_ANCHORS: 'getAnchors',
-    GET_META: 'getMeta'
+    GET_META: 'getMeta',
+    GET_IFRAMES: 'getIframes'
 }

@@ -52,13 +52,15 @@ function findMatchedPlugins(query) {
 
     for (key in commands) {
         if (query && key.indexOf(query) !== -1) {
+            const command = commands[key];
+
             items.push({
                 key: 'plugins',
                 id: key,
-                icon: commands[key].icon,
-                title: `${key}: ${commands[key].title}`,
-                desc: commands[key].subtitle || '',
-                weight: 10
+                icon: command.icon,
+                title: `${key}: ${command.title}`,
+                desc: command.subtitle || '',
+                weight: (command.weight || 0) + 10
             });
         }
     }
@@ -212,8 +214,6 @@ function searchStage() {
                 setState({
                     command: null
                 });
-
-                console.log(searchRes);
 
                 return Promise.reject(searchRes);
             } else {
@@ -757,6 +757,14 @@ export function globalApi(app) {
 
         updateList(list) {
             app.$emit('cmdbox:list', list);
+        },
+
+        updateListForCommand(orkey, list) {
+            if (state.command && state.command.orkey === orkey) {
+                app.$emit('cmdbox:list', list);
+            } else {
+                console.log('command has changed...');
+            }
         },
 
         clearQuery() {

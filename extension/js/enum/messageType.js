@@ -6,5 +6,6 @@ export default {
     NAVS: 'navs',
     OUTLINE: 'outline',
     ANCHORS: 'anchors',
-    REPLACE_URL: 'replaceURL'
+    REPLACE_URL: 'replaceURL',
+    IFRAMES: 'iframes'
 }
