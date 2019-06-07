@@ -2,6 +2,7 @@ import { initConfig, globalData, globalApi, clearToasts } from '../../js/main/ma
 import keyboardJS from 'keyboardjs'
 import { MODE } from '../../js/constant/base'
 import { createWebsites } from '../../js/helper/websites'
+import axios from 'axios'
 import Vue from 'vue';
 import App from './App.vue';
 Vue.config.productionTip = false;
@@ -49,6 +50,14 @@ function toggleBookmark({ url, title, tag }) {
     });
 }
 
+function highlightEnglish(text) {
+    const params = new URLSearchParams();
+
+    params.append('text', text);
+
+    return axios.post('https://english.edward.io/parse', params);
+}
+
 window.addEventListener('message', function(event) {
     if (event.data.ext_from === 'content') {
         const action = event.data.action;
@@ -69,6 +78,16 @@ window.addEventListener('message', function(event) {
             });
         } else if (action === 'toggleBookmark') {
             toggleBookmark(data);
+        } else if (action === 'highlightEnglishSyntax') {
+            highlightEnglish(data.text).then(resp => {
+                if (resp.data) {
+                    event.source.postMessage({
+                        action: 'highlightEnglishSyntax',
+                        data: resp.data,
+                        callbackId: event.data.callbackId
+                    }, '*');
+                }
+            })
         }
     }
 });

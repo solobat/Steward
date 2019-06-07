@@ -235,9 +235,11 @@ const App = {
         });
 
         window.addEventListener('message', event => {
-            const action = event.data.action;
+            const { action, callbackId } = event.data;
 
-            if (action === PageAction.CLOSE_BOX) {
+            if (callbackId) {
+                pageService.appBridge.receiveMessage(event.data);
+            } else if (action === PageAction.CLOSE_BOX) {
                 this.closeBox();
             } else if (action === PageAction.BOX_INITED) {
                 this.handleBoxInited();

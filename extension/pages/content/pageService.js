@@ -233,24 +233,17 @@ export function toggleTodo(info) {
     toggleBookmark(info, BookmarkTag.TODO);
 }
 
-function highlightEnglish(text) {
-    const params = new URLSearchParams();
-
-    params.append('text', text);
-
-    return axios.post('https://english.edward.io/parse', params);
-}
-
 export function highlightEnglishSyntax(info, mouseTarget) {
     const $elem = getSuitableNode(getElemsBySelector(info.selector, info.extend), mouseTarget);
 
     if ($elem.length) {
         const text = $elem[0].innerText;
-
         if (text) {
-            highlightEnglish(text).then(resp => {
-                if (resp.data) {
-                    $elem.html(resp.data);
+            appBridge.invoke('highlightEnglishSyntax', {
+                text
+            }, resp => {
+                if (resp) {
+                    $elem.html(resp);
                 }
             });
         }
@@ -350,6 +343,67 @@ export function replaceURL(url) {
         }
     });
 }
+
+// should refactor in v4.0
+export function createBridge() {
+    const callbacks = {}
+    const registerFuncs = {}
+    let cbId = 0
+
+    const bridge = {
+        invoke(action, data, callback) {
+            cbId = cbId + 1;
+            callbacks[cbId] = callback;
+            noticeApp({
+                action,
+                ext_from: 'content',
+                data,
+                callbackId: cbId
+            })
+        },
+
+        receiveMessage(msg) {
+            const { action, data, callbackId, responstId } = msg;
+
+            if (callbackId) {
+                if (callbacks[callbackId]) {
+                    callbacks[callbackId](data);
+                    callbacks[callbackId] = null;
+                }
+            } else if (action) {
+                if (registerFuncs[action]) {
+                    let ret = {};
+                    let flag = false;
+
+                    registerFuncs[action].forEach(callback => {
+                        callback(data, function(r) {
+                            flag = true;
+                            ret = Object.assign(ret, r);
+                        });
+                    });
+
+                    if (flag) {
+                        noticeApp({
+                            responstId: responstId,
+                            ret: ret
+                        });
+                    }
+                }
+            }
+        },
+
+        register: function(action, callback) {
+            if (!registerFuncs[action]) {
+                registerFuncs[action] = [];
+            }
+            registerFuncs[action].push(callback);
+        }
+    }
+
+    return bridge;
+}
+
+export const appBridge = createBridge()
 
 export function noticeApp(msg) {
     const iframeWindow = document.getElementById('steward-iframe').contentWindow;
