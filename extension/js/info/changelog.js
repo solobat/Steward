@@ -1,5 +1,9 @@
 const langZh = [
     {
+        version: 'v3.7.5',
+        detail: '修复一些 bug'
+    },
+    {
         version: 'v3.7.4',
         detail: `
             页面模式下使用 <em>!</em> 进行 iframe 链接探查;<br>
@@ -491,6 +495,10 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.7.5',
+        detail: 'bugfix'
+    },
     {
         version: 'v3.7.4',
         detail: `
