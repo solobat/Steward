@@ -1,5 +1,9 @@
 const langZh = [
     {
+        version: 'v3.7.6',
+        detail: '将编辑器替换为 monaco'
+    },
+    {
         version: 'v3.7.5',
         detail: '修复一些 bug'
     },
@@ -495,6 +499,10 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v3.7.6',
+        detail: 'Use monaco editor'
+    },
     {
         version: 'v3.7.5',
         detail: 'bugfix'
