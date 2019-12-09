@@ -9,6 +9,7 @@ const cssNano = require('cssnano')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production'
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
+const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
 
 const config = {
   entry: {
@@ -74,6 +75,9 @@ const config = {
     }),
     new VueLoaderPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
+    new MonacoEditorPlugin({
+      languages: ['javascript', 'css', 'html', 'typescript', 'json']
+    }),
     //Generate an HTML5 file that includes all webpack bundles(includes css & js) in the body using script tags
     new HtmlWebpackPlugin({
       title: 'Steward - Content',

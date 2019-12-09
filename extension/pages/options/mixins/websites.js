@@ -1,22 +1,8 @@
 import websiteHelper from '../../../js/helper/websites'
 import util from '../../../js/common/util'
 import { downloadAsJson } from '../../../js/helper'
-import { codemirror } from 'vue-codemirror'
-import 'codemirror/keymap/vim.js'
-import 'codemirror/addon/edit/closebrackets.js'
-import 'codemirror/addon/fold/foldcode.js'
-import 'codemirror/addon/fold/foldgutter.js'
-import 'codemirror/addon/fold/brace-fold.js'
-import 'codemirror/addon/fold/foldgutter.css'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/monokai.css'
-import '../../../lib/codemirror/formatter.js'
-
-function autoFormat(editor) {
-    const totalLines = editor.lineCount();
-
-    editor.autoFormatRange({line: 0, ch: 0}, {line: totalLines});
-}
+import MonacoEditor from 'vue-monaco'
+import { autoFormat } from '../../../js/helper/editorHelper'
 
 export default {
     data() {
@@ -24,6 +10,7 @@ export default {
             websiteSearchText: '',
             websites: [],
             currentWebsite: null,
+            websiteTabIndex: 0,
             currentWebsiteSource: '',
             websiteCmOptions: {
                 tabSize: 2,
@@ -94,21 +81,26 @@ export default {
             });
 
             this.currentWebsite = data;
-            this.updateCurrentSource();
+            if (this.websiteTabIndex === 1) {
+                this.updateCurrentSource();
+            }
         },
 
         updateCurrentSource() {
             this.currentWebsiteSource = JSON.stringify(this.currentWebsite || {});
         },
 
-        onWebsiteCodeMirrorFocus(editor) {
+        onWebsiteEditorDidMount(editor) {
             autoFormat(editor);
         },
 
         handleWebsiteTabClick(tab) {
-            if (tab.index === 1) {
+            const idx = Number(tab.index)
+
+            if (idx === 1) {
                 this.updateCurrentSource();
             }
+            this.websiteTabIndex = idx
         },
 
         resetCurrentWebsite() {
@@ -266,6 +258,9 @@ export default {
             this.refreshWebsites();
             this.currentWebsite = website;
             this.updateCurrentSource();
+            if (this.websiteTabIndex === 1) {
+                autoFormat(this.$refs.websiteEditor.getEditor())
+            }
         },
 
         handleWebsiteSubmit() {
@@ -309,6 +304,6 @@ export default {
     },
 
     components: {
-        codemirror
+        MonacoEditor
     }
 }

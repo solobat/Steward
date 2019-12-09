@@ -2,27 +2,12 @@ import { restoreConfig } from '../../../js/common/config'
 import { backup, restoreData } from '../../../js/helper'
 import { saveTextAlias, getTextAlias } from '../../../js/helper/aliasHelper'
 import { getNetworks, saveNetworks } from '../../../lib/social-share-urls'
-import { codemirror } from 'vue-codemirror'
-import 'codemirror/keymap/vim.js'
-import 'codemirror/mode/javascript/javascript.js'
-import 'codemirror/addon/edit/closebrackets.js'
-import 'codemirror/addon/fold/foldcode.js'
-import 'codemirror/addon/fold/foldgutter.js'
-import 'codemirror/addon/fold/brace-fold.js'
-import 'codemirror/addon/fold/comment-fold.js'
-import 'codemirror/addon/fold/foldgutter.css'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/monokai.css'
 import { PLUGIN_DEFAULT } from '../../../js/constant/code'
 import { customPluginHelper, pluginFactory } from '../../../js/helper/pluginHelper'
 import { getAllGlobalActions, setGlobalActions } from '../../../js/helper/actionHelper'
 import util from '../../../js/common/util';
-
-function autoFormat(editor) {
-    const totalLines = editor.lineCount();
-
-    editor.autoFormatRange({line: 0, ch: 0}, {line: totalLines});
-}
+import MonacoEditor from 'vue-monaco'
+import { autoFormat } from '../../../js/helper/editorHelper'
 
 function readFile(file) {
     return new Promise((resolve, reject) => {
@@ -128,13 +113,14 @@ export default {
             });
         },
 
-        onGlobalActionsCodeMirrorFocus(editor) {
+        onGlobalActionsEditorDidMount(editor) {
             autoFormat(editor);
         },
 
         handleGlobalActionsSaveClick() {
             setGlobalActions(this.globalActions).then(() => {
                 util.toast.success('save successfully!');
+                autoFormat(this.$refs.globalActionsEditor.getEditor())
             }).catch(msg => {
                 util.toast.error(msg);
             });
@@ -277,19 +263,23 @@ export default {
             }
         },
 
+        onPluginEditorDidMount(editor) {
+            autoFormat(editor)
+        },
+
         refreshCustomPlugins() {
             this.customPlugins = customPluginHelper.getCustomPluginList();
         },
 
-        updatePlugin(meta) {
+        async updatePlugin(meta) {
             const id = this.currentCustomPlugin.id;
             let result;
 
             if (id) {
                 meta.id = id;
-                result = customPluginHelper.update(meta);
+                result = await customPluginHelper.update(meta);
             } else {
-                result = customPluginHelper.create(meta);
+                result = await customPluginHelper.create(meta);
             }
 
             this.refreshCustomPlugins();
@@ -327,6 +317,6 @@ export default {
     },
 
     components: {
-        codemirror
+        MonacoEditor
     }
 }

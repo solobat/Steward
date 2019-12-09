@@ -509,7 +509,7 @@
                                             </el-form>
                                         </el-tab-pane>
                                         <el-tab-pane label="Advance Editor">
-                                            <codemirror v-model="currentWebsiteSource" @focus="onWebsiteCodeMirrorFocus" :options="websiteCmOptions"></codemirror>                                            
+                                            <MonacoEditor class="editor" ref="websiteEditor" v-if="websiteTabIndex === 1" v-model="currentWebsiteSource" @editorDidMount="onWebsiteEditorDidMount" language="json" />
                                             <div class="buttons" style="margin-top: 20px;">
                                                 <el-button type="primary" @click.native.prevent="handleWebsiteCodeSubmit">{{i18nTexts.ui.settings.actions.save}}</el-button>
                                             </div>
@@ -668,8 +668,9 @@
                         </div>
                     </el-collapse-item>
                     <el-collapse-item name="actionEditor" title="Action Editor">
-                        <codemirror v-model="globalActions" :options="actionCmOptions"
-                            @focus="onGlobalActionsCodeMirrorFocus" ></codemirror>
+                        <MonacoEditor v-if="activeAdvancedName.indexOf('actionEditor') !== -1" class="editor"
+                            v-model="globalActions" @editorDidMount="onGlobalActionsEditorDidMount" language="json"
+                            ref="globalActionsEditor" />
                         <div class="bts">
                             <el-button type="primary" style="margin-top: 15px;" @click="handleGlobalActionsSaveClick">Test and Save</el-button>
                         </div>
@@ -692,7 +693,9 @@
                                 </el-col>
                                 <el-col :span="18">
                                      <div class="code-editor" v-if="currentCustomPlugin">
-                                         <codemirror v-model="currentCustomPlugin.source" :options="cmOptions"></codemirror>
+                                         <MonacoEditor class="editor" v-model="currentCustomPlugin.source" language="javascript"
+                                            @editorDidMount="onPluginEditorDidMount"
+                                            ref="pluginEditor" />
                                          <div class="bts">
                                             <el-button type="primary" style="margin-top: 15px;" @click="handleCustomPluginSaveClick">Test and Save</el-button>
                                             <el-button v-if="currentCustomPlugin.id" type="warning" style="margin-top: 15px;" @click="handleCustomPluginDeleteClick">Remove</el-button>
@@ -1258,9 +1261,10 @@ a {
     height: 25px;
 }
 
-.code-editor {
-    .CodeMirror {
-        height: 90vh;
-    }
+.editor {
+    margin-top: 10px;
+    border: 1px solid #DCDFE6;
+    height: 500px;
+    overflow: hidden;
 }
 </style>
