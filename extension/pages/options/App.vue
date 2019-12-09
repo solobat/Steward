@@ -509,7 +509,8 @@
                                             </el-form>
                                         </el-tab-pane>
                                         <el-tab-pane label="Advance Editor">
-                                            <MonacoEditor class="editor" ref="websiteEditor" v-if="websiteTabIndex === 1" v-model="currentWebsiteSource" @editorDidMount="onWebsiteEditorDidMount" language="json" />
+                                            <MonacoEditor class="editor" ref="websiteEditor" v-if="websiteTabIndex === 1" theme="vs-dark"
+                                                v-model="currentWebsiteSource" @editorDidMount="onWebsiteEditorDidMount" language="json" />
                                             <div class="buttons" style="margin-top: 20px;">
                                                 <el-button type="primary" @click.native.prevent="handleWebsiteCodeSubmit">{{i18nTexts.ui.settings.actions.save}}</el-button>
                                             </div>
@@ -668,7 +669,7 @@
                         </div>
                     </el-collapse-item>
                     <el-collapse-item name="actionEditor" title="Action Editor">
-                        <MonacoEditor v-if="activeAdvancedName.indexOf('actionEditor') !== -1" class="editor"
+                        <MonacoEditor v-if="activeAdvancedName.indexOf('actionEditor') !== -1" class="editor" theme="vs-dark"
                             v-model="globalActions" @editorDidMount="onGlobalActionsEditorDidMount" language="json"
                             ref="globalActionsEditor" />
                         <div class="bts">
@@ -694,7 +695,7 @@
                                 <el-col :span="18">
                                      <div class="code-editor" v-if="currentCustomPlugin">
                                          <MonacoEditor class="editor" v-model="currentCustomPlugin.source" language="javascript"
-                                            @editorDidMount="onPluginEditorDidMount"
+                                            @editorDidMount="onPluginEditorDidMount" theme="vs-dark"
                                             ref="pluginEditor" />
                                          <div class="bts">
                                             <el-button type="primary" style="margin-top: 15px;" @click="handleCustomPluginSaveClick">Test and Save</el-button>
