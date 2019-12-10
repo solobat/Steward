@@ -277,7 +277,7 @@ function uploadToWeiBoPicBed(imgData) {
                 }
             }
         };
-        xhr.open('POST', 'http://picupload.service.weibo.com/interface/pic_upload.php?ori=1&mime=image%2Fjpeg&data=base64&url=0&markpos=1&logo=&nick=0&marks=1&app=miniblog');
+        xhr.open('POST', 'https://picupload.weibo.com/interface/pic_upload.php?ori=1&mime=image%2Fjpeg&data=base64&url=0&markpos=1&logo=&nick=0&marks=1&app=miniblog');
         xhr.send(data);
     });
 }
