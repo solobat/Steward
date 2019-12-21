@@ -316,7 +316,7 @@ export class Website {
         const outlineNameFilter = item => util.matchText(text.slice(1), item.name);
         const anchorNameFilter = outlineNameFilter;
         const metaFilter = item => util.matchText(text.slice(1), item.title);
-        const mapTo = (key, subType) => item => {
+        const mapTo = (key, subType) => (item, index, items) => {
             return {
                 icon: this.icon,
                 key,
@@ -327,7 +327,7 @@ export class Website {
                 path: item.path,
                 deps: item.deps,
                 isCurrent: item.isCurrent,
-                weight: DEFAULT_WEIGHT,
+                weight: items.length - index,
                 custom: true
             }
         };
@@ -342,7 +342,7 @@ export class Website {
                 return Promise.resolve(filterByPath(this.paths, text).map(mapTo('action')));
             }
         } else if (first === TRIGGER_SYMBOL.OUTLINE) {
-            return Promise.resolve(this.outline.filter(outlineNameFilter).map(mapTo('action', 'outline')));
+            return Promise.resolve(this.outline.filter(outlineNameFilter).map(mapTo('action', 'outline', true)));
         } else if (first === TRIGGER_SYMBOL.ANCHOR) {
             return Promise.resolve(this.anchors.filter(anchorNameFilter).map(mapTo('action', 'anchor')));
         } else if (first === TRIGGER_SYMBOL.META) {
