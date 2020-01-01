@@ -7,7 +7,7 @@
     "build": "cross-env NODE_ENV=production webpack --config config/webpack.steward.config.js",
     "dev:plus": "npm run watch:plus",
     "dev": "npm run watch",
-    "watch:plus": "webpack --watch --config config/webpack.stewardplus.config.js",
+    "watch:plus": "cross-env NODE_ENV=developmen webpack --mode=development --watch --config config/webpack.stewardplus.config.js",
     "watch": "webpack --watch --config config/webpack.steward.config.js",
     "prod:plus": "bash build/build-plus.sh",
     "prod": "bash build/build.sh",
@@ -29,6 +29,7 @@
     "fuzzaldrin-plus": "^0.5.0",
     "getdomain": "^1.0.7",
     "grapnel": "^0.6.4",
+    "http-vue-loader": "^1.4.1",
     "is-in-viewport": "^3.0.4",
     "jquery": "^3.2.1",
     "jquery.waitforimages": "^2.4.0",
@@ -46,6 +47,7 @@
     "url-regex": "^4.1.1",
     "vue": "^2.5.17",
     "vue-codemirror": "^4.0.5",
+    "vue-grid-layout": "^2.3.7",
     "vue-monaco": "^1.1.0"
   },
   "devDependencies": {

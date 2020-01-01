@@ -1,8 +1,10 @@
 import { initConfig, globalData, globalApi } from '../../js/main/main'
 import Vue from 'vue';
 import App from './App.vue';
+import dayjs from 'dayjs';
 
 Vue.config.productionTip = false;
+Vue.prototype.$dayjs = dayjs;
 
 const mode = 'newTab';
 

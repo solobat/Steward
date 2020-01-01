@@ -1,13 +1,15 @@
 <template>
     <div class="container">
-        <header id="header">
-            <shortcuts :shortcuts="shortcuts" v-if="widgets.includes('shortcuts')" />
-        </header>
-        <transition name="fade">
-            <application v-show="visible" mode="newTab" :in-content="false" />
-        </transition>
-        <clock v-if="widgets.includes('clock')" />
-        <footer></footer>
+        <grid-layout :layout.sync="layout" v-bind="layoutOptions">
+            <grid-item v-for="item in layout"
+                    v-bind="item"
+                    :key="item.i">
+                <component v-if="item.i !== 'application'" :is="item.i" v-bind="componentOptions[item.i]"></component>
+                <transition v-else name="fade">
+                    <application v-show="visible" mode="newTab" :in-content="false" />
+                </transition>
+            </grid-item>
+        </grid-layout>
         <div class="fixed-tools" :class="{'auto-hide': !widgets.includes('wpbtns')}">
             <span id="j-save-wplink" class="save-wplink action-btn" title="save wallpaper link"
                 :class="[wallpaper.isNew ? 'save' : 'saved']"
@@ -25,6 +27,8 @@ import * as Core from '../../js/main/main.js'
 import * as Wallpaper from '../../js/main/wallpaper.js'
 import util from '../../js/common/util'
 import keyboardJS from 'keyboardjs'
+import VueGridLayout from 'vue-grid-layout';
+import httpVueLoader from 'http-vue-loader';
 
 function getShortcuts(shortcutsConfig) {
     let arr = [];
@@ -49,13 +53,34 @@ export default {
             wallpaper: {
                 isNew: true
             },
+            layoutOptions: {
+                'col-num': 24,
+                'row-height': Math.floor(window.innerHeight / 13.3),
+                'is-draggable': true,
+                'is-resizable': true,
+                'is-mirrored': false,
+                'vertical-compact': true,
+                'margin': [10, 10],
+                'use-css-transforms': true,
+            },
+            componentOptions: {
+                shortcuts: {
+                    shortcuts: getShortcuts(general.shortcuts)
+                },
+            },
             visible: true,
             widgets: general.newtabWidgets || [],
-            shortcuts: getShortcuts(general.shortcuts)
+            layout: [
+                {x: 0, y: 0, w: 10, h: 1, i: 'shortcuts'},
+                {x: 0, y: 2, w: 24, h: 8, i: 'application'},
+                {x: 20, y: 11, w: 4, h: 2, i: 'clock'}
+            ]
         };
     },
     components: {
         application,
+        GridLayout: VueGridLayout.GridLayout,
+        GridItem: VueGridLayout.GridItem,
         clock,
         shortcuts
     },

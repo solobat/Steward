@@ -10,11 +10,11 @@ const isProduction = process.env.NODE_ENV === 'production'
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ExtensionReloader  = require('webpack-extension-reloader');
 const conf = require('./utils')
 
 const config = {
   mode: process.env.NODE_ENV,
+  devtool: "inline-source-map",
   entry: conf.entries,
   output: {
     path: path.resolve(__dirname, '../output/steward_plus/'),
@@ -131,11 +131,7 @@ if(isProduction) {
     })
   )
 } else {
-  config.plugins.push(
-    new ExtensionReloader({
-      manifest: path.resolve(__dirname, "./extension/manifest-plus.json")
-    }),
-  )
+
 }
 
 module.exports = config
