@@ -41,4 +41,4 @@ export const WEBSITE_STATUS = {
 
 export const stewardTabs = ['Steward', 'General', 'Plugins', 'Workflows', 'Websites', 'Wallpapers', 'Appearance', 'Advanced', 'Help', 'Update'];
 
-export const stewardPlusTabs = ['Steward', 'General', 'Plugins', 'Workflows', 'Websites', 'Wallpapers', 'Appearance', 'Advanced', 'Help', 'Update'];
+export const stewardPlusTabs = ['Steward', 'General', 'Plugins', 'Workflows', 'Websites', 'NewtabComponents', 'Wallpapers', 'Appearance', 'Advanced', 'Help', 'Update'];

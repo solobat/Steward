@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <grid-layout :layout.sync="layout" v-bind="layoutOptions">
+        <grid-layout :layout.sync="layout" v-bind="layoutOptions" @layout-updated="onLayoutUpdated">
             <grid-item v-for="item in layout"
                     v-bind="item"
                     :key="item.i">
@@ -21,28 +21,12 @@
 </template>
 <script>
 import application from '../../components/application/index.vue'
-import clock from '../../components/clock/index.vue'
-import shortcuts from '../../components/shortcuts/index.vue'
 import * as Core from '../../js/main/main.js'
 import * as Wallpaper from '../../js/main/wallpaper.js'
 import util from '../../js/common/util'
 import keyboardJS from 'keyboardjs'
 import VueGridLayout from 'vue-grid-layout';
-import httpVueLoader from 'http-vue-loader';
-
-function getShortcuts(shortcutsConfig) {
-    let arr = [];
-
-    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].forEach(index => {
-        const conf = shortcutsConfig[`pageboxShortcut_${index}`];
-
-        if (conf.cmd) {
-            arr.push(conf.cmd);
-        }
-    });
-
-    return arr.slice(0, 5);
-}
+import { getLayouts, saveLayouts } from '../../js/helper/componentHelper'
 
 export default {
     name: 'App',
@@ -61,28 +45,21 @@ export default {
                 'is-mirrored': false,
                 'vertical-compact': true,
                 'margin': [10, 10],
-                'use-css-transforms': true,
+                'use-css-transforms': false,
             },
             componentOptions: {
                 shortcuts: {
-                    shortcuts: getShortcuts(general.shortcuts)
                 },
             },
             visible: true,
             widgets: general.newtabWidgets || [],
-            layout: [
-                {x: 0, y: 0, w: 10, h: 1, i: 'shortcuts'},
-                {x: 0, y: 2, w: 24, h: 8, i: 'application'},
-                {x: 20, y: 11, w: 4, h: 2, i: 'clock'}
-            ]
+            layout: getLayouts(this.$root.config.components)
         };
     },
     components: {
         application,
         GridLayout: VueGridLayout.GridLayout,
-        GridItem: VueGridLayout.GridItem,
-        clock,
-        shortcuts
+        GridItem: VueGridLayout.GridItem
     },
 
     created() {
@@ -106,9 +83,13 @@ export default {
 
             const keyType = util.isMac ? 'command' : 'alt';
 
-            keyboardJS.bind(`${keyType} + right`, event => {
+            keyboardJS.bind(`${keyType} + right`, () => {
                 this.visible = !this.visible;
             });
+        },
+
+        onLayoutUpdated() {
+            saveLayouts(this.layout);
         },
 
         handleWpSaveClick() {
@@ -129,6 +110,9 @@ export default {
 <style lang="scss">
 @import '../../scss/main.scss';
 @import '../../scss/themes/newtab/classical.scss';
+.vue-grid-item {
+    transition: none!important;
+}
 
 .box-invisible {
     .main {
@@ -253,18 +237,5 @@ a {
     }
 }
 
-.shortcuts {
-    position: fixed;
-    top: 25px;
-    left: 31px;
-    z-index: 10;
-}
-
-.clock {
-    position: fixed;
-    bottom: 33px;
-    right: 14px;
-    z-index: 10;
-}
 </style>
 

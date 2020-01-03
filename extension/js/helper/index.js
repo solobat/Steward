@@ -1,7 +1,10 @@
 /*global EXT_TYPE */
 
 import $ from 'jquery'
+import * as aliasHelper from './aliasHelper'
+import { componentHelper } from './componentHelper'
 import configHelper from './configHelper'
+import diaryHelper from './diaryHelper'
 import workflowHelper from './workflowHelper'
 import websitesHelper from './websites'
 import wallpaperHelper from './wallpaper'
@@ -12,6 +15,17 @@ const version = manifest.version;
 const extType = EXT_TYPE === 'stewardplus' ? 'Steward Plus' : 'Steward';
 
 export const dataHelpers = [configHelper, workflowHelper, websitesHelper, wallpaperHelper, themeHelper];
+
+export const helpers = {
+    alias: aliasHelper,
+    component: componentHelper,
+    config: configHelper,
+    diary: diaryHelper,
+    workflow: workflowHelper,
+    website: websitesHelper,
+    theme: themeHelper,
+    wallpaper: wallpaperHelper
+}
 
 export function downloadAsJson(exportObj, exportName) {
     const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(exportObj))}`;

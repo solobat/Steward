@@ -776,6 +776,9 @@
     "settings_tabs_appearance": {
         "message": "外观"
     },
+    "settings_tabs_newtabcomponents": {
+        "message": "组件"
+    },
     "settings_tabs_advanced": {
         "message": "高级"
     },
@@ -850,6 +853,9 @@
     },
     "settings_fields_disable": {
         "message": "禁用"
+    },
+    "settings_fields_show": {
+        "message": "展示"
     },
     "settings_actions_save": {
         "message": "保存"

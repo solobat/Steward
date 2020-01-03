@@ -18,7 +18,8 @@ export const settings = {
         navigations: getI18n('settings_fields_navigations'),
         outlinescope: getI18n('settings_fields_outlinescope'),
         anchors: getI18n('settings_fields_anchors'),
-        disable: getI18n('settings_fields_disable')
+        disable: getI18n('settings_fields_disable'),
+        show: getI18n('settings_fields_show'),
     },
     tabs: {
         general: getI18n('settings_tabs_general'),
@@ -26,6 +27,7 @@ export const settings = {
         workflows: getI18n('settings_tabs_workflows'),
         websites: getI18n('settings_tabs_websites'),
         wallpapers: getI18n('settings_tabs_wallpapers'),
+        newtabcomponents: getI18n('settings_tabs_newtabcomponents'),
         appearance: getI18n('settings_tabs_appearance'),
         advanced: getI18n('settings_tabs_advanced'),
         help: getI18n('settings_tabs_help'),

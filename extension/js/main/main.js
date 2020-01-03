@@ -9,8 +9,11 @@ import $ from 'jquery'
 import util from '../common/util'
 import storage from '../common/storage'
 import CONST from '../constant'
+import browser from 'webextension-polyfill'
 import {plugins} from '../plugins'
+import { helpers } from '../helper'
 import { getCustomPlugins } from '../helper/pluginHelper'
+import { getComponentsConfig } from '../helper/componentHelper'
 import _ from 'underscore'
 import defaultGeneral from '../../js/conf/general'
 import Toast from 'toastr'
@@ -702,8 +705,9 @@ export function initConfig(themode, isInContent) {
 
     return Promise.all([
         restoreConfig(),
-        getCustomPlugins()
-    ]).then(([res, customPlugins]) => {
+        getCustomPlugins(),
+        getComponentsConfig()
+    ]).then(([res, customPlugins, components]) => {
         allPlugins = plugins.concat(customPlugins);
         classifyPlugins(res.config.plugins, inContent);
         initWebsites();
@@ -717,6 +721,7 @@ export function initConfig(themode, isInContent) {
         if (!stewardCache.config.general) {
             stewardCache.config.general = defaultGeneral;
         }
+        stewardCache.config.components = components
 
         init();
 
@@ -726,12 +731,31 @@ export function initConfig(themode, isInContent) {
 
 const stewardApp = window.stewardApp = {};
 
-export function globalData(data) {
-    Object.assign(stewardApp, data);
+export function globalData(params = {}) {
+    const res = ['mode', 'config', 'data'].reduce((all, key) => {
+        if (typeof params[key] !== 'undefined') {
+            all[key] = params[key]
+        }
+        return all
+    }, {})
+    
+    Object.assign(stewardApp, res);
 }
 
 export function globalApi(app) {
     Object.assign(stewardApp, {
+        helpers,
+
+        chrome: window.chrome,
+
+        util,
+
+        constant: CONST,
+
+        Toast,
+
+        browser,
+
         on(eventName, fn) {
           app.$on(eventName, fn);
 

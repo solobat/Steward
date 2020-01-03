@@ -770,6 +770,9 @@
     "settings_tabs_appearance": {
         "message": "Appearance"
     },
+    "settings_tabs_newtabcomponents": {
+        "message": "Components"
+    },
     "settings_tabs_advanced": {
         "message": "Advanced"
     },
@@ -844,6 +847,9 @@
     },
     "settings_fields_disable": {
         "message": "Disable"
+    },
+    "settings_fields_show": {
+        "message": "Show"
     },
     "settings_actions_save": {
         "message": "Save"
