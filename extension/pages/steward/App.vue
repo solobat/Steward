@@ -43,7 +43,7 @@ export default {
                 'is-draggable': true,
                 'is-resizable': true,
                 'is-mirrored': false,
-                'vertical-compact': true,
+                'vertical-compact': false,
                 'margin': [10, 10],
                 'use-css-transforms': false,
             },
