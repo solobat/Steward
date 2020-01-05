@@ -30,6 +30,28 @@ body {
     background-attachment: fixed;
 }
 
+#newtab {
+    display: none;
+    position: fixed;
+    width: 100vw;
+    min-height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 100000;
+}
+
+.use-iframe {
+    #newtab {
+        display: block;
+    }
+    #app {
+        display: none;
+    }
+    .container {
+        display: none;
+    }
+}
+
 .use-filter {
     .main {
         position: relative;

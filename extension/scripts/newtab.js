@@ -1,4 +1,19 @@
 (function() {
+    let newtabSrc
+    function createIframe(src) {
+        document.documentElement.className += ' use-iframe ';
+        newtabSrc = src;
+    }
+
+    function checkNewTab() {
+        chrome.storage.sync.get('newtabSrc', ({ newtabSrc }) => {
+            if (newtabSrc) {
+                createIframe(newtabSrc)
+            }
+        })
+    }
+
+    checkNewTab()
     function getBg() {
         return localStorage.getItem('wallpaper');
     }
@@ -110,5 +125,12 @@
             window.stewardApp.emit('beforeleave');
         }
         document.querySelector('#main').style.display = 'none';
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        if (newtabSrc) {
+            const iframe = document.getElementById('newtab');
+            iframe.src = newtabSrc;
+        }
     });
 })();
