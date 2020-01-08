@@ -5,6 +5,7 @@ import 'element-ui/lib/theme-default/index.css'
 import util from '../../js/common/util'
 import * as i18n from '../../js/info/i18n'
 import CONST from '../../js/constant'
+import { getRemoteComponents } from '../../js/helper/componentHelper'
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -15,8 +16,10 @@ const getConfig = util.getData('getConfig');
 
 function init() {
     Promise.all([
-        getConfig()
-    ]).then(([config]) => {
+        getConfig(),
+        getRemoteComponents()
+    ]).then(([config, components]) => {
+        console.log("TCL: init -> components", components)
         const tips = CONST.I18N.TIPS;
 
         config.lastVersion = config.version || version;
@@ -25,7 +28,7 @@ function init() {
 
         i18nTexts.ui = i18n;
 
-        render(config, i18nTexts);
+        render(config, i18nTexts, components);
     });
 }
 
@@ -49,7 +52,7 @@ function getI18nTexts(obj, prefix) {
     }
 }
 
-function render({general, plugins, lastVersion}, i18nTexts) {
+function render({general, plugins, lastVersion}, i18nTexts, components) {
     let activeName = 'general';
 
     if (lastVersion < version) {
@@ -75,10 +78,11 @@ function render({general, plugins, lastVersion}, i18nTexts) {
                 plugins,
                 version
             },
+            remoteComponents: components,
             i18nTexts
         },
         components: { App },
-        template: '<App :config="config" :i18nTexts="i18nTexts" :tabName="activeName" />'
+        template: '<App :config="config" :remoteComponents="remoteComponents" :i18nTexts="i18nTexts" :tabName="activeName" />'
     });
 }
 

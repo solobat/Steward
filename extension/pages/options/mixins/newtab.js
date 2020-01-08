@@ -37,6 +37,7 @@ export default {
         filteredComponents() {
             const text = this.componentSearchText.toLowerCase();
 
+            console.log("TCL: filteredComponents -> this.components", this.components)
             return this.components.filter(component => {
                 return component.meta.title.toLowerCase().indexOf(text) > -1;
             });
@@ -44,13 +45,21 @@ export default {
     },
 
     created() {
-        componentHelper.init().then((resp = []) => {
-            this.components = resp;
-            console.log("TCL: created -> resp", resp)
-        });
+        this.initComponents()
     },
 
     methods: {
+        initComponents() {
+            componentHelper.init().then((resp = []) => {
+                this.components = resp.map(oldComponent => {
+                    const newComponent = this.remoteComponents.find(item => item.id === oldComponent.id)
+                    if (newComponent) {
+                        oldComponent.hasNewVersion = componentHelper.hasNewVersion(oldComponent, newComponent)
+                    }
+                    return oldComponent
+                });
+            });
+        },
         handleComponentClick(component) {
             const data = JSON.parse(JSON.stringify(component));
 
@@ -115,6 +124,18 @@ export default {
                     this.submitComponent();
                 }
             });
+        },
+
+        async updateComponent() {
+            const current = this.currentComponent
+            const newComponent = this.remoteComponents.find(item => item.id === current.id)
+
+            const res = await componentHelper.updateToNewVersion(current, newComponent)
+
+            this.currentComponent = res
+            this.initComponents()
+            this.updateCurrentSource()
+            this.$message.success('Updated')
         },
 
         handleComponentCodeSubmit() {

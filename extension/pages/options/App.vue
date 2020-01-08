@@ -535,6 +535,7 @@
                              v-for="(component, index) in filteredComponents" :key="index"
                              @click="handleComponentClick(component)">
                                 <span class="plugin-name">{{component.meta.title}}</span>
+                                <img v-if="component.hasNewVersion" class="icon icon-newversion" src="/iconfont/newversion.svg" alt="">
                             </div>
                         </div>
                     </el-col>
@@ -543,7 +544,10 @@
                             <div v-if="currentComponent" class="plugin-editor-container">
                                 <div class="plugin-editor-header">
                                     <div class="plugin-editor-text">
-                                        <p class="plugin-editor-title">{{i18nTexts.ui.settings.tabs.newtabcomponents}} - {{currentComponent.meta.title}}</p>
+                                        <p class="plugin-editor-title">
+                                            {{i18nTexts.ui.settings.tabs.newtabcomponents}} - {{currentComponent.meta.title}} - {{currentComponent.version}}
+                                            <a href="javascript:;" style="color: #f56c6c;" v-if="currentComponent.hasNewVersion" @click="updateComponent">Update</a>
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="plugin-editor-config" style="overflow-y: auto;">
@@ -820,7 +824,7 @@ const storeId = extType === 'steward' ? 'dnkhdiodfglfckibnfcjbgddcgjgkacd' : 'jg
 
 export default {
     name: 'app',
-    props: ['config', 'i18nTexts', 'tabName'],
+    props: ['config', 'i18nTexts', 'tabName', 'remoteComponents'],
     data: function() {
         return {
             activeGeneralConfigName: ['command'],
@@ -1101,6 +1105,10 @@ a {
 .icon-batch {
     width: 17px;
     vertical-align: -3px;
+}
+
+.icon-newversion {
+    width: 17px;
 }
 
 .appearance-item {

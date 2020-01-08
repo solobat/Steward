@@ -19,7 +19,7 @@ export async function getComponentsConfig() {
   }
 }
 
-function createComponentConfig(data) {
+function createComponentConfig(data, silent) {
   const { id, version, grid, show = false } = data
   const ret = {
     meta: data,
@@ -28,7 +28,9 @@ function createComponentConfig(data) {
     grid,
     show
   }
-  componentHelper.create(ret)
+  if (!silent) {
+    componentHelper.create(ret)
+  }
 
   return ret
 }
@@ -52,6 +54,13 @@ async function initComponentsConfig() {
   return initConfig;
 }
 
+export async function getRemoteComponents() {
+  const list = await fetchComponents();
+  const config = [...builtInList, ...list].map(item => createComponentConfig(item, true));
+
+  return config;
+}
+
 const LIST_URL = 'https://raw.githubusercontent.com/Steward-launcher/steward-newtab-components/master/data.json';
 
 function fetchComponents() {
@@ -65,7 +74,26 @@ function fetchComponents() {
     return [];
   })
 }
+
 export const componentHelper = {
+  hasNewVersion(oldComponent, newComponent) {
+    if (oldComponent.version < newComponent.version) {
+      return true
+    } else {
+      return false
+    }
+  },
+
+  updateToNewVersion(oldComponent, newComponent) {
+    const { version, meta } = newComponent
+    const updated = {
+      ...oldComponent,
+      version,
+      meta
+    }
+
+    return this.update(updated)
+  },
   create(info) {
     if (info.id) {
       const component = new ComponentModel();
