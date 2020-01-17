@@ -37,7 +37,6 @@ export default {
         filteredComponents() {
             const text = this.componentSearchText.toLowerCase();
 
-            console.log("TCL: filteredComponents -> this.components", this.components)
             return this.components.filter(component => {
                 return component.meta.title.toLowerCase().indexOf(text) > -1;
             });

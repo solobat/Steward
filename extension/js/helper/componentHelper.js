@@ -20,10 +20,11 @@ export async function getComponentsConfig() {
 }
 
 function createComponentConfig(data, silent) {
-  const { id, version, grid, show = false } = data
+  const { id, version, grid, args, show = false } = data
   const ret = {
     meta: data,
     id,
+    args,
     version,
     grid,
     show
@@ -56,9 +57,23 @@ async function initComponentsConfig() {
 
 export async function getRemoteComponents() {
   const list = await fetchComponents();
-  const config = [...builtInList, ...list].map(item => createComponentConfig(item, true));
+  const remoteList = [...builtInList, ...list].map(item => createComponentConfig(item, true));
+  const oldList = await componentHelper.init()
+  const newList = []
 
-  return config;
+  remoteList.forEach(newItem => {
+    const oldItem = oldList.find(item => item.id === newItem.id)
+
+    if (!oldItem) {
+      newList.push(newItem)
+    }
+  })
+
+  for await (const item of newList) {
+    componentHelper.create(item)
+  }
+
+  return remoteList;
 }
 
 const LIST_URL = 'https://raw.githubusercontent.com/Steward-launcher/steward-newtab-components/master/data.json';
@@ -121,8 +136,8 @@ export const componentHelper = {
     }));
   },
 
-  save(info) {
-    if (info.id) {
+  save(info, forceCreate) {
+    if (info.id && !forceCreate) {
       return this.update(info);
     } else {
       return this.create(info);
@@ -166,6 +181,15 @@ export function registerComponents(Vue, components = []) {
       Vue.component(id, httpVueLoader(meta.source))
     }
   })
+}
+
+export function getParams(components) {
+  return components.filter(item => item.show).reduce((memo, item) => {
+    if (item.args) {
+      memo[item.id] = item.args
+    }
+    return memo
+  }, {});
 }
 
 export function getLayouts(components) {

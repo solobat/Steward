@@ -32,7 +32,7 @@
         "login.html",
         "popup.html"
     ],
-    "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com; object-src 'self'",
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com http://localhost:8098/; object-src 'self'",
     "options_page": "options.html",
     "optional_permissions": [
         "background", "clipboardRead", "clipboardWrite"

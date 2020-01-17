@@ -4,7 +4,7 @@
             <grid-item v-for="item in layout"
                     v-bind="item"
                     :key="item.i">
-                <component v-if="item.i !== 'application'" :is="item.i" v-bind="componentOptions[item.i]"></component>
+                <component v-if="item.i !== 'application'" :is="item.i" v-bind="componentOptions[item.i] || {}"></component>
                 <transition v-else name="fade">
                     <application v-show="visible" mode="newTab" :in-content="false" />
                 </transition>
@@ -26,7 +26,7 @@ import * as Wallpaper from '../../js/main/wallpaper.js'
 import util from '../../js/common/util'
 import keyboardJS from 'keyboardjs'
 import VueGridLayout from 'vue-grid-layout';
-import { getLayouts, saveLayouts } from '../../js/helper/componentHelper'
+import { getParams, getLayouts, saveLayouts } from '../../js/helper/componentHelper'
 
 export default {
     name: 'App',
@@ -48,12 +48,13 @@ export default {
                 'use-css-transforms': false,
             },
             componentOptions: {
-                shortcuts: {
-                },
+                ...getParams(this.$root.config.components)
             },
             visible: true,
             widgets: general.newtabWidgets || [],
-            layout: getLayouts(this.$root.config.components)
+            layout: [
+                ...getLayouts(this.$root.config.components)
+            ]
         };
     },
     components: {
@@ -110,9 +111,6 @@ export default {
 <style lang="scss">
 @import '../../scss/main.scss';
 @import '../../scss/themes/newtab/classical.scss';
-.vue-grid-item {
-    transition: none!important;
-}
 
 .box-invisible {
     .main {
@@ -136,6 +134,20 @@ body {
 
 .container {
     height: 100vh;
+
+    .vue-grid-item {
+        transition: none!important;
+
+        &:hover {
+            .vue-resizable-handle {
+                opacity: 1;
+            }
+        }
+    }
+
+    .vue-resizable-handle {
+        opacity: 0;
+    }
 }
 
 img {
@@ -195,21 +207,21 @@ a {
 
 .save-wplink {
     float: left;
-    background: url(../../svg/star.svg);
+    background: url('/iconfont/star.svg');
     background-size: cover;
 
     &.saved {
-        background-image: url(../../svg/star-fill.svg);
+        background-image: url('/iconfont/star-fill.svg');
     }
 }
 
 .save-wplink:hover {
-    background-image: url(../../svg/star-fill.svg);
+    background-image: url('/iconfont/star-fill.svg');
 }
 
 .refresh-wp {
     float: right;
-    background: url(../../svg/refresh.svg);
+    background: url('/iconfont/refresh.svg');
     background-size: cover;
 }
 

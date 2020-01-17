@@ -17,6 +17,7 @@ import { getComponentsConfig } from '../helper/componentHelper'
 import _ from 'underscore'
 import defaultGeneral from '../../js/conf/general'
 import Toast from 'toastr'
+import md5 from 'blueimp-md5'
 import TextAlias from '../helper/aliasHelper'
 
 const commands = {};
@@ -729,7 +730,25 @@ export function initConfig(themode, isInContent) {
     });
 }
 
-const stewardApp = window.stewardApp = {};
+const stewardApp = window.stewardApp = {
+    helpers,
+    chrome: window.chrome,
+    util,
+    constant: CONST,
+    Toast,
+    md5,
+    browser,
+    wallpaper: {
+        grayLevel: 192,
+        setGrayLevel(num) {
+            window.stewardApp.wallpaper.grayLevel = num;
+            window.stewardApp.emit('wallpaper:graylevel', num)
+        },
+        getLayerOpacity() {
+            return (window.stewardApp.wallpaper.grayLevel / 255).toFixed(2);
+        }
+    }
+};
 
 export function globalData(params = {}) {
     const res = ['mode', 'config', 'data'].reduce((all, key) => {
@@ -744,18 +763,6 @@ export function globalData(params = {}) {
 
 export function globalApi(app) {
     Object.assign(stewardApp, {
-        helpers,
-
-        chrome: window.chrome,
-
-        util,
-
-        constant: CONST,
-
-        Toast,
-
-        browser,
-
         on(eventName, fn) {
           app.$on(eventName, fn);
 
