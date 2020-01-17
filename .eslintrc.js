@@ -11,7 +11,8 @@ module.exports = {
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",
-        "chrome": true
+        "chrome": true,
+        "EXT_TYPE": true
     },
     "parserOptions": {
         "ecmaVersion": 2018,

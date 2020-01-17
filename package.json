@@ -51,7 +51,8 @@
     "vue-codemirror": "^4.0.5",
     "vue-grid-layout": "^2.3.7",
     "vue-monaco": "^1.1.0",
-    "vue-native-websocket": "^2.0.13"
+    "vue-native-websocket": "^2.0.13",
+    "vue-router": "^3.1.5"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

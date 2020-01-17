@@ -4,9 +4,8 @@
  * @mail solopea@gmail.com
  */
 
-/*global EXT_TYPE*/
 import util from '../../common/util'
-import { stewardTabs, stewardPlusTabs } from '../../constant/base'
+import { stewardTabs, stewardPlusTabs } from '@/js/constant/base'
 
 const version = 1;
 const name = 'steward';
@@ -39,7 +38,7 @@ function onInput(text) {
             icon,
             key: isBackup ? 'app' : itemType,
             title: item,
-            url: item === extType ? baseUrl : `${baseUrl}?tab=${item}`,
+            url: item === extType ? baseUrl : `${baseUrl}#/${item.toLowerCase()}`,
             weight: 2
         }
     };
