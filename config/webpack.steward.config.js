@@ -21,6 +21,7 @@ const config = {
   },
   resolve: {
     alias: {
+      '@': path.resolve(__dirname, '../extension/'),
       vue: 'vue/dist/vue.js'
     }
   },
