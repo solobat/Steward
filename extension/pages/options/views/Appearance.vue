@@ -312,5 +312,89 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+@import '../../../scss/main.scss';
+@import '../../../scss/themes/popup/classical.scss';
+
+.appearance-item {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 3px 8px;
+    height: 40px;
+    position: relative;
+}
+
+.appearance-item.is-active {
+    background: #20a0ff;
+    color: #fff;
+}
+
+.appearance-item-icon {
+    width: 20px;
+    height: 20px;
+    float: left;
+}
+
+.appearance-item-name {
+    margin-left: 5px;
+    font-size: 14px;
+    line-height: 1.4;
+    font-weight: 100;
+}
+
+.appearance-item-panel {
+    height: calc(100vh - 57px);
+}
+
+.themes-container {
+    display: flex;
+    padding: 15px;
+    box-sizing: border-box;
+    height: 100%;
+}
+
+.themes-info {
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+}
+
+.theme-editor {
+    flex: 1;
+    margin-left: 15px;
+    background: rgba(0, 0, 0, .8);
+    color: #fff;
+    height: 100%;
+    overflow: auto;
+
+    .el-form {
+        margin: 12px;
+    }
+
+    .el-form-item {
+        margin-bottom: 6px;
+    }
+
+    .el-form-item__label {
+        color: #fff;
+        text-align: left;
+    }
+
+    .el-input {
+        width: 180px;
+    }
+
+    .theme-field-type {
+        margin-top: 15px;
+        margin-bottom: 10px;
+        padding-bottom: 2px;
+        border-bottom: 2px solid #fff;
+        font-size: 20px;
+    }
+
+    .color-indicator {
+        border: 1px solid #000;
+    }
+}
 </style>

@@ -8,7 +8,8 @@
           </div>
           <div
             class="plugin-item website-item"
-            :class="{'is-selected': component.meta.title === (currentComponent && currentComponent.meta.title)}"
+            :class="{'is-selected': component.meta.title === (currentComponent && currentComponent.meta.title), 
+              'invisible': !component.show}"
             v-for="(component, index) in filteredComponents"
             :key="index"
             @click="handleComponentClick(component)"
@@ -26,18 +27,21 @@
       <el-col :span="19">
         <div class="grid-content bg-black plugin-editor">
           <div v-if="currentComponent" class="plugin-editor-container">
-            <div class="plugin-editor-header">
-              <div class="plugin-editor-text">
-                <p class="plugin-editor-title">
-                  {{i18nTexts.ui.settings.tabs.newtabcomponents}} - {{currentComponent.meta.title}} - {{currentComponent.version}}
-                  <a
-                    href="javascript:;"
-                    style="color: #f56c6c;"
-                    v-if="currentComponent.hasNewVersion"
-                    @click="updateComponent"
-                  >Update</a>
-                </p>
+            <div class="comp-meta">
+              <div class="comp-logo" v-if="currentComponent.meta.icon">
+                <img :src="currentComponent.meta.icon" alt="">
               </div>
+              <div class="comp-tit">
+                {{currentComponent.meta.title}}
+                <span class="comp-version">{{currentComponent.version}}</span>
+                <a
+                  href="javascript:;"
+                  style="color: #f56c6c;"
+                  v-if="currentComponent.hasNewVersion"
+                  @click="updateComponent"
+                >Update</a>
+              </div>
+              <div class="author">by <a target="_blank" :href="`https://github.com/${currentComponent.meta.author}`">{{currentComponent.meta.author}}</a></div>
             </div>
             <div class="plugin-editor-config" style="overflow-y: auto;">
               <el-tabs
@@ -136,6 +140,8 @@ export default {
 
       return this.components.filter(component => {
         return component.meta.title.toLowerCase().indexOf(text) > -1;
+      }).sort((a, b) => {
+        return Number(a.show) > Number(b.show) ? -1 : 1
       });
     }
   },
@@ -208,7 +214,7 @@ export default {
     },
 
     refreshComponents() {
-      this.components = componentHelper.getComponentList();
+      this.initComponents()
     },
 
     afterComponentSubmit(component) {
@@ -263,5 +269,41 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+.plugin-item {
+  &.invisible {
+    .plugin-name {
+      color: #999;
+    }
+  }
+}
+
+.comp-meta {
+  display: flex;
+  background: #eef1f6;
+  height: 40px;
+  padding: 12px;
+}
+
+.comp-logo {
+  width: 30px;
+  height: 30px; 
+  
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.comp-tit {
+  margin-left: 8px;
+  flex: 1;
+  font-size: 24px;
+}
+
+.comp-version {
+  font-size: 12px;
+  color: #666;
+}
 </style>
