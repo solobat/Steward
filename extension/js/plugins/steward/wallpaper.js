@@ -224,7 +224,7 @@ function pid2url(params, sizeType = 'large') {
     }
 
     let url, zone;
-    const url_pre = 'https://ws';
+    const url_pre = 'https://wx';
 
     if (params.pid[9] === 'w') {
         zone = (crc32(params.pid) & 3) + 1;
