@@ -2,9 +2,9 @@
 <h1 align="center">Steward</h1>
 <p align="center">A command launcher for Chrome/Firefox</p>
 <p align="center">
-   <a href="https://github.com/solobat/Steward/releases"><img src="https://img.shields.io/badge/lastest_version-3.7.7-blue.svg"></a>
+   <a href="https://github.com/solobat/Steward/releases"><img src="https://img.shields.io/badge/lastest_version-4.0.0-blue.svg"></a>
    <a target="_blank" href="https://chrome.google.com/webstore/detail/jglmompgeddkbcdamdknmebaimldkkbl"><img src="https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg"></a>
-   <a href="http://static.oksteward.com/steward-3.7.7.crx"><img src="https://img.shields.io/badge/download-_crx-brightgreen.svg"></a>
+   <a href="http://static.oksteward.com/steward-4.0.0.crx"><img src="https://img.shields.io/badge/download-_crx-brightgreen.svg"></a>
    <a target="_blank" href="https://addons.mozilla.org/firefox/addon/steward-a-command-launcher/"><img src="https://img.shields.io/badge/download-_firefox_addon-DD512A.svg"></a>
 
 </p>
@@ -14,7 +14,7 @@
 ### Install：
 - [Chrome WebStore](https://chrome.google.com/webstore/detail/jglmompgeddkbcdamdknmebaimldkkbl)
 - [Chrome WebStore -- Steward Plus](https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd)
-- [crx Download](http://static.oksteward.com/steward-3.7.7.crx)
+- [crx Download](http://static.oksteward.com/steward-4.0.0.crx)
 
 - [Firefox Addons](https://addons.mozilla.org/firefox/addon/steward-a-command-launcher/)
 
@@ -110,11 +110,11 @@ npm run prod
 [![license-badge]][license-link]
 
 <!-- Link -->
-[version-badge]:    https://img.shields.io/badge/lastest_version-3.7.7-blue.svg
+[version-badge]:    https://img.shields.io/badge/lastest_version-4.0.0-blue.svg
 [version-link]:     https://github.com/solobat/Steward
 [chrome-badge]:     https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg
 [chrome-link]:      https://chrome.google.com/webstore/detail/jglmompgeddkbcdamdknmebaimldkkbl
 [offline-badge]:    https://img.shields.io/badge/download-_crx-brightgreen.svg
-[offline-link]:     http://static.oksteward.com/steward-3.7.7.crx
+[offline-link]:     http://static.oksteward.com/steward-4.0.0.crx
 [license-badge]:    https://img.shields.io/github/license/mashape/apistatus.svg
 [license-link]:     https://opensource.org/licenses/MIT

@@ -1,5 +1,9 @@
 const langZh = [
     {
+        version: 'v4.0.0',
+        detail: 'Newtab 组件化，可定制; 设置页重构'
+    },
+    {
         version: 'v3.7.7',
         detail: 'bugfix'
     },
@@ -503,6 +507,10 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v4.0.0',
+        detail: 'Component Newtab page, customizable; refactor the settings page'
+    },
     {
         version: 'v3.7.7',
         detail: 'bugfix'
