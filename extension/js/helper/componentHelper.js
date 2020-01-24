@@ -194,10 +194,11 @@ export function getParams(components) {
 
 export function getLayouts(components) {
   return components.filter(item => item.show).map(item => {
-    const { grid = [], id: i } = item;
+    const { grid = [], id: i, args = {} } = item;
     const [x, y, w, h] = grid;
+    const { dragIgnoreFrom = 'a, input, button' } = args
 
-    return { x, y, w, h, i };
+    return { x, y, w, h, i, dragIgnoreFrom };
   });
 }
 
