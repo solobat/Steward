@@ -15,10 +15,12 @@ import { helpers } from '../helper'
 import { getCustomPlugins } from '../helper/pluginHelper'
 import { getComponentsConfig } from '../helper/componentHelper'
 import _ from 'underscore'
+import orderBy from 'lodash.orderby'
 import defaultGeneral from '../../js/conf/general'
 import Toast from 'toastr'
 import md5 from 'blueimp-md5'
 import TextAlias from '../helper/aliasHelper'
+import * as recordsController from '@/server/controller/recordsController'
 
 const commands = {};
 const regExpCommands = [];
@@ -33,6 +35,7 @@ let reg;
 let mode;
 let inContent;
 let state = {
+    stage: '',
     str: '',
     cmd: '',
     query: '',
@@ -171,6 +174,8 @@ function alwaysStage() {
     const lastCommand = state.command;
     const lastKey = state.key;
 
+    setState({ stage: 'always' })
+
     if (alwaysCommand) {
         return callCommand(alwaysCommand, str).then(results => {
             if (results) {
@@ -189,6 +194,8 @@ function regexpStage() {
     const str = state.str;
     const spCommand = findRegExpMatched(str);
 
+    setState({ stage: 'regexp' })
+
     // handle regexp commands
     if (spCommand) {
         window.stewardApp.emit('app:log', { key: 'regexp', str });
@@ -201,6 +208,8 @@ function regexpStage() {
 function searchStage() {
     const str = state.str;
 
+    setState({ stage: 'search' })
+
     // match commands && search in contexts
     if (str.indexOf(' ') === -1) {
         const searched = searchInContext(str);
@@ -211,7 +220,7 @@ function searchStage() {
             searched
         ]).then(res => {
             const items = _.flatten(res.filter(item => item && item.length));
-            const searchRes = _.sortBy(items, 'weight').reverse();
+            const searchRes = items;
 
             if (searchRes && searchRes.length) {
                 window.stewardApp.emit('app:log', { key: 'search', str });
@@ -233,6 +242,8 @@ function commandStage(gothrough) {
     if (gothrough) {
         return Promise.resolve(state);
     }
+
+    setState({ stage: 'command' })
 
     const str = state.str;
     const mArr = str.match(reg) || [];
@@ -266,6 +277,8 @@ function commandStage(gothrough) {
 
 function defaultStage() {
     if (otherCommands.length) {
+        setState({ stage: 'default' })
+
         window.stewardApp.emit('app:log', { key: 'other', str: state.str });
         return callCommand(otherCommands[0], state.str);
     }
@@ -314,7 +327,7 @@ export function queryByInput(str, background) {
         .then(data => Promise.reject(data))
         .catch(msg => {
             if (msg) {
-                return Promise.resolve(msg).then(result => {
+                return Promise.resolve(msg).then(sortResults).then(result => {
                     return {
                         query: str,
                         data: result
@@ -322,6 +335,27 @@ export function queryByInput(str, background) {
                 });
             }
         });
+}
+
+async function sortResults(results) {
+    const { stage, str } = state
+    if (stage === 'search') {
+
+        const records = await recordsController.query({ scope: stage, query: str })
+        const items = results.map(result => {
+            const record = records.find(item => item.result === result.title)
+            if (record) {
+                result.times = record.times
+            } else {
+                result.times = 0
+            }
+            return result
+        })
+
+        return orderBy(items, ['times', 'weight'], ['desc', 'desc'])
+    } else {
+        return results
+    }
 }
 
 export function getInitCmd () {
@@ -456,7 +490,30 @@ export function handleEnter (dataList, index, keyStatus) {
         keyStatus
     });
 
+    try {
+        record(dataList[index], state, mode) 
+    } catch (error) {
+        console.log(error)
+    }
     execCommand(dataList, dataList[index], false, keyStatus);
+}
+
+function record(item, state, mode) {
+    const { title } = item
+    const { stage } = state
+
+    if (stage === 'search') {
+        return recordsController.log({
+            query: state.str,
+            scope: stage,
+            result: title,
+            mode
+        })
+    } else if (stage === 'command') {
+        // TODO: api
+
+        return Promise.resolve()
+    }
 }
 
 // should cache
