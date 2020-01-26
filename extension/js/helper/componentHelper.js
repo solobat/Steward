@@ -6,8 +6,16 @@ import { Component as ComponentModel, ComponentList } from '../collection/compon
 import axios from 'axios'
 import dayjs from 'dayjs'
 import httpVueLoader from 'http-vue-loader';
+import { MIRRORS } from '@/js/constant/options';
+import { getAppConfig } from '@/js/conf'
 
 const componentList = new ComponentList();
+
+function getMirror(id) {
+  const conf = MIRRORS.find(item => item.id === id)
+
+  return conf
+}
 
 export async function getComponentsConfig() {
   const config = await componentHelper.init();
@@ -76,10 +84,24 @@ export async function getRemoteComponents() {
   return remoteList;
 }
 
-const LIST_URL = 'https://raw.githubusercontent.com/Steward-launcher/steward-newtab-components/master/data.json';
+function getListURL(baseURL) {
+  return `${baseURL}/data.json`
+}
+
+export function getComponentURL(path = '') {
+  if (path.startsWith('http')) {
+    return path
+  } else {
+    const mirror = getMirror(getAppConfig('general.componentsMirror', 'github'))
+  
+    return `${mirror.baseURL}${path}`
+  }
+}
 
 function fetchComponents() {
-  return axios.get(LIST_URL, {
+  const mirror = getMirror(getAppConfig('general.componentsMirror', 'github'))
+
+  return axios.get(getListURL(mirror.baseURL), {
     params: {
       t: dayjs().format('YYYYMMDD')
     }
@@ -178,7 +200,7 @@ export function registerComponents(Vue, components = []) {
   components.forEach(item => {
     const { id, meta = {}, show } = item
     if (id && meta.source && show) {
-      Vue.component(id, httpVueLoader(meta.source))
+      Vue.component(id, httpVueLoader(getComponentURL(meta.source)))
     }
   })
 }

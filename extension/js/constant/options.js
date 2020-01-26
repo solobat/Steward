@@ -59,3 +59,13 @@ export const NEWTAB_WIDGETS = [{
     value: 'wpbtns',
     tips: 'Bottom Buttons'
 }];
+
+export const MIRRORS = [{
+    id: "github",
+    name: "Github",
+    baseURL: "https://raw.githubusercontent.com/Steward-launcher/steward-newtab-components/master"
+}, {
+    id: 'gitee',
+    name: "Gitee",
+    baseURL: "https://gitee.com/Steward-launcher/steward-newtab-components/raw/master"
+}]

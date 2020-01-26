@@ -21,6 +21,9 @@ function init() {
         const tips = CONST.I18N.TIPS;
 
         config.lastVersion = config.version || version;
+        window.stewardApp = {
+            config
+        }
 
         const i18nTexts = getI18nTexts({general: config.general, tips});
 

@@ -629,6 +629,9 @@
     "general_enableRandomWallpaper": {
         "message": "随机应用壁纸"
     },
+    "general_componentsMirror": {
+        "message": "组件源"
+    },
     "general_newtabWidgets": {
         "message": "新标签页组件"
     },

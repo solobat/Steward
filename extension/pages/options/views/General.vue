@@ -138,7 +138,7 @@
         </el-collapse-item>
         <el-collapse-item name="appearance" :title="i18nTexts.ui.settings.blocks.newtab">
           <el-row>
-            <el-col :span="12">
+            <el-col :span="8">
               <el-form-item :label="i18nTexts.general.wallpaperSources">
                 <el-select
                   v-model="config.general.wallpaperSources"
@@ -154,9 +154,24 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
+            <el-col :span="8">
               <el-form-item :label="i18nTexts.general.enableRandomWallpaper">
                 <el-switch v-model="config.general.enableRandomWallpaper" on-color="#20a0ff"></el-switch>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item :label="i18nTexts.general.componentsMirror">
+                <el-select
+                  v-model="config.general.componentsMirror"
+                  placeholder="Please choose at least one"
+                >
+                  <el-option
+                    v-for="item in mirrors"
+                    :key="item.value"
+                    :label="item.name"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
               </el-form-item>
             </el-col>
           </el-row>
@@ -284,6 +299,7 @@ export default {
       defaultPlugins: CONST.OPTIONS.DEFAULT_PLUGINS,
       wallpaperSources: CONST.OPTIONS.WALLPAPER_SOURCES,
       newtabWidgets: CONST.OPTIONS.NEWTAB_WIDGETS,
+      mirrors: CONST.OPTIONS.MIRRORS
     };
   },
 

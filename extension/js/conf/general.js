@@ -15,6 +15,7 @@ export default {
     storeTypedQuery: true,
     autoCreateWebsite: true,
     websiteUrls: true,
+    componentsMirror: 'github',
     websiteShareUrls: true,
     shortcuts: {
         'open-in-content-page': {cmd: ''},

@@ -617,6 +617,9 @@
     "general_wallpaperSources": {
         "message": "Wallpaper sources"
     },
+    "general_componentsMirror": {
+        "message": "Components mirror"
+    },
     "general_autoCreateWebsite": {
         "message": "Auto config websites"
     },
