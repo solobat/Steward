@@ -9,7 +9,6 @@ export function save(record) {
 }
 
 export function query({scope, query }) {
-  console.log("TCL: query -> {scope, query }", {scope, query })
   return db.records.where({
     scope, query
   }).toArray()
