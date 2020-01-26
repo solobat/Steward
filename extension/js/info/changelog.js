@@ -1,5 +1,9 @@
 const langZh = [
     {
+        version: 'v4.0.1',
+        detail: '搜索结果按使用次数排序；newtab layout 优化; 组件源切换'
+    },
+    {
         version: 'v4.0.0',
         detail: 'Newtab 组件化，可定制; 设置页重构'
     },
@@ -507,6 +511,10 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v4.0.1',
+        detail: 'Sort search results by number of uses; newtab layout optimization; component source switching'
+    },
     {
         version: 'v4.0.0',
         detail: 'Component Newtab page, customizable; refactor the settings page'
