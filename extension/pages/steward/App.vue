@@ -10,7 +10,7 @@
                 </transition>
             </grid-item>
         </grid-layout>
-        <div class="fixed-tools" :class="{'auto-hide': !widgets.includes('wpbtns')}">
+        <div class="fixed-tools auto-hide">
             <span id="j-save-wplink" class="save-wplink action-btn" title="save wallpaper link"
                 :class="[wallpaper.isNew ? 'save' : 'saved']"
                 @click="handleWpSaveClick"></span>
@@ -51,7 +51,7 @@ export default {
                 ...getParams(this.$root.config.components)
             },
             visible: true,
-            widgets: general.newtabWidgets || [],
+            widgets: general.newtabWidgets || ['wpbtns'],
             layout: [
                 ...getLayouts(this.$root.config.components)
             ]
