@@ -60,6 +60,16 @@
                     <el-form-item :label="i18nTexts.ui.settings.fields.show">
                       <el-switch v-model="currentComponent.show" on-color="#20a0ff"></el-switch>
                     </el-form-item>
+                    <el-form-item :label="i18nTexts.ui.settings.fields.showByDefault">
+                      <el-switch v-model="currentComponent.showByDefault" on-color="#20a0ff"></el-switch>
+                    </el-form-item>
+                    <el-form-item :label="i18nTexts.ui.settings.blocks.shortcutconfiguration">
+                      <el-input style="width: 200px;"
+                        v-model="currentComponent.shortcuts"
+                        placeholder="command"
+                      ></el-input>
+                      <a href="https://github.com/RobertWHurst/KeyboardJS" target="_blank">?</a>
+                    </el-form-item>
                     <el-form-item>
                       <el-button
                         type="primary"
@@ -173,7 +183,11 @@ export default {
     handleComponentClick(component) {
       const data = JSON.parse(JSON.stringify(component));
 
-      this.currentComponent = data;
+      this.currentComponent = {
+        showByDefault: true,
+        shortcuts: '',
+        ...data
+      };
       if (this.componentTabIndex === 1) {
         this.updateCurrentSource();
       }

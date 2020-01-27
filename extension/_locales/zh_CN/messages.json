@@ -860,6 +860,9 @@
     "settings_fields_show": {
         "message": "展示"
     },
+    "settings_fields_showbydefault": {
+        "message": "默认显示"
+    },
     "settings_actions_save": {
         "message": "保存"
     },

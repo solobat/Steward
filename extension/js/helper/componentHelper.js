@@ -35,7 +35,9 @@ function createComponentConfig(data, silent) {
     args,
     version,
     grid,
-    show
+    show,
+    shortcuts: '',
+    showByDefault: true
   }
   if (!silent) {
     componentHelper.create(ret)
@@ -52,7 +54,9 @@ const builtInList = [
     title: "Command Box",
     subtitle: "Command Box",
     author: 'tomasy',
-    show: true
+    show: true,
+    shortcuts: 'command + right',
+    showByDefault: true
   }
 ]
 
@@ -216,11 +220,11 @@ export function getParams(components) {
 
 export function getLayouts(components) {
   return components.filter(item => item.show).map(item => {
-    const { grid = [], id: i, args = {} } = item;
+    const { grid = [], id: i, args = {}, showByDefault = true, shortcuts } = item;
     const [x, y, w, h] = grid;
     const { dragIgnoreFrom = 'a, input, button' } = args
 
-    return { x, y, w, h, i, dragIgnoreFrom };
+    return { x, y, w, h, i, dragIgnoreFrom, show: showByDefault, shortcuts };
   });
 }
 

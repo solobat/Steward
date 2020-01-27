@@ -20,6 +20,7 @@ export const settings = {
         anchors: getI18n('settings_fields_anchors'),
         disable: getI18n('settings_fields_disable'),
         show: getI18n('settings_fields_show'),
+        showByDefault: getI18n('settings_fields_showbydefault'),
     },
     tabs: {
         general: getI18n('settings_tabs_general'),

@@ -96,6 +96,17 @@ export default {
         },
 
         bindEvents() {
+            this.$root.$on('comp:application', event => {
+                if (event.type === 'visible') {
+                    this.$nextTick(() => {
+                        if (event.value) {
+                            this.$refs.input.focus()
+                        } else {
+                            this.$refs.input.blur()
+                        }
+                    })
+                }
+            })
             keyboardJS.bind(['down', 'tab', 'ctrl + n'], event => {
                 event.preventDefault();
                 if (this.isVisible()) {

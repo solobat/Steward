@@ -4,9 +4,9 @@
             <grid-item v-for="item in layout"
                     v-bind="item"
                     :key="item.i">
-                <component v-if="item.i !== 'application'" :is="item.i" v-bind="componentOptions[item.i] || {}"></component>
+                <component v-if="item.i !== 'application'" v-show="item.show" :is="item.i" v-bind="componentOptions[item.i] || {}"></component>
                 <transition v-else name="fade">
-                    <application v-show="visible" mode="newTab" :in-content="false" />
+                    <application v-show="item.show" mode="newTab" :in-content="false" />
                 </transition>
             </grid-item>
         </grid-layout>
@@ -82,11 +82,17 @@ export default {
                 this.visible = true;
             });
 
-            const keyType = util.isMac ? 'command' : 'alt';
-
-            keyboardJS.bind(`${keyType} + right`, () => {
-                this.visible = !this.visible;
-            });
+            this.layout.forEach((item, index) => {
+                if (item.shortcuts) {
+                    keyboardJS.bind(item.shortcuts, () => {
+                        this.layout[index].show = !this.layout[index].show
+                        this.$root.$emit(`comp:${item.i}`, {
+                            type: 'visible',
+                            value: this.layout[index].show
+                        })
+                    });
+                }
+            })
         },
 
         onLayoutUpdated() {

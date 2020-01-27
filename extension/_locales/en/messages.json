@@ -854,6 +854,9 @@
     "settings_fields_show": {
         "message": "Show"
     },
+    "settings_fields_showbydefault": {
+        "message": "Show by default"
+    },
     "settings_actions_save": {
         "message": "Save"
     },
