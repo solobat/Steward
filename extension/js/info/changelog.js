@@ -1,5 +1,9 @@
 const langZh = [
     {
+        version: 'v4.0.2',
+        detail: '组件支持快捷键显示/隐藏；component plugin 提供 show/hide 命令启动和禁用组件'
+    },
+    {
         version: 'v4.0.1',
         detail: '搜索结果按使用次数排序；newtab layout 优化; 组件源切换'
     },
@@ -511,6 +515,10 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v4.0.2',
+        detail: 'Use shortcut keys to show components; Provide show / hide command to enable and disable components'
+    },
     {
         version: 'v4.0.1',
         detail: 'Sort search results by number of uses; newtab layout optimization; component source switching'
