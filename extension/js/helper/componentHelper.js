@@ -53,7 +53,7 @@ const builtInList = [
     grid: [0, 2, 24, 8],
     title: "Command Box",
     subtitle: "Command Box",
-    author: 'tomasy',
+    author: 'solobat',
     show: true,
     shortcuts: 'command + right',
     showByDefault: true
