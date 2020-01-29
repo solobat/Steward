@@ -19,6 +19,7 @@ export const settings = {
         outlinescope: getI18n('settings_fields_outlinescope'),
         anchors: getI18n('settings_fields_anchors'),
         disable: getI18n('settings_fields_disable'),
+        enable: getI18n('settings_fields_enable'),
         show: getI18n('settings_fields_show'),
         showByDefault: getI18n('settings_fields_showbydefault'),
     },

@@ -872,6 +872,9 @@
     "settings_fields_anchors": {
         "message": "锚点"
     },
+    "settings_fields_enable": {
+        "message": "启用"
+    },
     "settings_fields_disable": {
         "message": "禁用"
     },

@@ -57,13 +57,13 @@
                     :rules="componentFormRuels"
                     label-width="200px"
                   >
-                    <el-form-item :label="i18nTexts.ui.settings.fields.show">
+                    <el-form-item :label="i18nTexts.ui.settings.fields.enable">
                       <el-switch v-model="currentComponent.show" on-color="#20a0ff"></el-switch>
                     </el-form-item>
-                    <el-form-item :label="i18nTexts.ui.settings.fields.showByDefault">
+                    <el-form-item v-if="currentComponent.show" :label="i18nTexts.ui.settings.fields.showByDefault">
                       <el-switch v-model="currentComponent.showByDefault" on-color="#20a0ff"></el-switch>
                     </el-form-item>
-                    <el-form-item :label="i18nTexts.ui.settings.blocks.shortcutconfiguration">
+                    <el-form-item v-if="currentComponent.show" :label="i18nTexts.ui.settings.blocks.shortcutconfiguration">
                       <el-input style="width: 200px;"
                         v-model="currentComponent.shortcuts"
                         placeholder="command"

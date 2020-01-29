@@ -866,6 +866,9 @@
     "settings_fields_anchors": {
         "message": "Anchors"
     },
+    "settings_fields_enable": {
+        "message": "Enable"
+    },
     "settings_fields_disable": {
         "message": "Disable"
     },
