@@ -20,6 +20,7 @@
     </div>
 </template>
 <script>
+import Vue from 'vue'
 import application from '../../components/application/index.vue'
 import * as Core from '../../js/main/main.js'
 import * as Wallpaper from '../../js/main/wallpaper.js'
@@ -27,11 +28,13 @@ import util from '../../js/common/util'
 import keyboardJS from 'keyboardjs'
 import VueGridLayout from 'vue-grid-layout';
 import { getParams, getLayouts, saveLayouts } from '../../js/helper/componentHelper'
+import { getComponentsConfig, registerComponents } from '@/js/helper/componentHelper'
 
 export default {
     name: 'App',
     data() {
         const general = this.$root.config.general;
+        const { componentOptions, layout } = this.getComponents()
 
         return {
             wallpaper: {
@@ -47,14 +50,10 @@ export default {
                 'margin': [10, 10],
                 'use-css-transforms': false,
             },
-            componentOptions: {
-                ...getParams(this.$root.config.components)
-            },
             visible: true,
             widgets: general.newtabWidgets || ['wpbtns'],
-            layout: [
-                ...getLayouts(this.$root.config.components)
-            ]
+            componentOptions,
+            layout
         };
     },
     components: {
@@ -69,7 +68,36 @@ export default {
     },
 
     methods: {
+        refreshCompoents() {
+            getComponentsConfig().then(components => {
+                this.$root.config.components = components
+                const { componentOptions, layout } = this.getComponents()
+                
+                registerComponents(Vue, components)
+                this.componentOptions = componentOptions
+                this.layout = layout
+            })
+        },
+
+        getComponents() {
+            return {
+                componentOptions: {
+                    ...getParams(this.$root.config.components)
+                },
+                layout: [
+                    ...getLayouts(this.$root.config.components)
+                ]
+            }
+        },
+
         bindEvents() {
+            chrome.storage.onChanged.addListener(changes => {
+                const [key] = Object.keys(changes)
+
+                if (key.startsWith('component')) {
+                    this.refreshCompoents()
+                }
+            });
             this.$root.$on('wallpaper:refreshed', (isNew) => {
                 this.wallpaper.isNew = isNew;
             });

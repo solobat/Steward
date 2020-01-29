@@ -146,6 +146,24 @@
     "history_subtitle": {
         "message": "查找历史记录并打开"
     },
+    "component_title": {
+        "message": "组件管理"
+    },
+    "component_subtitle": {
+        "message": "隐藏或展示组件"
+    },
+    "component_show_title": {
+        "message": "展示组件"
+    },
+    "component_show_subtitle": {
+        "message": "按 Enter / Return 展示所选组件"
+    },
+    "component_hide_title": {
+        "message": "隐藏组件"
+    },
+    "component_hide_subtitle": {
+        "message": "按 Enter / Return 展示所选组件"
+    },
     "jenkins_title": {
         "message": "查找并打开"
     },

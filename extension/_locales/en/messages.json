@@ -146,6 +146,24 @@
     "history_subtitle": {
         "message": "find history and open it"
     },
+    "component_title": {
+        "message": "components manager"
+    },
+    "component_subtitle": {
+        "message": "show or hide components"
+    },
+    "component_show_title": {
+        "message": "show component"
+    },
+    "component_show_subtitle": {
+        "message": "Press Enter / Return to show the selected component"
+    },
+    "component_hide_title": {
+        "message": "hide component"
+    },
+    "component_hide_subtitle": {
+        "message": "Press Enter / Return to hide the selected component"
+    },
     "jenkins_title": {
         "message": "Find and open"
     },
