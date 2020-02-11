@@ -1,5 +1,9 @@
 const langZh = [
     {
+        version: 'v4.0.3',
+        detail: 'bugfix'
+    },
+    {
         version: 'v4.0.2',
         detail: '组件支持快捷键显示/隐藏；component plugin 提供 show/hide 命令启动和禁用组件'
     },
@@ -515,6 +519,10 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v4.0.3',
+        detail: 'bugfix'
+    },
     {
         version: 'v4.0.2',
         detail: 'Use shortcut keys to show components; Provide show / hide command to enable and disable components'
