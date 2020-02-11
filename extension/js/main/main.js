@@ -808,7 +808,7 @@ const stewardApp = window.stewardApp = {
 };
 
 export function globalData(params = {}) {
-    const res = ['mode', 'config', 'data'].reduce((all, key) => {
+    const res = ['mode', 'config', 'data', 'inContent'].reduce((all, key) => {
         if (typeof params[key] !== 'undefined') {
             all[key] = params[key]
         }
