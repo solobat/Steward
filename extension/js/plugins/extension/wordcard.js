@@ -7,7 +7,7 @@
 import Toast from 'toastr'
 import _ from 'underscore'
 
-const extName = '单词小卡片: 查词/收集/背单词';
+const extName = '庖丁解语: 查词句/收集/背单词/造句';
 const version = 3;
 const name = 'wordcard';
 const key = 'wd';
