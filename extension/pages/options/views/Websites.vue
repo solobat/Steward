@@ -244,14 +244,12 @@
                   </el-form>
                 </el-tab-pane>
                 <el-tab-pane label="Advance Editor">
-                  <MonacoEditor
+                  <el-input
                     class="editor"
-                    ref="websiteEditor"
                     v-if="websiteTabIndex === 1"
-                    theme="vs-dark"
                     v-model="currentWebsiteSource"
-                    @editorDidMount="onWebsiteEditorDidMount"
-                    language="json"
+                    :rows="10"
+                    type="textarea"
                   />
                   <div class="buttons" style="margin-top: 20px;">
                     <el-button
@@ -273,8 +271,6 @@
 import websiteHelper from "@/js/helper/websites";
 import util from "@/js/common/util";
 import { downloadAsJson } from "@/js/helper";
-import MonacoEditor from "vue-monaco";
-import { autoFormat } from "@/js/helper/editorHelper";
 
 export default {
   name: 'Websites',
@@ -287,22 +283,6 @@ export default {
       currentWebsite: null,
       websiteTabIndex: 0,
       currentWebsiteSource: "",
-      websiteCmOptions: {
-        tabSize: 2,
-        styleActiveLine: true,
-        autoCloseBrackets: true,
-        styleSelectedText: true,
-        matchBrackets: true,
-        foldGutter: true,
-        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-        mode: "application/json",
-        theme: "monokai",
-        lineNumbers: true,
-        line: true,
-        extraKeys: {
-          F7: autoFormat
-        }
-      },
       activeFieldsName: ["meta"],
       newPath: {
         title: "",
@@ -366,10 +346,6 @@ export default {
 
     updateCurrentSource() {
       this.currentWebsiteSource = JSON.stringify(this.currentWebsite || {});
-    },
-
-    onWebsiteEditorDidMount(editor) {
-      autoFormat(editor);
     },
 
     handleWebsiteTabClick(tab) {
@@ -538,9 +514,6 @@ export default {
       this.refreshWebsites();
       this.currentWebsite = website;
       this.updateCurrentSource();
-      if (this.websiteTabIndex === 1) {
-        autoFormat(this.$refs.websiteEditor.getEditor());
-      }
     },
 
     handleWebsiteSubmit() {
@@ -591,7 +564,6 @@ export default {
   },
 
   components: {
-    MonacoEditor
   }
 };
 </script>

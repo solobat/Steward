@@ -401,7 +401,5 @@ a {
 .editor {
     margin-top: 10px;
     border: 1px solid #DCDFE6;
-    height: 500px;
-    overflow: hidden;
 }
 </style>

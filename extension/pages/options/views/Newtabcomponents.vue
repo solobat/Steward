@@ -79,14 +79,10 @@
                   </el-form>
                 </el-tab-pane>
                 <el-tab-pane label="Advance Editor">
-                  <MonacoEditor
+                  <el-input
                     class="editor"
-                    ref="componentEditor"
                     v-if="componentTabIndex === 1"
-                    theme="vs-dark"
                     v-model="currentComponentSource"
-                    @editorDidMount="onComponentEditorDidMount"
-                    language="json"
                   />
                   <div class="buttons" style="margin-top: 20px;">
                     <el-button
@@ -107,8 +103,6 @@
 <script>
 import { componentHelper } from "@/js/helper/componentHelper";
 import util from "@/js/common/util";
-import MonacoEditor from "vue-monaco";
-import { autoFormat } from "@/js/helper/editorHelper";
 import { getRemoteComponents } from '@/js/helper/componentHelper'
 
 export default {
@@ -199,10 +193,6 @@ export default {
       this.currentComponentSource = JSON.stringify(data);
     },
 
-    onComponentEditorDidMount(editor) {
-      autoFormat(editor);
-    },
-
     handleComponentTabClick(tab) {
       const idx = Number(tab.index);
 
@@ -235,9 +225,6 @@ export default {
       this.refreshComponents();
       this.currentComponent = component;
       this.updateCurrentSource();
-      if (this.componentTabIndex === 1) {
-        autoFormat(this.$refs.componentEditor.getEditor());
-      }
     },
 
     handleComponentSubmit() {
@@ -278,7 +265,6 @@ export default {
   },
 
   components: {
-    MonacoEditor
   }
 };
 </script>

@@ -56,14 +56,12 @@
         </div>
       </el-collapse-item>
       <el-collapse-item name="actionEditor" title="Action Editor">
-        <MonacoEditor
+        <el-input
           v-if="activeAdvancedName.indexOf('actionEditor') !== -1"
+          type="textarea"
           class="editor"
-          theme="vs-dark"
+          :rows="10"
           v-model="globalActions"
-          @editorDidMount="onGlobalActionsEditorDidMount"
-          language="json"
-          ref="globalActionsEditor"
         />
         <div class="bts">
           <el-button
@@ -95,13 +93,11 @@
             </el-col>
             <el-col :span="18">
               <div class="code-editor" v-if="currentCustomPlugin">
-                <MonacoEditor
+                <el-input
                   class="editor"
                   v-model="currentCustomPlugin.source"
-                  language="javascript"
-                  @editorDidMount="onPluginEditorDidMount"
-                  theme="vs-dark"
-                  ref="pluginEditor"
+                  type="textarea"
+                  :rows="20"
                 />
                 <div class="bts">
                   <el-button
@@ -156,8 +152,6 @@ import {
   setGlobalActions
 } from "@/js/helper/actionHelper";
 import util from "@/js/common/util";
-import MonacoEditor from "vue-monaco";
-import { autoFormat } from "@/js/helper/editorHelper";
 
 function readFile(file) {
   return new Promise((resolve, reject) => {
@@ -199,38 +193,8 @@ export default {
       },
       customPlugins: [],
       currentCustomPlugin: null,
-      cmOptions: {
-        tabSize: 2,
-        styleActiveLine: true,
-        autoCloseBrackets: true,
-        styleSelectedText: true,
-        matchBrackets: true,
-        foldGutter: true,
-        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-        keyMap: "vim",
-        mode: "text/javascript",
-        theme: "monokai",
-        lineNumbers: true,
-        line: true
-      },
       textAlias: "",
-      globalActions: "",
-      actionCmOptions: {
-        tabSize: 2,
-        styleActiveLine: true,
-        autoCloseBrackets: true,
-        styleSelectedText: true,
-        matchBrackets: true,
-        foldGutter: true,
-        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-        mode: "application/json",
-        theme: "monokai",
-        lineNumbers: true,
-        line: true,
-        extraKeys: {
-          F7: autoFormat
-        }
-      }
+      globalActions: ""
     };
   },
 
@@ -269,16 +233,11 @@ export default {
         util.toast.success("Save successfully!");
       });
     },
-
-    onGlobalActionsEditorDidMount(editor) {
-      autoFormat(editor);
-    },
-
+  
     handleGlobalActionsSaveClick() {
       setGlobalActions(this.globalActions)
         .then(() => {
           util.toast.success("save successfully!");
-          autoFormat(this.$refs.globalActionsEditor.getEditor());
         })
         .catch(msg => {
           util.toast.error(msg);
@@ -427,10 +386,6 @@ export default {
       }
     },
 
-    onPluginEditorDidMount(editor) {
-      autoFormat(editor);
-    },
-
     refreshCustomPlugins() {
       this.customPlugins = customPluginHelper.getCustomPluginList();
     },
@@ -485,7 +440,6 @@ export default {
   },
 
   components: {
-    MonacoEditor
   }
 };
 </script>

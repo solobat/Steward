@@ -8,7 +8,6 @@ const cssNano = require('cssnano')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const isProduction = process.env.NODE_ENV === 'production'
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const conf = require('./utils')
 
@@ -105,9 +104,6 @@ const config = {
     }),
     new VueLoaderPlugin(),
     new webpack.optimize.ModuleConcatenationPlugin(),
-    new MonacoEditorPlugin({
-      languages: ['javascript', 'json']
-    }),
     //Generate an HTML5 file that includes all webpack bundles(includes css & js) in the body using script tags
     ...conf.pages,
     new MiniCssExtractPlugin({ filename: '[name].css' }),
