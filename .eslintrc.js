@@ -23,6 +23,7 @@ module.exports = {
         "vue"
     ],
     "rules": {
-        "no-inner-declarations": "off"
+        "no-inner-declarations": "off",
+        "no-empty": "off"
     }
 };
