@@ -257,7 +257,10 @@ function commandStage(gothrough) {
             query: key
         });
 
-        storage.h5.set(CONST.STORAGE.LAST_CMD, str);
+        try {
+            storage.h5.set(CONST.STORAGE.LAST_CMD, str);
+        } catch (error) {
+        }
 
         if (state.lastcmd !== state.cmd) {
             setState({
@@ -340,19 +343,22 @@ export function queryByInput(str, background) {
 async function sortResults(results) {
     const { stage, str } = state
     if (stage === 'search') {
+        try {
+            const records = await recordsController.query({ scope: stage, query: str })
+            const items = results.map(result => {
+                const record = records.find(item => item.result === result.title)
+                if (record) {
+                    result.times = record.times
+                } else {
+                    result.times = 0
+                }
+                return result
+            })
 
-        const records = await recordsController.query({ scope: stage, query: str })
-        const items = results.map(result => {
-            const record = records.find(item => item.result === result.title)
-            if (record) {
-                result.times = record.times
-            } else {
-                result.times = 0
-            }
-            return result
-        })
-
-        return orderBy(items, ['times', 'weight'], ['desc', 'desc'])
+            return orderBy(items, ['times', 'weight'], ['desc', 'desc'])
+        } catch (error) {
+            return results
+        }
     } else {
         return results
     }
@@ -368,7 +374,13 @@ export function getInitCmd () {
     } else if (paramCmd) {
         return Promise.resolve(paramCmd);
     } else if (cacheLastCmd) {
-        return Promise.resolve(storage.h5.get(CONST.STORAGE.LAST_CMD) || 'site ');
+        try {
+            const last = storage.h5.get(CONST.STORAGE.LAST_CMD)
+            
+            return Promise.resolve(last || 'site ');
+        } catch (error) {
+            return Promise.resolve('site ');
+        }
     } else if (defaultPlugin) {
         if (defaultPlugin === 'Other') {
             if (customCmd) {

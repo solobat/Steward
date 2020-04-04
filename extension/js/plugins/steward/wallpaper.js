@@ -122,7 +122,9 @@ function setup() {
             updateList(false);
         });
     });
-    updateActions();
+    if (window.location.href.indexOf('popup') === -1) {
+        updateActions();
+    }
 }
 
 if (EXT_TYPE === 'steward') {

@@ -208,7 +208,6 @@ export default {
     },
 
     saveThemes() {
-      window.localStorage.setItem("themes", JSON.stringify(this.themes));
       storage.sync
         .set({
           [CONST.STORAGE.THEMES]: this.themes

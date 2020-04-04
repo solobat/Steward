@@ -19,12 +19,10 @@
     }
 
     function initTheme(mode) {
-        const themesStr = window.localStorage.getItem('themes');
+        chrome.storage.sync.get('themes', function (resp) {
+            const themes = resp.themes
 
-        if (themesStr) {
-            const themes = JSON.parse(themesStr);
-
-            if (themes[mode]) {
+            if (themes && themes[mode]) {
                 let cssText = '';
                 const theme = themes[mode];
                 const bg = getBg();
@@ -42,7 +40,7 @@
 
                 document.querySelector('html').style.cssText = cssText;
             }
-        }
+        })
     }
 
     initTheme('newtab');

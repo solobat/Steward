@@ -1,11 +1,10 @@
-(function() {
+(function () {
     function initTheme(mode) {
-        const themesStr = window.localStorage.getItem('themes');
+        chrome.storage.sync.get('themes', function (resp) {
+        console.log("initTheme -> resp", resp)
+            const themes = resp.themes
 
-        if (themesStr) {
-            const themes = JSON.parse(themesStr);
-
-            if (themes[mode]) {
+            if (themes && themes[mode]) {
                 let cssText = '';
                 const theme = themes[mode];
 
@@ -15,7 +14,7 @@
 
                 document.querySelector('html').style.cssText = cssText;
             }
-        }
+        })
     }
 
     if (window.parent === window) {
