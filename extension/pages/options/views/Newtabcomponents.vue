@@ -117,22 +117,6 @@ export default {
       componentTabIndex: 0,
       currentComponentSource: "",
       remoteComponents: [],
-      componentCmOptions: {
-        tabSize: 2,
-        styleActiveLine: true,
-        autoCloseBrackets: true,
-        styleSelectedText: true,
-        matchBrackets: true,
-        foldGutter: true,
-        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-        mode: "application/json",
-        theme: "monokai",
-        lineNumbers: true,
-        line: true,
-        extraKeys: {
-          F7: autoFormat
-        }
-      },
       activeFieldsName: ["meta"],
       componentFormRuels: {}
     };

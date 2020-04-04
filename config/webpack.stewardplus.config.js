@@ -13,7 +13,6 @@ const conf = require('./utils')
 
 const config = {
   mode: process.env.NODE_ENV,
-  devtool: "inline-source-map",
   entry: conf.entries,
   output: {
     path: path.resolve(__dirname, '../output/steward_plus/'),
