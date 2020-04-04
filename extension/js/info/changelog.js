@@ -1,5 +1,9 @@
 const langZh = [
     {
+        version: 'v4.0.4',
+        detail: '优化及 Bug 修复'
+    },
+    {
         version: 'v4.0.3',
         detail: 'bugfix'
     },
@@ -519,6 +523,10 @@ const langZh = [
 ];
 
 const langEn = [
+    {
+        version: 'v4.0.4',
+        detail: 'optimization && bugfix'
+    },
     {
         version: 'v4.0.3',
         detail: 'bugfix'
