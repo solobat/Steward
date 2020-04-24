@@ -61,7 +61,7 @@
                   <el-tooltip
                     class="item"
                     effect="dark"
-                    content="Workflow Document"
+                    content="Workflow Documentation"
                     placement="top-start"
                   >
                     <a href="http://oksteward.com/steward-documents/Workflows.html" target="_blank">
