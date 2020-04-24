@@ -723,7 +723,7 @@ const langEn = [
         version: 'v3.4.10',
         detail: `
             Websites support vuepress sites;<br>
-            Document link update;<br>
+            Documentation link update;<br>
             <em>coins </em> supports caching, <em>coin </em> supports selecting exchange caches.
         `
     },
@@ -953,7 +953,7 @@ const langEn = [
         version: 'v3.1.7',
         detail: `
             Optimize UI of new tab.<br>
-            Document is available on <em>http://oksteward.com/steward-document-en/</em>
+            Documentation is available on <em>http://oksteward.com/steward-document-en/</em>
         `
     },
     {
@@ -973,7 +973,7 @@ const langEn = [
     {
         version: 'v3.1.4',
         detail: `
-            Update document link;<br>
+            Update documentation link;<br>
             Fix the problem of the background image;<br>
             Some other improvements. 
         `
@@ -982,7 +982,7 @@ const langEn = [
         version: 'v3.1.3',
         detail: `
             Command box can be completely eliminated when press the ESC ;<br>
-            Richer documentation：use <em>help</em> command，press <em>Shift + Enter/Click</em> can open the <em>document<em> of one command.
+            Richer documentation：use <em>help</em> command，press <em>Shift + Enter/Click</em> can open the <em>documentation<em> of one command.
         `
     },
     {
