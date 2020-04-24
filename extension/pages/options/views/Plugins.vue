@@ -35,7 +35,7 @@
                     class="plugin-doc"
                     :href="getDocumentURL(currentPlugin)"
                     target="_blank"
-                  >Document</a>
+                  >Documentation</a>
                 </p>
                 <p class="plugin-editor-title">{{currentPlugin.title}}</p>
               </div>
