@@ -14,7 +14,7 @@ const langZh = `
 `;
 
 const langEn = `
-<a href="http://oksteward.com/steward-document-en/" target="_blank">Document</a><br>
+<a href="http://oksteward.com/steward-document-en/" target="_blank">Documentation</a><br>
 <iframe v-if="activeName === 'help'" width="560" height="315" src="https://www.youtube.com/embed/7-SpiiidDzU" frameborder="0" allowfullscreen></iframe>
 <br>
 Please try to upgrade the latest version of the browser, to avoid some of the features can not be used.<br>
