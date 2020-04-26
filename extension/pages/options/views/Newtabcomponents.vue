@@ -78,7 +78,7 @@
                     </el-form-item>
                   </el-form>
                 </el-tab-pane>
-                <el-tab-pane label="Advance Editor">
+                <el-tab-pane label="Advanced Editor">
                   <el-input
                     class="editor"
                     v-if="componentTabIndex === 1"

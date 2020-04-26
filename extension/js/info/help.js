@@ -14,11 +14,11 @@ const langZh = `
 `;
 
 const langEn = `
-<a href="http://oksteward.com/steward-document-en/" target="_blank">Document</a><br>
+<a href="http://oksteward.com/steward-document-en/" target="_blank">Documentation</a><br>
 <iframe v-if="activeName === 'help'" width="560" height="315" src="https://www.youtube.com/embed/7-SpiiidDzU" frameborder="0" allowfullscreen></iframe>
 <br>
 Please try to upgrade the latest version of the browser, to avoid some of the features can not be used.<br>
-If you have any suggestions / problems in the process of using it, you can go <a href="https://github.com/solobat/Steward/issues">Here</a>，or join the <a href="https://t.me/chromesteward" target="_blank">Telegram</a> channel。
+If you have any suggestions / problems in the process of using it, you can go <a href="https://github.com/solobat/Steward/issues">here</a>，or join the <a href="https://t.me/chromesteward" target="_blank">Telegram</a> channel.
 `;
 
 let results;
