@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "short_name": "Steward",
-    "version": "4.0.4",
+    "version": "4.0.5",
     "description": "__MSG_extDesc__",
     "default_locale": "en",
     "background": {
@@ -34,7 +34,7 @@
     "content_security_policy": "script-src 'self' 'unsafe-eval' https://ssl.google-analytics.com; object-src 'self'",
     "options_page": "options.html",
     "optional_permissions": [
-        "background", "clipboardRead", "clipboardWrite"
+        "background", "clipboardWrite"
     ],
     "permissions": [
         "history",
@@ -42,10 +42,8 @@
         "tabs",
         "storage",
         "downloads",
-        "contextMenus",
         "management",
         "unlimitedStorage",
-        "notifications",
         "<all_urls>",
         "topSites"
     ],
