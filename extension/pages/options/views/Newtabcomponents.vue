@@ -81,6 +81,8 @@
                 <el-tab-pane label="Advanced Editor">
                   <el-input
                     class="editor"
+                    type="textarea"
+                    :rows="5"
                     v-if="componentTabIndex === 1"
                     v-model="currentComponentSource"
                   />
@@ -102,7 +104,6 @@
 
 <script>
 import { componentHelper } from "@/js/helper/componentHelper";
-import util from "@/js/common/util";
 import { getRemoteComponents } from '@/js/helper/componentHelper'
 
 export default {
