@@ -7,7 +7,6 @@ import { saveWallpaperLink, shouldShow } from '../helper/wallpaper'
 import browser from 'webextension-polyfill'
 import 'jquery.waitforimages'
 import { getAllSources, getSources } from '../helper/wallpaperSource'
-import analyze from 'rgbaster'
 
 const $body = $('body');
 const sourcesInfo = getAllSources();
@@ -75,28 +74,6 @@ export async function update(url, toSave, isNew) {
         state.loading = false;
         // onWallpaperChange(url);
     });
-}
-
-function setThemeByGray(grayLevel) {
-    if (grayLevel > 192) {
-        $body.removeClass('theme-dark').addClass('theme-light')
-    } else {
-        $body.removeClass('theme-light').addClass('theme-dark')
-    } 
-}
-
-async function onWallpaperChange(url) {
-    if (url.startsWith('http')) {
-        const result = await analyze(url)
-        if (result && result.length) {
-            const mainColor = result[0].color
-            const c = mainColor.match(/\d+/g);
-            const grayLevel = Math.round(c[0] * 0.299 + c[1] * 0.587 + c[2] * 0.114);
-
-            setThemeByGray(grayLevel)
-            window.stewardApp.wallpaper.setGrayLevel(grayLevel)
-        }
-    }
 }
 
 function recordSource(source) {

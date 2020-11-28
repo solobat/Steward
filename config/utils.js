@@ -11,10 +11,10 @@ glob.sync("./extension/pages/*/index.js").forEach(pagePath => {
   entries[chunk] = pagePath
   pages.push(new HtmlWebpackPlugin({
     title: `Steward - ${chunk}`,
-    template: `./extension/pages/${chunk}/${chunk}.html`,
+    template: `./extension/pages/${chunk}/${chunk}.ejs`,
     filename: `${chunk}.html`,
     inject: true,
-    chunksSortMode: 'dependency',
+    chunksSortMode: 'auto',
     chunks: ['manifest', 'vendor', 'common', chunk]
   }))
 })

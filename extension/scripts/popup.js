@@ -1,7 +1,6 @@
 (function () {
     function initTheme(mode) {
         chrome.storage.sync.get('themes', function (resp) {
-        console.log("initTheme -> resp", resp)
             const themes = resp.themes
 
             if (themes && themes[mode]) {

@@ -6,7 +6,7 @@
 
 import util from '../../common/util'
 import Toast from 'toastr'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import diaryHelper from '../../helper/diaryHelper'
 
 const version = 1;
@@ -71,7 +71,7 @@ function dataFormat(list = []) {
             icon,
             id: message.id,
             title: message.text,
-            desc: moment(message.time).format('YYYY/MM/DD HH:mm:SS'),
+            desc: dayjs(message.time).format('YYYY/MM/DD HH:mm:SS'),
             raw: message
         }
     }).reverse();
@@ -118,7 +118,7 @@ function updateMessages(message) {
 }
 
 function getDate() {
-    return moment().format('YYYY/MM/DD');
+    return dayjs().format('YYYY/MM/DD');
 }
 
 function saveMessages(data) {
