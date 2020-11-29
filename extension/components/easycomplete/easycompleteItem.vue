@@ -9,7 +9,7 @@
     </div>
 </template>
 <script>
-import { MODE } from '../../js/constant/base.js'
+import { MODE } from 'constant/base'
 
 export default {
     name: 'easycomplete-item',

@@ -16,13 +16,30 @@ const config = {
     filename: '[name].js'
   },
   resolve: {
+    extensions: ['.ts', '.js' ],
     alias: {
       '@': path.resolve(__dirname, '../extension/'),
-      vue: 'vue/dist/vue.js'
+      vue: 'vue/dist/vue.js',
+      enum: path.resolve(__dirname, '../extension/enum'),
+      constant: path.resolve(__dirname, '../extension/constant'),
+      common: path.resolve(__dirname, '../extension/common'),
+      utils: path.resolve(__dirname, '../extension/utils'),
+      service: path.resolve(__dirname, '../extension/service'),
+      conf: path.resolve(__dirname, '../extension/conf'),
+      helper: path.resolve(__dirname, '../extension/helper'),
+      collection: path.resolve(__dirname, '../extension/collection'),
+      info: path.resolve(__dirname, '../extension/info'),
+      plugins: path.resolve(__dirname, '../extension/plugins'),
+      main: path.resolve(__dirname, '../extension/main'),
     }
   },
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -103,7 +120,7 @@ const config = {
           name: 'common',
           priority: 0,
           reuseExistingChunk: true,
-          test: /\/(components|extension\/js)\//
+          test: /\/extension\/(collection|common|conf|constant|enum|helper|info|lib|main|plugins|server|service|utils)\//
         },
         default: {
           minChunks: 2,

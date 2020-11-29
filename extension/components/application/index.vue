@@ -7,7 +7,7 @@
 <script>
 import cmdbox from '../cmdbox/index.vue'
 import browser from 'webextension-polyfill'
-import { backup } from '../../js/helper'
+import { backup } from 'helper'
 
 const MAX_CACHED_CMD_NUM = 20;
 

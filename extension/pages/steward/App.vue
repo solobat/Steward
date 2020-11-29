@@ -22,13 +22,11 @@
 <script>
 import Vue from 'vue'
 import application from '../../components/application/index.vue'
-import * as Core from '../../js/main/main.js'
-import * as Wallpaper from '../../js/main/wallpaper.js'
-import util from '../../js/common/util'
+import * as Wallpaper from '../../main/wallpaper'
 import keyboardJS from 'keyboardjs'
 import VueGridLayout from 'vue-grid-layout';
-import { getParams, getLayouts, saveLayouts } from '../../js/helper/componentHelper'
-import { getComponentsConfig, registerComponents } from '@/js/helper/componentHelper'
+import { getParams, getLayouts, saveLayouts } from 'helper/component.helper'
+import { getComponentsConfig, registerComponents } from 'helper/component.helper'
 
 export default {
     name: 'App',

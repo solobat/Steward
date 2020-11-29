@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { helpInfo } from '@/js/info/help'
+import { helpInfo } from 'info/help'
 
 export default {
   data() {

@@ -268,9 +268,9 @@
 </template>
 
 <script>
-import websiteHelper from "@/js/helper/websites";
-import util from "@/js/common/util";
-import { downloadAsJson } from "@/js/helper";
+import websiteHelper from "helper/websites.helper";
+import util from "common/util";
+import { downloadAsJson } from "helper";
 
 export default {
   name: 'Websites',

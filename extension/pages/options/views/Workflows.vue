@@ -90,8 +90,8 @@
 </template>
 
 <script>
-import CONST from "@/js/constant";
-import util from "@/js/common/util";
+import CONST from "constant";
+import util from "common/util";
 
 const getWorkflows = util.getData("getWorkflows");
 

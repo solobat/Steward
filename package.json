@@ -18,6 +18,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/backbone": "^1.4.5",
+    "@types/chrome": "0.0.126",
+    "@types/jquery": "^3.5.4",
+    "@types/underscore": "^1.10.24",
     "@ungap/url-search-params": "^0.1.2",
     "axios": "^0.18.0",
     "backbone": "^1.3.3",
@@ -28,7 +32,7 @@
     "fuzzaldrin-plus": "^0.5.0",
     "http-vue-loader": "^1.4.1",
     "is-in-viewport": "^3.0.4",
-    "jquery": "^3.2.1",
+    "jquery": "^3.5.1",
     "jquery.waitforimages": "^2.4.0",
     "keyboardjs": "^2.3.4",
     "lodash.orderby": "^4.6.0",
@@ -44,7 +48,8 @@
     "url-regex": "^4.1.1",
     "vue": "^2.5.17",
     "vue-grid-layout": "^2.3.7",
-    "vue-router": "^3.1.5"
+    "vue-router": "^3.1.5",
+    "webextension-polyfill-ts": "^0.22.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
@@ -73,6 +78,8 @@
     "sass-loader": "^9.0.2",
     "script-ext-html-webpack-plugin": "^2.1.4",
     "style-loader": "^1.2.1",
+    "ts-loader": "^8.0.11",
+    "typescript": "^4.1.2",
     "vue-loader": "^15.9.3",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.11",

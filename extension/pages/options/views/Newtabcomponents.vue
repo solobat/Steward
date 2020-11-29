@@ -103,8 +103,8 @@
 </template>
 
 <script>
-import { componentHelper } from "@/js/helper/componentHelper";
-import { getRemoteComponents } from '@/js/helper/componentHelper'
+import { componentHelper } from "helper/component.helper";
+import { getRemoteComponents } from 'helper/component.helper'
 
 export default {
   name: 'Newtabcomponents',

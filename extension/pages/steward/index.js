@@ -1,4 +1,4 @@
-import { initConfig, globalData, globalApi } from '../../js/main/main'
+import { initConfig, globalData, globalApi } from '../../main/main'
 import Vue from 'vue';
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
@@ -6,7 +6,7 @@ import App from './App.vue';
 import dayjs from 'dayjs';
 import axios from 'axios'
 import { Loading } from 'element-ui'
-import { registerComponents } from '../../js/helper/componentHelper'
+import { registerComponents } from 'helper/component.helper'
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false;

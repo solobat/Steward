@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import changelog from '@/js/info/changelog'
+import changelog from 'info/changelog'
 const extType = EXT_TYPE === 'stewardplus' ? 'Steward Plus' : 'steward';
 
 

@@ -18,10 +18,10 @@
 <script>
 import Vue from 'vue';
 import keyboardJS from 'keyboardjs'
-import CONSTANT from '../../js/constant'
+import CONSTANT from 'constant'
 import easycompleteItem from './easycompleteItem.vue'
 import { dataList } from './mockData.js'
-import util from '../../js/common/util.js'
+import util from 'common/util'
 
 Vue.component(easycompleteItem.name, easycompleteItem);
 

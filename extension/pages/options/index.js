@@ -2,9 +2,9 @@ import Vue from 'vue'
 import ElementUI from 'element-ui'
 import App from './App.vue';
 import 'element-ui/lib/theme-default/index.css'
-import util from '../../js/common/util'
-import * as i18n from '../../js/info/i18n'
-import CONST from '../../js/constant'
+import util from 'common/util'
+import * as i18n from 'info/i18n'
+import CONST from 'constant/index'
 import router from '@/pages/options/router'
 
 const manifest = chrome.runtime.getManifest();

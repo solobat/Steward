@@ -100,9 +100,9 @@
 </template>
 
 <script>
-import { plugins as pluginList } from "@/js/plugins";
-import util from "@/js/common/util";
-import CONST from "@/js/constant";
+import { plugins as pluginList } from "plugins";
+import util from "common/util";
+import CONST from "constant";
 import _ from "underscore";
 
 // plugins: { [pname]: { version, commands } }

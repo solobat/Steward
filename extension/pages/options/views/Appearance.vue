@@ -150,11 +150,11 @@
 </template>
 
 <script>
-import CONST from "@/js/constant";
+import CONST from "constant/index";
 import previewHtml from "@/pages/options/preview.html";
-import { downloadAsJson, readFile } from "@/js/helper";
-import * as defaultThemems from "@/js/conf/themes";
-import storage from "@/js/utils/storage";
+import { downloadAsJson, readFile } from "helper";
+import * as defaultThemems from "conf/themes";
+import storage from "utils/storage";
 
 const appearanceItems = CONST.OPTIONS.APPEARANCE_ITEMS;
 

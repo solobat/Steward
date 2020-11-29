@@ -1,7 +1,7 @@
-import { initConfig, globalData, globalApi, clearToasts } from '../../js/main/main'
+import { initConfig, globalData, globalApi, clearToasts } from '../../main/main'
 import keyboardJS from 'keyboardjs'
-import { MODE } from '../../js/constant/base'
-import { createWebsites } from '../../js/helper/websites'
+import { MODE } from 'constant/base'
+import { createWebsites } from 'helper/websites.helper'
 import axios from 'axios'
 import Vue from 'vue';
 import App from './App.vue';

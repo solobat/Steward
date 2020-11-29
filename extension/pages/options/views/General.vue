@@ -287,7 +287,7 @@
 </template>
 
 <script>
-import CONST from "@/js/constant";
+import CONST from "constant/index";
 
 export default {
   name: "Home",

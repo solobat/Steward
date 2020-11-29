@@ -141,17 +141,17 @@
 </template>
 
 <script>
-import { restoreConfig } from "@/js/common/config";
-import { backup, restoreData } from "@/js/helper";
-import { saveTextAlias, getTextAlias } from "@/js/helper/aliasHelper";
+import { restoreConfig } from "common/config";
+import { backup, restoreData } from "helper";
+import { saveTextAlias, getTextAlias } from "helper/alias.helper";
 import { getNetworks, saveNetworks } from "@/lib/social-share-urls";
-import { PLUGIN_DEFAULT } from "@/js/constant/code";
-import { customPluginHelper, pluginFactory } from "@/js/helper/pluginHelper";
+import { PLUGIN_DEFAULT } from "constant/code";
+import { customPluginHelper, pluginFactory } from "helper/plugin.helper";
 import {
   getAllGlobalActions,
   setGlobalActions
-} from "@/js/helper/actionHelper";
-import util from "@/js/common/util";
+} from "helper/action.helper";
+import util from "common/util";
 
 function readFile(file) {
   return new Promise((resolve, reject) => {

@@ -5,10 +5,6 @@
 </template>
 <script>
 import application from '../../components/application/index.vue'
-import * as Core from '../../js/main/main.js'
-import * as Wallpaper from '../../js/main/wallpaper.js'
-import util from '../../js/common/util'
-import keyboardJS from 'keyboardjs'
 
 export default {
     name: 'App',

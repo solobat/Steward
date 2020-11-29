@@ -31,10 +31,10 @@
 </template>
 
 <script>
-import CONST from "../../../js/constant";
-import storage from "../../../js/utils/storage";
-import { saveWallpaperLink } from "../../../js/helper/wallpaper";
-import util from "../../../js/common/util";
+import CONST from "constant";
+import storage from "utils/storage";
+import { saveWallpaperLink } from "helper/wallpaper.helper";
+import util from "common/util";
 
 export default {
   name: 'Wallpapers',

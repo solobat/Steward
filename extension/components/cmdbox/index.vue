@@ -10,10 +10,8 @@
 </template>
 <script>
 import easycomplete from '../easycomplete/index.vue'
-import CONST from '../../js/constant'
-import util from '../../js/common/util.js'
-import storage from '../../js/common/storage'
-import * as Core from '../../js/main/main.js'
+import CONST from 'constant'
+import * as Core from '../../main/main'
 
 export default {
     name: 'cmdbox',
@@ -25,7 +23,7 @@ export default {
         inContent: Boolean
     },
     data() {
-        const { autoScrollToMiddle, autoResizeBoxFontSize, autoSelectByMouse } = stewardCache.config.general;
+        const { autoScrollToMiddle, autoResizeBoxFontSize, autoSelectByMouse } = window.stewardCache.config.general;
 
         return {
             autohide: false,
@@ -111,8 +109,6 @@ export default {
         },
 
         handleInit() {
-            const config = stewardCache.config;
-
             if (this.mode === 'newTab') {
                 this.isFirst = true;
                 Core.getInitCmd().then(cmd => {
