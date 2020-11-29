@@ -1,21 +1,21 @@
-import { browser } from 'webextension-polyfill-ts'
+import { browser } from 'webextension-polyfill-ts';
 
 export default {
-    key: 'config',
+  key: 'config',
 
-    getData() {
-        return browser.storage.sync.get('config').then(resp => {
-            return resp.config;
-        });
-    },
+  getData() {
+    return browser.storage.sync.get('config').then(resp => {
+      return resp.config;
+    });
+  },
 
-    setData(config) {
-        if (config) {
-            return browser.storage.sync.set({
-                config
-            });
-        } else {
-            return Promise.resolve('no config');
-        }
+  setData(config) {
+    if (config) {
+      return browser.storage.sync.set({
+        config,
+      });
+    } else {
+      return Promise.resolve('no config');
     }
-}
+  },
+};

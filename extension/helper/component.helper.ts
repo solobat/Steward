@@ -1,20 +1,18 @@
-/**
- * @desc pluginHelper
- */
 
-import { Component as ComponentModel, ComponentList } from 'collection/component'
-import axios from 'axios'
-import dayjs from 'dayjs'
+import axios from 'axios';
+import dayjs from 'dayjs';
 import httpVueLoader from 'http-vue-loader';
+
+import { Component as ComponentModel, ComponentList } from 'collection/component';
+import { getAppConfig } from 'conf';
 import { MIRRORS } from 'constant/options';
-import { getAppConfig } from 'conf'
 
 const componentList = new ComponentList();
 
 function getMirror(id) {
-  const conf = MIRRORS.find(item => item.id === id)
+  const conf = MIRRORS.find(item => item.id === id);
 
-  return conf
+  return conf;
 }
 
 export async function getComponentsConfig() {
@@ -28,7 +26,7 @@ export async function getComponentsConfig() {
 }
 
 function createComponentConfig(data, silent) {
-  const { id, version, grid, args, show = false } = data
+  const { id, version, grid, args, show = false } = data;
   const ret = {
     meta: data,
     id,
@@ -37,13 +35,13 @@ function createComponentConfig(data, silent) {
     grid,
     show,
     shortcuts: '',
-    showByDefault: true
-  }
+    showByDefault: true,
+  };
   if (!silent) {
-    componentHelper.create(ret)
+    componentHelper.create(ret);
   }
 
-  return ret
+  return ret;
 }
 
 const builtInList = [
@@ -51,14 +49,14 @@ const builtInList = [
     id: 'application',
     version: '1.0.0',
     grid: [0, 2, 24, 8],
-    title: "Command Box",
-    subtitle: "Command Box",
+    title: 'Command Box',
+    subtitle: 'Command Box',
     author: 'solobat',
     show: true,
     shortcuts: 'command + right',
-    showByDefault: true
-  }
-]
+    showByDefault: true,
+  },
+];
 
 async function initComponentsConfig() {
   const list = await fetchComponents();
@@ -69,71 +67,78 @@ async function initComponentsConfig() {
 
 export async function getRemoteComponents() {
   const list = await fetchComponents();
-  const remoteList = [...builtInList, ...list].map(item => createComponentConfig(item, true));
-  const oldList = await componentHelper.init()
-  const newList = []
+  const remoteList = [...builtInList, ...list].map(item =>
+    createComponentConfig(item, true),
+  );
+  const oldList = await componentHelper.init();
+  const newList = [];
 
   remoteList.forEach(newItem => {
-    const oldItem = oldList.find(item => item.id === newItem.id)
+    const oldItem = oldList.find(item => item.id === newItem.id);
 
     if (!oldItem) {
-      newList.push(newItem)
+      newList.push(newItem);
     }
-  })
+  });
 
   for await (const item of newList) {
-    componentHelper.create(item)
+    componentHelper.create(item);
   }
 
   return remoteList;
 }
 
 function getListURL(baseURL) {
-  return `${baseURL}/data.json`
+  return `${baseURL}/data.json`;
 }
 
 export function getComponentURL(path = '') {
   if (path.startsWith('http')) {
-    return path
+    return path;
   } else {
-    const mirror = getMirror(getAppConfig('general.componentsMirror', 'github'))
-  
-    return `${mirror.baseURL}${path}`
+    const mirror = getMirror(
+      getAppConfig('general.componentsMirror', 'github'),
+    );
+
+    return `${mirror.baseURL}${path}`;
   }
 }
 
 function fetchComponents() {
-  const mirror = getMirror(getAppConfig('general.componentsMirror', 'github'))
+  const mirror = getMirror(getAppConfig('general.componentsMirror', 'github'));
 
-  return axios.get(getListURL(mirror.baseURL), {
-    params: {
-      t: dayjs().format('YYYYMMDD')
-    }
-  }).then(results => {
-    return results.data.components;
-  }).catch(() => {
-    return [];
-  })
+  return axios
+    .get(getListURL(mirror.baseURL), {
+      params: {
+        t: dayjs().format('YYYYMMDD'),
+      },
+    })
+    .then(results => {
+      return results.data.components;
+    })
+    .catch(() => {
+      return [];
+    });
 }
 
 export const componentHelper = {
   hasNewVersion(oldComponent, newComponent) {
     if (oldComponent.version < newComponent.version) {
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
   },
 
   updateToNewVersion(oldComponent, newComponent) {
-    const { version, meta } = newComponent
+    const { version, meta } = newComponent;
     const updated = {
       ...oldComponent,
       version,
-      meta
-    }
+      meta,
+    };
 
-    return this.update(updated)
+    return this.update(updated);
   },
   create(info) {
     if (info.id) {
@@ -141,11 +146,13 @@ export const componentHelper = {
 
       component.set(info);
 
-      return Promise.resolve(componentList.chromeStorage.create(component).then(() => {
-        return this.refresh().then(() => {
-          return component;
-        });
-      }));
+      return Promise.resolve(
+        componentList.chromeStorage.create(component).then(() => {
+          return this.refresh().then(() => {
+            return component;
+          });
+        }),
+      );
     } else {
       return Promise.reject('no id');
     }
@@ -154,12 +161,14 @@ export const componentHelper = {
   update(attrs) {
     const component = componentList.set(attrs, {
       add: false,
-      remove: false
+      remove: false,
     });
 
-    return Promise.resolve(component.save().then(() => {
-      return component;
-    }));
+    return Promise.resolve(
+      component.save().then(() => {
+        return component;
+      }),
+    );
   },
 
   save(info, forceCreate) {
@@ -171,17 +180,22 @@ export const componentHelper = {
   },
 
   reset() {
-    componentList.models.forEach(model => componentList.chromeStorage.destroy(model))
-    componentList.reset()
+    componentList.models.forEach(model =>
+      componentList.chromeStorage.destroy(model),
+    );
+    componentList.reset();
   },
 
   refresh() {
     return new Promise((resolve, reject) => {
-      componentList.fetch().done(resp => {
-        resolve(resp);
-      }).fail(resp => {
-        reject(resp);
-      });
+      componentList
+        .fetch()
+        .done(resp => {
+          resolve(resp);
+        })
+        .fail(resp => {
+          reject(resp);
+        });
     });
   },
 
@@ -195,51 +209,63 @@ export const componentHelper = {
 
       return list;
     });
+  },
+};
+
+declare global {
+  interface Window {
+    componentHelper: any;
   }
 }
 
-declare global {
-  interface Window { componentHelper: any; }
-}
-
-window.componentHelper = componentHelper
+window.componentHelper = componentHelper;
 
 export function registerComponents(Vue, components = []) {
   components.forEach(item => {
-    const { id, meta = {}, show } = item
+    const { id, meta = {}, show } = item;
     if (id && meta.source && show) {
-      Vue.component(id, httpVueLoader(getComponentURL(meta.source)))
+      Vue.component(id, httpVueLoader(getComponentURL(meta.source)));
     }
-  })
+  });
 }
 
 export function getParams(components) {
-  return components.filter(item => item.show).reduce((memo, item) => {
-    if (item.args) {
-      memo[item.id] = item.args
-    }
-    return memo
-  }, {});
+  return components
+    .filter(item => item.show)
+    .reduce((memo, item) => {
+      if (item.args) {
+        memo[item.id] = item.args;
+      }
+      return memo;
+    }, {});
 }
 
 export function getLayouts(components) {
-  return components.filter(item => item.show).map(item => {
-    const { grid = [], id: i, args = {}, showByDefault = true, shortcuts } = item;
-    const [x, y, w, h] = grid;
-    const { dragIgnoreFrom = 'a, input, button' } = args
+  return components
+    .filter(item => item.show)
+    .map(item => {
+      const {
+        grid = [],
+        id: i,
+        args = {},
+        showByDefault = true,
+        shortcuts,
+      } = item;
+      const [x, y, w, h] = grid;
+      const { dragIgnoreFrom = 'a, input, button' } = args;
 
-    return { x, y, w, h, i, dragIgnoreFrom, show: showByDefault, shortcuts };
-  });
+      return { x, y, w, h, i, dragIgnoreFrom, show: showByDefault, shortcuts };
+    });
 }
 
 export function saveLayouts(layouts) {
   layouts.forEach(item => {
-    const { x, y, w, h, i } = item
+    const { x, y, w, h, i } = item;
     const attrs = {
       id: i,
-      grid: [x, y, w, h]
-    }
+      grid: [x, y, w, h],
+    };
 
-    componentHelper.update(attrs)
-  })
+    componentHelper.update(attrs);
+  });
 }

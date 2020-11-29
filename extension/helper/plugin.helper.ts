@@ -2,344 +2,405 @@
  * @desc pluginHelper
  */
 
-import util from 'common/util'
-import $ from 'jquery'
-import dayjs from 'dayjs'
-import constant from 'constant/index'
-import { CustomPlugin as CustomPluginModel, CustomPluginList } from 'collection/plugin'
-import axios from 'axios'
-import storage from 'utils/storage'
-import { browser } from 'webextension-polyfill-ts'
-import { replaceURL } from '../pages/content/pageService'
+import axios from 'axios';
+import dayjs from 'dayjs';
+import $ from 'jquery';
+import { browser } from 'webextension-polyfill-ts';
+
+import {
+  CustomPlugin as CustomPluginModel,
+  CustomPluginList,
+} from 'collection/plugin';
+import util from 'common/util';
+import constant from 'constant/index';
+import storage from 'utils/storage';
+
+import { replaceURL } from '../pages/content/pageService';
 
 const blockPageUrl = chrome.extension.getURL('urlblock.html');
 
 function PluginHelper() {
-    this.mode = '';
-    this.original = '';
+  this.mode = '';
+  this.original = '';
 }
-
 
 const storageKey = constant.STORAGE.URLBLOCK_REPLACE_PAGE;
 
 function getSitesList() {
-    return browser.storage.sync.get(storageKey).then(resp => {
-        const arr = resp[storageKey] || [];
+  return browser.storage.sync.get(storageKey).then(resp => {
+    const arr = resp[storageKey] || [];
 
-        if (arr instanceof Array) {
-            return arr;
-        } else {
-            return [arr];
-        }
-    });
+    if (arr instanceof Array) {
+      return arr;
+    } else {
+      return [arr];
+    }
+  });
 }
 
 function getRandomOne(list) {
-    if (list && list.length) {
-        const index = Math.round(Math.random() * (list.length - 1));
+  if (list && list.length) {
+    const index = Math.round(Math.random() * (list.length - 1));
 
-        return list[index];
-    }
+    return list[index];
+  }
 }
 
 PluginHelper.prototype = {
-    constructor: PluginHelper,
+  constructor: PluginHelper,
 
-    tryMatchBlockPage(url) {
-        return url.split('urlblock.html');
-    },
+  tryMatchBlockPage(url) {
+    return url.split('urlblock.html');
+  },
 
-    prepare() {
-        const match = this.tryMatchBlockPage(window.location.href);
+  prepare() {
+    const match = this.tryMatchBlockPage(window.location.href);
 
-        if (match[1]) {
-            this.mode = 'blocked';
-            this.original = match[1];
-        } else {
-            this.mode = 'unblocked';
-        }
-    },
-
-    block() {
-        const url = window.location.href;
-
-        window.history.pushState({}, document.title, url);
-        getSitesList().then(list => {
-            if (list.length) {
-                replaceURL(getRandomOne(list));
-            } else {
-                window.location.href = `${blockPageUrl}?original=${url}`
-            }
-        });
-    },
-
-    unblock() {
-        window.history.back();
-    },
-
-    checkBlock(blockedUrls) {
-        if (this.mode === 'unblocked') {
-            const url = window.location.href;
-            const index = blockedUrls.findIndex(item => url.indexOf(item.title) !== -1);
-
-            if (index !== -1) {
-                this.block();
-            }
-        } else {
-            const url = this.original;
-            const index = blockedUrls.findIndex(item => url.indexOf(item.title) !== -1);
-
-            if (index === -1) {
-                this.unblock();
-            }
-        }
-    },
-
-    bindEvents() {
-        chrome.storage.onChanged.addListener(changes => {
-            if (changes.url) {
-                this.checkBlock(changes.url.newValue);
-            }
-        });
-    },
-
-    init(blockedUrls) {
-        this.prepare();
-        this.bindEvents();
-        this.checkBlock(blockedUrls);
+    if (match[1]) {
+      this.mode = 'blocked';
+      this.original = match[1];
+    } else {
+      this.mode = 'unblocked';
     }
-}
+  },
 
-export default PluginHelper
+  block() {
+    const url = window.location.href;
 
+    window.history.pushState({}, document.title, url);
+    getSitesList().then(list => {
+      if (list.length) {
+        replaceURL(getRandomOne(list));
+      } else {
+        window.location.href = `${blockPageUrl}?original=${url}`;
+      }
+    });
+  },
+
+  unblock() {
+    window.history.back();
+  },
+
+  checkBlock(blockedUrls) {
+    if (this.mode === 'unblocked') {
+      const url = window.location.href;
+      const index = blockedUrls.findIndex(
+        item => url.indexOf(item.title) !== -1,
+      );
+
+      if (index !== -1) {
+        this.block();
+      }
+    } else {
+      const url = this.original;
+      const index = blockedUrls.findIndex(
+        item => url.indexOf(item.title) !== -1,
+      );
+
+      if (index === -1) {
+        this.unblock();
+      }
+    }
+  },
+
+  bindEvents() {
+    chrome.storage.onChanged.addListener(changes => {
+      if (changes.url) {
+        this.checkBlock(changes.url.newValue);
+      }
+    });
+  },
+
+  init(blockedUrls) {
+    this.prepare();
+    this.bindEvents();
+    this.checkBlock(blockedUrls);
+  },
+};
+
+export default PluginHelper;
 
 class Plugin {
-    errors = []
-    commands = []
-    _id: string
-    valid: boolean
-    uid?: string
-    version?: string
-    name?: string
-    category?: string
-    icon?: string
-    title?: string
-    source?: string
-    author?: string
-    constructor(options = {}) {
-        this.errors = [];
-        this.commands = [];
-        this.init(options);
+  errors = [];
+  commands = [];
+  _id: string;
+  valid: boolean;
+  uid?: string;
+  version?: string;
+  name?: string;
+  category?: string;
+  icon?: string;
+  title?: string;
+  source?: string;
+  author?: string;
+  constructor(options = {}) {
+    this.errors = [];
+    this.commands = [];
+    this.init(options);
+  }
+
+  init(options) {
+    const { source } = options;
+
+    if (source) {
+      if (options.id) {
+        this._id = options.id;
+      }
+      this.parse(source);
+    } else {
+      this.valid = true;
     }
+  }
 
-    init(options) {
-        const { source } = options;
+  onInit() {}
 
-        if (source) {
-            if (options.id) {
-                this._id = options.id;
-            }
-            this.parse(source);
-        } else {
-            this.valid = true;
-        }
+  onInput() {}
+
+  onEnter() {}
+
+  onNotice() {}
+
+  onLeave() {}
+
+  createContext() {
+    return {
+      app: window.stewardApp,
+      chrome: chrome,
+      util,
+      dayjs,
+      $,
+      axios,
+      constant,
+      storage,
+      browser,
+    };
+  }
+
+  mergeMeta(meta) {
+    const {
+      author,
+      version,
+      name,
+      category,
+      icon,
+      title,
+      commands,
+      onInit,
+      onInput,
+      onEnter,
+      onLeave,
+      onNotice,
+      type,
+    } = meta;
+    // plugin's unique id
+    const uid = `${author}/${name}`;
+
+    Object.assign(this, {
+      uid,
+      version,
+      name,
+      category,
+      icon,
+      title,
+      commands,
+      onInit,
+      onInput,
+      onEnter,
+      onLeave,
+      onNotice,
+      author,
+      type,
+    });
+  }
+
+  getMeta() {
+    const {
+      uid,
+      version,
+      name,
+      category,
+      icon,
+      title,
+      commands,
+      source,
+      author,
+    } = this;
+
+    return {
+      uid,
+      version,
+      name,
+      category,
+      icon,
+      title,
+      commands,
+      source,
+      author,
+    };
+  }
+
+  validate() {
+    const errors = (this.errors = []);
+
+    if (!this.author) {
+      errors.push('Author property is required');
     }
+  }
 
-    onInit() { }
+  parse(source) {
+    const context = this.createContext();
 
-    onInput() { }
+    try {
+      const pluginModule = { exports: null };
+      const fn = new Function('module', source);
 
-    onEnter() { }
+      fn(pluginModule);
 
-    onNotice() { }
+      if (pluginModule.exports) {
+        const meta = pluginModule.exports(context);
 
-    onLeave() { }
-
-    createContext() {
-        return {
-            app: window.stewardApp,
-            chrome: chrome,
-            util,
-            dayjs,
-            $,
-            axios,
-            constant,
-            storage,
-            browser
-        }
+        this.source = source;
+        this.mergeMeta(meta);
+        this.validate();
+      } else {
+        throw new Error('module.exports is null');
+      }
+    } catch (error) {
+      this.errors.push('parse error');
+      console.log(error);
+    } finally {
+      this.valid = this.errors.length === 0;
     }
-
-    mergeMeta(meta) {
-        const { author, version, name, category, icon, title, commands,
-             onInit, onInput, onEnter, onLeave, onNotice, type } = meta;
-        // plugin's unique id
-        const uid = `${author}/${name}`;
-
-        Object.assign(this, {
-            uid, version, name, category, icon, title, commands, 
-            onInit, onInput, onEnter, onLeave, onNotice, author, type
-        });
-    }
-
-    getMeta() {
-        const { uid, version, name, category, icon, title, commands, source, author } = this;
-
-        return {
-            uid, version, name, category, icon, title, commands, source, author
-        };
-    }
-
-    validate() {
-        const errors = this.errors = [];
-
-        if (!this.author) {
-            errors.push('Author property is required');
-        }
-    }
-
-    parse(source) {
-        const context = this.createContext();
-
-        try {
-            const pluginModule = { exports: null };
-            const fn = new Function('module', source);
-
-            fn(pluginModule);
-
-            if (pluginModule.exports) {
-                const meta = pluginModule.exports(context);
-
-                this.source = source;
-                this.mergeMeta(meta);
-                this.validate();
-            } else {
-                throw new Error('module.exports is null');
-            }
-        } catch (error) {
-            this.errors.push('parse error');
-            console.log(error);
-        } finally {
-            this.valid = this.errors.length === 0;
-        }
-    }
+  }
 }
 
 interface PluginFactoryFunc {
-    (options: any): Plugin | null
-    errors?: any[]
+  (options: any): Plugin | null;
+  errors?: any[];
 }
 
-export const pluginFactory: PluginFactoryFunc = (options) => {
-    const plugin = new Plugin(options);
+export const pluginFactory: PluginFactoryFunc = options => {
+  const plugin = new Plugin(options);
 
-    if (plugin.valid) {
-        pluginFactory.errors = [];
+  if (plugin.valid) {
+    pluginFactory.errors = [];
 
-        return plugin;
-    } else {
-        pluginFactory.errors = plugin.errors.slice(0);
+    return plugin;
+  } else {
+    pluginFactory.errors = plugin.errors.slice(0);
 
-        return null;
-    }
-}
+    return null;
+  }
+};
 
 export function getCustomPlugins() {
-    return customPluginHelper.init().then((list = []) => {
-        return list.map(item => {
-            return pluginFactory(item);
-        }).filter(item => item !== null);
-    });
+  return customPluginHelper.init().then((list = []) => {
+    return list
+      .map(item => {
+        return pluginFactory(item);
+      })
+      .filter(item => item !== null);
+  });
 }
 
 const customPluginList = new CustomPluginList();
 
 export const customPluginHelper = {
-    create(info) {
-        if (info.uid && info.source) {
-            const plugin = new CustomPluginModel();
+  create(info) {
+    if (info.uid && info.source) {
+      const plugin = new CustomPluginModel();
 
-            plugin.set(info);
+      plugin.set(info);
 
-            return Promise.resolve(customPluginList.chromeStorage.create(plugin).then(() => {
-                return this.refresh().then(() => {
-                    return plugin;
-                });
-            }));
-        } else {
-            return Promise.reject('no id or source');
-        }
-    },
-
-    remove(id) {
-        const model = customPluginList.remove(id);
-
-        return Promise.resolve(customPluginList.chromeStorage.destroy(model).then(() => {
-            return this.refresh();
-        }));
-    },
-
-    checkPluginStatus(plugin) {
-        let uid = plugin.uid;
-
-        if (!uid) {
-            uid = `${plugin.author}/${plugin.name}`;
-        }
-
-        const result = this.getCustomPluginList().find(item => {
-            return item.uid === uid;
-        });
-
-        if (result) {
-            if (plugin.version > result.version) {
-                plugin.id = result.id;
-
-                return constant.BASE.PLUGIN_STATUS.NEWVESION;
-            } else {
-                return constant.BASE.PLUGIN_STATUS.INSTALLED;
-            }
-        } else {
-            return constant.BASE.PLUGIN_STATUS.NOTINSTALL;
-        }
-    },
-
-    update(attrs) {
-        const plugin = customPluginList.set(attrs, {
-            add: false,
-            remove: false
-        });
-
-        return Promise.resolve(plugin.save().then(() => {
+      return Promise.resolve(
+        customPluginList.chromeStorage.create(plugin).then(() => {
+          return this.refresh().then(() => {
             return plugin;
-        }));
-    },
-
-    save(info) {
-        if (info.id) {
-            return this.update(info);
-        } else {
-            return this.create(info);
-        }
-    },
-
-    refresh() {
-        return new Promise((resolve, reject) => {
-            customPluginList.fetch().done(resp => {
-                resolve(resp);
-            }).fail(resp => {
-                reject(resp);
-            });
-        });
-    },
-
-    getCustomPluginList() {
-        return customPluginList.toJSON();
-    },
-
-    init() {
-        return this.refresh().then(() => {
-            const list = this.getCustomPluginList();
-
-            return list;
-        });
+          });
+        }),
+      );
+    } else {
+      return Promise.reject('no id or source');
     }
-}
+  },
+
+  remove(id) {
+    const model = customPluginList.remove(id);
+
+    return Promise.resolve(
+      customPluginList.chromeStorage.destroy(model).then(() => {
+        return this.refresh();
+      }),
+    );
+  },
+
+  checkPluginStatus(plugin) {
+    let uid = plugin.uid;
+
+    if (!uid) {
+      uid = `${plugin.author}/${plugin.name}`;
+    }
+
+    const result = this.getCustomPluginList().find(item => {
+      return item.uid === uid;
+    });
+
+    if (result) {
+      if (plugin.version > result.version) {
+        plugin.id = result.id;
+
+        return constant.BASE.PLUGIN_STATUS.NEWVESION;
+      } else {
+        return constant.BASE.PLUGIN_STATUS.INSTALLED;
+      }
+    } else {
+      return constant.BASE.PLUGIN_STATUS.NOTINSTALL;
+    }
+  },
+
+  update(attrs) {
+    const plugin = customPluginList.set(attrs, {
+      add: false,
+      remove: false,
+    });
+
+    return Promise.resolve(
+      plugin.save().then(() => {
+        return plugin;
+      }),
+    );
+  },
+
+  save(info) {
+    if (info.id) {
+      return this.update(info);
+    } else {
+      return this.create(info);
+    }
+  },
+
+  refresh() {
+    return new Promise((resolve, reject) => {
+      customPluginList
+        .fetch()
+        .done(resp => {
+          resolve(resp);
+        })
+        .fail(resp => {
+          reject(resp);
+        });
+    });
+  },
+
+  getCustomPluginList() {
+    return customPluginList.toJSON();
+  },
+
+  init() {
+    return this.refresh().then(() => {
+      const list = this.getCustomPluginList();
+
+      return list;
+    });
+  },
+};

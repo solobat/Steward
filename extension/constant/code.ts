@@ -1,4 +1,3 @@
-
 export const PLUGIN_DEFAULT = `
 module.exports = function (steward) {
     const version = 1;

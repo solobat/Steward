@@ -1,13 +1,11 @@
 export function format(date = new Date()) {
-    const ret = [
-        date.getFullYear(),
-        date.getMonth() + 1,
-        date.getDate()
-    ].join('-');
+  const ret = [date.getFullYear(), date.getMonth() + 1, date.getDate()].join(
+    '-',
+  );
 
-    return ret;
+  return ret;
 }
 
 export function isNewDate(date, last) {
-    return format(date) !== format(last);
+  return format(date) !== format(last);
 }

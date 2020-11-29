@@ -1,71 +1,99 @@
+export const APPEARANCE_ITEMS = [
+  {
+    name: 'New Tab',
+  },
+  {
+    name: 'Popup',
+  },
+  {
+    name: 'Page',
+  },
+];
 
-export const APPEARANCE_ITEMS = [{
-    name: 'New Tab'
-}, {
-    name: 'Popup'
-}, {
-    name: 'Page'
-}]
+export const DEFAULT_PLUGINS = [
+  'Top Sites',
+  'Bookmarks',
+  'Tabs',
+  'Weather',
+  'Other',
+  'Random',
+].map(name => {
+  return {
+    label: name,
+    value: name,
+  };
+});
 
-export const DEFAULT_PLUGINS = ['Top Sites', 'Bookmarks', 'Tabs', 'Weather', 'Other', 'Random'].map(name => {
-    return {
-        label: name,
-        value: name
-    }
-})
-
-export const WALLPAPER_SOURCES = [{
+export const WALLPAPER_SOURCES = [
+  {
     label: 'Favorites',
     value: 'favorites',
-    tips: 'Your favorites'
-}, {
+    tips: 'Your favorites',
+  },
+  {
     label: 'Bing',
     value: 'bing',
-    tips: 'faster, but less'
-}, {
+    tips: 'faster, but less',
+  },
+  {
     label: 'Unsplash',
     value: 'picsum',
-    tips: 'lower, but more'
-}, {
+    tips: 'lower, but more',
+  },
+  {
     label: 'Nasa',
     value: 'nasa',
-    tips: 'NASA'
-}, {
+    tips: 'NASA',
+  },
+  {
     label: 'Desktoppr',
     value: 'desktoppr',
-    tips: 'desktoppr.co'
-}, {
+    tips: 'desktoppr.co',
+  },
+  {
     label: 'Pixabay',
     value: 'pixabay',
-    tips: 'pixabay.com'
-}, {
+    tips: 'pixabay.com',
+  },
+  {
     label: 'Solid Colors',
-    value: 'solidcolor'
-}, {
+    value: 'solidcolor',
+  },
+  {
     label: "Author's Selection",
-    value: 'selection'
-}];
+    value: 'selection',
+  },
+];
 
-export const NEWTAB_WIDGETS = [{
+export const NEWTAB_WIDGETS = [
+  {
     label: 'Clock',
     value: 'clock',
-    tips: 'Clock'
-}, {
+    tips: 'Clock',
+  },
+  {
     label: 'Shortcuts',
     value: 'shortcuts',
-    tips: 'Shortcuts'
-}, {
+    tips: 'Shortcuts',
+  },
+  {
     label: 'Bottom Buttons',
     value: 'wpbtns',
-    tips: 'Bottom Buttons'
-}];
+    tips: 'Bottom Buttons',
+  },
+];
 
-export const MIRRORS = [{
-    id: "github",
-    name: "Github",
-    baseURL: "https://raw.githubusercontent.com/Steward-launcher/steward-newtab-components/master"
-}, {
+export const MIRRORS = [
+  {
+    id: 'github',
+    name: 'Github',
+    baseURL:
+      'https://raw.githubusercontent.com/Steward-launcher/steward-newtab-components/master',
+  },
+  {
     id: 'gitee',
-    name: "Gitee",
-    baseURL: "https://gitee.com/Steward-launcher/steward-newtab-components/raw/master"
-}]
+    name: 'Gitee',
+    baseURL:
+      'https://gitee.com/Steward-launcher/steward-newtab-components/raw/master',
+  },
+];

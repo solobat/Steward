@@ -1,59 +1,76 @@
-import { PageCommand } from '../enum/index'
-import { browser } from 'webextension-polyfill-ts'
+import { browser } from 'webextension-polyfill-ts';
 
-const defaultActions = [{
+import { PageCommand } from '../enum';
+
+export interface Action {
+  title: string;
+  actionType: string;
+  desc?: string;
+  extend?: {
+    template?: string;
+    protected?: boolean;
+  };
+  enable: boolean;
+}
+
+const defaultActions: Action[] = [
+  {
     title: 'Copy title as a markdown link',
     actionType: PageCommand.COPY,
     extend: {
-        template: '[{{title}}]({{url}})'
+      template: '[{{title}}]({{url}})',
     },
-    enable: true
-}, {
+    enable: true,
+  },
+  {
     title: 'Copy selection text as a markdown link',
     actionType: PageCommand.COPY,
     extend: {
-        template: '[{{selection}}]({{url}})'
+      template: '[{{selection}}]({{url}})',
     },
-    enable: false
-}, {
+    enable: false,
+  },
+  {
     title: 'Toggle TODO',
     desc: 'Add a bookmark and tag it with a TODO prefix / Remove bookmark',
     actionType: PageCommand.TOGGLE_TODO,
-    enable: true
-}, {
+    enable: true,
+  },
+  {
     title: 'Toggle protection status',
     actionType: PageCommand.PAGE_PROTECT,
     desc: 'Not protected',
     extend: {
-        protected: false
+      protected: false,
     },
-    enable: true
-}];
+    enable: true,
+  },
+];
 
 const GLOBAL_ACTIONS_KEY = 'global_actions';
 
 export function getAllGlobalActions() {
-    return browser.storage.local.get(GLOBAL_ACTIONS_KEY).then(resp => {
-        if (resp[GLOBAL_ACTIONS_KEY]) {
-            return resp[GLOBAL_ACTIONS_KEY];
-        } else {
-            return defaultActions;
-        }
-    });
+  return browser.storage.local.get(GLOBAL_ACTIONS_KEY).then(resp => {
+    if (resp[GLOBAL_ACTIONS_KEY]) {
+      return resp[GLOBAL_ACTIONS_KEY];
+    } else {
+      return defaultActions;
+    }
+  });
 }
 
 export function getGlobalActions() {
-    return getAllGlobalActions().then(resp => resp.filter(item => item.enable));
+  return getAllGlobalActions().then(resp => resp.filter(item => item.enable));
 }
 
 export function setGlobalActions(jsonStr) {
-    try {
-        const actions = JSON.parse(jsonStr);
+  try {
+    const actions = JSON.parse(jsonStr);
 
-        return browser.storage.local.set({
-            [GLOBAL_ACTIONS_KEY]: actions
-        });
-    } catch (error) {
-        return Promise.reject('parse error');
-    }
+    return browser.storage.local.set({
+      [GLOBAL_ACTIONS_KEY]: actions,
+    });
+  } catch (error) {
+    return Promise.reject('parse error');
+  }
 }

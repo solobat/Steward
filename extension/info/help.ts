@@ -1,6 +1,3 @@
-/**
- * about
- */
 
 const langZh = `
 <a href="http://oksteward.com/steward-documents/zh/" target="_blank">帮助文档</a>
@@ -24,9 +21,9 @@ If you have any suggestions / problems in the process of using it, you can go <a
 let results;
 
 if (chrome.i18n.getUILanguage().indexOf('zh') > -1) {
-    results = langZh;
+  results = langZh;
 } else {
-    results = langEn;
+  results = langEn;
 }
 
 export const helpInfo = results;

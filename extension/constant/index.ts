@@ -1,18 +1,17 @@
-
-import * as BASE from './base'
-import KEY from './keycode'
-import * as NUMBER from './number'
-import STORAGE from './storage'
-import * as OPTIONS from './options'
-import * as I18N from './i18n'
-import * as CODE from './code'
+import * as BASE from './base';
+import * as CODE from './code';
+import * as I18N from './i18n';
+import KEY from './keycode';
+import * as NUMBER from './number';
+import * as OPTIONS from './options';
+import STORAGE from './storage';
 
 export default {
-    BASE,
-    KEY,
-    NUMBER,
-    STORAGE,
-    OPTIONS,
-    I18N,
-    CODE
-}
+  BASE,
+  KEY,
+  NUMBER,
+  STORAGE,
+  OPTIONS,
+  I18N,
+  CODE,
+};

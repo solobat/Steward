@@ -7,7 +7,7 @@ const db: any = new Dexie('steward');
  * result: Some text you can customize
  */
 db.version(1).stores({
-  records: '++id,[scope+query],result,mode'
+  records: '++id,[scope+query],result,mode',
 });
 
 export default db;

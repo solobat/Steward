@@ -4,7 +4,8 @@
  * @email solopea@gmail.com
  */
 
-import util from 'common/util'
+import util from 'common/util';
+import { Command, Plugin } from 'plugins/type';
 
 const version = 2;
 const name = 'offExtension';
@@ -13,109 +14,118 @@ const type = 'keyword';
 const icon = chrome.extension.getURL('iconfont/off.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
-const commands = [{
+const commands: Command[] = [
+  {
     key,
     type,
     title,
     subtitle,
     icon,
     allowBatch: true,
-    editable: true
-}];
+    editable: true,
+  },
+];
 
 function setEnabled(id, enabled) {
-    return new Promise(resolve => {
-        chrome.management.setEnabled(id, enabled, function () {
-            resolve('done');
-        });
+  return new Promise(resolve => {
+    chrome.management.setEnabled(id, enabled, function() {
+      resolve('done');
     });
+  });
 }
 
 function getExtensions(query, enabled, callback) {
-    chrome.management.getAll(function (extList) {
-        const matchExts = extList.filter(function (ext) {
-            return ext.type === 'extension'
-                && util.matchText(query, ext.name) && ext.enabled === enabled;
-        });
-
-        callback(matchExts);
+  chrome.management.getAll(function(extList) {
+    const matchExts = extList.filter(function(ext) {
+      return (
+        ext.type === 'extension' &&
+        util.matchText(query, ext.name) &&
+        ext.enabled === enabled
+      );
     });
+
+    callback(matchExts);
+  });
 }
 
 function dataFormat(rawList) {
-    return rawList.map(function (item) {
-        const url = item.icons instanceof Array ? item.icons[item.icons.length - 1].url : '';
-        const isWarn = item.installType === 'development';
+  return rawList.map(function(item) {
+    const url =
+      item.icons instanceof Array ? item.icons[item.icons.length - 1].url : '';
+    const isWarn = item.installType === 'development';
 
-        return {
-            key,
-            id: item.id,
-            icon: url,
-            title: item.name,
-            desc: item.description,
-            isWarn
-        };
-    });
+    return {
+      key,
+      id: item.id,
+      icon: url,
+      title: item.name,
+      desc: item.description,
+      isWarn,
+    };
+  });
 }
 
 function onInput(query) {
-    return new Promise(resolve => {
-        getExtensions(query.toLowerCase(), true, function (matchExts) {
-            resolve(dataFormat(matchExts));
-        });
+  return new Promise(resolve => {
+    getExtensions(query.toLowerCase(), true, function(matchExts) {
+      resolve(dataFormat(matchExts));
     });
+  });
 }
 
 const disableExecs = [
-    item => {
-        const result = setEnabled(item.id, false);
+  item => {
+    const result = setEnabled(item.id, false);
 
-        window.slogs.push(`Disable: ${item.title}`);
+    window.slogs.push(`Disable: ${item.title}`);
 
-        return result;
-    },
-    item => {
-        const result = setEnabled(item.id, false);
+    return result;
+  },
+  item => {
+    const result = setEnabled(item.id, false);
 
-        window.slogs.push(`Disable: ${item.title}`);
+    window.slogs.push(`Disable: ${item.title}`);
 
-        return result;
-    }
+    return result;
+  },
 ];
 
 const extId = chrome.runtime.id;
 
 function getSortedList(list) {
-    const extIndex = list.findIndex(item => item.id === extId);
+  const extIndex = list.findIndex(item => item.id === extId);
 
-    list.splice(extIndex, 1);
+  list.splice(extIndex, 1);
 
-    return list;
+  return list;
 }
 
 function onEnter(item, command, query, { shiftKey }, list) {
-    let items;
+  let items;
 
-    if (item instanceof Array) {
-        items = getSortedList(item);
-    } else {
-        items = item;
-    }
+  if (item instanceof Array) {
+    items = getSortedList(item);
+  } else {
+    items = item;
+  }
 
-    const tasks = util.batchExecutionIfNeeded(shiftKey, disableExecs, [list, items]);
-    return tasks.then(() => {
-        window.stewardApp.refresh();
-    });
+  const tasks = util.batchExecutionIfNeeded(shiftKey, disableExecs, [
+    list,
+    items,
+  ]);
+  return tasks.then(() => {
+    window.stewardApp.refresh();
+  });
 }
 
 export default {
-    version,
-    name: 'Disable Extension',
-    category: 'browser',
-    icon,
-    title,
-    commands,
-    onInput,
-    onEnter,
-    canDisabled: false
-};
+  version,
+  name: 'Disable Extension',
+  category: 'browser',
+  icon,
+  title,
+  commands,
+  onInput,
+  onEnter,
+  canDisabled: false,
+} as Plugin;

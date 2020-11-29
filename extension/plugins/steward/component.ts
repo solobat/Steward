@@ -4,8 +4,9 @@
  * @email solopea@gmail.com
  */
 
-import util from 'common/util'
-import { getComponentsConfig, componentHelper } from 'helper/component.helper'
+import util from 'common/util';
+import { componentHelper, getComponentsConfig } from 'helper/component.helper';
+import { Plugin } from 'plugins/type';
 
 const version = 1;
 const name = 'component';
@@ -16,49 +17,50 @@ const title = chrome.i18n.getMessage(`${name}_title`);
 const commands = util.genCommands(name, icon, keys, type);
 
 function dataFormatter(item) {
-    const { title, subtitle, icon: theIcon, id } = item.meta
-    return {
-        key: 'component',
-        title,
-        desc: subtitle,
-        icon: theIcon || icon,
-        id
-    }
+  const { title, subtitle, icon: theIcon, id } = item.meta;
+  return {
+    key: 'component',
+    title,
+    desc: subtitle,
+    icon: theIcon || icon,
+    id,
+  };
 }
 
 function onInput(key, command) {
-    const isShow = command.orkey === 'show'
+  const isShow = command.orkey === 'show';
 
-    return getComponentsConfig()
-        .then(list => {
-            const items = list.filter(item => item.show === !isShow).map(dataFormatter)
-            const matched = key ? util.getMatches(items, key, 'title') : items
+  return getComponentsConfig().then(list => {
+    const items = list.filter(item => item.show === !isShow).map(dataFormatter);
+    const matched = key ? util.getMatches(items, key, 'title') : items;
 
-            return matched
-        })
+    return matched;
+  });
 }
 
 function onEnter(item, command) {
-    const { orkey } = command
-    const isShow = orkey === 'show'
-    const { id } = item
+  const { orkey } = command;
+  const isShow = orkey === 'show';
+  const { id } = item;
 
-    return componentHelper.update({
-        id,
-        show: isShow
-    }).then(() => {
-        window.stewardApp.refresh();
+  return componentHelper
+    .update({
+      id,
+      show: isShow,
     })
+    .then(() => {
+      window.stewardApp.refresh();
+    });
 }
 
 export default {
-    version,
-    name: 'Components Manager',
-    category: 'other',
-    icon,
-    title,
-    commands,
-    onInput,
-    onEnter,
-    canDisabled: false
-};
+  version,
+  name: 'Components Manager',
+  category: 'other',
+  icon,
+  title,
+  commands,
+  onInput,
+  onEnter,
+  canDisabled: false,
+} as Plugin;

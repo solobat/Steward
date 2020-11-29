@@ -1,6 +1,5 @@
-
 export enum BookMarkTag {
-    TODO = 'TODO:',
-    READ = 'READ:',
-    TRY = 'TRY:'
+  TODO = 'TODO:',
+  READ = 'READ:',
+  TRY = 'TRY:',
 }

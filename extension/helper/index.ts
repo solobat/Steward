@@ -1,98 +1,109 @@
 /*global EXT_TYPE */
 
-import $ from 'jquery'
-import * as aliasHelper from './alias.helper'
-import { componentHelper } from './component.helper'
-import configHelper from './config.helper'
-import diaryHelper from './diary.helper'
-import workflowHelper from './workflow.helper'
-import websitesHelper from './websites.helper'
-import wallpaperHelper from './wallpaper.helper'
-import themeHelper from './theme.helper'
+import $ from 'jquery';
+
+import * as aliasHelper from './alias.helper';
+import { componentHelper } from './component.helper';
+import configHelper from './config.helper';
+import diaryHelper from './diary.helper';
+import themeHelper from './theme.helper';
+import wallpaperHelper from './wallpaper.helper';
+import websitesHelper from './websites.helper';
+import workflowHelper from './workflow.helper';
 
 declare global {
-    var EXT_TYPE: string
+  var EXT_TYPE: string;
 }
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
 const extType = EXT_TYPE === 'stewardplus' ? 'Steward Plus' : 'Steward';
 
-export const dataHelpers = [configHelper, workflowHelper, websitesHelper, wallpaperHelper, themeHelper];
+export const dataHelpers = [
+  configHelper,
+  workflowHelper,
+  websitesHelper,
+  wallpaperHelper,
+  themeHelper,
+];
 
 export const helpers = {
-    alias: aliasHelper,
-    component: componentHelper,
-    config: configHelper,
-    diary: diaryHelper,
-    workflow: workflowHelper,
-    website: websitesHelper,
-    theme: themeHelper,
-    wallpaper: wallpaperHelper
-}
+  alias: aliasHelper,
+  component: componentHelper,
+  config: configHelper,
+  diary: diaryHelper,
+  workflow: workflowHelper,
+  website: websitesHelper,
+  theme: themeHelper,
+  wallpaper: wallpaperHelper,
+};
 
 export function downloadAsJson(exportObj, exportName) {
-    const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(exportObj))}`;
-    const downloadAnchorNode = document.createElement('a');
+  const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(
+    JSON.stringify(exportObj),
+  )}`;
+  const downloadAnchorNode = document.createElement('a');
 
-    downloadAnchorNode.setAttribute('href', dataStr);
-    downloadAnchorNode.setAttribute('download', `${exportName}.json`);
-    downloadAnchorNode.click();
-    downloadAnchorNode.remove();
+  downloadAnchorNode.setAttribute('href', dataStr);
+  downloadAnchorNode.setAttribute('download', `${exportName}.json`);
+  downloadAnchorNode.click();
+  downloadAnchorNode.remove();
 }
 
 export function readFile(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
 
-        reader.onload = function(event) {
-            resolve(event.target.result);
-        };
+    reader.onload = function(event) {
+      resolve(event.target.result);
+    };
 
-        reader.onerror = function(event) {
-            reject(`File could not be read! Code ${event.target.error.code}`);
-        };
+    reader.onerror = function(event) {
+      reject(`File could not be read! Code ${event.target.error.code}`);
+    };
 
-        reader.readAsText(file);
-    })
+    reader.readAsText(file);
+  });
 }
 
 export function backup() {
-    const tasks = dataHelpers.map(helper => helper.getData());
+  const tasks = dataHelpers.map(helper => helper.getData());
 
-    Promise.all(tasks).then(([config, workflows, websites, wallpapers, themes]) => {
-        const data = {
-            config,
-            workflows,
-            websites,
-            wallpapers,
-            themes,
-            meta: {
-                version,
-                export_at: Number(new Date()),
-                app: extType
-            }
-        };
+  Promise.all(tasks).then(
+    ([config, workflows, websites, wallpapers, themes]) => {
+      const data = {
+        config,
+        workflows,
+        websites,
+        wallpapers,
+        themes,
+        meta: {
+          version,
+          export_at: Number(new Date()),
+          app: extType,
+        },
+      };
 
-        console.log(data);
-        downloadAsJson(data, 'Steward-Backup');
-    });
+      console.log(data);
+      downloadAsJson(data, 'Steward-Backup');
+    },
+  );
 }
 
 export function restoreData(data, config) {
-    const tasks = dataHelpers.map(helper => {
-        let obj = data[helper.key];
+  const tasks = dataHelpers.map(helper => {
+    let obj = data[helper.key];
 
-        if (helper.key === 'config') {
-            obj = $.extend(true, config, obj);
-        }
+    if (helper.key === 'config') {
+      obj = $.extend(true, config, obj);
+    }
 
-        if (obj) {
-            return helper.setData(obj);
-        } else {
-            return Promise.resolve(null);
-        }
-    });
+    if (obj) {
+      return helper.setData(obj);
+    } else {
+      return Promise.resolve(null);
+    }
+  });
 
-    return Promise.all(tasks);
+  return Promise.all(tasks);
 }
