@@ -8,7 +8,6 @@ import { ITEM_TYPE } from 'constant/base';
 import { MessageType, PageAction, PageCommand } from 'enum';
 import PluginHelper from 'helper/plugin.helper';
 
-import { shorten } from '../../lib/shorturl';
 import * as pageService from './pageService';
 
 const chrome = window.chrome;
@@ -35,7 +34,6 @@ const App = {
   isLazy: false,
 
   cache: {
-    shorturl: '',
     mouseTarget: null,
   },
 
@@ -174,18 +172,6 @@ const App = {
     }
   },
 
-  getShorturl(url) {
-    if (this.cache.shorturl) {
-      return Promise.resolve(this.cache.shorturl);
-    } else {
-      return shorten(url).then(resp => {
-        this.cache.shorturl = resp;
-
-        return resp;
-      });
-    }
-  },
-
   handleGetMeta() {
     const meta = pageService.getMeta();
     const list = [
@@ -211,18 +197,7 @@ const App = {
       });
     }
 
-    this.getShorturl(meta.url)
-      .then(shorturl => {
-        list.unshift({
-          title: 'Short url',
-          desc: shorturl,
-          key: ITEM_TYPE.COPY,
-        });
-        notice();
-      })
-      .catch(() => {
-        notice();
-      });
+    notice();
   },
 
   handleGetIframes() {
