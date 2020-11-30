@@ -5,8 +5,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const pages = []
 const entries = {}
 
-glob.sync("./extension/pages/*/index.js").forEach(pagePath => {
-  const chunk = pagePath.split('pages/')[1].split("/index.js")[0]
+glob.sync("./extension/pages/*/index.*s").forEach(pagePath => {
+  const chunk = pagePath.split('pages/')[1].split("/index.")[0]
 
   entries[chunk] = pagePath
   pages.push(new HtmlWebpackPlugin({
