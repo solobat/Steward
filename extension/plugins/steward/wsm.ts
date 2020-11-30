@@ -52,7 +52,7 @@ function initWebsites() {
       websitesHelper.inited = true;
     });
 
-    if (window.stewardApp.inContent) {
+    if (window.Steward.inContent) {
       subCommands.push({
         id: 'create',
         icon,
@@ -217,7 +217,7 @@ function onEnter(item) {
 
       if (result) {
         return result.then(() => {
-          window.stewardApp.refresh();
+          window.Steward.app.refresh();
 
           return true;
         });
@@ -226,13 +226,13 @@ function onEnter(item) {
       }
     } else if (subcmd === 'uninstall') {
       return uninstallWebsite(item.data).then(() => {
-        window.stewardApp.refresh();
+        window.Steward.app.refresh();
 
         return true;
       });
     }
   } else if (item.id === 'create') {
-    return createWebsite(window.stewardApp.data.page);
+    return createWebsite(window.Steward.data.page);
   }
 }
 

@@ -108,7 +108,7 @@ function updateActions(saved?) {
 function updateList(saved) {
   updateActions(saved);
 
-  window.stewardApp.updateListForCommand(
+  window.Steward.app.updateListForCommand(
     'wp',
     JSON.parse(JSON.stringify(actions)),
   );
@@ -370,7 +370,7 @@ function handleWpsEnter(item) {
   const url = item.url;
 
   if (isNewTab()) {
-    window.stewardApp.emit('wallpaper:update', null, url);
+    window.Steward.app.emit('wallpaper:update', null, url);
   } else {
     window.localStorage.setItem(STORAGE.WALLPAPER, url);
   }

@@ -145,8 +145,8 @@ function handleSayEnter(query, item, command, shiftKey, box) {
 
   return task
     .then(() => {
-      window.stewardApp.updateList(dataFormat(messages));
-      window.stewardApp.clearQuery();
+      window.Steward.app.updateList(dataFormat(messages));
+      window.Steward.app.clearQuery();
 
       return true;
     })

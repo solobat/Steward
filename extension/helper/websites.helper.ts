@@ -286,7 +286,7 @@ export class Website {
     if (this.config.websiteShareUrls) {
       this.generateShareUrls();
     }
-    window.stewardApp.data.page = rawMeta;
+    window.Steward.data.page = rawMeta;
   }
 
   getMeta() {

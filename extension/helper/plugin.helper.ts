@@ -164,7 +164,7 @@ class Plugin {
 
   createContext() {
     return {
-      app: window.stewardApp,
+      app: window.Steward,
       chrome: chrome,
       util,
       dayjs,

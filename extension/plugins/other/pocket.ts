@@ -68,7 +68,7 @@ function onInput(queryString) {
 
   if (!queryString) {
     getCachedList().then(resp => {
-      window.stewardApp.updateList(resp.pocket_list || []);
+      window.Steward.app.updateList(resp.pocket_list || []);
     });
   }
 

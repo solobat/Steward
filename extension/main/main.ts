@@ -1,4 +1,3 @@
-
 import '../../node_modules/toastr/toastr.scss';
 
 import md5 from 'blueimp-md5';
@@ -19,6 +18,7 @@ import { getCustomPlugins } from 'helper/plugin.helper';
 import { helpers } from '../helper';
 import { plugins } from '../plugins';
 import * as recordsController from '../server/controller/recordsController';
+import { AppData, StewardApp } from 'commmon/type';
 
 const commands: any = {};
 const regExpCommands = [];
@@ -187,7 +187,7 @@ function alwaysStage() {
   if (alwaysCommand) {
     return callCommand(alwaysCommand, str).then(results => {
       if (results) {
-        window.stewardApp.emit('app:log', { key: 'calc', str });
+        window.Steward.app.emit('app:log', { key: 'calc', str });
         return Promise.reject(results);
       } else {
         return resetBox(lastKey, lastCommand);
@@ -206,7 +206,7 @@ function regexpStage() {
 
   // handle regexp commands
   if (spCommand) {
-    window.stewardApp.emit('app:log', { key: 'regexp', str });
+    window.Steward.app.emit('app:log', { key: 'regexp', str });
     return Promise.reject(callCommand(spCommand, str));
   } else {
     return Promise.resolve();
@@ -228,7 +228,7 @@ function searchStage() {
       const searchRes = items;
 
       if (searchRes && searchRes.length) {
-        window.stewardApp.emit('app:log', { key: 'search', str });
+        window.Steward.app.emit('app:log', { key: 'search', str });
         setState({
           command: null,
         });
@@ -274,7 +274,7 @@ function commandStage(gothrough) {
 
     const command = commands[state.cmd];
 
-    window.stewardApp.emit('app:log', { key: cmd, str });
+    window.Steward.app.emit('app:log', { key: cmd, str });
 
     return Promise.reject(callCommand(command, key));
   } else {
@@ -286,7 +286,7 @@ function defaultStage() {
   if (otherCommands.length) {
     setState({ stage: 'default' });
 
-    window.stewardApp.emit('app:log', { key: 'other', str: state.str });
+    window.Steward.app.emit('app:log', { key: 'other', str: state.str });
     return callCommand(otherCommands[0], state.str);
   }
 }
@@ -298,7 +298,7 @@ function handleEnterResult(result) {
     return result
       .then(data => {
         if (typeof data === 'string') {
-          window.stewardApp.emit('cmdbox:refresh', data);
+          window.Steward.app.emit('cmdbox:refresh', data);
         } else {
           const isRetain = data === true;
 
@@ -306,14 +306,14 @@ function handleEnterResult(result) {
             const delay = typeof data === 'number' ? data : delay4close;
 
             setTimeout(() => {
-              window.stewardApp.emit('shouldCloseBox');
+              window.Steward.app.emit('shouldCloseBox');
             }, delay);
           }
         }
       })
       .catch(() => {});
   } else {
-    window.stewardApp.emit('shouldCloseBox');
+    window.Steward.app.emit('shouldCloseBox');
   }
 }
 
@@ -424,7 +424,7 @@ function handleNormalItem(box, dataList, item, keyStatus) {
   if (type === ITEM_TYPE.PLUGINS) {
     const key = item.id;
 
-    window.stewardApp.applyCommand(`${key} `);
+    window.Steward.app.applyCommand(`${key} `);
     return Promise.resolve(true);
   } else if (type === ITEM_TYPE.URL) {
     if (state.command && state.command.shiftKey) {
@@ -442,16 +442,16 @@ function handleNormalItem(box, dataList, item, keyStatus) {
 
     return Promise.resolve(true);
   } else if (type === ITEM_TYPE.ACTION) {
-    window.stewardApp.emit('action', {
+    window.Steward.app.emit('action', {
       action: 'command',
       info: item,
     });
   } else if (type === ITEM_TYPE.APP) {
-    window.stewardApp.emit('app:handle', item);
+    window.Steward.app.emit('app:handle', item);
   }
 
   if (type !== ITEM_TYPE.PLUGINS) {
-    window.stewardApp.emit('shouldCloseBox');
+    window.Steward.app.emit('shouldCloseBox');
   }
 }
 
@@ -464,7 +464,7 @@ function execCommand(dataList = [], item, fromWorkflow, keyStatus?) {
     const result = handleNormalItem(state, dataList, item, keyStatus);
     const ret = handleEnterResult(result);
 
-    window.stewardApp.emit('afterExecCommand', item, dataList, state.query);
+    window.Steward.app.emit('afterExecCommand', item, dataList, state.query);
 
     return ret;
   } else {
@@ -582,9 +582,9 @@ function parseNumbers(part) {
 }
 
 function resolveTemplate(text = '') {
-  const pageData = stewardApp.data?.page;
+  const pageData = window.Steward.data?.page;
 
-  if (text.indexOf('{{') !== -1 && stewardApp.inContent && pageData) {
+  if (text.indexOf('{{') !== -1 && window.Steward.inContent && pageData) {
     return util.simTemplate(text, pageData);
   } else {
     return text;
@@ -846,51 +846,32 @@ export function initConfig(themode, isInContent) {
   });
 }
 
-const stewardApp = (window.stewardApp = {
-  helpers,
-  inContent: false,
-  chrome: window.chrome,
-  util,
-  constant: CONST,
-  Toast,
-  md5,
-  browser,
-  data: null,
-  wallpaper: {
-    grayLevel: 192,
-    setGrayLevel(num) {
-      window.stewardApp.wallpaper.grayLevel = num;
-      window.stewardApp.emit('wallpaper:graylevel', num);
-    },
-    getLayerOpacity() {
-      return (window.stewardApp.wallpaper.grayLevel / 255).toFixed(2);
-    },
-  },
-});
+export function globalApi(appData: AppData) {
+  window.Steward = window.stewardApp = {
+    mode: appData.mode,
+    inContent: appData.inContent,
+    config: appData.config,
+    data: appData.data,
 
-export function globalData(params = {}) {
-  const res = ['mode', 'config', 'data', 'inContent'].reduce((all, key) => {
-    if (typeof params[key] !== 'undefined') {
-      all[key] = params[key];
-    }
-    return all;
-  }, {});
+    chrome: window.chrome,
+    browser,
+    Toast,
+    md5,
 
-  Object.assign(stewardApp, res);
+    helpers,
+    util,
+    constant: CONST,
+  } as StewardApp;
 }
 
-export function globalApi(app) {
-  Object.assign(stewardApp, {
+export function installApp(app) {
+  window.Steward.app = window.stewardApp.app = {
     on(eventName, fn) {
       app.$on(eventName, fn);
 
       return this;
     },
-
-    emit(...args) {
-      const eventName = args[0];
-      const params = args.slice(1);
-
+    emit(eventName: string, ...params) {
       app.$emit(eventName, ...params);
 
       return this;
@@ -934,11 +915,11 @@ export function globalApi(app) {
     getCurrentCommand() {
       return state.command;
     },
-  });
+  };
 
   const evt = new CustomEvent('stewardReady', {
     detail: {
-      app: window.stewardApp,
+      app: window.Steward,
     },
   });
 

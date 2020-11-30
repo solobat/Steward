@@ -72,7 +72,7 @@ function onEnter(item) {
   if (item && item.id) {
     setEnabled(item.id, true);
     window.slogs.push(`Enable: ${item.title}`);
-    window.stewardApp.refresh();
+    window.Steward.app.refresh();
   }
 }
 

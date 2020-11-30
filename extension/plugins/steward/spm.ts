@@ -190,13 +190,13 @@ function onEnter(item) {
 
   if (subcmd === 'install') {
     return installPlugin(item).then(() => {
-      window.stewardApp.refresh();
+      window.Steward.app.refresh();
 
       return true;
     });
   } else if (subcmd === 'uninstall') {
     return uninstallPlugin(item).then(() => {
-      window.stewardApp.refresh();
+      window.Steward.app.refresh();
 
       return true;
     });

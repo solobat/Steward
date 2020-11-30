@@ -87,7 +87,7 @@ declare global {
 
 function onInput(query, command) {
   if (query === '/' && window.parentHost) {
-    window.stewardApp.applyCommand(`${command.key} ${window.parentHost}`);
+    window.Steward.app.applyCommand(`${command.key} ${window.parentHost}`);
   } else {
     return searchBookmark(query).then(bookMarkList => {
       return dataFormat(bookMarkList, command);
@@ -108,7 +108,7 @@ function onEnter(item, { orkey, key }, query, keyStatus, list) {
       chrome.bookmarks.remove(item.id, () => {
         // clear cache
         bookmarks = null;
-        window.stewardApp.refresh();
+        window.Steward.app.refresh();
         window.slogs.push(`delete bookmark: ${item.url}`);
 
         util.toast.success('Delete successfully');

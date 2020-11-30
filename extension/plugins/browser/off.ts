@@ -114,7 +114,7 @@ function onEnter(item, command, query, { shiftKey }, list) {
     items,
   ]);
   return tasks.then(() => {
-    window.stewardApp.refresh();
+    window.Steward.app.refresh();
   });
 }
 

@@ -68,7 +68,7 @@ function onInput(query) {
 
 function onEnter(item) {
   uninstall(item.id, () => {
-    window.stewardApp.refresh();
+    window.Steward.app.refresh();
   });
 }
 

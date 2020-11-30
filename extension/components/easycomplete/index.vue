@@ -111,7 +111,7 @@ export default {
                 event.preventDefault();
                 if (this.isVisible()) {
                     if (event.metaKey) {
-                        window.stewardApp.notice('action:down:metakey');
+                        window.Steward.app.notice('action:down:metakey');
                     } else {
                         this.move('down');
                         this.$emit('move', 'down');
@@ -122,7 +122,7 @@ export default {
                 event.preventDefault();
                 if (this.isVisible()) {
                     if (event.metaKey) {
-                        window.stewardApp.notice('action:up:metakey');
+                        window.Steward.app.notice('action:up:metakey');
                     } else {
                         this.move('up');
                         this.$emit('move', 'up');

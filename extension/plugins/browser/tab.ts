@@ -183,7 +183,7 @@ function onEnter(item, { key, orkey }, query, { shiftKey }, list) {
     updateTab(item.id, {
       muted: !item.muted,
     }).then(() => {
-      window.stewardApp.refresh();
+      window.Steward.app.refresh();
     });
   }
 }

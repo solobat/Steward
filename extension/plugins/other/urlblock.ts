@@ -53,7 +53,7 @@ function onInput(key, command, inContent) {
       return Reflect.apply(showBlacklist, this, [command]);
     } else {
       if (key === '/' && inContent) {
-        window.stewardApp.applyCommand(`${command.key} ${window.parentHost}`);
+        window.Steward.app.applyCommand(`${command.key} ${window.parentHost}`);
       } else {
         return util.getDefaultResult(command);
       }
@@ -91,7 +91,7 @@ function addBlockedSiteReplaceURL(query) {
     .then(() => {
       util.toast.success(chrome.i18n.getMessage('set_ok'));
 
-      window.stewardApp.applyCommand('bkseturl ');
+      window.Steward.app.applyCommand('bkseturl ');
     });
 }
 
@@ -105,7 +105,7 @@ function removeBlockedSiteReplaceURL(item) {
       });
     })
     .then(() => {
-      window.stewardApp.applyCommand('bkseturl ');
+      window.Steward.app.applyCommand('bkseturl ');
     });
 }
 

@@ -21,7 +21,7 @@ function init() {
         const tips = CONST.I18N.TIPS;
 
         config.lastVersion = config.version || version;
-        window.stewardApp = {
+        window.Steward = {
             config
         }
 

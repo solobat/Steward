@@ -49,7 +49,7 @@ function onEnter(item, command) {
       show: isShow,
     })
     .then(() => {
-      window.stewardApp.refresh();
+      window.Steward.app.refresh();
     });
 }
 

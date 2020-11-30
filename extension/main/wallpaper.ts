@@ -26,14 +26,14 @@ function updateSaveStatus(action) {
       let isNew;
 
       if (action === 'save') {
-        window.stewardApp.emit('wallpaper:save');
+        window.Steward.data.emit('wallpaper:save');
         isNew = false;
       } else {
-        window.stewardApp.emit('wallpaper:remove');
+        window.Steward.data.emit('wallpaper:remove');
         isNew = true;
       }
 
-      window.stewardApp.emit('wallpaper:refreshed', isNew);
+      window.Steward.data.emit('wallpaper:refreshed', isNew);
     })
     .catch(msg => {
       Toast.warning(msg);
@@ -72,7 +72,7 @@ export async function update(url, toSave, isNew) {
   }
 
   $('html').css(styles);
-  window.stewardApp.emit('wallpaper:refreshed', isNew);
+  window.Steward.data.emit('wallpaper:refreshed', isNew);
   $body.waitForImages(true).done(function() {
     Toast.clear();
     state.loading = false;

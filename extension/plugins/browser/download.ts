@@ -122,7 +122,7 @@ function onEnter(item, command, query, keyStatus) {
         util.toast.info(`[${item.filename}] has been paused`);
       }
     }
-    window.stewardApp.refresh();
+    window.Steward.app.refresh();
   } else {
     if (keyStatus.shiftKey) {
       util.createTab(item);

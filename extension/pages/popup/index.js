@@ -1,4 +1,4 @@
-import { initConfig, globalData, globalApi, clearToasts } from '../../main/main'
+import { initConfig, globalApi, clearToasts, installApp } from '../../main/main'
 import keyboardJS from 'keyboardjs'
 import { MODE } from 'constant/base'
 import { createWebsites } from 'helper/websites.helper'
@@ -8,13 +8,14 @@ import App from './App.vue';
 Vue.config.productionTip = false;
 
 function initApp(mode, inContent, meta) {
-    globalData({
-        mode,
-        data: { page: meta },
-        inContent
-    });
     return initConfig(mode, inContent).then(config => {
-        globalData({ config });
+        globalApi(appData);
+        const appData = {
+            mode,
+            data: { page: meta },
+            inContent,
+            config
+        };
 
         const app = new Vue({
             el: '#app',
@@ -25,7 +26,7 @@ function initApp(mode, inContent, meta) {
             template: '<App />'
         });
 
-        globalApi(app);
+        installApp(app);
 
         return config;
     });
@@ -93,7 +94,7 @@ window.addEventListener('message', function(event) {
 });
 
 function changeBoxStatus(disabled, cmd) {
-    window.stewardApp.emit('cmdbox:status', disabled, cmd);
+    window.Steward.app.emit('cmdbox:status', disabled, cmd);
 }
 
 function closeBox() {
@@ -119,8 +120,8 @@ function initForContentPage(parentWindow, lazy, parentHost, meta) {
         // if lazy, inputbox should get the focus when init
         changeBoxStatus(!lazy);
 
-        window.stewardApp.on('shouldCloseBox', closeBox);
-        window.stewardApp.on('action', handleAction);
+        window.Steward.app.on('shouldCloseBox', closeBox);
+        window.Steward.app.on('action', handleAction);
         keyboardJS.bind('esc', closeBox);
 
         parentWindow.postMessage({

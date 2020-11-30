@@ -235,7 +235,7 @@ function dataFormat(rawList, command?) {
 }
 function showTodos() {
   getTodos().then(todos => {
-    window.stewardApp.updateList(dataFormat(todos || []));
+    window.Steward.app.updateList(dataFormat(todos || []));
   });
 }
 

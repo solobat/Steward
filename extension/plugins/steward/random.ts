@@ -65,7 +65,7 @@ function onEnter(item, command, query) {
     });
   } else {
     return randomStorage.removeItem(item.id).then(() => {
-      window.stewardApp.refresh();
+      window.Steward.app.refresh();
     });
   }
 }
