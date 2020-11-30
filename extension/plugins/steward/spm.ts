@@ -28,10 +28,6 @@ const commands = [
   },
 ];
 
-declare global {
-  var PLATFORM: string;
-}
-
 const platform = PLATFORM || 'chrome';
 const subCommandKeys = ['install', 'uninstall', 'list'];
 const subCommands = subCommandKeys.map(item => {

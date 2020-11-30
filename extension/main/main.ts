@@ -776,12 +776,6 @@ function classifyPlugins(pluginsData) {
   });
 }
 
-declare global {
-  interface Window {
-    matchedSite: any;
-  }
-}
-
 function initWebsites() {
   if (inContent) {
     const site = window.matchedSite;

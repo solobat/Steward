@@ -11,10 +11,6 @@ import wallpaperHelper from './wallpaper.helper';
 import websitesHelper from './websites.helper';
 import workflowHelper from './workflow.helper';
 
-declare global {
-  var EXT_TYPE: string;
-}
-
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
 const extType = EXT_TYPE === 'stewardplus' ? 'Steward Plus' : 'Steward';

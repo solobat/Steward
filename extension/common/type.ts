@@ -5,11 +5,16 @@ import { Browser } from 'webextension-polyfill-ts';
 import util from './util';
 
 declare global {
+  var EXT_TYPE: string;
+  var PLATFORM: string;
+
   interface Window {
     Steward: StewardApp;
     stewardApp: StewardApp;
     stewardCache: StewardCache;
-    slogs: any[];
+    slogs: string[];
+    matchedSite: any;
+    parentHost?: string;
   }
 }
 

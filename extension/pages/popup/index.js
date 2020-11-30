@@ -9,13 +9,13 @@ Vue.config.productionTip = false;
 
 function initApp(mode, inContent, meta) {
     return initConfig(mode, inContent).then(config => {
-        globalApi(appData);
         const appData = {
             mode,
             data: { page: meta },
             inContent,
             config
         };
+        globalApi(appData);
 
         const app = new Vue({
             el: '#app',

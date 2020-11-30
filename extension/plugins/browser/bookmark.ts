@@ -79,12 +79,6 @@ function dataFormat(bookMarkList, command) {
   return arr;
 }
 
-declare global {
-  interface Window {
-    parentHost: any;
-  }
-}
-
 function onInput(query, command) {
   if (query === '/' && window.parentHost) {
     window.Steward.app.applyCommand(`${command.key} ${window.parentHost}`);
