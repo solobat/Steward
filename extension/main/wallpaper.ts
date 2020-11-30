@@ -9,6 +9,7 @@ import { saveWallpaperLink, shouldShow } from 'helper/wallpaper.helper';
 import { getAllSources, getSources } from 'helper/wallpaperSource.helper';
 import * as api from 'service';
 import * as date from 'utils/date';
+import { StewardApp } from 'commmon/type';
 
 const $body: any = $('body');
 const sourcesInfo = getAllSources();
@@ -26,14 +27,14 @@ function updateSaveStatus(action) {
       let isNew;
 
       if (action === 'save') {
-        window.Steward.data.emit('wallpaper:save');
+        window.Steward.app.emit('wallpaper:save');
         isNew = false;
       } else {
-        window.Steward.data.emit('wallpaper:remove');
+        window.Steward.app.emit('wallpaper:remove');
         isNew = true;
       }
 
-      window.Steward.data.emit('wallpaper:refreshed', isNew);
+      window.Steward.app.emit('wallpaper:refreshed', isNew);
     })
     .catch(msg => {
       Toast.warning(msg);
@@ -72,7 +73,7 @@ export async function update(url, toSave, isNew) {
   }
 
   $('html').css(styles);
-  window.Steward.data.emit('wallpaper:refreshed', isNew);
+  window.Steward.app.emit('wallpaper:refreshed', isNew);
   $body.waitForImages(true).done(function() {
     Toast.clear();
     state.loading = false;
@@ -152,9 +153,9 @@ const saveActionConf = {
 
 function bindEvents() {
   document.addEventListener('stewardReady', (event: any) => {
-    const app = event.detail.app;
+    const Steward = event.detail.app as StewardApp;
 
-    app.on('beforeleave', () => {
+    Steward.app.on('beforeleave', () => {
       console.log('beforeleave');
       clearInterval(timer);
     });

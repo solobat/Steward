@@ -14,6 +14,7 @@ import { MODE } from 'constant/base';
 import STORAGE from 'constant/storage';
 import { addToBlackList, getDataURI, saveWallpaperLink } from 'helper/wallpaper.helper';
 import { Plugin } from 'plugins/type';
+import { StewardApp } from 'commmon/type';
 
 const name = 'wallpaper';
 const keys = [{ key: 'wp' }, { key: 'wps' }];
@@ -116,15 +117,15 @@ function updateList(saved) {
 
 function setup() {
   document.addEventListener('stewardReady', (event: any) => {
-    const app = event.detail.app;
+    const Steward = event.detail.app as StewardApp;
 
-    app.on('wallpaper:refreshed', isNew => {
+    Steward.app.on('wallpaper:refreshed', isNew => {
       updateList(!isNew);
     });
-    app.on('wallpaper:save', () => {
+    Steward.app.on('wallpaper:save', () => {
       updateList(true);
     });
-    app.on('wallpaper:remove', () => {
+    Steward.app.on('wallpaper:remove', () => {
       updateList(false);
     });
   });

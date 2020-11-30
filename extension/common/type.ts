@@ -4,6 +4,15 @@ import { helpers } from 'helper';
 import { Browser } from 'webextension-polyfill-ts';
 import util from './util';
 
+declare global {
+  interface Window {
+    Steward: StewardApp;
+    stewardApp: StewardApp;
+    stewardCache: StewardCache;
+    slogs: any[];
+  }
+}
+
 interface Data {
   page: any;
   [prop: string]: any;
@@ -16,7 +25,7 @@ export interface AppData {
   inContent?: boolean;
 }
 
-export interface App {
+export interface AppMethods {
   on: (eventName: string, fn: any) => void;
   emit: (eventName: string, ...parmas: any[]) => void;
   applyCommand: (cmd: string) => void;
@@ -36,5 +45,11 @@ export type StewardApp = AppData & {
   Toast: any;
   md5: typeof md5;
   browser: Browser;
-  app?: App
+  app?: AppMethods
 };
+
+export type StewardCache = Partial<AppData> & {
+  commands?: any
+  wallpaper?: any
+  wordcardExtId?: string
+}

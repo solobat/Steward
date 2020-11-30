@@ -5,16 +5,6 @@ import Toast from 'toastr';
 
 import { QUOTA_BYTES_PER_ITEM } from 'constant/number';
 import { Command } from 'plugins/type';
-import { StewardApp } from './type';
-
-declare global {
-  interface Window {
-    Steward: StewardApp;
-    stewardApp: StewardApp;
-    stewardCache: any;
-    slogs: any[];
-  }
-}
 
 function getPinyin(name: string) {
   return pinyin(name, {

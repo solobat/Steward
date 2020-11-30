@@ -18,7 +18,7 @@ import { getCustomPlugins } from 'helper/plugin.helper';
 import { helpers } from '../helper';
 import { plugins } from '../plugins';
 import * as recordsController from '../server/controller/recordsController';
-import { AppData, StewardApp } from 'commmon/type';
+import { AppData, StewardApp, StewardCache } from 'commmon/type';
 
 const commands: any = {};
 const regExpCommands = [];
@@ -51,7 +51,7 @@ let state = {
   },
 };
 
-window.stewardCache = {};
+window.stewardCache = {} as StewardCache;
 window.slogs = [];
 
 function findMatchedPlugins(query) {
@@ -372,12 +372,6 @@ async function sortResults(results) {
     }
   } else {
     return results;
-  }
-}
-
-declare global {
-  interface Window {
-    stewardCache: any;
   }
 }
 

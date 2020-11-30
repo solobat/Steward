@@ -9,6 +9,7 @@ import constant from 'constant';
 import { addNetworkRecord, generateSocialUrls } from '../lib/social-share-urls';
 import { getGlobalActions } from './action.helper';
 import * as ResultHelper from './result.helper';
+import { StewardApp } from 'commmon/type';
 
 const websiteList = new WebsiteList();
 
@@ -215,9 +216,9 @@ export class Website {
     });
 
     document.addEventListener('stewardReady', (event: any) => {
-      const app = event.detail.app;
+      const Steward = event.detail.app as StewardApp;
 
-      app.on('afterExecCommand', item => {
+      Steward.app.on('afterExecCommand', item => {
         this.afterExecCommand(item);
       });
     });
