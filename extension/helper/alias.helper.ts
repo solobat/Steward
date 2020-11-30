@@ -1,6 +1,7 @@
 import { browser } from 'webextension-polyfill-ts';
 
 import util from 'common/util';
+import { ResultItem } from 'plugins/type';
 
 const icon = chrome.extension.getURL('iconfont/alias.svg');
 
@@ -73,7 +74,7 @@ export const TextAlias = {
     }
   },
 
-  onInput(query) {
+  onInput(query): Promise<ResultItem[]> | ResultItem[] {
     return this.getItems().then(items => {
       if (items && items.length) {
         return format(util.getMatches(items, query, 'label') || []);
@@ -83,6 +84,8 @@ export const TextAlias = {
     });
   },
 };
+
+export type TextAliasType = typeof TextAlias;
 
 export function getTextAlias() {
   return browser.storage.sync.get(STORAGE_KEY).then(resp => {

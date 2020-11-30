@@ -6,7 +6,7 @@
 
 /*global EXT_TYPE */
 import util from 'common/util';
-import { Plugin } from 'plugins/type';
+import { Plugin, ResultItem } from 'plugins/type';
 
 const version = 2;
 const name = 'viewExtension';
@@ -78,7 +78,9 @@ function onInput(query, command) {
   }
 }
 
-function onEnter({ id, homepage }, command, query, keyStatus) {
+function onEnter(item: ResultItem, command, query, keyStatus) {
+  const { id, homepage } = item;
+
   if (keyStatus.shiftKey && homepage) {
     util.createTab({ url: homepage }, keyStatus);
   } else {

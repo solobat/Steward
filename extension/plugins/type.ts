@@ -1,5 +1,6 @@
 export type Type = 'keyword' | 'search' | 'always' | 'regexp' | 'other';
 
+export type Mode = 'popup' | 'newtab' | 'content';
 export interface Command {
   key: string;
   type: Type;
@@ -12,6 +13,38 @@ export interface Command {
   weight?: number;
   shiftKey?: boolean;
   editable?: boolean;
+  mode?: Mode;
+  regExp?: RegExp;
+}
+
+export interface ResultItem {
+  id?: string;
+  wid?: string;
+  key?: string;
+  title: string;
+  desc?: string;
+  icon?: string;
+  url?: string;
+  isWarn?: boolean;
+  content?: string;
+  [prop: string]: any;
+}
+
+export interface KeyStatus {
+  shiftKey: boolean;
+  ctrlKey: boolean;
+  metaKey: boolean;
+  altKey: boolean;
+}
+
+export interface BaseOnInputFunc {
+  (query: string, command: Command, inContent: boolean):
+    | Promise<any>
+    | ResultItem[];
+}
+
+export interface SearchOnInputFunc {
+  (query: string): Promise<any> | ResultItem[];
 }
 
 export interface Plugin {
@@ -21,17 +54,22 @@ export interface Plugin {
   icon: string;
   title: string;
   commands?: Command[];
-  onInput: (query: any, command: any, inContent: any) => any;
-  onEnter: (
-    item: any,
-    command: any,
-    query: any,
-    keyStatus: any,
-    list: any,
-  ) => any;
   canDisabled?: boolean;
   disabled?: boolean;
   invalid?: boolean;
-  setup?: (ext?: any) => void;
   extName?: string;
+  onInput: BaseOnInputFunc | SearchOnInputFunc;
+  onEnter: (
+    item: ResultItem,
+    command: Command,
+    query: string,
+    keyStatus: KeyStatus,
+    list: ResultItem[],
+  ) => any;
+  setup?: (ext?: any) => void;
+  onBoxEmpty?: () => void;
+  onLeave?: () => void;
+  onStorageChange?: (event: StorageEvent) => void;
+  onNotice?: (eventName: string, ...params: any[]) => void;
+  getOneCommand?: () => Promise<any>;
 }

@@ -1,10 +1,10 @@
 
 const h5 = {
-  set: function(key, value) {
+  set: function(key: string, value) {
     localStorage[key] = value;
   },
 
-  get: function(key) {
+  get: function(key: string) {
     return localStorage[key];
   },
 };

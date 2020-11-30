@@ -3,6 +3,9 @@
     "baseUrl": "./extension",
     "moduleResolution": "node",
     "outDir": "./dist/",
+    "lib": [
+      "es5", "es6", "dom", "dom.iterable"
+    ],
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
     "module": "es2015",

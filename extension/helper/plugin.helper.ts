@@ -6,6 +6,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import $ from 'jquery';
 import { browser } from 'webextension-polyfill-ts';
+import { Plugin as PluginModel } from 'plugins/type';
 
 import {
   CustomPlugin as CustomPluginModel,
@@ -127,7 +128,7 @@ class Plugin {
   valid: boolean;
   uid?: string;
   version?: string;
-  name?: string;
+  name: string;
   category?: string;
   icon?: string;
   title?: string;
@@ -293,7 +294,7 @@ export const pluginFactory: PluginFactoryFunc = options => {
   }
 };
 
-export function getCustomPlugins() {
+export function getCustomPlugins(): Promise<PluginModel> {
   return customPluginHelper.init().then((list = []) => {
     return list
       .map(item => {

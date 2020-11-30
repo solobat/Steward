@@ -4,7 +4,7 @@ import pinyin from 'pinyin';
 import Toast from 'toastr';
 
 import { QUOTA_BYTES_PER_ITEM } from 'constant/number';
-import { Command } from 'plugins/type';
+import { Command, Type } from 'plugins/type';
 
 function getPinyin(name: string) {
   return pinyin(name, {
@@ -37,7 +37,7 @@ function guid(): string {
   return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
 }
 
-interface SimpleCommand {
+export interface SimpleCommand {
   key: string;
   orkey?: string;
 }
@@ -49,7 +49,7 @@ const simpleCommand = (command: Command) => {
   } as SimpleCommand;
 };
 
-function genCommands(name: string, icon: string, items: any[], type) {
+function genCommands(name: string, icon: string, items: any[], type: Type) {
   return items.map(item => {
     const {
       key,
@@ -193,7 +193,7 @@ const wrapWithMaxNumIfNeeded = (
 
 const batchExecutionIfNeeded = (
   predicate,
-  actions: any[],
+  actions: ((item: any, keyStatus?: any) => void)[],
   [list, item],
   keyStatus?,
   maxOperandsNum = window.stewardCache.config.general.maxOperandsNum,

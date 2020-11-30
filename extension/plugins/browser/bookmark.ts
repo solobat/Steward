@@ -5,6 +5,7 @@
  */
 
 import util from 'common/util';
+import { Command } from 'plugins/type';
 
 const chrome = window.chrome;
 const version = 6;
@@ -89,7 +90,9 @@ function onInput(query, command) {
   }
 }
 
-function onEnter(item, { orkey, key }, query, keyStatus, list) {
+function onEnter(item, command: Command, query, keyStatus, list) {
+  const { orkey } = command;
+
   if (orkey === 'bm') {
     util.batchExecutionIfNeeded(
       keyStatus.shiftKey,

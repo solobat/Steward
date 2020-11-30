@@ -1,7 +1,10 @@
 import md5 from 'blueimp-md5';
 import constant from 'constant';
 import { helpers } from 'helper';
+import { Website } from 'helper/websites.helper';
+import { Command, Plugin } from 'plugins/type';
 import { Browser } from 'webextension-polyfill-ts';
+import { AppConfig } from './config';
 import util from './util';
 
 declare global {
@@ -13,7 +16,7 @@ declare global {
     stewardApp: StewardApp;
     stewardCache: StewardCache;
     slogs: string[];
-    matchedSite: any;
+    matchedSite: Website | null;
     parentHost?: string;
   }
 }
@@ -25,7 +28,7 @@ interface Data {
 
 export interface AppData {
   mode?: string;
-  config?: any;
+  config?: AppConfig;
   data?: Data;
   inContent?: boolean;
 }
@@ -53,8 +56,18 @@ export type StewardApp = AppData & {
   app?: AppMethods
 };
 
-export type StewardCache = Partial<AppData> & {
-  commands?: any
+export interface PluginCommand extends Command {
+  name: string;
+  plugin: Plugin;
+}
+
+export type StewardCache = Omit<Partial<AppData>, 'config'> & {
+  commands?: {
+    [prop: string]: PluginCommand;
+  }
   wallpaper?: any
   wordcardExtId?: string
+  config?: Partial<AppConfig> & {
+    components?: any
+  }
 }

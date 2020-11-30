@@ -6,12 +6,14 @@ import defaultGeneral from 'conf/general';
 import { plugins as pluginList } from 'plugins';
 import { Plugin } from 'plugins/type';
 
-import util from './util';
+import util, { SimpleCommand } from './util';
 
-type PartialPlugin = Pick<
+export type PartialPlugin = Pick<
   Plugin,
-  'name' | 'version' | 'commands' | 'canDisabled' | 'icon'
->;
+  'name' | 'version' | 'canDisabled' | 'icon' | 'disabled'
+> & {
+  commands: SimpleCommand[]
+};
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -20,16 +22,16 @@ const pluginModules: PartialPlugin[] = _.sortBy(
   'name',
 ).map(plugin => {
   const { name, icon, commands, title, canDisabled } = plugin;
-  let simpleCommand;
+  let simpleCommands: SimpleCommand[];
 
   if (commands) {
-    simpleCommand = commands.map(util.simpleCommand);
+    simpleCommands = commands.map(util.simpleCommand);
   }
 
   return {
     name,
     version: plugin.version,
-    commands: simpleCommand,
+    commands: simpleCommands,
     title,
     icon,
     canDisabled,
@@ -37,7 +39,7 @@ const pluginModules: PartialPlugin[] = _.sortBy(
 });
 
 function getPluginData() {
-  const plugins = {};
+  const plugins: PluginsData = {};
 
   pluginModules.forEach(plugin => {
     mergePluginData(plugin, plugins);
@@ -46,7 +48,11 @@ function getPluginData() {
   return plugins;
 }
 
-function mergePluginData(plugin: PartialPlugin, cachePlugins) {
+export interface PluginsData {
+  [prop: string]: PartialPlugin
+}
+
+function mergePluginData(plugin: PartialPlugin, cachePlugins: PluginsData) {
   const name = plugin.name;
   let cachePlugin = cachePlugins[name];
 
@@ -70,7 +76,7 @@ function mergePluginData(plugin: PartialPlugin, cachePlugins) {
     cachePlugins[name] = {
       version: plugin.version,
       commands: plugin.commands,
-    };
+    } as PartialPlugin;
     cachePlugin = cachePlugins[name];
 
     if (plugin.canDisabled) {
@@ -84,12 +90,18 @@ function mergePluginData(plugin: PartialPlugin, cachePlugins) {
   }
 }
 
+export interface AppConfig {
+  general: typeof defaultGeneral;
+  plugins: PluginsData;
+  version: string;  
+}
+
 function getDefaultConfig() {
   return {
     general: defaultGeneral,
     plugins: getPluginData(),
     version,
-  };
+  } as AppConfig;
 }
 
 // get merged config && save if needed
@@ -120,7 +132,7 @@ export function getSyncConfig(save, keepVersion) {
       });
     }
 
-    return config;
+    return config as AppConfig;
   });
 }
 

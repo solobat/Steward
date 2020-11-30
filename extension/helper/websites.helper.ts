@@ -459,7 +459,7 @@ function getDefaultSiteInfo(meta) {
   };
 }
 
-export function createWebsites(parentWindow, host, meta, general: any = {}) {
+export function createWebsites(parentWindow, host, meta, general: any = {}): Promise<Website | null> {
   return helper.init().then(sites => {
     let mixedSites = sites.filter(site => {
       const isMatch = site.host.startsWith('http')

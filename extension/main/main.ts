@@ -11,28 +11,39 @@ import storage from 'common/storage';
 import util from 'common/util';
 import defaultGeneral from 'conf/general';
 import CONST from 'constant';
-import { TextAlias } from 'helper/alias.helper';
+import { TextAlias, TextAliasType } from 'helper/alias.helper';
 import { getComponentsConfig } from 'helper/component.helper';
 import { getCustomPlugins } from 'helper/plugin.helper';
 
 import { helpers } from '../helper';
 import { plugins } from '../plugins';
 import * as recordsController from '../server/controller/recordsController';
-import { AppData, StewardApp, StewardCache } from 'commmon/type';
+import { AppData, PluginCommand, StewardApp, StewardCache } from 'commmon/type';
+import {
+  Command,
+  KeyStatus,
+  Plugin,
+  ResultItem,
+  SearchOnInputFunc,
+} from 'plugins/type';
+import { AppConfig, PluginsData } from 'commmon/config';
+import { Website } from 'helper/websites.helper';
 
-const commands: any = {};
-const regExpCommands = [];
-const otherCommands = [];
-const searchContexts = [];
-let allPlugins = [];
+const commands: {
+  [prop: string]: PluginCommand;
+} = {};
+const regExpCommands: PluginCommand[] = [];
+const otherCommands: PluginCommand[] = [];
+const searchContexts: (Website | Plugin)[] = [];
+let allPlugins: Plugin[] = [];
 let alwaysCommand = null;
-let plugin4empty;
-let randomPlugin;
+let plugin4empty: Plugin;
+let randomPlugin: Plugin;
 let keys;
 let reg;
-let mode;
-let inContent: any;
-let state = {
+let mode: string;
+let inContent: boolean;
+let state: AppState = {
   background: false,
   key: '',
   stage: '',
@@ -50,13 +61,36 @@ let state = {
     altKey: false,
   },
 };
+interface AppState {
+  background: boolean;
+  key: string;
+  stage: string;
+  str: string;
+  cmd: string;
+  query: string;
+  delay: number;
+  lastcmd: string;
+  command: PluginCommand | null;
+  workflowStack: any[];
+  keyStatus: Partial<KeyStatus>;
+  searchTimer?: number;
+}
 
 window.stewardCache = {} as StewardCache;
 window.slogs = [];
 
-function findMatchedPlugins(query) {
-  const items = [];
-  let key;
+interface CommandResultItem {
+  key: string;
+  id: string;
+  icon: string;
+  title: string;
+  desc: string;
+  weight: number;
+}
+
+function findMatchedPlugins(query: string) {
+  const items: CommandResultItem[] = [];
+  let key: string;
 
   for (key in commands) {
     if (query && key.indexOf(query) !== -1) {
@@ -69,20 +103,20 @@ function findMatchedPlugins(query) {
         title: `${key}: ${command.title}`,
         desc: command.subtitle || '',
         weight: (command.weight || 0) + 10,
-      });
+      } as CommandResultItem);
     }
   }
 
   return Promise.resolve(items);
 }
 
-function findRegExpMatched(str) {
+function findRegExpMatched(str: string) {
   return regExpCommands.find(item => {
     return item.regExp && str.match(item.plugin.commands[0].regExp);
   });
 }
 
-function setState(attrs = {}) {
+function setState(attrs: Partial<AppState> = {}) {
   const newState: any = Object.assign({}, state, attrs);
 
   if (newState.command !== state.command) {
@@ -110,7 +144,7 @@ function setState(attrs = {}) {
   state = newState;
 }
 
-function callCommand(command, key) {
+function callCommand(command: PluginCommand | undefined, key: string) {
   if (!command) {
     return;
   }
@@ -120,21 +154,19 @@ function callCommand(command, key) {
   }
 
   try {
-    return Reflect.apply(command.plugin.onInput, state, [
-      key,
-      command,
-      inContent,
-    ]);
+    return Promise.resolve(
+      Reflect.apply(command.plugin.onInput, state, [key, command, inContent]),
+    );
   } catch (error) {
     console.error(error);
     return Promise.resolve();
   }
 }
 
-function searchInContext(query) {
-  const res = [];
-  const tasks = [];
-  let contexts = [TextAlias];
+function searchInContext(query: string) {
+  const res: ResultItem[] = [];
+  const tasks: Promise<any>[] = [];
+  let contexts: (TextAliasType | Plugin | Website)[] = [TextAlias];
 
   if (inContent) {
     contexts = contexts.concat(_.sortBy(searchContexts, 'host'));
@@ -144,14 +176,11 @@ function searchInContext(query) {
 
   contexts.forEach(context => {
     try {
-      const searchRet = context.onInput(query);
+      const searchRet = (context.onInput as SearchOnInputFunc)(query);
 
-      if (
-        searchRet &&
-        (searchRet instanceof Promise || typeof searchRet.then === 'function')
-      ) {
+      if (searchRet && searchRet instanceof Promise) {
         tasks.push(searchRet);
-      } else if (searchRet && searchRet.length) {
+      } else if (searchRet && Array.isArray(searchRet)) {
         res.concat(searchRet);
       }
     } catch (error) {
@@ -161,14 +190,16 @@ function searchInContext(query) {
 
   if (tasks.length) {
     return Promise.all(tasks).then(resp => {
-      return _.flatten(resp.filter(item => item && item.length));
+      return _.flatten(
+        resp.filter(item => item && item.length),
+      ) as ResultItem[];
     });
   } else {
     return Promise.resolve(res);
   }
 }
 
-function resetBox(lastKey, lastCommand) {
+function resetBox(lastKey: string, lastCommand: PluginCommand) {
   setState({
     cmd: lastKey,
     command: lastCommand,
@@ -213,7 +244,7 @@ function regexpStage() {
   }
 }
 
-function searchStage() {
+function searchStage(): Promise<any> {
   const str = state.str;
 
   setState({ stage: 'search' });
@@ -243,7 +274,7 @@ function searchStage() {
   }
 }
 
-function commandStage(gothrough) {
+function commandStage(gothrough: boolean) {
   if (gothrough) {
     return Promise.resolve(state);
   }
@@ -291,7 +322,7 @@ function defaultStage() {
   }
 }
 
-function handleEnterResult(result) {
+function handleEnterResult(result: Promise<string | boolean> | void): Promise<void> | void {
   const delay4close = 1000;
 
   if (result && result instanceof Promise) {
@@ -386,7 +417,7 @@ export function getInitCmd() {
     return Promise.resolve(paramCmd);
   } else if (cacheLastCmd) {
     try {
-      const last = storage.h5.get(CONST.STORAGE.LAST_CMD);
+      const last: string = storage.h5.get(CONST.STORAGE.LAST_CMD);
 
       return Promise.resolve(last || 'site ');
     } catch (error) {
@@ -411,7 +442,7 @@ export function getInitCmd() {
   }
 }
 
-function handleNormalItem(box, dataList, item, keyStatus) {
+function handleNormalItem(box: AppState, dataList: ResultItem[], item: ResultItem, keyStatus: KeyStatus): Promise<boolean> | void {
   const ITEM_TYPE = CONST.BASE.ITEM_TYPE;
   const type = item.key;
 
@@ -449,7 +480,12 @@ function handleNormalItem(box, dataList, item, keyStatus) {
   }
 }
 
-function execCommand(dataList = [], item, fromWorkflow, keyStatus?) {
+function execCommand(
+  dataList: ResultItem[] = [],
+  item: ResultItem | false,
+  fromWorkflow: boolean,
+  keyStatus?: KeyStatus,
+): Promise<void> | void {
   if (!item) {
     return;
   } else if (item && item.isDefault && !state.query) {
@@ -462,7 +498,7 @@ function execCommand(dataList = [], item, fromWorkflow, keyStatus?) {
 
     return ret;
   } else {
-    let plugin;
+    let plugin: Plugin;
     const command = state.command;
 
     if (state.command) {
@@ -526,7 +562,7 @@ function execCommand(dataList = [], item, fromWorkflow, keyStatus?) {
   }
 }
 
-export function handleEnter(dataList, index, keyStatus) {
+export function handleEnter(dataList: ResultItem[], index: number, keyStatus: KeyStatus) {
   setState({
     workflowStack: [],
     keyStatus,
@@ -540,7 +576,7 @@ export function handleEnter(dataList, index, keyStatus) {
   execCommand(dataList, dataList[index], false, keyStatus);
 }
 
-function record(item, state, mode) {
+function record(item: ResultItem, state: AppState, mode) {
   const { title } = item;
   const { stage } = state;
 
@@ -561,7 +597,7 @@ function record(item, state, mode) {
 // should cache
 const numberReg = /(^[\d]+-[\d]+$)|(^[\d]+$)|^all$/;
 
-function parseNumbers(part) {
+function parseNumbers(part: string) {
   const matched = part.match(numberReg)[0];
 
   if (matched.indexOf('-') !== -1) {
@@ -585,10 +621,12 @@ function resolveTemplate(text = '') {
   }
 }
 
-function parseLine(line) {
+type LineNumber = string | string[] | -1;
+
+function parseLine(line: string) {
   const realLine = line.replace(/^[\s\t]+/, '');
   const parts = realLine.split(/[|,，]/).slice(0, 3);
-  let input, numbers, withShift;
+  let input: string, numbers: LineNumber, withShift: boolean;
 
   parts.forEach(part => {
     if (part.match(numberReg)) {
@@ -607,7 +645,7 @@ function parseLine(line) {
   };
 }
 
-function parseWorkflow(content) {
+function parseWorkflow(content: string) {
   return content
     .split('\n')
     .filter(line => line && !line.match(/^[\s\t]+$/))
@@ -615,11 +653,13 @@ function parseWorkflow(content) {
     .filter(cmd => cmd.input);
 }
 
-function fixNumbers(numbers) {
+function fixNumbers(numbers: string[]) {
   return numbers.map(fixNumber);
 }
 
-function fixNumber(number) {
+function fixNumber(str: string) {
+  const number = Number(str);
+
   if (number <= 0 || !number) {
     return 0;
   } else {
@@ -628,7 +668,7 @@ function fixNumber(number) {
 }
 
 const NUM_ALL = -1;
-function execWorkflow(item) {
+function execWorkflow(item: ResultItem) {
   if (item.content) {
     state.workflowStack.push(item.wid);
     window.slogs = [`Workflow ${item.title}`];
@@ -707,10 +747,10 @@ function init() {
   });
 }
 
-function classifyPlugins(pluginsData) {
+function classifyPlugins(pluginsData: PluginsData) {
   const PLUGIN_TYPE = CONST.BASE.PLUGIN_TYPE;
 
-  function isEnabled(plugin) {
+  function isEnabled(plugin: Plugin) {
     const pname = plugin.name;
 
     if (pluginsData[pname] && pluginsData[pname].disabled) {
@@ -741,7 +781,7 @@ function classifyPlugins(pluginsData) {
 
         realCommands.forEach(command => {
           if (!command.mode || (command.mode && command.mode === mode)) {
-            const cmd = {
+            const cmd: PluginCommand = {
               ...command,
               name: pname,
               plugin,
@@ -778,7 +818,7 @@ function classifyPlugins(pluginsData) {
 
 function initWebsites() {
   if (inContent) {
-    const site = window.matchedSite;
+    const site: Website | null = window.matchedSite;
 
     if (site) {
       if (!site.isDefault) {
@@ -790,10 +830,10 @@ function initWebsites() {
   }
 }
 
-function restoreConfig(): Promise<any> {
+function restoreConfig(): Promise<{ config: AppConfig }> {
   return new Promise(resolve => {
     chrome.storage.sync.get(CONST.STORAGE.CONFIG, function(res) {
-      resolve(res);
+      resolve(res as { config: AppConfig });
     });
   });
 }
@@ -802,7 +842,7 @@ export function getRandomPlugin() {
   return randomPlugin;
 }
 
-export function initConfig(themode, isInContent) {
+export function initConfig(themode: string, isInContent: boolean) {
   inContent = isInContent;
   mode = themode;
   window.stewardCache.inContent = isInContent;
