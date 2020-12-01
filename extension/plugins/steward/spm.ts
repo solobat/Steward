@@ -9,205 +9,214 @@ import dayjs from 'dayjs';
 
 import util from 'common/util';
 import constant from 'constant/index';
-import { customPluginHelper, getCustomPlugins, pluginFactory } from 'helper/plugin.helper';
-import { Plugin } from 'plugins/type';
+import {
+  customPluginHelper,
+  getCustomPlugins,
+  pluginFactory,
+} from 'helper/plugin.helper';
+import { Command, Plugin } from 'plugins/type';
+import { StewardApp } from 'commmon/type';
 
-const version = 1;
-const name = 'spm';
-const type = 'keyword';
-const icon = chrome.extension.getURL('img/icon.png');
-const title = chrome.i18n.getMessage(`${name}_title`);
-const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
-const commands = [
-  {
-    key: 'spm',
-    type,
-    title,
-    subtitle,
-    icon,
-  },
-];
+export default function(Steward: StewardApp): Plugin {
+  const { chrome } = Steward;
 
-const platform = PLATFORM || 'chrome';
-const subCommandKeys = ['install', 'uninstall', 'list'];
-const subCommands = subCommandKeys.map(item => {
-  return {
-    key: 'plugins',
-    universal: true,
-    id: `spm ${item}`,
-    icon,
-    title: chrome.i18n.getMessage(`${name}_${item}_title`),
-    desc: chrome.i18n.getMessage(`${name}_${item}_subtitle`),
-  };
-});
-const LIST_URL =
-  'https://raw.githubusercontent.com/Steward-launcher/steward-plugins/master/data.json';
+  const version = 1;
+  const name = 'spm';
+  const type = 'keyword';
+  const icon = chrome.extension.getURL('img/icon.png');
+  const title = chrome.i18n.getMessage(`${name}_title`);
+  const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
+  const commands: Command[] = [
+    {
+      key: 'spm',
+      type,
+      title,
+      subtitle,
+      icon,
+    },
+  ];
 
-let plugins;
+  const platform = PLATFORM || 'chrome';
+  const subCommandKeys = ['install', 'uninstall', 'list'];
+  const subCommands = subCommandKeys.map(item => {
+    return {
+      key: 'plugins',
+      universal: true,
+      id: `spm ${item}`,
+      icon,
+      title: chrome.i18n.getMessage(`${name}_${item}_title`),
+      desc: chrome.i18n.getMessage(`${name}_${item}_subtitle`),
+    };
+  });
+  const LIST_URL =
+    'https://raw.githubusercontent.com/Steward-launcher/steward-plugins/master/data.json';
 
-function filterPlugins(list, query) {
-  if (query) {
-    return list.filter(item => {
-      return util.matchText(query, item.name + item.title);
-    });
-  } else {
-    return list;
+  let plugins;
+
+  function filterPlugins(list, query) {
+    if (query) {
+      return list.filter(item => {
+        return util.matchText(query, item.name + item.title);
+      });
+    } else {
+      return list;
+    }
   }
-}
 
-function queryPlugins(query) {
-  if (plugins) {
-    return Promise.resolve(filterPlugins(plugins, query));
-  } else {
+  function queryPlugins(query) {
+    if (plugins) {
+      return Promise.resolve(filterPlugins(plugins, query));
+    } else {
+      return axios
+        .get(LIST_URL, {
+          params: {
+            t: dayjs().format('YYYYMMDD'),
+          },
+        })
+        .then(results => {
+          const items = results.data.plugins;
+
+          plugins = items.filter(
+            item => !item.platform || item.platform === platform,
+          );
+
+          return filterPlugins(plugins, query);
+        });
+    }
+  }
+
+  function getStatusText(item) {
+    const status = customPluginHelper.checkPluginStatus(item);
+
+    if (status === constant.BASE.PLUGIN_STATUS.INSTALLED) {
+      return '✓';
+    } else if (status === constant.BASE.PLUGIN_STATUS.NEWVESION) {
+      return '↑';
+    }
+  }
+
+  function dataFormat(list, subcmd) {
+    return list.map(item => {
+      let desc = `${item.title} -- by ${item.author}`;
+
+      if (subcmd === 'install') {
+        const result = getStatusText(item);
+
+        if (result) {
+          desc = `${result} ${desc}`;
+        }
+      }
+
+      return {
+        id: item._id,
+        icon: item.icon,
+        title: item.name,
+        desc,
+        source: item.source,
+        subcmd,
+      };
+    });
+  }
+
+  function queryInstalledPlugins(query) {
+    return getCustomPlugins().then(list => {
+      return filterPlugins(list, query);
+    });
+  }
+
+  function onInput(query) {
+    const cmdstr = query.trim();
+    const arr = cmdstr.split(' ');
+    const subcmd = arr[0];
+    const subquery = arr[1] || '';
+
+    if (subCommandKeys.includes(subcmd)) {
+      if (subcmd === 'list' || subcmd === 'install') {
+        return queryPlugins(subquery).then(list => {
+          return dataFormat(list, subcmd);
+        });
+      } else {
+        return queryInstalledPlugins(subquery).then(list => {
+          return dataFormat(list, subcmd);
+        });
+      }
+    } else {
+      return Promise.resolve(
+        subCommands.filter(cmd => cmd.id.indexOf(query) !== -1),
+      );
+    }
+  }
+
+  function installPlugin(item) {
     return axios
-      .get(LIST_URL, {
+      .get(item.source, {
         params: {
-          t: dayjs().format('YYYYMMDD'),
+          t: Number(new Date()),
         },
       })
       .then(results => {
-        const items = results.data.plugins;
+        const resp = results.data;
+        const plugin = pluginFactory({
+          source: resp,
+        });
+        let result: any = true;
 
-        plugins = items.filter(
-          item => !item.platform || item.platform === platform,
-        );
+        if (plugin) {
+          const meta = plugin.getMeta();
+          const status = customPluginHelper.checkPluginStatus(meta);
 
-        return filterPlugins(plugins, query);
+          if (status === constant.BASE.PLUGIN_STATUS.NOTINSTALL) {
+            result = customPluginHelper.create(meta);
+            util.toast.success('Plugin has been installed successfully!');
+          } else if (status === constant.BASE.PLUGIN_STATUS.NEWVESION) {
+            result = customPluginHelper.update(meta);
+            util.toast.success('Plugin has been updated successfully!');
+          } else {
+            util.toast.warning('Plugin has been installed');
+          }
+        } else {
+          util.toast.error('Plugin is broken!');
+        }
+
+        return result;
       });
   }
-}
 
-function getStatusText(item) {
-  const status = customPluginHelper.checkPluginStatus(item);
+  function uninstallPlugin(item) {
+    customPluginHelper.remove(item.id);
+    util.toast.success('Uninstall successfully!');
 
-  if (status === constant.BASE.PLUGIN_STATUS.INSTALLED) {
-    return '✓';
-  } else if (status === constant.BASE.PLUGIN_STATUS.NEWVESION) {
-    return '↑';
+    return Promise.resolve('spm uninstall');
   }
-}
 
-function dataFormat(list, subcmd) {
-  return list.map(item => {
-    let desc = `${item.title} -- by ${item.author}`;
+  function onEnter(item) {
+    const subcmd = item.subcmd;
 
     if (subcmd === 'install') {
-      const result = getStatusText(item);
+      return installPlugin(item).then(() => {
+        window.Steward.app.refresh();
 
-      if (result) {
-        desc = `${result} ${desc}`;
-      }
-    }
-
-    return {
-      id: item._id,
-      icon: item.icon,
-      title: item.name,
-      desc,
-      source: item.source,
-      subcmd,
-    };
-  });
-}
-
-function queryInstalledPlugins(query) {
-  return getCustomPlugins().then(list => {
-    return filterPlugins(list, query);
-  });
-}
-
-function onInput(query) {
-  const cmdstr = query.trim();
-  const arr = cmdstr.split(' ');
-  const subcmd = arr[0];
-  const subquery = arr[1] || '';
-
-  if (subCommandKeys.includes(subcmd)) {
-    if (subcmd === 'list' || subcmd === 'install') {
-      return queryPlugins(subquery).then(list => {
-        return dataFormat(list, subcmd);
+        return true;
       });
-    } else {
-      return queryInstalledPlugins(subquery).then(list => {
-        return dataFormat(list, subcmd);
+    } else if (subcmd === 'uninstall') {
+      return uninstallPlugin(item).then(() => {
+        window.Steward.app.refresh();
+
+        return true;
       });
     }
-  } else {
-    return Promise.resolve(
-      subCommands.filter(cmd => cmd.id.indexOf(query) !== -1),
-    );
   }
+
+  return {
+    version,
+    name: 'Steward Package Manager',
+    category: 'steward',
+    type,
+    icon,
+    title,
+    onInput,
+    onEnter,
+    commands,
+    canDisabled: false,
+  };
 }
-
-function installPlugin(item) {
-  return axios
-    .get(item.source, {
-      params: {
-        t: Number(new Date()),
-      },
-    })
-    .then(results => {
-      const resp = results.data;
-      const plugin = pluginFactory({
-        source: resp,
-      });
-      let result: any = true;
-
-      if (plugin) {
-        const meta = plugin.getMeta();
-        const status = customPluginHelper.checkPluginStatus(meta);
-
-        if (status === constant.BASE.PLUGIN_STATUS.NOTINSTALL) {
-          result = customPluginHelper.create(meta);
-          util.toast.success('Plugin has been installed successfully!');
-        } else if (status === constant.BASE.PLUGIN_STATUS.NEWVESION) {
-          result = customPluginHelper.update(meta);
-          util.toast.success('Plugin has been updated successfully!');
-        } else {
-          util.toast.warning('Plugin has been installed');
-        }
-      } else {
-        util.toast.error('Plugin is broken!');
-      }
-
-      return result;
-    });
-}
-
-function uninstallPlugin(item) {
-  customPluginHelper.remove(item.id);
-  util.toast.success('Uninstall successfully!');
-
-  return Promise.resolve('spm uninstall');
-}
-
-function onEnter(item) {
-  const subcmd = item.subcmd;
-
-  if (subcmd === 'install') {
-    return installPlugin(item).then(() => {
-      window.Steward.app.refresh();
-
-      return true;
-    });
-  } else if (subcmd === 'uninstall') {
-    return uninstallPlugin(item).then(() => {
-      window.Steward.app.refresh();
-
-      return true;
-    });
-  }
-}
-
-export default {
-  version,
-  name: 'Steward Package Manager',
-  category: 'steward',
-  type,
-  icon,
-  title,
-  onInput,
-  onEnter,
-  commands,
-  canDisabled: false,
-} as Plugin;

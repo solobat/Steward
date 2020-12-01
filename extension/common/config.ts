@@ -3,7 +3,7 @@ import _ from 'underscore';
 import { browser } from 'webextension-polyfill-ts';
 
 import defaultGeneral from 'conf/general';
-import { plugins as pluginList } from 'plugins';
+import { getPlugins } from 'plugins';
 import { Plugin } from 'plugins/type';
 
 import util, { SimpleCommand } from './util';
@@ -12,36 +12,41 @@ export type PartialPlugin = Pick<
   Plugin,
   'name' | 'version' | 'canDisabled' | 'icon' | 'disabled'
 > & {
-  commands: SimpleCommand[]
+  commands: SimpleCommand[];
 };
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
-const pluginModules: PartialPlugin[] = _.sortBy(
-  pluginList.filter(item => item.commands),
-  'name',
-).map(plugin => {
-  const { name, icon, commands, title, canDisabled } = plugin;
-  let simpleCommands: SimpleCommand[];
 
-  if (commands) {
-    simpleCommands = commands.map(util.simpleCommand);
-  }
+function getPluginModules() {
+  const pluginModules: PartialPlugin[] = _.sortBy(
+    getPlugins(window.Steward).filter(item => item.commands),
+    'name',
+  ).map(plugin => {
+    const { name, icon, commands, title, canDisabled } = plugin;
+    let simpleCommands: SimpleCommand[];
 
-  return {
-    name,
-    version: plugin.version,
-    commands: simpleCommands,
-    title,
-    icon,
-    canDisabled,
-  } as PartialPlugin;
-});
+    if (commands) {
+      simpleCommands = commands.map(util.simpleCommand);
+    }
+
+    return {
+      name,
+      version: plugin.version,
+      commands: simpleCommands,
+      title,
+      icon,
+      canDisabled,
+    } as PartialPlugin;
+  });
+
+  return pluginModules;
+}
 
 function getPluginData() {
   const plugins: PluginsData = {};
 
-  pluginModules.forEach(plugin => {
+  getPluginModules().forEach(plugin => {
     mergePluginData(plugin, plugins);
   });
 
@@ -49,7 +54,7 @@ function getPluginData() {
 }
 
 export interface PluginsData {
-  [prop: string]: PartialPlugin
+  [prop: string]: PartialPlugin;
 }
 
 function mergePluginData(plugin: PartialPlugin, cachePlugins: PluginsData) {
@@ -93,7 +98,7 @@ function mergePluginData(plugin: PartialPlugin, cachePlugins: PluginsData) {
 export interface AppConfig {
   general: typeof defaultGeneral;
   plugins: PluginsData;
-  version: string;  
+  version: string;
 }
 
 function getDefaultConfig() {
@@ -113,7 +118,7 @@ export function getSyncConfig(save, keepVersion) {
       config = res.config;
       config.general = $.extend({}, defaultGeneral, config.general);
 
-      pluginModules.forEach(plugin => {
+      getPluginModules().forEach(plugin => {
         mergePluginData(plugin, config.plugins);
       });
 

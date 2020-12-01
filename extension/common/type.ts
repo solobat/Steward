@@ -1,11 +1,14 @@
+import { AxiosStatic } from 'axios';
 import md5 from 'blueimp-md5';
 import constant from 'constant';
+import dayjs from 'dayjs';
 import { helpers } from 'helper';
 import { Website } from 'helper/websites.helper';
 import { AppState } from 'main/type';
 import { Command, Plugin } from 'plugins/type';
 import { Browser } from 'webextension-polyfill-ts';
 import { AppConfig } from './config';
+import storage from 'utils/storage';
 import util from './util';
 
 declare global {
@@ -45,10 +48,24 @@ export interface AppMethods {
   notice: (...params: any[]) => void;
   getCurrentCommand: () => any;
 } 
-
+/**
+app: window.Steward,
+chrome: chrome,
+util,
+dayjs,
+$,
+axios,
+constant,
+storage,
+browser,
+ */
 export type StewardApp = AppData & {
   helpers: typeof helpers;
   chrome: typeof chrome;
+  dayjs: typeof dayjs;
+  $: JQueryStatic;
+  axios: AxiosStatic;
+  storage: typeof storage;
   util: typeof util;
   constant: typeof constant;
   Toast: any;

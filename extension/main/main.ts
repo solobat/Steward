@@ -16,13 +16,16 @@ import { getComponentsConfig } from 'helper/component.helper';
 import { getCustomPlugins } from 'helper/plugin.helper';
 
 import { helpers } from '../helper';
-import { plugins } from '../plugins';
+import { getPlugins } from '../plugins';
 import * as recordsController from '../server/controller/recordsController';
 import { AppData, PluginCommand, StewardApp, StewardCache } from 'commmon/type';
 import { KeyStatus, Plugin, ResultItem, SearchOnInputFunc } from 'plugins/type';
 import { AppConfig, PluginsData } from 'commmon/config';
 import { Website } from 'helper/websites.helper';
 import { AppState, CommandResultItem } from './type';
+import Axios from 'axios';
+import PromisifyStorage from 'utils/storage';
+import dayjs from 'dayjs';
 
 const commands: {
   [prop: string]: PluginCommand;
@@ -58,6 +61,23 @@ let state: AppState = {
 };
 window.stewardCache = {} as StewardCache;
 window.slogs = [];
+
+window.Steward = window.stewardApp = {
+  chrome: window.chrome,
+  browser,
+  Toast,
+  md5,
+  axios: Axios,
+  dayjs: dayjs,
+  $,
+  storage: PromisifyStorage,
+
+  state,
+
+  helpers,
+  util,
+  constant: CONST,
+};
 
 function findMatchedPlugins(query: string) {
   const items: CommandResultItem[] = [];
@@ -95,7 +115,7 @@ function setState(attrs: Partial<AppState> = {}) {
       const onLeave = state.command.plugin.onLeave;
 
       if (typeof onLeave === 'function') {
-        onLeave({...newState}, {...state});
+        onLeave({ ...newState }, { ...state });
       }
     }
 
@@ -105,7 +125,7 @@ function setState(attrs: Partial<AppState> = {}) {
 
       if (typeof onInit === 'function') {
         if (!plugin.inited) {
-          onInit({...newState});
+          onInit({ ...newState });
           plugin.inited = true;
         }
       }
@@ -125,9 +145,7 @@ function callCommand(command: PluginCommand | undefined, key: string) {
   }
 
   try {
-    return Promise.resolve(
-      command.plugin.onInput(key, command, inContent),
-    );
+    return Promise.resolve(command.plugin.onInput(key, command, inContent));
   } catch (error) {
     console.error(error);
     return Promise.resolve();
@@ -842,7 +860,7 @@ export function initConfig(themode: string, isInContent: boolean) {
     getCustomPlugins(),
     getComponentsConfig(),
   ]).then(([res, customPlugins, components]) => {
-    allPlugins = plugins.concat(customPlugins);
+    allPlugins = getPlugins(window.Steward).concat(customPlugins);
     classifyPlugins(res.config.plugins);
     initWebsites();
 
@@ -864,23 +882,10 @@ export function initConfig(themode: string, isInContent: boolean) {
 }
 
 export function globalApi(appData: AppData) {
-  window.Steward = window.stewardApp = {
-    mode: appData.mode,
-    inContent: appData.inContent,
-    config: appData.config,
-    data: appData.data,
-
-    chrome: window.chrome,
-    browser,
-    Toast,
-    md5,
-
-    state,
-
-    helpers,
-    util,
-    constant: CONST,
-  } as StewardApp;
+  window.Steward.mode = appData.mode;
+  window.Steward.inContent = appData.inContent;
+  window.Steward.config = appData.config;
+  window.Steward.data = appData.data;
 }
 
 export function installApp(app) {

@@ -1,4 +1,5 @@
 // browser plugins
+import { StewardApp } from 'commmon/type';
 import bookmark from './browser/bookmark';
 import chrome from './browser/chrome';
 import del from './browser/del';
@@ -36,9 +37,9 @@ import steward from './steward/steward';
 import wallpaper from './steward/wallpaper';
 import workflow from './steward/workflow';
 import wsm from './steward/wsm';
-import { Plugin } from './type';
+import { Plugin, PluginFactory } from './type';
 
-const pluginList: Plugin[] = [
+const pluginCreators: PluginFactory[] = [
   about,
   note,
   diary,
@@ -75,19 +76,31 @@ const pluginList: Plugin[] = [
   ...extPlugins,
 ];
 
-// orkey: original key
-pluginList.forEach((plugin: Plugin) => {
-  if (plugin.commands) {
-    plugin.commands.forEach(command => {
-      if (!command.orkey) {
-        command.orkey = command.key;
-      }
-    });
+let plugins: Plugin[];
+
+export function getPlugins(Steward: StewardApp = window.Steward) {
+  if (plugins) {
+    return plugins;
   }
 
-  if (plugin.canDisabled) {
-    plugin.disabled = false;
-  }
-});
+  // orkey: original key
+  plugins = pluginCreators.map((pluginCreator: PluginFactory) => {
+    const plugin: Plugin = pluginCreator(Steward);
 
-export const plugins = pluginList;
+    if (plugin.commands) {
+      plugin.commands.forEach(command => {
+        if (!command.orkey) {
+          command.orkey = command.key;
+        }
+      });
+    }
+
+    if (plugin.canDisabled) {
+      plugin.disabled = false;
+    }
+
+    return plugin;
+  });
+
+  return plugins;
+}

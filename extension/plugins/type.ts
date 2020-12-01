@@ -1,5 +1,5 @@
-import { PluginCommand } from "commmon/type";
-import { AppState } from "main/type";
+import { PluginCommand, StewardApp } from 'commmon/type';
+import { AppState } from 'main/type';
 
 export type Type = 'keyword' | 'search' | 'always' | 'regexp' | 'other';
 
@@ -45,7 +45,8 @@ export interface KeyStatus {
 export interface BaseOnInputFunc {
   (query: string, command: Command, inContent: boolean):
     | Promise<any>
-    | ResultItem[];
+    | ResultItem[]
+    | string;
 }
 
 export interface SearchOnInputFunc {
@@ -67,6 +68,7 @@ export namespace StewardPlugin {
 export interface Plugin {
   readonly name: string;
   version: number;
+  type?: string;
   category: string;
   icon: string;
   title: string;
@@ -78,10 +80,16 @@ export interface Plugin {
   onInput: StewardPlugin.onInput;
   onEnter: StewardPlugin.onEnter;
   setup?: (ext?: any) => void;
+  authenticate?: () => void;
   onBoxEmpty?: () => void;
   onInit?: (state: AppState) => void;
   onLeave?: (newState: AppState, oldState: AppState) => void;
   onStorageChange?: (event: StorageEvent, command: PluginCommand) => void;
   onNotice?: (eventName: string, ...params: any[]) => void;
   getOneCommand?: StewardPlugin.getOneCommand;
+  [prop: string]: any;
+}
+
+export interface PluginFactory {
+  (Steward: StewardApp): Plugin;
 }

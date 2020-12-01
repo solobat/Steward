@@ -7,60 +7,66 @@
 import urlRegex from 'url-regex';
 
 import util from 'common/util';
-import { Plugin } from 'plugins/type';
+import { Command, Plugin } from 'plugins/type';
+import { StewardApp } from 'commmon/type';
 
-const version = 3;
-const name = 'openurl';
-const key = 'open';
-const type = 'regexp';
-const icon = chrome.extension.getURL('iconfont/openurl.svg');
-const title = chrome.i18n.getMessage(`${name}_title`);
-const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
-const regExp = urlRegex({ exact: true, strict: false });
-const commands = [
-  {
-    key,
-    title,
-    type,
-    subtitle,
-    icon,
-    editable: false,
-    regExp,
-  },
-];
+export default function(Steward: StewardApp): Plugin {
+  const { chrome } = Steward;
 
-function onInput(url) {
-  const data = [
+  const version = 3;
+  const name = 'openurl';
+  const key = 'open';
+  const type = 'regexp';
+  const icon = chrome.extension.getURL('iconfont/openurl.svg');
+  const title = chrome.i18n.getMessage(`${name}_title`);
+  const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
+  const regExp = urlRegex({ exact: true, strict: false });
+  const commands: Command[] = [
     {
-      key: 'url',
-      id: name,
+      key,
+      title,
+      type,
+      subtitle,
       icon,
-      title: url,
-      desc: subtitle,
-      url,
+      editable: false,
+      regExp,
     },
   ];
 
-  return data;
-}
+  function onInput(url) {
+    const data = [
+      {
+        key: 'url',
+        id: name,
+        icon,
+        title: url,
+        desc: subtitle,
+        url,
+      },
+    ];
 
-function onEnter({ url }, command, query, keyStatus) {
-  let theurl = url;
-
-  if (!/^https?/.test(url)) {
-    theurl = `http://${url}`;
+    return data;
   }
-  util.createTab({ url: theurl }, keyStatus);
-}
 
-export default {
-  version,
-  name: 'Open Url',
-  category: 'other',
-  icon,
-  title,
-  onInput,
-  onEnter,
-  commands,
-  canDisabled: false,
-} as Plugin;
+  function onEnter(item, command, query, keyStatus) {
+    const { url } = item;
+    let theurl = url;
+
+    if (!/^https?/.test(url)) {
+      theurl = `http://${url}`;
+    }
+    util.createTab({ url: theurl }, keyStatus);
+  }
+
+  return {
+    version,
+    name: 'Open Url',
+    category: 'other',
+    icon,
+    title,
+    onInput,
+    onEnter,
+    commands,
+    canDisabled: false,
+  };
+}

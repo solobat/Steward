@@ -4,82 +4,88 @@
  * @mail solopea@gmail.com
  */
 
+import { StewardApp } from 'commmon/type';
 import util from 'common/util';
-import { Plugin } from 'plugins/type';
+import { Command, Plugin } from 'plugins/type';
 
-const version = 2;
-const name = 'deleteExtension';
-const key = 'del';
-const type = 'keyword';
-const icon = chrome.extension.getURL('iconfont/del.svg');
-const title = chrome.i18n.getMessage(`${name}_title`);
-const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
-const commands = [
-  {
-    key,
-    type,
-    title,
-    subtitle,
-    icon,
-    editable: true,
-  },
-];
+export default function(Steward: StewardApp): Plugin {
+  const { chrome } = Steward;
 
-function uninstall(id, cb) {
-  chrome.management.uninstall(id, function(...args) {
-    Reflect.apply(cb, null, args);
-  });
-}
-
-// get all
-function getExtensions(query, enabled, callback) {
-  chrome.management.getAll(function(extList) {
-    const matchExts = extList.filter(function(ext) {
-      return util.matchText(query, ext.name);
-    });
-
-    callback(matchExts);
-  });
-}
-
-function dataFormat(rawList) {
-  return rawList.map(function(item) {
-    const url =
-      item.icons instanceof Array ? item.icons[item.icons.length - 1].url : '';
-    const isWarn = item.installType === 'development';
-    return {
+  const version = 2;
+  const name = 'deleteExtension';
+  const key = 'del';
+  const type = 'keyword';
+  const icon = chrome.extension.getURL('iconfont/del.svg');
+  const title = chrome.i18n.getMessage(`${name}_title`);
+  const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
+  const commands: Command[] = [
+    {
       key,
-      id: item.id,
-      icon: url,
-      title: item.name,
-      desc: item.description,
-      isWarn: isWarn,
-    };
-  });
-}
+      type,
+      title,
+      subtitle,
+      icon,
+      editable: true,
+    },
+  ];
 
-function onInput(query) {
-  return new Promise(resolve => {
-    getExtensions(query.toLowerCase(), false, function(matchExts) {
-      resolve(dataFormat(matchExts));
+  function uninstall(id, cb) {
+    Steward.chrome.management.uninstall(id, function(...args) {
+      Reflect.apply(cb, null, args);
     });
-  });
-}
+  }
 
-function onEnter(item) {
-  uninstall(item.id, () => {
-    window.Steward.app.refresh();
-  });
-}
+  // get all
+  function getExtensions(query, enabled, callback) {
+    chrome.management.getAll(function(extList) {
+      const matchExts = extList.filter(function(ext) {
+        return util.matchText(query, ext.name);
+      });
 
-export default {
-  version,
-  name: 'Delete Extension',
-  category: 'browser',
-  icon,
-  title,
-  commands,
-  onInput,
-  onEnter,
-  canDisabled: false,
-} as Plugin;
+      callback(matchExts);
+    });
+  }
+
+  function dataFormat(rawList) {
+    return rawList.map(function(item) {
+      const url =
+        item.icons instanceof Array
+          ? item.icons[item.icons.length - 1].url
+          : '';
+      const isWarn = item.installType === 'development';
+      return {
+        key,
+        id: item.id,
+        icon: url,
+        title: item.name,
+        desc: item.description,
+        isWarn: isWarn,
+      };
+    });
+  }
+
+  function onInput(query) {
+    return new Promise(resolve => {
+      getExtensions(query.toLowerCase(), false, function(matchExts) {
+        resolve(dataFormat(matchExts));
+      });
+    });
+  }
+
+  function onEnter(item) {
+    uninstall(item.id, () => {
+      Steward.app.refresh();
+    });
+  }
+  return {
+    version,
+    name: 'Delete Extension',
+    category: 'browser',
+    icon,
+    title,
+    commands,
+    onInput,
+    onEnter,
+    canDisabled: false,
+  };
+}

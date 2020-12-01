@@ -10,196 +10,203 @@ import { browser } from 'webextension-polyfill-ts';
 
 import util from 'common/util';
 import { Plugin } from 'plugins/type';
+import { StewardApp } from 'commmon/type';
 
-const version = 7;
-const name = 'tabs';
-const keys = [
-  { key: 'tab' },
-  { key: 'tabc', shiftKey: true, allowBatch: true },
-  { key: 'tabm' },
-  { key: 'tabp', allowBatch: true },
-  { key: 'mute' },
-];
-const type = 'keyword';
-const icon = chrome.extension.getURL('iconfont/tab.svg');
-const title = chrome.i18n.getMessage(`${name}_title`);
-const commands = util.genCommands(name, icon, keys, type);
+export default function(Steward: StewardApp): Plugin {
+  const { chrome } = Steward;
 
-function getAllTabs(query, callback) {
-  chrome.windows.getAll({ populate: true }, function(wins) {
-    if (wins.length) {
-      let curWin;
+  const version = 7;
+  const name = 'tabs';
+  const keys = [
+    { key: 'tab' },
+    { key: 'tabc', shiftKey: true, allowBatch: true },
+    { key: 'tabm' },
+    { key: 'tabp', allowBatch: true },
+    { key: 'mute' },
+  ];
+  const type = 'keyword';
+  const icon = chrome.extension.getURL('iconfont/tab.svg');
+  const title = chrome.i18n.getMessage(`${name}_title`);
+  const commands = util.genCommands(name, icon, keys, type);
 
-      curWin = wins.find(win => win.focused);
+  function getAllTabs(query, callback) {
+    chrome.windows.getAll({ populate: true }, function(wins) {
+      if (wins.length) {
+        let curWin;
 
-      function getTabs() {
-        const tabList = curWin.tabs.filter(function(tab) {
-          return util.matchText(query, `${tab.title}${tab.url}`);
-        });
+        curWin = wins.find(win => win.focused);
 
-        callback(tabList);
-      }
+        function getTabs() {
+          const tabList = curWin.tabs.filter(function(tab) {
+            return util.matchText(query, `${tab.title}${tab.url}`);
+          });
 
-      if (!curWin) {
-        // popup mode
-        chrome.windows.getLastFocused({ populate: true }, result => {
-          curWin = result;
+          callback(tabList);
+        }
 
+        if (!curWin) {
+          // popup mode
+          chrome.windows.getLastFocused({ populate: true }, result => {
+            curWin = result;
+
+            getTabs();
+          });
+        } else {
           getTabs();
-        });
+        }
       } else {
-        getTabs();
+        callback([]);
       }
+    });
+  }
+
+  function getListByCommand(rawList, command) {
+    let list;
+    const { orkey } = command;
+
+    if (orkey === 'tabm' || orkey === 'tabp' || orkey === 'mute') {
+      list = _.sortBy(rawList, 'active').reverse();
     } else {
-      callback([]);
+      list = _.sortBy(rawList, 'active');
     }
-  });
-}
 
-function getListByCommand(rawList, command) {
-  let list;
-  const { orkey } = command;
-
-  if (orkey === 'tabm' || orkey === 'tabp' || orkey === 'mute') {
-    list = _.sortBy(rawList, 'active').reverse();
-  } else {
-    list = _.sortBy(rawList, 'active');
+    return list;
   }
 
-  return list;
-}
+  function dataFormat(rawList, command) {
+    const wrapDesc = util.wrapWithMaxNumIfNeeded('', 20);
+    const list = getListByCommand(rawList, command);
 
-function dataFormat(rawList, command) {
-  const wrapDesc = util.wrapWithMaxNumIfNeeded('', 20);
-  const list = getListByCommand(rawList, command);
+    return list.map(function(item, index) {
+      let desc = command.subtitle;
 
-  return list.map(function(item, index) {
-    let desc = command.subtitle;
+      if (command.shiftKey && !item.active) {
+        desc = wrapDesc(command.subtitle, index);
+      }
+      const tabTitle = item.active ? `Active: ${item.title}` : item.title;
 
-    if (command.shiftKey && !item.active) {
-      desc = wrapDesc(command.subtitle, index);
-    }
-    const tabTitle = item.active ? `Active: ${item.title}` : item.title;
-
-    return {
-      key: command.key,
-      id: item.id,
-      icon: item.favIconUrl || chrome.extension.getURL('img/icon.png'),
-      title: tabTitle,
-      muted: item.mutedInfo.muted,
-      desc,
-      isWarn: item.active,
-      raw: item,
-    };
-  });
-}
-
-function queryTabs(query, command) {
-  return new Promise(resolve => {
-    getAllTabs(query, function(data) {
-      resolve(dataFormat(data, command));
+      return {
+        key: command.key,
+        id: item.id,
+        icon: item.favIconUrl || chrome.extension.getURL('img/icon.png'),
+        title: tabTitle,
+        muted: item.mutedInfo.muted,
+        desc,
+        isWarn: item.active,
+        raw: item,
+      };
     });
-  });
-}
-
-function onInput(query, command) {
-  if (command.orkey === 'tabm') {
-    return queryTabs('', command);
-  } else {
-    return queryTabs(query, command);
   }
-}
 
-function removeTabs(ids) {
-  return new Promise(resolve => {
-    chrome.tabs.remove(ids, () => {
-      resolve(true);
-    });
-  });
-}
-
-function moveTab(tabId, query) {
-  const index = parseInt(query, 10) - 1;
-
-  if (index >= -1) {
+  function queryTabs(query, command) {
     return new Promise(resolve => {
-      chrome.tabs.move(tabId, { index }, resp => {
-        console.log(resp);
-        resolve('');
+      getAllTabs(query, function(data) {
+        resolve(dataFormat(data, command));
       });
     });
-  } else {
-    Toast.warning(chrome.i18n.getMessage('tab_warning_invalidindex'));
-    return Promise.resolve();
   }
-}
 
-function onEnter(item, { key, orkey }, query, { shiftKey }, list) {
-  if (orkey === 'tab') {
-    updateTab(item.id, {
-      active: true,
-    });
-  } else if (orkey === 'tabc') {
-    let items;
-
-    if (shiftKey) {
-      items = list;
-    } else if (item instanceof Array) {
-      items = item;
+  function onInput(query, command) {
+    if (command.orkey === 'tabm') {
+      return queryTabs('', command);
     } else {
-      items = [item];
+      return queryTabs(query, command);
     }
+  }
 
-    const ids = items
-      .filter(it => !it.isWarn)
-      .map(it => {
-        window.slogs.push(`close tab: ${it.title}`);
-        return it.id;
+  function removeTabs(ids) {
+    return new Promise(resolve => {
+      chrome.tabs.remove(ids, () => {
+        resolve(true);
       });
-
-    return removeTabs(ids).then(() => {
-      return new Promise(resolve => {
-        // Tab interface update is not very timely
-        setTimeout(() => {
-          if (query) {
-            resolve(`${key} `);
-          } else {
-            resolve('');
-          }
-        }, 200);
-      });
-    });
-  } else if (orkey === 'tabm') {
-    return moveTab(item.id, query);
-  } else if (orkey === 'tabp') {
-    const exces = [
-      tab => updateTab(tab.id, { pinned: !tab.raw.pinned }),
-      tab => updateTab(tab.id, { pinned: !tab.raw.pinned }),
-    ];
-    return util
-      .batchExecutionIfNeeded(shiftKey, exces, [list, item])
-      .then(() => '');
-  } else if (orkey === 'mute') {
-    updateTab(item.id, {
-      muted: !item.muted,
-    }).then(() => {
-      window.Steward.app.refresh();
     });
   }
-}
 
-function updateTab(id, updateProperties) {
-  return browser.tabs.update(id, updateProperties);
-}
+  function moveTab(tabId, query) {
+    const index = parseInt(query, 10) - 1;
 
-export default {
-  version,
-  name: 'Tabs',
-  category: 'browser',
-  icon,
-  title,
-  commands,
-  onInput,
-  onEnter,
-  canDisabled: false,
-} as Plugin;
+    if (index >= -1) {
+      return new Promise(resolve => {
+        chrome.tabs.move(tabId, { index }, resp => {
+          console.log(resp);
+          resolve('');
+        });
+      });
+    } else {
+      Toast.warning(chrome.i18n.getMessage('tab_warning_invalidindex'));
+      return Promise.resolve();
+    }
+  }
+
+  function onEnter(item, command, query, { shiftKey }, list) {
+    const { key, orkey } = command;
+
+    if (orkey === 'tab') {
+      updateTab(item.id, {
+        active: true,
+      });
+    } else if (orkey === 'tabc') {
+      let items;
+
+      if (shiftKey) {
+        items = list;
+      } else if (item instanceof Array) {
+        items = item;
+      } else {
+        items = [item];
+      }
+
+      const ids = items
+        .filter(it => !it.isWarn)
+        .map(it => {
+          window.slogs.push(`close tab: ${it.title}`);
+          return it.id;
+        });
+
+      return removeTabs(ids).then(() => {
+        return new Promise(resolve => {
+          // Tab interface update is not very timely
+          setTimeout(() => {
+            if (query) {
+              resolve(`${key} `);
+            } else {
+              resolve('');
+            }
+          }, 200);
+        });
+      });
+    } else if (orkey === 'tabm') {
+      return moveTab(item.id, query);
+    } else if (orkey === 'tabp') {
+      const exces = [
+        tab => updateTab(tab.id, { pinned: !tab.raw.pinned }),
+        tab => updateTab(tab.id, { pinned: !tab.raw.pinned }),
+      ];
+      return util
+        .batchExecutionIfNeeded(shiftKey, exces, [list, item])
+        .then(() => '');
+    } else if (orkey === 'mute') {
+      updateTab(item.id, {
+        muted: !item.muted,
+      }).then(() => {
+        Steward.app.refresh();
+      });
+    }
+  }
+
+  function updateTab(id, updateProperties) {
+    return browser.tabs.update(id, updateProperties);
+  }
+
+  return {
+    version,
+    name: 'Tabs',
+    category: 'browser',
+    icon,
+    title,
+    commands,
+    onInput,
+    onEnter,
+    canDisabled: false,
+  };
+}
