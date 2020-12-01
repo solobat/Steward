@@ -5,7 +5,7 @@
  */
 
 import ItemsStorage from 'helper/storage.helper';
-import { Plugin } from 'plugins/type';
+import { Command, Plugin, ResultItem, StewardPlugin } from 'plugins/type';
 
 const version = 1;
 const name = 'random';
@@ -15,7 +15,7 @@ const icon = chrome.extension.getURL('iconfont/random.svg');
 const title = chrome.i18n.getMessage(`${name}_title`);
 const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
 const randomStorage = new ItemsStorage('Random Commands', 'randomCmds', true);
-const commands = [
+const commands: Command[] = [
   {
     key,
     type,
@@ -26,7 +26,7 @@ const commands = [
   },
 ];
 
-const defaultResult = [
+const defaultResult: ResultItem[] = [
   {
     icon,
     title,
@@ -46,7 +46,7 @@ function switch2randomMode() {
   });
 }
 
-function onInput(query) {
+function onInput (query) {
   if (!query) {
     switch2randomMode();
 
@@ -58,7 +58,7 @@ function onInput(query) {
   }
 }
 
-function onEnter(item, command, query) {
+function onEnter (item, command, query) {
   if (query) {
     return randomStorage.addItem(query).then(() => {
       return `${command.key} `;
@@ -80,11 +80,11 @@ function dataFormat(rawList = []) {
       icon: icon,
       title: `[${item}]`,
       desc,
-    };
+    } as ResultItem;
   });
 }
 
-function getOneCommand() {
+function getOneCommand(): Promise<string> {
   return randomStorage.getItems().then(items => {
     if (items && items.length) {
       return items[Math.floor(Math.random() * items.length)];

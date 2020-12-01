@@ -50,7 +50,7 @@ function onInput(key, command, inContent) {
     return onSeturlInput(key, command);
   } else {
     if (!key) {
-      return Reflect.apply(showBlacklist, this, [command]);
+      return showBlacklist(command);
     } else {
       if (key === '/' && inContent) {
         window.Steward.app.applyCommand(`${command.key} ${window.parentHost}`);
@@ -117,14 +117,14 @@ function onEnter(item, command, query) {
       return removeBlockedSiteReplaceURL(item);
     }
   } else {
-    if (this.query) {
-      return Reflect.apply(addBlacklist, this, [
+    if (window.Steward.state.query) {
+      return addBlacklist(
         command.key,
-        this.query,
+        window.Steward.state.query,
         command.orkey,
-      ]);
+      );
     } else {
-      return Reflect.apply(removeBlacklist, this, [item]);
+      return removeBlacklist(item);
     }
   }
 }

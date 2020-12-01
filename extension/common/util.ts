@@ -4,9 +4,9 @@ import pinyin from 'pinyin';
 import Toast from 'toastr';
 
 import { QUOTA_BYTES_PER_ITEM } from 'constant/number';
-import { Command, Type } from 'plugins/type';
+import { Command, KeyStatus, ResultItem, Type } from 'plugins/type';
 
-function getPinyin(name: string) {
+function getPinyin(name: string): string {
   return pinyin(name, {
     style: pinyin.STYLE_NORMAL,
   }).join('');
@@ -37,10 +37,7 @@ function guid(): string {
   return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
 }
 
-export interface SimpleCommand {
-  key: string;
-  orkey?: string;
-}
+export type SimpleCommand = Pick<Command, 'key' | 'orkey'>;
 
 const simpleCommand = (command: Command) => {
   return {
@@ -73,7 +70,7 @@ function genCommands(name: string, icon: string, items: any[], type: Type) {
       weight,
       shiftKey,
       editable: editable !== false,
-    };
+    } as Command;
   });
 }
 
@@ -127,7 +124,7 @@ function getEmptyResult(command, msg) {
   ];
 }
 
-function copyToClipboard(text, showMsg) {
+function copyToClipboard(text: string, showMsg: boolean): void {
   document.addEventListener(
     'copy',
     event => {
@@ -146,7 +143,7 @@ function copyToClipboard(text, showMsg) {
   document.execCommand('copy');
 }
 
-function getMatches(suggestions, query, key?) {
+function getMatches(suggestions: any[], query: string, key?: string) {
   const matches = fuzzaldrinPlus.filter(suggestions, query, {
     maxResults: 20,
     usePathScoring: true,
@@ -156,13 +153,13 @@ function getMatches(suggestions, query, key?) {
   return matches;
 }
 
-function getParameterByName(name, search = window.location.search) {
+function getParameterByName(name: string, search = window.location.search) {
   const urlsearch = new URLSearchParams(search);
 
   return urlsearch.get(name);
 }
 
-const array2map = (keyField, valField) => arr => {
+const array2map = (keyField: string, valField) => (arr: any[]) => {
   const ret = {};
 
   arr.forEach(item => {
@@ -191,20 +188,22 @@ const wrapWithMaxNumIfNeeded = (
   return ret;
 };
 
+type ListAndItem = [ResultItem[], ResultItem | ResultItem[]]
 const batchExecutionIfNeeded = (
-  predicate,
-  actions: ((item: any, keyStatus?: any) => void)[],
-  [list, item],
-  keyStatus?,
+  predicate: boolean,
+  actions: ((item: any, keyStatus?: KeyStatus) => void)[],
+  listAndItem: ListAndItem,
+  keyStatus?: KeyStatus,
   maxOperandsNum = window.stewardCache.config.general.maxOperandsNum,
 ) => {
   const results = [];
   const [exec4batch, exec] = actions;
+  const [list, item] = listAndItem;
 
   if (predicate || item instanceof Array) {
     const num = predicate ? maxOperandsNum : item.length;
 
-    results.push(list.slice(0, num).forEach(exec4batch));
+    results.push(list.slice(0, num).forEach((value) => exec4batch(value, keyStatus)));
   } else {
     results.push(exec(item, keyStatus));
   }
@@ -212,7 +211,7 @@ const batchExecutionIfNeeded = (
   return Promise.all(results);
 };
 
-const createTab = (item, keyStatus: any = {}) => {
+const createTab = (item: Partial<ResultItem>, keyStatus: Partial<KeyStatus> = {}) => {
   const { mode, inContent } = window.Steward;
 
   if (mode === 'popup' && !inContent) {
@@ -231,11 +230,11 @@ const createTab = (item, keyStatus: any = {}) => {
 };
 
 const tabCreateExecs = [
-  item => {
+  (item: Partial<ResultItem>) => {
     chrome.tabs.create({ url: item.url, active: false });
     window.slogs.push(`open ${item.url}`);
   },
-  (item, keyStatus = {}) => {
+  (item: Partial<ResultItem>, keyStatus: Partial<KeyStatus> = {}) => {
     createTab(item, keyStatus);
 
     window.slogs.push(`open ${item.url}`);
@@ -250,7 +249,7 @@ function getLang() {
   }
 }
 
-function getDocumentURL(name, category) {
+function getDocumentURL(name: string, category: string) {
   const lang = getLang();
   let baseUrl;
   const fixedName = name.replace(/\s/, '-');
@@ -264,7 +263,7 @@ function getDocumentURL(name, category) {
   return `${baseUrl}/${fixedName}.html`;
 }
 
-function getBytesInUse(key) {
+function getBytesInUse(key: string) {
   return new Promise(resolve => {
     chrome.storage.sync.getBytesInUse(key, resp => {
       console.log(resp);
@@ -273,7 +272,7 @@ function getBytesInUse(key) {
   });
 }
 
-function isStorageSafe(key) {
+function isStorageSafe(key: string) {
   if (!key) {
     return Promise.reject('Storage is full, can not be added!');
   } else {
@@ -302,7 +301,8 @@ function shouldSupportMe() {
   }
 }
 
-function simTemplate(tpl, data) {
+type TplData = {[prop: string]: any};
+function simTemplate(tpl: string, data: TplData) {
   return tpl.replace(/\{\{([A-Za-z0-9_]+)\}\}/g, function(m, $1) {
     return typeof data[$1] !== 'undefined' ? data[$1] : '';
   });
@@ -325,11 +325,11 @@ const getData = field => () => {
   });
 };
 
-function getTplMsg(tplKey, data) {
+function getTplMsg(tplKey: string, data: TplData) {
   return simTemplate(chrome.i18n.getMessage(tplKey), data);
 }
 
-function getTextMsg(tplKey, textKey) {
+function getTextMsg(tplKey: string, textKey: string) {
   const data = {
     text: chrome.i18n.getMessage(textKey),
   };
@@ -337,7 +337,7 @@ function getTextMsg(tplKey, textKey) {
   return getTplMsg(tplKey, data);
 }
 
-function getURLParams(keys, search = window.location.search) {
+function getURLParams(keys: string[], search = window.location.search): {[prop: string]: any} {
   const searchParams = new URLSearchParams(search);
 
   return keys.reduce((obj, key) => {

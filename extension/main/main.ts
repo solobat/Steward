@@ -19,15 +19,10 @@ import { helpers } from '../helper';
 import { plugins } from '../plugins';
 import * as recordsController from '../server/controller/recordsController';
 import { AppData, PluginCommand, StewardApp, StewardCache } from 'commmon/type';
-import {
-  Command,
-  KeyStatus,
-  Plugin,
-  ResultItem,
-  SearchOnInputFunc,
-} from 'plugins/type';
+import { KeyStatus, Plugin, ResultItem, SearchOnInputFunc } from 'plugins/type';
 import { AppConfig, PluginsData } from 'commmon/config';
 import { Website } from 'helper/websites.helper';
+import { AppState, CommandResultItem } from './type';
 
 const commands: {
   [prop: string]: PluginCommand;
@@ -61,32 +56,8 @@ let state: AppState = {
     altKey: false,
   },
 };
-interface AppState {
-  background: boolean;
-  key: string;
-  stage: string;
-  str: string;
-  cmd: string;
-  query: string;
-  delay: number;
-  lastcmd: string;
-  command: PluginCommand | null;
-  workflowStack: any[];
-  keyStatus: Partial<KeyStatus>;
-  searchTimer?: number;
-}
-
 window.stewardCache = {} as StewardCache;
 window.slogs = [];
-
-interface CommandResultItem {
-  key: string;
-  id: string;
-  icon: string;
-  title: string;
-  desc: string;
-  weight: number;
-}
 
 function findMatchedPlugins(query: string) {
   const items: CommandResultItem[] = [];
@@ -124,7 +95,7 @@ function setState(attrs: Partial<AppState> = {}) {
       const onLeave = state.command.plugin.onLeave;
 
       if (typeof onLeave === 'function') {
-        Reflect.apply(onLeave, state, [...newState]);
+        onLeave({...newState}, {...state});
       }
     }
 
@@ -134,7 +105,7 @@ function setState(attrs: Partial<AppState> = {}) {
 
       if (typeof onInit === 'function') {
         if (!plugin.inited) {
-          Reflect.apply(onInit, state, [...newState]);
+          onInit({...newState});
           plugin.inited = true;
         }
       }
@@ -155,7 +126,7 @@ function callCommand(command: PluginCommand | undefined, key: string) {
 
   try {
     return Promise.resolve(
-      Reflect.apply(command.plugin.onInput, state, [key, command, inContent]),
+      command.plugin.onInput(key, command, inContent),
     );
   } catch (error) {
     console.error(error);
@@ -322,7 +293,9 @@ function defaultStage() {
   }
 }
 
-function handleEnterResult(result: Promise<string | boolean> | void): Promise<void> | void {
+function handleEnterResult(
+  result: Promise<string | boolean> | void,
+): Promise<void> | void {
   const delay4close = 1000;
 
   if (result && result instanceof Promise) {
@@ -431,7 +404,7 @@ export function getInitCmd() {
     } else if (defaultPlugin === 'Random') {
       return randomPlugin.getOneCommand();
     } else {
-      const defaultCommand: any = Object.values(commands).find(
+      const defaultCommand: PluginCommand = Object.values(commands).find(
         (command: any) => command.name === defaultPlugin,
       );
 
@@ -442,7 +415,12 @@ export function getInitCmd() {
   }
 }
 
-function handleNormalItem(box: AppState, dataList: ResultItem[], item: ResultItem, keyStatus: KeyStatus): Promise<boolean> | void {
+function handleNormalItem(
+  box: AppState,
+  dataList: ResultItem[],
+  item: ResultItem,
+  keyStatus: KeyStatus,
+): Promise<boolean> | void {
   const ITEM_TYPE = CONST.BASE.ITEM_TYPE;
   const type = item.key;
 
@@ -482,22 +460,11 @@ function handleNormalItem(box: AppState, dataList: ResultItem[], item: ResultIte
 
 function execCommand(
   dataList: ResultItem[] = [],
-  item: ResultItem | false,
+  item: ResultItem[] | ResultItem | false,
   fromWorkflow: boolean,
   keyStatus?: KeyStatus,
 ): Promise<void> | void {
-  if (!item) {
-    return;
-  } else if (item && item.isDefault && !state.query) {
-    return;
-  } else if (!state.cmd || item.universal) {
-    const result = handleNormalItem(state, dataList, item, keyStatus);
-    const ret = handleEnterResult(result);
-
-    window.Steward.app.emit('afterExecCommand', item, dataList, state.query);
-
-    return ret;
-  } else {
+  if (item) {
     let plugin: Plugin;
     const command = state.command;
 
@@ -507,62 +474,84 @@ function execCommand(
       plugin = plugin4empty;
     }
 
-    if (item && item.key === 'workflow') {
-      if (state.workflowStack.indexOf(item.wid) === -1) {
-        return execWorkflow(item).then(() => {
-          state.command = command;
-          state.background = false;
-
-          try {
-            return Reflect.apply(plugin.onEnter, state, [
-              item,
-              command,
-              state.query,
-              state.keyStatus,
-              dataList,
-            ]);
-          } catch (error) {
-            console.log(error);
-            return;
-          }
-        });
-      } else {
-        console.log('Avoid recursive execution of the same workflow');
+    if (!Array.isArray(item)) {
+      if (item.isDefault && !state.query) {
         return;
-      }
-    } else {
-      let partial = item;
+      } else if (!state.cmd || item.universal) {
+        const result = handleNormalItem(state, dataList, item, keyStatus);
+        const ret = handleEnterResult(result);
 
-      if (state.command && !state.command.allowBatch && item instanceof Array) {
-        partial = item[0];
-      }
-
-      try {
-        const result = Reflect.apply(plugin.onEnter, state, [
-          partial,
-          state.command,
-          state.query,
-          state.keyStatus,
+        window.Steward.app.emit(
+          'afterExecCommand',
+          item,
           dataList,
-        ]);
+          state.query,
+        );
 
-        if (!fromWorkflow) {
-          const enterResult = handleEnterResult(result);
+        return ret;
+      } else if (item.key === 'workflow') {
+        if (state.workflowStack.indexOf(item.wid) === -1) {
+          return execWorkflow(item).then(() => {
+            state.command = command;
+            state.background = false;
 
-          return enterResult;
+            try {
+              return plugin.onEnter(
+                item,
+                command,
+                state.query,
+                state.keyStatus,
+                dataList,
+              );
+            } catch (error) {
+              console.log(error);
+              return;
+            }
+          });
         } else {
-          return result;
+          console.log('Avoid recursive execution of the same workflow');
+          return;
         }
-      } catch (error) {
-        console.log(error);
-
-        return;
       }
     }
+
+    let partial: ResultItem | ResultItem[] = item;
+
+    if (state.command && !state.command.allowBatch && Array.isArray(item)) {
+      partial = item[0];
+    }
+
+    try {
+      const result = plugin.onEnter(
+        partial,
+        state.command,
+        state.query,
+        state.keyStatus,
+        dataList,
+      );
+
+      if (!fromWorkflow) {
+        const enterResult = handleEnterResult(result);
+
+        return enterResult;
+      } else {
+        return result;
+      }
+    } catch (error) {
+      console.log(error);
+
+      return;
+    }
+  } else {
+    return;
   }
 }
 
-export function handleEnter(dataList: ResultItem[], index: number, keyStatus: KeyStatus) {
+export function handleEnter(
+  dataList: ResultItem[],
+  index: number,
+  keyStatus: KeyStatus,
+) {
   setState({
     workflowStack: [],
     keyStatus,
@@ -723,7 +712,7 @@ export function handleEmpty() {
       cmd: CONST.BASE.EMPTY_COMMAND,
       command: null,
       searchTimer: window.setTimeout(() => {
-        Reflect.apply(plugin4empty.onBoxEmpty, state, []);
+        plugin4empty.onBoxEmpty();
       }, state.delay),
     });
   } else {
@@ -741,7 +730,7 @@ function init() {
       const onStorageChange = command.plugin.onStorageChange;
 
       if (onStorageChange) {
-        Reflect.apply(onStorageChange, state, [event, command]);
+        onStorageChange(event, command);
       }
     }
   });
@@ -885,6 +874,8 @@ export function globalApi(appData: AppData) {
     browser,
     Toast,
     md5,
+
+    state,
 
     helpers,
     util,

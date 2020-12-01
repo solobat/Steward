@@ -134,7 +134,7 @@ function saveMessages(data) {
   });
 }
 
-function handleSayEnter(query, item, command, shiftKey, box) {
+function handleSayEnter(query, item, command, shiftKey) {
   let task;
 
   if (!shiftKey) {
@@ -173,7 +173,7 @@ function onEnter(item, command, query, { shiftKey }) {
   const { orkey } = command;
 
   if (orkey === ':') {
-    return handleSayEnter(query, item, command, shiftKey, this);
+    return handleSayEnter(query, item, command, shiftKey);
   } else if (orkey === 'diary') {
     return handleDiaryEnter(item, shiftKey);
   }

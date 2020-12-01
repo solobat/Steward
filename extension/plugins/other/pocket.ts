@@ -167,7 +167,7 @@ function authenticate() {
 
 function onStorageChange(event) {
   if (event.key === 'pocket_username') {
-    this.render(this.str);
+    window.Steward.app.applyCommand(window.Steward.state.str);
   }
 }
 

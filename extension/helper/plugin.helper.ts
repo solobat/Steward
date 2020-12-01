@@ -17,6 +17,7 @@ import constant from 'constant/index';
 import storage from 'utils/storage';
 
 import { replaceURL } from '../pages/content/pageService';
+import { StewardApp } from 'commmon/type';
 
 const blockPageUrl = chrome.extension.getURL('urlblock.html');
 
@@ -163,17 +164,9 @@ class Plugin {
 
   onLeave() {}
 
-  createContext() {
+  createContext(): StewardApp {
     return {
-      app: window.Steward,
-      chrome: chrome,
-      util,
-      dayjs,
-      $,
-      axios,
-      constant,
-      storage,
-      browser,
+      ...window.Steward
     };
   }
 

@@ -2,6 +2,7 @@ import md5 from 'blueimp-md5';
 import constant from 'constant';
 import { helpers } from 'helper';
 import { Website } from 'helper/websites.helper';
+import { AppState } from 'main/type';
 import { Command, Plugin } from 'plugins/type';
 import { Browser } from 'webextension-polyfill-ts';
 import { AppConfig } from './config';
@@ -52,6 +53,7 @@ export type StewardApp = AppData & {
   constant: typeof constant;
   Toast: any;
   md5: typeof md5;
+  state: AppState;
   browser: Browser;
   app?: AppMethods
 };

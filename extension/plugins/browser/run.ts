@@ -67,7 +67,7 @@ function launch(id) {
 
 function onEnter({ id }) {
   launch(id);
-  this.refresh();
+  window.Steward.app.refresh();
 }
 
 export default {

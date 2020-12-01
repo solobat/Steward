@@ -1,3 +1,6 @@
+import { PluginCommand } from "commmon/type";
+import { AppState } from "main/type";
+
 export type Type = 'keyword' | 'search' | 'always' | 'regexp' | 'other';
 
 export type Mode = 'popup' | 'newtab' | 'content';
@@ -27,6 +30,8 @@ export interface ResultItem {
   url?: string;
   isWarn?: boolean;
   content?: string;
+  isDefault?: boolean;
+  universal?: boolean;
   [prop: string]: any;
 }
 
@@ -47,6 +52,18 @@ export interface SearchOnInputFunc {
   (query: string): Promise<any> | ResultItem[];
 }
 
+export namespace StewardPlugin {
+  export type onInput = BaseOnInputFunc | SearchOnInputFunc;
+  export type onEnter = (
+    item: ResultItem | ResultItem[],
+    command: PluginCommand,
+    query: string,
+    keyStatus: Partial<KeyStatus>,
+    list: ResultItem[],
+  ) => any;
+  export type getOneCommand = () => Promise<string>;
+}
+
 export interface Plugin {
   readonly name: string;
   version: number;
@@ -58,18 +75,13 @@ export interface Plugin {
   disabled?: boolean;
   invalid?: boolean;
   extName?: string;
-  onInput: BaseOnInputFunc | SearchOnInputFunc;
-  onEnter: (
-    item: ResultItem,
-    command: Command,
-    query: string,
-    keyStatus: KeyStatus,
-    list: ResultItem[],
-  ) => any;
+  onInput: StewardPlugin.onInput;
+  onEnter: StewardPlugin.onEnter;
   setup?: (ext?: any) => void;
   onBoxEmpty?: () => void;
-  onLeave?: () => void;
-  onStorageChange?: (event: StorageEvent) => void;
+  onInit?: (state: AppState) => void;
+  onLeave?: (newState: AppState, oldState: AppState) => void;
+  onStorageChange?: (event: StorageEvent, command: PluginCommand) => void;
   onNotice?: (eventName: string, ...params: any[]) => void;
-  getOneCommand?: () => Promise<any>;
+  getOneCommand?: StewardPlugin.getOneCommand;
 }

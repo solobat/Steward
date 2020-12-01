@@ -244,9 +244,9 @@ function onEnter(item, command, query, keyStatus, list) {
     return handleEnginesUpdate(item, query, command);
   } else {
     if (shiftKey) {
-      list.forEach(eitem => gotoSearch(eitem, this.str));
+      list.forEach(eitem => gotoSearch(eitem, window.Steward.state.str));
     } else {
-      gotoSearch(item, this.str, keyStatus);
+      gotoSearch(item, window.Steward.state.str, keyStatus);
     }
   }
 }

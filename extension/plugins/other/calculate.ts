@@ -33,7 +33,7 @@ function onInput(query) {
     return;
   }
   try {
-    const result = mathexp.eval(this.str);
+    const result = mathexp.eval(window.Steward.state.str);
     data = [
       {
         key: title,
