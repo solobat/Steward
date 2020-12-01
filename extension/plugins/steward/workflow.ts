@@ -143,7 +143,7 @@ export default function(Steward: StewardApp): Plugin {
     );
 
     curWid = wid;
-    window.Steward.app.updateList(list);
+    Steward.app.updateList(list);
   }
 
   function handleWorkflowEditEnter(item) {

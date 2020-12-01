@@ -55,7 +55,7 @@ export default function(Steward: StewardApp): Plugin {
         show: isShow,
       })
       .then(() => {
-        window.Steward.app.refresh();
+        Steward.app.refresh();
       });
   }
 

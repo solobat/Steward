@@ -100,14 +100,14 @@
 </template>
 
 <script>
-import { plugins as pluginList } from "plugins";
+import { getStaticPlugins } from "plugins";
 import util from "common/util";
 import CONST from "constant";
 import _ from "underscore";
 
 // plugins: { [pname]: { version, commands } }
 const pluginModules = _.sortBy(
-  pluginList.filter(item => item.commands),
+  getStaticPlugins().filter(item => item.commands),
   "name"
 ).map(plugin => {
   const {

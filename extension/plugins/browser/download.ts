@@ -125,7 +125,7 @@ export default function(Steward: StewardApp): Plugin {
           util.toast.info(`[${item.filename}] has been paused`);
         }
       }
-      window.Steward.app.refresh();
+      Steward.app.refresh();
     } else {
       if (keyStatus.shiftKey) {
         util.createTab(item);

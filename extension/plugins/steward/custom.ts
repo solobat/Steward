@@ -54,7 +54,7 @@ export default function(Steward: StewardApp): Plugin {
           },
         },
       });
-      window.Steward.app.applyCommand(query);
+      Steward.app.applyCommand(query);
       Toast.success(chrome.i18n.getMessage('save_ok'));
     } else {
       Toast.warning(chrome.i18n.getMessage('custom_warning_notempty'));

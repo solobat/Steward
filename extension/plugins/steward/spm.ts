@@ -194,13 +194,13 @@ export default function(Steward: StewardApp): Plugin {
 
     if (subcmd === 'install') {
       return installPlugin(item).then(() => {
-        window.Steward.app.refresh();
+        Steward.app.refresh();
 
         return true;
       });
     } else if (subcmd === 'uninstall') {
       return uninstallPlugin(item).then(() => {
-        window.Steward.app.refresh();
+        Steward.app.refresh();
 
         return true;
       });

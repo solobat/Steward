@@ -56,7 +56,7 @@ export default function(Steward: StewardApp): Plugin {
         websitesHelper.inited = true;
       });
 
-      if (window.Steward.inContent) {
+      if (Steward.inContent) {
         subCommands.push({
           id: 'create',
           icon,
@@ -223,7 +223,7 @@ export default function(Steward: StewardApp): Plugin {
 
         if (result) {
           return result.then(() => {
-            window.Steward.app.refresh();
+            Steward.app.refresh();
 
             return true;
           });
@@ -232,13 +232,13 @@ export default function(Steward: StewardApp): Plugin {
         }
       } else if (subcmd === 'uninstall') {
         return uninstallWebsite(item.data).then(() => {
-          window.Steward.app.refresh();
+          Steward.app.refresh();
 
           return true;
         });
       }
     } else if (item.id === 'create') {
-      return createWebsite(window.Steward.data.page);
+      return createWebsite(Steward.data.page);
     }
   }
 

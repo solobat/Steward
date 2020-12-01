@@ -69,7 +69,7 @@ export default function(Steward: StewardApp): Plugin {
       });
     } else {
       return randomStorage.removeItem(item.id).then(() => {
-        window.Steward.app.refresh();
+        Steward.app.refresh();
       });
     }
   }

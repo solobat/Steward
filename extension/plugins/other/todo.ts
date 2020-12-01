@@ -239,7 +239,7 @@ export default function(Steward: StewardApp): Plugin {
   }
   function showTodos() {
     getTodos().then(todos => {
-      window.Steward.app.updateList(dataFormat(todos || []));
+      Steward.app.updateList(dataFormat(todos || []));
     });
   }
 

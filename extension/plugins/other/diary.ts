@@ -149,8 +149,8 @@ export default function(Steward: StewardApp): Plugin {
 
     return task
       .then(() => {
-        window.Steward.app.updateList(dataFormat(messages));
-        window.Steward.app.clearQuery();
+        Steward.app.updateList(dataFormat(messages));
+        Steward.app.clearQuery();
 
         return true;
       })

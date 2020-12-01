@@ -72,7 +72,7 @@ export default function(Steward: StewardApp): Plugin {
 
     if (!queryString) {
       getCachedList().then(resp => {
-        window.Steward.app.updateList(resp.pocket_list || []);
+        Steward.app.updateList(resp.pocket_list || []);
       });
     }
 
@@ -171,7 +171,7 @@ export default function(Steward: StewardApp): Plugin {
 
   function onStorageChange(event) {
     if (event.key === 'pocket_username') {
-      window.Steward.app.applyCommand(window.Steward.state.str);
+      Steward.app.applyCommand(Steward.state.str);
     }
   }
 

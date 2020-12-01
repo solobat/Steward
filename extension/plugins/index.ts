@@ -78,7 +78,7 @@ const pluginCreators: PluginFactory[] = [
 
 let plugins: Plugin[];
 
-export function getPlugins(Steward: StewardApp = window.Steward) {
+export function getPlugins(Steward: StewardApp = window.stewardApp) {
   if (plugins) {
     return plugins;
   }
@@ -103,4 +103,15 @@ export function getPlugins(Steward: StewardApp = window.Steward) {
   });
 
   return plugins;
+}
+
+export function getStaticPlugins() {
+  const steward: any = {
+    chrome: window.chrome,
+    state: {},
+    app: {
+    }
+  }
+
+  return getPlugins(steward)
 }

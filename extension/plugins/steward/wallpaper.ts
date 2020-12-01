@@ -116,7 +116,7 @@ export default function(Steward: StewardApp): Plugin {
   function updateList(saved) {
     updateActions(saved);
 
-    window.Steward.app.updateListForCommand(
+    Steward.app.updateListForCommand(
       'wp',
       JSON.parse(JSON.stringify(actions)),
     );
@@ -378,7 +378,7 @@ export default function(Steward: StewardApp): Plugin {
     const url = item.url;
 
     if (isNewTab()) {
-      window.Steward.app.emit('wallpaper:update', null, url);
+      Steward.app.emit('wallpaper:update', null, url);
     } else {
       window.localStorage.setItem(STORAGE.WALLPAPER, url);
     }

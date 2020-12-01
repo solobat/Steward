@@ -77,7 +77,7 @@ window.Steward = window.stewardApp = {
   helpers,
   util,
   constant: CONST,
-};
+} as StewardApp;
 
 function findMatchedPlugins(query: string) {
   const items: CommandResultItem[] = [];
@@ -132,7 +132,7 @@ function setState(attrs: Partial<AppState> = {}) {
     }
   }
 
-  state = newState;
+  Object.assign(state, newState);
 }
 
 function callCommand(command: PluginCommand | undefined, key: string) {

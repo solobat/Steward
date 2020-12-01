@@ -120,7 +120,7 @@ export default function(Steward: StewardApp): Plugin {
       items,
     ]);
     return tasks.then(() => {
-      window.Steward.app.refresh();
+      Steward.app.refresh();
     });
   }
 
