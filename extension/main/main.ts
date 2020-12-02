@@ -18,14 +18,15 @@ import { getCustomPlugins } from 'helper/plugin.helper';
 import { helpers } from '../helper';
 import { getPlugins } from '../plugins';
 import * as recordsController from '../server/controller/recordsController';
-import { AppData, PluginCommand, StewardApp, StewardCache } from 'commmon/type';
+import { AppData, PluginCommand, StewardApp, StewardCache } from 'common/type';
 import { KeyStatus, Plugin, ResultItem, SearchOnInputFunc } from 'plugins/type';
-import { AppConfig, PluginsData } from 'commmon/config';
+import { AppConfig, PluginsData } from 'common/config';
 import { Website } from 'helper/websites.helper';
 import { AppState, CommandResultItem } from './type';
 import Axios from 'axios';
 import PromisifyStorage from 'utils/storage';
 import dayjs from 'dayjs';
+import { fixNumber, fixNumbers, parseWorkflow } from 'helper/workflow.helper';
 
 const commands: {
   [prop: string]: PluginCommand;
@@ -598,79 +599,6 @@ function record(item: ResultItem, state: AppState, mode) {
     // TODO: api
 
     return Promise.resolve();
-  }
-}
-
-// should cache
-const numberReg = /(^[\d]+-[\d]+$)|(^[\d]+$)|^all$/;
-
-function parseNumbers(part: string) {
-  const matched = part.match(numberReg)[0];
-
-  if (matched.indexOf('-') !== -1) {
-    const sp = matched.split('-');
-
-    return [sp[0], sp[1]].sort();
-  } else if (matched === 'all') {
-    return -1;
-  } else {
-    return matched;
-  }
-}
-
-function resolveTemplate(text = '') {
-  const pageData = window.Steward.data?.page;
-
-  if (text.indexOf('{{') !== -1 && window.Steward.inContent && pageData) {
-    return util.simTemplate(text, pageData);
-  } else {
-    return text;
-  }
-}
-
-type LineNumber = string | string[] | -1;
-
-function parseLine(line: string) {
-  const realLine = line.replace(/^[\s\t]+/, '');
-  const parts = realLine.split(/[|,，]/).slice(0, 3);
-  let input: string, numbers: LineNumber, withShift: boolean;
-
-  parts.forEach(part => {
-    if (part.match(numberReg)) {
-      numbers = parseNumbers(part);
-    } else if (part.toLowerCase() === 'shift') {
-      withShift = true;
-    } else {
-      input = resolveTemplate(part);
-    }
-  });
-
-  return {
-    input,
-    numbers,
-    withShift,
-  };
-}
-
-function parseWorkflow(content: string) {
-  return content
-    .split('\n')
-    .filter(line => line && !line.match(/^[\s\t]+$/))
-    .map(parseLine)
-    .filter(cmd => cmd.input);
-}
-
-function fixNumbers(numbers: string[]) {
-  return numbers.map(fixNumber);
-}
-
-function fixNumber(str: string) {
-  const number = Number(str);
-
-  if (number <= 0 || !number) {
-    return 0;
-  } else {
-    return number - 1;
   }
 }
 

@@ -7,7 +7,7 @@
  *        shiftKey + enter to open url
  */
 
-import { StewardApp } from 'commmon/type';
+import { StewardApp } from 'common/type';
 import util from 'common/util';
 import { Command, Plugin } from 'plugins/type';
 

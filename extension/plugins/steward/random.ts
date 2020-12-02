@@ -4,7 +4,7 @@
  * @email solopea@gmail.com
  */
 
-import { StewardApp } from 'commmon/type';
+import { StewardApp } from 'common/type';
 import ItemsStorage from 'helper/storage.helper';
 import { Command, Plugin, ResultItem, StewardPlugin } from 'plugins/type';
 

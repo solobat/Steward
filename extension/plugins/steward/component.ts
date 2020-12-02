@@ -4,7 +4,7 @@
  * @email solopea@gmail.com
  */
 
-import { StewardApp } from 'commmon/type';
+import { StewardApp } from 'common/type';
 import util from 'common/util';
 import { componentHelper, getComponentsConfig } from 'helper/component.helper';
 import { Plugin } from 'plugins/type';

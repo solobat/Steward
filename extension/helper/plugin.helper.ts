@@ -17,7 +17,7 @@ import constant from 'constant/index';
 import storage from 'utils/storage';
 
 import { replaceURL } from '../pages/content/pageService';
-import { StewardApp } from 'commmon/type';
+import { StewardApp } from 'common/type';
 
 const blockPageUrl = chrome.extension.getURL('urlblock.html');
 

@@ -12,7 +12,7 @@ import Auth from 'common/auth';
 import util from 'common/util';
 import conf from 'conf/pocket_conf';
 import { Command, Plugin } from 'plugins/type';
-import { StewardApp } from 'commmon/type';
+import { StewardApp } from 'common/type';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;

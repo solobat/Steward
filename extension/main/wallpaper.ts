@@ -9,7 +9,7 @@ import { saveWallpaperLink, shouldShow } from 'helper/wallpaper.helper';
 import { getAllSources, getSources } from 'helper/wallpaperSource.helper';
 import * as api from 'service';
 import * as date from 'utils/date';
-import { StewardApp } from 'commmon/type';
+import { StewardApp } from 'common/type';
 
 const $body: any = $('body');
 const sourcesInfo = getAllSources();

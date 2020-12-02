@@ -11,7 +11,7 @@ import util from 'common/util';
 import constant from 'constant/index';
 import websitesHelper from 'helper/websites.helper';
 import { Command, Plugin } from 'plugins/type';
-import { StewardApp } from 'commmon/type';
+import { StewardApp } from 'common/type';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;

@@ -10,7 +10,7 @@ import Toast from 'toastr';
 import util from 'common/util';
 import diaryHelper from 'helper/diary.helper';
 import { Plugin } from 'plugins/type';
-import { StewardApp } from 'commmon/type';
+import { StewardApp } from 'common/type';
 
 declare global {
   interface Window {

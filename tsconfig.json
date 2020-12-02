@@ -14,7 +14,7 @@
     "paths": {
       "enum/*": ["enum/*"],
       "constant/*": ["constant/*"],
-      "commmon/*": ["common/*"],
+      "common/*": ["common/*"],
       "utils/*": ["utils/*"],
       "service/*": ["service/*"],
       "conf/*": ["conf/*"],

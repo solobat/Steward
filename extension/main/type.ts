@@ -1,4 +1,4 @@
-import { PluginCommand } from "commmon/type";
+import { PluginCommand } from "common/type";
 import { KeyStatus } from "plugins/type";
 
 export interface AppState {

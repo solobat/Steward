@@ -9,7 +9,7 @@ import { google } from 'translation.js';
 
 import util from 'common/util';
 import { Command, Plugin } from 'plugins/type';
-import { StewardApp } from 'commmon/type';
+import { StewardApp } from 'common/type';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;

@@ -9,7 +9,7 @@ import constant from 'constant';
 import { addNetworkRecord, generateSocialUrls } from '../lib/social-share-urls';
 import { getGlobalActions } from './action.helper';
 import * as ResultHelper from './result.helper';
-import { StewardApp } from 'commmon/type';
+import { StewardApp } from 'common/type';
 
 const websiteList = new WebsiteList();
 

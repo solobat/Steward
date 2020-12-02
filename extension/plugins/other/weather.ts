@@ -4,7 +4,7 @@
  * @email solopea@gmail.com
  */
 
-import { StewardApp } from 'commmon/type';
+import { StewardApp } from 'common/type';
 import { Command, Plugin } from 'plugins/type';
 import { getByCity } from 'service/weather';
 

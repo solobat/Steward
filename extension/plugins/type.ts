@@ -1,4 +1,4 @@
-import { PluginCommand, StewardApp } from 'commmon/type';
+import { PluginCommand, StewardApp } from 'common/type';
 import { AppState } from 'main/type';
 
 export type Type = 'keyword' | 'search' | 'always' | 'regexp' | 'other';

@@ -4,7 +4,7 @@
  * @mail solopea@gmail.com
  */
 
-import { StewardApp } from 'commmon/type';
+import { StewardApp } from 'common/type';
 import util from 'common/util';
 import { stewardPlusTabs, stewardTabs } from 'constant/base';
 import { Plugin } from 'plugins/type';
