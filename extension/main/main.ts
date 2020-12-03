@@ -21,7 +21,10 @@ import { AppConfig, PluginsData } from 'common/config';
 import { Website } from 'helper/websites.helper';
 import { AppState, CommandResultItem } from './type';
 import { fixNumber, fixNumbers, parseWorkflow } from 'helper/workflow.helper';
-import './api';
+import { installGlobalSteward } from './api';
+import { helpers } from 'helper/index';
+
+installGlobalSteward();
 
 const commands: {
   [prop: string]: PluginCommand;
@@ -799,6 +802,7 @@ export function globalApi(appData: AppData) {
 
 export function installApp(app) {
   window.Steward.app = window.stewardApp.app = {
+    helpers: helpers,
     on(eventName, fn) {
       app.$on(eventName, fn);
 

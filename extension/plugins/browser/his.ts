@@ -6,7 +6,23 @@
 
 import { StewardApp } from 'common/type';
 import util from 'common/util';
+import { JSONSchema4, JSONSchema4Object, JSONSchema4Type } from 'json-schema';
 import { Command, Plugin } from 'plugins/type';
+
+const optionsSchema: JSONSchema4 = {
+  type: 'object',
+  properties: {
+    timerange: {
+      type: 'string',
+      enum: ['today', 'week', 'month', 'year'] 
+    }
+  }
+}
+function getDefaultOptions(): JSONSchema4Object {
+  return {
+    timerange: 'today'
+  }
+}
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -99,5 +115,7 @@ export default function(Steward: StewardApp): Plugin {
     onInput,
     onEnter,
     canDisabled: false,
+    optionsSchema,
+    defaultOptions: getDefaultOptions()
   };
 }

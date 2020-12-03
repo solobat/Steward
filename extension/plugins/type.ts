@@ -1,4 +1,5 @@
 import { PluginCommand, StewardApp } from 'common/type';
+import { JSONSchema4, JSONSchema4Type } from 'json-schema';
 import { AppState } from 'main/type';
 
 export type Type = 'keyword' | 'search' | 'always' | 'regexp' | 'other';
@@ -88,8 +89,11 @@ export interface Plugin {
   onNotice?: (eventName: string, ...params: any[]) => void;
   getOneCommand?: StewardPlugin.getOneCommand;
   [prop: string]: any;
+  optionsSchema?: JSONSchema4
+  defaultOptions?: JSONSchema4Type
+  options?: JSONSchema4Type
 }
 
 export interface PluginFactory {
-  (Steward: StewardApp): Plugin;
+  (Steward: StewardApp, options?: {[prop: string]: any}): Plugin;
 }

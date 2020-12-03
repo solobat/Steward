@@ -47,20 +47,10 @@ export interface AppMethods {
   clearQuery: () => void;
   notice: (...params: any[]) => void;
   getCurrentCommand: () => any;
+  helpers: typeof helpers
 } 
-/**
-app: window.Steward,
-chrome: chrome,
-util,
-dayjs,
-$,
-axios,
-constant,
-storage,
-browser,
- */
+
 export type StewardApp = AppData & {
-  helpers: typeof helpers;
   chrome: typeof chrome;
   dayjs: typeof dayjs;
   $: JQueryStatic;

@@ -1,5 +1,6 @@
 // browser plugins
 import { StewardApp } from 'common/type';
+import { getGlobalStewardAPI } from 'main/api';
 import bookmark from './browser/bookmark';
 import chrome from './browser/chrome';
 import del from './browser/del';
@@ -106,12 +107,5 @@ export function getPlugins(Steward: StewardApp = window.stewardApp) {
 }
 
 export function getStaticPlugins() {
-  const steward: any = {
-    chrome: window.chrome,
-    state: {},
-    app: {
-    }
-  }
-
-  return getPlugins(steward)
+  return getPlugins(getGlobalStewardAPI())
 }

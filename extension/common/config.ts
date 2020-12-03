@@ -7,14 +7,18 @@ import { getPlugins } from 'plugins';
 import { Plugin } from 'plugins/type';
 
 import util, { SimpleCommand } from './util';
-import 'main/api';
+import { installGlobalSteward } from 'main/api';
+import { JSONSchema4Type } from 'json-schema';
 
 export type PartialPlugin = Pick<
   Plugin,
-  'name' | 'version' | 'canDisabled' | 'icon' | 'disabled'
+  'name' | 'version' | 'canDisabled' | 'icon' | 'disabled' | 'optionsSchema' | 'defaultOptions'
 > & {
   commands: SimpleCommand[];
+  options: JSONSchema4Type
 };
+
+installGlobalSteward();
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -38,6 +42,9 @@ function getPluginModules() {
       title,
       icon,
       canDisabled,
+      optionsSchema: plugin.optionsSchema,
+      defaultOptions: plugin.defaultOptions,
+      options: Object.assign({}, plugin.defaultOptions)
     } as PartialPlugin;
   });
 
@@ -74,7 +81,8 @@ function mergePluginData(plugin: PartialPlugin, cachePlugins: PluginsData) {
       cachePlugin.commands,
     );
     cachePlugin.version = plugin.version;
-
+    cachePlugin.options = Object.assign({}, plugin.options, cachePlugin.options || {})
+    
     if (plugin.canDisabled) {
       cachePlugin.disabled = cachePlugin.disabled || false;
     }
@@ -82,6 +90,7 @@ function mergePluginData(plugin: PartialPlugin, cachePlugins: PluginsData) {
     cachePlugins[name] = {
       version: plugin.version,
       commands: plugin.commands,
+      options: plugin.options
     } as PartialPlugin;
     cachePlugin = cachePlugins[name];
 
@@ -116,7 +125,6 @@ export function getSyncConfig(save, keepVersion) {
     let config;
 
     if (res.config) {
-      debugger;
       config = res.config;
       config.general = $.extend({}, defaultGeneral, config.general);
 

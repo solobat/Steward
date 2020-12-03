@@ -78,6 +78,9 @@
                     <img src="/iconfont/allowbatch.svg" class="icon-batch" alt />
                   </el-tooltip>
                 </el-form-item>
+                <el-form-item label="Options" v-if="currentPlugin.optionsSchema">
+                  <json-editor :schema="currentPlugin.optionsSchema" v-model="config.plugins[currentPlugin.name].options" />
+                </el-form-item>
                 <el-form-item v-if="currentPlugin.canDisabled" label="Disable">
                   <el-switch
                     v-model="config.plugins[currentPlugin.name].disabled"
@@ -104,8 +107,8 @@ import { getStaticPlugins } from "plugins";
 import util from "common/util";
 import CONST from "constant";
 import _ from "underscore";
+import JsonEditor from '@/components/jsoneditor/index.vue';
 
-// plugins: { [pname]: { version, commands } }
 const pluginModules = _.sortBy(
   getStaticPlugins().filter(item => item.commands),
   "name"
@@ -117,7 +120,10 @@ const pluginModules = _.sortBy(
     title,
     disabled,
     canDisabled,
-    authenticate
+    authenticate,
+    options,
+    optionsSchema,
+    defaultOptions
   } = plugin;
 
   const ret = {
@@ -128,7 +134,10 @@ const pluginModules = _.sortBy(
     title,
     icon,
     canDisabled,
-    authenticate
+    authenticate,
+    options,
+    optionsSchema,
+    defaultOptions
   };
 
   if (canDisabled) {
@@ -150,6 +159,8 @@ export default {
       defaultPlugins: CONST.OPTIONS.DEFAULT_PLUGINS
     };
   },
+
+  components: { JsonEditor },
 
   computed: {
     filteredPlugins: function() {
@@ -253,6 +264,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

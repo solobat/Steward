@@ -8,24 +8,28 @@ import { browser } from 'webextension-polyfill-ts';
 import util from 'common/util';
 import CONST from 'constant';
 
-import { helpers } from '../helper';
 import Axios from 'axios';
 import PromisifyStorage from 'utils/storage';
 import dayjs from 'dayjs';
 
-window.Steward = window.stewardApp = {
-  chrome: window.chrome,
-  browser,
-  Toast,
-  md5,
-  axios: Axios,
-  dayjs: dayjs,
-  $,
-  storage: PromisifyStorage,
+export function installGlobalSteward() {
+  window.Steward = window.stewardApp = getGlobalStewardAPI();
+}
 
-  state: {},
+export function getGlobalStewardAPI() {
+  return {
+    chrome: window.chrome,
+    browser,
+    Toast,
+    md5,
+    axios: Axios,
+    dayjs: dayjs,
+    $,
+    storage: PromisifyStorage,
 
-  helpers,
-  util,
-  constant: CONST,
-} as StewardApp;
+    state: {},
+
+    util,
+    constant: CONST,
+  } as StewardApp;
+}
