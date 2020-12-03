@@ -373,11 +373,11 @@ export function queryByInput(str, background) {
 
 async function sortResults(results) {
   const { stage, str } = state;
-  if (stage === 'search') {
+  if (stage === 'search' || stage === 'command') {
     try {
       const records = await recordsController.query({
-        scope: stage,
-        query: str,
+        scope: stage === 'search' ? 'search' : state.command.orkey,
+        query: stage === 'search' ? str : state.query,
       });
       const items = results.map(result => {
         const record = records.find(item => item.result === result.title);
@@ -596,9 +596,12 @@ function record(item: ResultItem, state: AppState, mode) {
       mode,
     });
   } else if (stage === 'command') {
-    // TODO: api
-
-    return Promise.resolve();
+    return recordsController.log({
+      query: state.query,
+      scope: state.command.orkey,
+      result: title,
+      mode
+    });
   }
 }
 
