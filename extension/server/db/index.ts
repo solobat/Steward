@@ -1,13 +1,26 @@
 import Dexie from 'dexie';
 
-const db: any = new Dexie('steward');
+export class StewardDatabase extends Dexie {
+  records: Dexie.Table<IRecords, number>;
 
-/**
- * cid: plugin/website.. id
- * result: Some text you can customize
- */
-db.version(1).stores({
-  records: '++id,[scope+query],result,mode',
-});
+  constructor() {
+    super('steward');
+
+    this.version(1).stores({
+      records: '++id,[scope+query],result,mode,times',
+    });
+  }
+}
+
+export interface IRecords {
+  id?: number;
+  scope: string;
+  query: string;
+  result: string;
+  mode: string;
+  times?: number;
+}
+
+const db = new StewardDatabase();
 
 export default db;
