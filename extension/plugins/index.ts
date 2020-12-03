@@ -79,14 +79,22 @@ const pluginCreators: PluginFactory[] = [
 
 let plugins: Plugin[];
 
-export function getPlugins(Steward: StewardApp = window.stewardApp) {
+export function getPlugins(Steward: StewardApp = window.stewardApp, pluginsConfig?: any) {
   if (plugins) {
     return plugins;
+  }
+  function getPluginOptions(name: string) {
+    if (pluginsConfig) {
+      return pluginsConfig[name]?.options
+    } else {
+      return
+    }
   }
 
   // orkey: original key
   plugins = pluginCreators.map((pluginCreator: PluginFactory) => {
-    const plugin: Plugin = pluginCreator(Steward);
+    const options = getPluginOptions(pluginCreator.displayName || pluginCreator.name);
+    const plugin: Plugin = pluginCreator(Steward, options);
 
     if (plugin.commands) {
       plugin.commands.forEach(command => {

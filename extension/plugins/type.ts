@@ -96,4 +96,5 @@ export interface Plugin {
 
 export interface PluginFactory {
   (Steward: StewardApp, options?: {[prop: string]: any}): Plugin;
+  displayName?: string;
 }

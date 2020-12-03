@@ -9,12 +9,13 @@ import util from 'common/util';
 import { JSONSchema4, JSONSchema4Object, JSONSchema4Type } from 'json-schema';
 import { Command, Plugin } from 'plugins/type';
 
+const timerangeTypes = ['today', 'week', 'month', 'year']
 const optionsSchema: JSONSchema4 = {
   type: 'object',
   properties: {
     timerange: {
       type: 'string',
-      enum: ['today', 'week', 'month', 'year'] 
+      enum: [...timerangeTypes]
     }
   }
 }
@@ -24,8 +25,9 @@ function getDefaultOptions(): JSONSchema4Object {
   }
 }
 
-export default function(Steward: StewardApp): Plugin {
+function history(Steward: StewardApp, opt?: JSONSchema4Object): Plugin {
   const { chrome } = Steward;
+  const options = Object.assign(getDefaultOptions(), opt || {})
 
   const version = 4;
   const name = 'history';
@@ -47,10 +49,18 @@ export default function(Steward: StewardApp): Plugin {
     },
   ];
 
+  function getStartTime() {
+    const dayDiffs = [1, 7, 30, 365]
+    const diff = dayDiffs[timerangeTypes.indexOf(options.timerange as string)]
+    
+    return Number(Steward.dayjs().subtract(diff, 'day').toDate());
+  }
+  
   function searchHistory(query, callback) {
     chrome.history.search(
       {
         text: query,
+        startTime: getStartTime()
       },
       function(data) {
         let hisList = data || [];
@@ -119,3 +129,7 @@ export default function(Steward: StewardApp): Plugin {
     defaultOptions: getDefaultOptions()
   };
 }
+
+history.displayName = 'History'
+
+export default history

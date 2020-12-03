@@ -772,7 +772,7 @@ export function initConfig(themode: string, isInContent: boolean) {
     getCustomPlugins(),
     getComponentsConfig(),
   ]).then(([res, customPlugins, components]) => {
-    allPlugins = getPlugins(window.Steward).concat(customPlugins);
+    allPlugins = getPlugins(window.Steward, res.config.plugins).concat(customPlugins);
     classifyPlugins(res.config.plugins);
     initWebsites();
 
