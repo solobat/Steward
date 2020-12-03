@@ -7,6 +7,7 @@ import { getPlugins } from 'plugins';
 import { Plugin } from 'plugins/type';
 
 import util, { SimpleCommand } from './util';
+import 'main/api';
 
 export type PartialPlugin = Pick<
   Plugin,
@@ -115,6 +116,7 @@ export function getSyncConfig(save, keepVersion) {
     let config;
 
     if (res.config) {
+      debugger;
       config = res.config;
       config.general = $.extend({}, defaultGeneral, config.general);
 

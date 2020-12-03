@@ -1,11 +1,9 @@
 import '../../node_modules/toastr/toastr.scss';
 
-import md5 from 'blueimp-md5';
 import $ from 'jquery';
 import orderBy from 'lodash.orderby';
 import Toast from 'toastr';
 import _ from 'underscore';
-import { browser } from 'webextension-polyfill-ts';
 
 import storage from 'common/storage';
 import util from 'common/util';
@@ -15,18 +13,15 @@ import { TextAlias, TextAliasType } from 'helper/alias.helper';
 import { getComponentsConfig } from 'helper/component.helper';
 import { getCustomPlugins } from 'helper/plugin.helper';
 
-import { helpers } from '../helper';
 import { getPlugins } from '../plugins';
 import * as recordsController from '../server/controller/recordsController';
-import { AppData, PluginCommand, StewardApp, StewardCache } from 'common/type';
+import { AppData, PluginCommand, StewardCache } from 'common/type';
 import { KeyStatus, Plugin, ResultItem, SearchOnInputFunc } from 'plugins/type';
 import { AppConfig, PluginsData } from 'common/config';
 import { Website } from 'helper/websites.helper';
 import { AppState, CommandResultItem } from './type';
-import Axios from 'axios';
-import PromisifyStorage from 'utils/storage';
-import dayjs from 'dayjs';
 import { fixNumber, fixNumbers, parseWorkflow } from 'helper/workflow.helper';
+import './api';
 
 const commands: {
   [prop: string]: PluginCommand;
@@ -62,23 +57,6 @@ let state: AppState = {
 };
 window.stewardCache = {} as StewardCache;
 window.slogs = [];
-
-window.Steward = window.stewardApp = {
-  chrome: window.chrome,
-  browser,
-  Toast,
-  md5,
-  axios: Axios,
-  dayjs: dayjs,
-  $,
-  storage: PromisifyStorage,
-
-  state,
-
-  helpers,
-  util,
-  constant: CONST,
-} as StewardApp;
 
 function findMatchedPlugins(query: string) {
   const items: CommandResultItem[] = [];
@@ -600,7 +578,7 @@ function record(item: ResultItem, state: AppState, mode) {
       query: state.query,
       scope: state.command.orkey,
       result: title,
-      mode
+      mode,
     });
   }
 }
