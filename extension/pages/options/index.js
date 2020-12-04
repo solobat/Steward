@@ -2,7 +2,7 @@ import Vue from 'vue';
 import ElementUI from 'element-ui';
 import App from './App.vue';
 import 'element-ui/lib/theme-default/index.css';
-import 'tailwindcss/tailwind.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
 import './options.scss';
 import util from 'common/util';
 import * as i18n from 'info/i18n';

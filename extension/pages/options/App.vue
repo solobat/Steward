@@ -172,6 +172,7 @@ a {
     cursor: pointer;
     padding: 3px 8px;
     height: 40px;
+    display: flex;
     position: relative;
 
     &.plugin-disabled {
@@ -227,7 +228,7 @@ a {
 .plugin-editor-header {
     display: flex;
     background: #333;
-    height: 40px;
+    height: 57px;
     padding: 12px;
 }
 
@@ -248,8 +249,8 @@ a {
 
 .plugin-editor-name {
     font-size: 14px;
-    line-height: 1.6;
     color: #fff;
+    margin: 0;
 }
 
 .plugin-editor-title {

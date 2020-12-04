@@ -26,7 +26,7 @@ export async function getComponentsConfig() {
 }
 
 function createComponentConfig(data, silent) {
-  const { id, version, grid, args, show = false } = data;
+  const { id, version, grid, args, show = false, argsSchema } = data;
   const ret = {
     meta: data,
     id,
@@ -36,6 +36,7 @@ function createComponentConfig(data, silent) {
     show,
     shortcuts: '',
     showByDefault: true,
+    argsSchema
   };
   if (!silent) {
     componentHelper.create(ret);

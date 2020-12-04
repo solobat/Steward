@@ -21,22 +21,41 @@ export default {
     return {};
   },
 
+  watch: {
+    schema() {
+      this.refreshEditor();
+    }
+  },
+
+  methods: {
+    initEditor() {
+      this.editor = new JSONEditor(this.$refs.editor, {
+        schema: this.schema,
+        disable_collapse: true,
+        disable_edit_json: true,
+        disable_properties: true,
+        theme: 'bootstrap4',
+        startval: this.value,
+      });
+      this.editor.on('change', () => {
+        this.$emit('input', this.editor.getValue());
+      });
+    },
+    destroyEditor() {
+      this.editor.destroy();
+    },
+    refreshEditor() {
+      this.destroyEditor();
+      this.initEditor();
+    }
+  },
+
   mounted() {
-    this.editor = new JSONEditor(this.$refs.editor, {
-      schema: this.schema,
-      disable_collapse: true,
-      disable_edit_json: true,
-      disable_properties: true,
-      theme: 'tailwind',
-      startval: this.value,
-    });
-    this.editor.on('change', () => {
-      this.$emit('input', this.editor.getValue());
-    });
+    this.initEditor();
   },
 
   beforeDestroy() {
-    this.editor.destroy();
+    this.destroyEditor();
   },
 };
 </script>

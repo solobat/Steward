@@ -9,7 +9,7 @@
           <div
             class="plugin-item website-item"
             :class="{'is-selected': component.meta.title === (currentComponent && currentComponent.meta.title), 
-              'invisible': !component.show}"
+              'not-visible': !component.show}"
             v-for="(component, index) in filteredComponents"
             :key="index"
             @click="handleComponentClick(component)"
@@ -70,6 +70,9 @@
                       ></el-input>
                       <a href="https://github.com/RobertWHurst/KeyboardJS" target="_blank">?</a>
                     </el-form-item>
+                    <el-form-item label="Args" v-if="currentComponent.argsSchema">
+                      <json-editor :schema="currentComponent.argsSchema" v-model="currentComponent.args" />
+                    </el-form-item>
                     <el-form-item>
                       <el-button
                         type="primary"
@@ -105,6 +108,7 @@
 <script>
 import { componentHelper } from "helper/component.helper";
 import { getRemoteComponents } from 'helper/component.helper'
+import JsonEditor from '@/components/jsoneditor/index.vue';
 
 export default {
   name: 'Newtabcomponents',
@@ -122,6 +126,8 @@ export default {
       componentFormRuels: {}
     };
   },
+
+  components: { JsonEditor },
 
   computed: {
     filteredComponents() {
@@ -154,6 +160,7 @@ export default {
               oldComponent,
               newComponent
             );
+            oldComponent.argsSchema = newComponent.argsSchema;
           }
           return oldComponent;
         });
@@ -247,16 +254,13 @@ export default {
         console.error(error);
       }
     }
-  },
-
-  components: {
   }
 };
 </script>
 
 <style lang="scss">
 .plugin-item {
-  &.invisible {
+  &.not-visible {
     .plugin-name {
       color: #999;
     }
@@ -266,7 +270,7 @@ export default {
 .comp-meta {
   display: flex;
   background: #eef1f6;
-  height: 40px;
+  height: 57px;
   padding: 12px;
 }
 
