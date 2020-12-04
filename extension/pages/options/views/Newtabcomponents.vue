@@ -161,6 +161,9 @@ export default {
               newComponent
             );
             oldComponent.argsSchema = newComponent.argsSchema;
+            if (newComponent.args) {
+              oldComponent.args = Object.assign({}, newComponent.args, oldComponent.args || {})
+            }
           }
           return oldComponent;
         });
