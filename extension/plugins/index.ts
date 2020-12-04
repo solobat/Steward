@@ -24,8 +24,6 @@ import pocket from './other/pocket';
 import search from './other/search';
 import todo from './other/todo';
 import urlblock from './other/urlblock';
-import weather from './other/weather';
-import yd from './other/yd';
 // steward plugins
 import about from './steward/about';
 import component from './steward/component';
@@ -52,7 +50,6 @@ const pluginCreators: PluginFactory[] = [
   run,
   his,
   bookmark,
-  yd,
   todo,
   pocket,
   calculate,
@@ -60,7 +57,6 @@ const pluginCreators: PluginFactory[] = [
   download,
   help,
   topsites,
-  weather,
   openurl,
   newtab,
   wallpaper,
