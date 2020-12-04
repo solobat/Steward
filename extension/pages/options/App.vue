@@ -82,6 +82,20 @@ a {
     text-decoration: none;
 }
 
+body {
+  box-sizing: border-box!important;
+}
+.json-editor {
+  width: 400px;
+  .je-object__title, .je-object__controls {
+    display: none!important;
+  }
+}
+
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+  font-size: initial!important;
+}
+
 .topbar {
     width: 1200px;
     height: 40px;
@@ -173,6 +187,7 @@ a {
     padding: 3px 8px;
     height: 40px;
     display: flex;
+    align-items: center;
     position: relative;
 
     &.plugin-disabled {
