@@ -380,6 +380,8 @@ export function getInitCmd() {
     if (defaultPlugin === 'Other') {
       if (customCmd) {
         return Promise.resolve(config.general.customCmd);
+      } else {
+        return Promise.resolve('');
       }
     } else if (defaultPlugin === 'Random') {
       return randomPlugin.getOneCommand();
@@ -390,6 +392,8 @@ export function getInitCmd() {
 
       if (defaultCommand) {
         return Promise.resolve(`${defaultCommand.key}`);
+      } else {
+        return Promise.resolve('');
       }
     }
   }
