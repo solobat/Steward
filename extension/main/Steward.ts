@@ -59,6 +59,14 @@ const Steward = new Proxy<StewardApp>({} as StewardApp, {
 
     return window.__Steward__[path];
   },
+  set(_, path, value) {
+    if (!window.__Steward__) {
+      installGlobalSteward();
+    }
+    window.__Steward__[path] = value;
+
+    return true
+  }
 });
 
 export default Steward;

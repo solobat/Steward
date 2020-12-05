@@ -23,7 +23,6 @@ import { AppState, CommandResultItem, StewardReadyEventDetail } from './type';
 import { fixNumber, fixNumbers, parseWorkflow } from 'helper/workflow.helper';
 import Steward from './Steward';
 import { helpers } from 'helper/index';
-import { getSteward } from 'common/steward';
 import stewardCache from './cache';
 
 const commands: {
@@ -776,9 +775,6 @@ export function initConfig(themode: string, isInContent: boolean) {
 }
 
 export function globalApi(appData: AppData) {
-  // there is no setter on proxied-steward
-  const Steward = getSteward();
-
   Steward.mode = appData.mode;
   Steward.inContent = appData.inContent;
   Steward.config = appData.config;

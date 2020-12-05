@@ -119,8 +119,8 @@
     }
 
     window.addEventListener('beforeunload', function () {
-        if (window.Steward && window.Steward.app.emit) {
-            window.Steward.app.emit('beforeleave');
+        if (window.__Steward__ && window.__Steward__.app.emit) {
+            window.__Steward__.app.emit('beforeleave');
         }
         document.querySelector('#main').style.display = 'none';
     });

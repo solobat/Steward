@@ -21,6 +21,7 @@ function init() {
     const tips = CONST.I18N.TIPS;
 
     config.lastVersion = config.version || version;
+    // only used for options page
     window.Steward = {
       config,
     };
