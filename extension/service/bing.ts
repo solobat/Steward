@@ -1,3 +1,4 @@
+import { WallpaperSource } from 'common/type';
 import * as apiUtils from 'utils/api';
 
 export const root = 'https://www.bing.com';
@@ -37,4 +38,4 @@ export default {
   api: method => () => api[method](),
   handle: result => root + result.images[0].url,
   weight: 1,
-};
+} as WallpaperSource;

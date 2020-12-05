@@ -1,3 +1,4 @@
+import { WallpaperSource } from 'common/type';
 import * as apiUtils from '../utils/api';
 
 const KEY = 'kxwrn5RQGnJVYU5wwipadjsGjOSrEGbyEihSZcqY';
@@ -12,4 +13,4 @@ export default {
   api: () => getList(),
   handle: result => result.url,
   weight: 0.5,
-};
+} as WallpaperSource;

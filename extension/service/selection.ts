@@ -1,3 +1,4 @@
+import { WallpaperSource } from 'common/type';
 import * as apiUtils from '../utils/api';
 
 const URL = `http://static.oksteward.com/steward-wallpaper.json?t=${Number(
@@ -24,5 +25,5 @@ export default function(getRandomOne) {
     api: () => getList(),
     handle: result => getRandomOne(result.list),
     weight: 1,
-  };
+  } as WallpaperSource;
 }

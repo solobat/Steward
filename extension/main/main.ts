@@ -19,7 +19,7 @@ import { AppData, PluginCommand, StewardCache } from 'common/type';
 import { KeyStatus, Plugin, ResultItem, SearchOnInputFunc } from 'plugins/type';
 import { AppConfig, PluginsData } from 'common/config';
 import { Website } from 'helper/websites.helper';
-import { AppState, CommandResultItem } from './type';
+import { AppState, CommandResultItem, StewardReadyEventDetail } from './type';
 import { fixNumber, fixNumbers, parseWorkflow } from 'helper/workflow.helper';
 import { installGlobalSteward } from './api';
 import { helpers } from 'helper/index';
@@ -854,7 +854,7 @@ export function installApp(app) {
     },
   };
 
-  const evt = new CustomEvent('stewardReady', {
+  const evt = new CustomEvent<StewardReadyEventDetail>('stewardReady', {
     detail: {
       app: window.Steward,
     },

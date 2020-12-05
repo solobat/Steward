@@ -1,4 +1,4 @@
-import { PluginCommand } from "common/type";
+import { PluginCommand, StewardApp } from "common/type";
 import { KeyStatus } from "plugins/type";
 
 export interface AppState {
@@ -24,3 +24,9 @@ export interface CommandResultItem {
   desc: string;
   weight: number;
 }
+
+export interface StewardReadyEventDetail {
+  app: StewardApp,
+}
+
+export type StewardReadyEvent = CustomEvent<StewardReadyEventDetail>

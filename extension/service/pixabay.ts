@@ -1,3 +1,4 @@
+import { WallpaperSource } from 'common/type';
 import * as apiUtils from '../utils/api';
 
 const APP_KEY = '9599926-06fed5cb1e63825bd24dd87f8';
@@ -23,5 +24,5 @@ export default function(getRandomOne) {
     api: () => getPageList(),
     handle: result => getRandomOne(result.hits).largeImageURL,
     weight: 3,
-  };
+  } as WallpaperSource;
 }

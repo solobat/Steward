@@ -1,3 +1,4 @@
+import { WallpaperSource } from 'common/type';
 import * as apiUtils from '../utils/api';
 
 const STORAGE_KEY = 'picsumids';
@@ -51,4 +52,4 @@ export default {
   api: () => getRandomImage(),
   handle: result => result,
   weight: 2,
-};
+} as WallpaperSource;

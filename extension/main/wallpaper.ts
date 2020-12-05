@@ -5,28 +5,29 @@ import Toast from 'toastr';
 import { browser } from 'webextension-polyfill-ts';
 
 import CONST from 'constant';
-import { saveWallpaperLink, shouldShow } from 'helper/wallpaper.helper';
+import { ACTION_TYPE, saveWallpaperLink, shouldShow, WALLPAPER_ACTIONS } from 'helper/wallpaper.helper';
 import { getAllSources, getSources } from 'helper/wallpaperSource.helper';
 import * as api from 'service';
 import * as date from 'utils/date';
-import { StewardApp } from 'common/type';
+import { StewardApp, StewardCache } from 'common/type';
+import { StewardReadyEvent, StewardReadyEventDetail } from './type';
 
 const $body: any = $('body');
 const sourcesInfo = getAllSources();
 
 let curUrl = '';
-let state;
+let state: StewardCache['wallpaper'];
 let timer = 0;
 
-function updateSaveStatus(action) {
-  const conf = saveActionConf[action];
+function updateSaveStatus(actionType: ACTION_TYPE) {
+  const conf = WALLPAPER_ACTIONS[actionType];
 
   saveWallpaperLink(curUrl, conf.action)
     .then(() => {
       Toast.success(conf.msg);
-      let isNew;
+      let isNew: boolean;
 
-      if (action === 'save') {
+      if (actionType === 'save') {
         window.Steward.app.emit('wallpaper:save');
         isNew = false;
       } else {
@@ -49,7 +50,7 @@ export function remove() {
   updateSaveStatus('remove');
 }
 
-export async function update(url, toSave, isNew) {
+export async function update(url: string, toSave: boolean, isNew: boolean) {
   if (!url) {
     return;
   }
@@ -59,7 +60,9 @@ export async function update(url, toSave, isNew) {
   }
 
   curUrl = url;
-  let styles;
+  let styles: {
+    [attr: string]: string
+  };
 
   if (url.startsWith('#')) {
     styles = {
@@ -81,11 +84,11 @@ export async function update(url, toSave, isNew) {
   });
 }
 
-function recordSource(source) {
+function recordSource(source: string) {
   window.localStorage.setItem('wallpaper_source', source);
 }
 
-export function refresh(today?, silent?) {
+export function refresh(today?: boolean, silent?: boolean) {
   const method = today ? 'today' : 'rand';
   const server = getSources(method);
 
@@ -139,21 +142,9 @@ export function refresh(today?, silent?) {
     });
 }
 
-const saveActionConf = {
-  save: {
-    action: 'save',
-    msg: chrome.i18n.getMessage('wallpaper_save_done'),
-  },
-
-  remove: {
-    action: 'remove',
-    msg: chrome.i18n.getMessage('wallpaper_remove_done'),
-  },
-};
-
 function bindEvents() {
-  document.addEventListener('stewardReady', (event: any) => {
-    const Steward = event.detail.app as StewardApp;
+  document.addEventListener('stewardReady', (event: StewardReadyEvent) => {
+    const Steward = event.detail.app;
 
     Steward.app.on('beforeleave', () => {
       console.log('beforeleave');

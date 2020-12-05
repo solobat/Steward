@@ -10,6 +10,7 @@ import { addNetworkRecord, generateSocialUrls } from '../lib/social-share-urls';
 import { getGlobalActions } from './action.helper';
 import * as ResultHelper from './result.helper';
 import { StewardApp } from 'common/type';
+import { StewardReadyEvent } from 'main/type';
 
 const websiteList = new WebsiteList();
 
@@ -215,8 +216,8 @@ export class Website {
       }
     });
 
-    document.addEventListener('stewardReady', (event: any) => {
-      const Steward = event.detail.app as StewardApp;
+    document.addEventListener('stewardReady', (event: StewardReadyEvent) => {
+      const Steward = event.detail.app;
 
       Steward.app.on('afterExecCommand', item => {
         this.afterExecCommand(item);

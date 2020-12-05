@@ -1,3 +1,4 @@
+import { WallpaperSource } from 'common/type';
 import CONST from 'constant/index';
 import bing from 'service/bing';
 import desktoppr from 'service/desktoppr';
@@ -86,25 +87,30 @@ const SOLID_COLORS = [
   '#5b7e91',
 ];
 
-const sourcesInfo = {
-  favorites: {
-    name: 'favorites',
-    api: () => storage.sync.get(CONST.STORAGE.WALLPAPERS, []),
-    handle: result => getRandomOne(result),
-    weight: 2,
-  },
-  solidcolor: {
-    name: 'solidcolor',
-    api: () => SOLID_COLORS,
-    handle: result => getRandomOne(result),
-    weight: 2,
-  },
+const favorites: WallpaperSource = {
+  name: 'favorites',
+  api: () => storage.sync.get(CONST.STORAGE.WALLPAPERS, []),
+  handle: result => getRandomOne(result),
+  weight: 2,
+}
+
+const solidcolor: WallpaperSource = {
+  name: 'solidcolor',
+  api: () => SOLID_COLORS,
+  handle: result => getRandomOne(result),
+  weight: 2,
+}
+
+type SourceTypes = 'bing' | 'desktoppr' | 'nasa' | 'picsum' | 'pixabay' | 'selection'
+const sourcesInfo: {[props: string]: WallpaperSource | null} = {
+  favorites,
+  solidcolor,
   bing: null,
 };
 
 function install() {
   sourceList.forEach(source => {
-    let result;
+    let result: WallpaperSource;
 
     if (typeof source === 'function') {
       result = source(getRandomOne);
@@ -124,7 +130,7 @@ export function getAllSources() {
   return sourcesInfo;
 }
 
-function randomIndex(sourceWeights) {
+function randomIndex(sourceWeights: number[]) {
   const list = [];
 
   sourceWeights.forEach((weight, index) => {

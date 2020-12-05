@@ -4,12 +4,32 @@ import { browser } from 'webextension-polyfill-ts';
 import util from 'common/util';
 import STORAGE from 'constant/storage';
 
-export function saveWallpaperLink(url, action = 'save') {
+export type ACTION_TYPE = 'save' | 'remove'
+export interface ACTION {
+  action: ACTION_TYPE;
+  msg: string
+}
+
+export const WALLPAPER_ACTIONS: {
+  [props: string]: ACTION
+} = {
+  save: {
+    action: 'save',
+    msg: chrome.i18n.getMessage('wallpaper_save_done'),
+  },
+
+  remove: {
+    action: 'remove',
+    msg: chrome.i18n.getMessage('wallpaper_remove_done'),
+  },
+};
+
+export function saveWallpaperLink(url: string, action: ACTION_TYPE = 'save') {
   return util.isStorageSafe(STORAGE.WALLPAPERS).then(() => {
     return browser.storage.sync
       .get(STORAGE.WALLPAPERS)
       .then(resp => {
-        let wallpapers = resp[STORAGE.WALLPAPERS] || [];
+        let wallpapers: any[] = resp[STORAGE.WALLPAPERS] || [];
 
         if (url) {
           const imgSaved = wallpapers.indexOf(url) !== -1;
@@ -43,7 +63,7 @@ export function saveWallpaperLink(url, action = 'save') {
   });
 }
 
-export function getDataURI(url): Promise<any> {
+export function getDataURI(url: string): Promise<any> {
   return new Promise((resolve, reject) => {
     let img = new Image();
 
@@ -79,9 +99,11 @@ export function getDataURI(url): Promise<any> {
   });
 }
 
-const checkBlacklist = (predicate: any = Boolean) => imgurl => {
+const checkBlacklist = (
+  predicate: (list: any[]) => boolean | any[] = Boolean,
+) => (imgurl: string) => {
   return browser.storage.local.get(STORAGE.WALLPAPER_BLACKLIST).then(resp => {
-    const list = resp[STORAGE.WALLPAPER_BLACKLIST] || [];
+    const list: any[] = resp[STORAGE.WALLPAPER_BLACKLIST] || [];
 
     if (list.indexOf(imgurl) === -1) {
       list.push(imgurl);
@@ -97,7 +119,7 @@ export const shouldShow = checkBlacklist();
 
 const getBlacklistIfNotRepeat = checkBlacklist(list => list);
 
-export function addToBlackList(imgurl) {
+export function addToBlackList(imgurl: string) {
   if (imgurl) {
     return getBlacklistIfNotRepeat(imgurl).then(list => {
       return browser.storage.local.set({

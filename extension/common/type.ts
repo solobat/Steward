@@ -74,9 +74,18 @@ export type StewardCache = Omit<Partial<AppData>, 'config'> & {
   commands?: {
     [prop: string]: PluginCommand;
   }
-  wallpaper?: any
+  wallpaper?: {
+    loading?: boolean
+  }
   wordcardExtId?: string
   config?: Partial<AppConfig> & {
     components?: any
   }
+}
+
+export interface WallpaperSource {
+  name: string;
+  api: (...args: any[]) => any;
+  handle: (result: any) => any;
+  weight: number;
 }

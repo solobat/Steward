@@ -19,6 +19,7 @@ import {
 } from 'helper/wallpaper.helper';
 import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
+import { StewardReadyEvent } from 'main/type';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -123,8 +124,8 @@ export default function(Steward: StewardApp): Plugin {
   }
 
   function setup() {
-    document.addEventListener('stewardReady', (event: any) => {
-      const Steward = event.detail.app as StewardApp;
+    document.addEventListener('stewardReady', (event: StewardReadyEvent) => {
+      const Steward = event.detail.app;
 
       Steward.app.on('wallpaper:refreshed', isNew => {
         updateList(!isNew);
