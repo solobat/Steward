@@ -4,16 +4,19 @@ import $ from 'jquery';
 import Toast from 'toastr';
 import { browser } from 'webextension-polyfill-ts';
 
+import { StewardCache } from 'common/type';
 import CONST from 'constant';
-import { ACTION_TYPE, saveWallpaperLink, shouldShow, WALLPAPER_ACTIONS } from 'helper/wallpaper.helper';
+import { t } from 'helper/i18n.helper';
+import {
+    ACTION_TYPE, saveWallpaperLink, shouldShow, WALLPAPER_ACTIONS
+} from 'helper/wallpaper.helper';
 import { getAllSources, getSources } from 'helper/wallpaperSource.helper';
+import Steward from 'main/Steward';
 import * as api from 'service';
 import * as date from 'utils/date';
-import { StewardCache } from 'common/type';
-import { StewardReadyEvent } from './type';
-import { t } from 'helper/i18n.helper';
-import Steward from 'main/Steward';
+
 import stewardCache from './cache';
+import { StewardReadyEvent } from './type';
 
 const $body: any = $('body');
 const sourcesInfo = getAllSources();

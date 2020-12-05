@@ -1,16 +1,15 @@
-import { AppData, StewardApp } from 'common/type';
+import Axios from 'axios';
 import md5 from 'blueimp-md5';
+import dayjs from 'dayjs';
 import $ from 'jquery';
 import Toast from 'toastr';
 import _ from 'underscore';
 import { browser } from 'webextension-polyfill-ts';
 
+import { StewardApp } from 'common/type';
 import util from 'common/util';
 import CONST from 'constant';
-
-import Axios from 'axios';
 import PromisifyStorage from 'utils/storage';
-import dayjs from 'dayjs';
 
 function installGlobalSteward() {
   window.__Steward__ = window.stewardApp = getGlobalStewardAPI();

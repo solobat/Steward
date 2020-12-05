@@ -1,4 +1,5 @@
 import { WallpaperSource } from 'common/type';
+
 import * as apiUtils from '../utils/api';
 
 const URL = `http://static.oksteward.com/steward-wallpaper.json?t=${Number(

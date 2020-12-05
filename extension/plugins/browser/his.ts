@@ -4,11 +4,12 @@
  * @email solopea@gmail.com
  */
 
+import { JSONSchema4, JSONSchema4Object, JSONSchema4Type } from 'json-schema';
+
 import { StewardApp } from 'common/type';
 import util from 'common/util';
 import { getURL } from 'helper/extension.helper';
 import { t } from 'helper/i18n.helper';
-import { JSONSchema4, JSONSchema4Object, JSONSchema4Type } from 'json-schema';
 import { Command, Plugin } from 'plugins/type';
 
 const timerangeTypes = ['today', 'week', 'month', 'year']

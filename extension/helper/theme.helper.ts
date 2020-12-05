@@ -1,4 +1,5 @@
 import { browser } from 'webextension-polyfill-ts';
+
 import CONST from 'constant';
 
 export default {

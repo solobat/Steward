@@ -1,4 +1,5 @@
 import { WallpaperSource } from 'common/type';
+
 import * as apiUtils from '../utils/api';
 
 const BASE_URL = 'https://api.desktoppr.co/1/wallpapers';

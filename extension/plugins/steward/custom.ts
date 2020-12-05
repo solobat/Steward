@@ -6,7 +6,6 @@
 
 import Toast from 'toastr';
 
-import { PLUGIN_TYPE } from 'constant/base';
 import { Command, Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
 import { t } from 'helper/i18n.helper';

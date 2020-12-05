@@ -5,25 +5,25 @@ import orderBy from 'lodash.orderby';
 import Toast from 'toastr';
 import _ from 'underscore';
 
+import { AppConfig, PluginsData } from 'common/config';
 import storage from 'common/storage';
+import { AppData, PluginCommand, StewardCache } from 'common/type';
 import util from 'common/util';
 import defaultGeneral from 'conf/general';
 import CONST from 'constant';
 import { TextAlias, TextAliasType } from 'helper/alias.helper';
 import { getComponentsConfig } from 'helper/component.helper';
+import { helpers } from 'helper/index';
 import { getCustomPlugins } from 'helper/plugin.helper';
+import { Website } from 'helper/websites.helper';
+import { fixNumber, fixNumbers, parseWorkflow } from 'helper/workflow.helper';
+import { KeyStatus, Plugin, ResultItem, SearchOnInputFunc } from 'plugins/type';
 
 import { getPlugins } from '../plugins';
 import * as recordsController from '../server/controller/recordsController';
-import { AppData, PluginCommand, StewardCache } from 'common/type';
-import { KeyStatus, Plugin, ResultItem, SearchOnInputFunc } from 'plugins/type';
-import { AppConfig, PluginsData } from 'common/config';
-import { Website } from 'helper/websites.helper';
-import { AppState, CommandResultItem, StewardReadyEventDetail } from './type';
-import { fixNumber, fixNumbers, parseWorkflow } from 'helper/workflow.helper';
-import Steward from './Steward';
-import { helpers } from 'helper/index';
 import stewardCache from './cache';
+import Steward from './Steward';
+import { AppState, CommandResultItem, StewardReadyEventDetail } from './type';
 
 const commands: {
   [prop: string]: PluginCommand;

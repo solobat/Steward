@@ -5,14 +5,13 @@ import resolveUrl from 'resolve-url';
 import { Website as WebsiteModel, WebsiteList } from 'collection/website';
 import util from 'common/util';
 import constant from 'constant';
+import Steward from 'main/Steward';
+import { StewardReadyEvent } from 'main/type';
 
 import { addNetworkRecord, generateSocialUrls } from '../lib/social-share-urls';
 import { getGlobalActions } from './action.helper';
-import * as ResultHelper from './result.helper';
-import { StewardApp } from 'common/type';
-import { StewardReadyEvent } from 'main/type';
 import { getURL } from './extension.helper';
-import Steward from 'main/Steward'
+import * as ResultHelper from './result.helper';
 
 const websiteList = new WebsiteList();
 

@@ -2,6 +2,7 @@ import { browser } from 'webextension-polyfill-ts';
 
 import util from 'common/util';
 import { ResultItem } from 'plugins/type';
+
 import { getURL } from './extension.helper';
 
 const icon = getURL('iconfont/alias.svg');

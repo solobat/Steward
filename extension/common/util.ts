@@ -4,10 +4,10 @@ import pinyin from 'pinyin';
 import Toast from 'toastr';
 
 import { QUOTA_BYTES_PER_ITEM } from 'constant/number';
-import { Command, KeyStatus, ResultItem, Type } from 'plugins/type';
-import { t } from 'helper/i18n.helper';
 import { getURL } from 'helper/extension.helper';
+import { t } from 'helper/i18n.helper';
 import stewardCache from 'main/cache';
+import { Command, KeyStatus, ResultItem, Type } from 'plugins/type';
 
 function getPinyin(name: string): string {
   return pinyin(name, {

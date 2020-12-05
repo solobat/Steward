@@ -1,4 +1,5 @@
 import { WallpaperSource } from 'common/type';
+
 import * as apiUtils from '../utils/api';
 
 const KEY = 'kxwrn5RQGnJVYU5wwipadjsGjOSrEGbyEihSZcqY';

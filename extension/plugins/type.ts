@@ -1,5 +1,6 @@
-import { PluginCommand, StewardApp } from 'common/type';
 import { JSONSchema4, JSONSchema4Type } from 'json-schema';
+
+import { PluginCommand, StewardApp } from 'common/type';
 import { AppState } from 'main/type';
 
 export type Type = 'keyword' | 'search' | 'always' | 'regexp' | 'other';

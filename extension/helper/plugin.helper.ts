@@ -3,18 +3,15 @@
  */
 
 import { browser } from 'webextension-polyfill-ts';
+
+import { CustomPlugin as CustomPluginModel, CustomPluginList } from 'collection/plugin';
+import { StewardApp } from 'common/type';
+import constant from 'constant/index';
+import Steward from 'main/Steward';
 import { Plugin as PluginModel } from 'plugins/type';
 
-import {
-  CustomPlugin as CustomPluginModel,
-  CustomPluginList,
-} from 'collection/plugin';
-import constant from 'constant/index';
-
 import { replaceURL } from '../pages/content/pageService';
-import { StewardApp } from 'common/type';
 import { getURL } from './extension.helper';
-import Steward from 'main/Steward';
 
 const blockPageUrl = getURL('urlblock.html');
 

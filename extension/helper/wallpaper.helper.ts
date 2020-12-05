@@ -3,6 +3,7 @@ import { browser } from 'webextension-polyfill-ts';
 
 import util from 'common/util';
 import STORAGE from 'constant/storage';
+
 import { t } from './i18n.helper';
 
 export type ACTION_TYPE = 'save' | 'remove'

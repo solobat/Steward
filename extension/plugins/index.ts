@@ -1,6 +1,7 @@
 // browser plugins
 import { StewardApp } from 'common/type';
 import { getGlobalStewardAPI } from 'main/Steward';
+
 import bookmark from './browser/bookmark';
 import chrome from './browser/chrome';
 import del from './browser/del';

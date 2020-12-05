@@ -1,14 +1,16 @@
 import { AxiosStatic } from 'axios';
 import md5 from 'blueimp-md5';
-import constant from 'constant';
 import dayjs from 'dayjs';
+import { Browser } from 'webextension-polyfill-ts';
+
+import constant from 'constant';
 import { helpers } from 'helper';
 import { Website } from 'helper/websites.helper';
 import { AppState } from 'main/type';
 import { Command, Plugin } from 'plugins/type';
-import { Browser } from 'webextension-polyfill-ts';
-import { AppConfig } from './config';
 import storage from 'utils/storage';
+
+import { AppConfig } from './config';
 import util from './util';
 
 declare global {

@@ -1,4 +1,5 @@
 import { WallpaperSource } from 'common/type';
+
 import * as apiUtils from '../utils/api';
 
 const STORAGE_KEY = 'picsumids';

@@ -6,18 +6,14 @@
 
 import axios from 'axios';
 import dayjs from 'dayjs';
-import { t } from 'helper/i18n.helper';
 
+import { StewardApp } from 'common/type';
 import util from 'common/util';
 import constant from 'constant/index';
-import {
-  customPluginHelper,
-  getCustomPlugins,
-  pluginFactory,
-} from 'helper/plugin.helper';
-import { Command, Plugin } from 'plugins/type';
-import { StewardApp } from 'common/type';
 import { getURL } from 'helper/extension.helper';
+import { t } from 'helper/i18n.helper';
+import { customPluginHelper, getCustomPlugins, pluginFactory } from 'helper/plugin.helper';
+import { Command, Plugin } from 'plugins/type';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;

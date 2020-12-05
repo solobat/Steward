@@ -1,14 +1,14 @@
 import $ from 'jquery';
+import { JSONSchema4Type } from 'json-schema';
 import _ from 'underscore';
 import { browser } from 'webextension-polyfill-ts';
 
 import defaultGeneral from 'conf/general';
+import Steward from 'main/Steward';
 import { getPlugins } from 'plugins';
 import { Plugin } from 'plugins/type';
 
 import util, { SimpleCommand } from './util';
-import Steward from 'main/Steward';
-import { JSONSchema4Type } from 'json-schema';
 
 export type PartialPlugin = Pick<
   Plugin,
