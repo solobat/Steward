@@ -205,6 +205,24 @@ export default function(Steward: StewardApp): Plugin {
     stewardCache.wordcardExtId = extID;
   }
 
+  let invalid = false;
+  
+  chrome.management.getAll(function(extList) {
+    const enabledExts = extList.filter(function(ext) {
+      return ext.enabled;
+    });
+
+    const enabledExtNames = enabledExts.map(ext => ext.name);
+
+    const matchIndex = enabledExtNames.indexOf(extName);
+
+      if (matchIndex !== -1) {
+        setup(enabledExts[matchIndex]);
+      } else {
+        invalid = true;
+      }
+  });
+
   return {
     version,
     extName,
@@ -213,6 +231,7 @@ export default function(Steward: StewardApp): Plugin {
     icon,
     title,
     commands,
+    invalid,
     onInput,
     onEnter,
     setup,

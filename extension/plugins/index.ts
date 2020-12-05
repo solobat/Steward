@@ -15,7 +15,7 @@ import set from './browser/set';
 import tab from './browser/tab';
 import topsites from './browser/topsites';
 // extension plugins
-import { extPlugins } from './extension';
+import wordcard from './extension/wordcard';
 // other plugins
 import calculate from './other/calculate';
 import diary from './other/diary';
@@ -53,6 +53,7 @@ const pluginCreators: PluginFactory[] = [
   bookmark,
   todo,
   pocket,
+  wordcard,
   calculate,
   urlblock,
   download,
@@ -71,7 +72,6 @@ const pluginCreators: PluginFactory[] = [
   spm,
   wsm,
   component,
-  ...extPlugins,
 ];
 
 let plugins: Plugin[];
