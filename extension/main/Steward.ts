@@ -27,7 +27,24 @@ export function getGlobalStewardAPI() {
     $,
     storage: PromisifyStorage,
 
-    state: {},
+    state: {
+      background: false,
+      key: '',
+      stage: '',
+      str: '',
+      cmd: '',
+      query: '',
+      delay: 0,
+      lastcmd: '',
+      command: null,
+      workflowStack: [],
+      keyStatus: {
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        altKey: false,
+      },
+    },
 
     util,
     constant: CONST,
@@ -41,7 +58,7 @@ const Steward = new Proxy<StewardApp>({} as StewardApp, {
     }
 
     return window.__Steward__[path];
-  }
+  },
 });
 
 export default Steward;

@@ -39,24 +39,7 @@ let keys;
 let reg;
 let mode: string;
 let inContent: boolean;
-let state: AppState = {
-  background: false,
-  key: '',
-  stage: '',
-  str: '',
-  cmd: '',
-  query: '',
-  delay: 0,
-  lastcmd: '',
-  command: null,
-  workflowStack: [],
-  keyStatus: {
-    shiftKey: false,
-    ctrlKey: false,
-    metaKey: false,
-    altKey: false,
-  },
-};
+let state: AppState = Steward.state;
 window.stewardCache = {} as StewardCache;
 window.slogs = [];
 
@@ -793,6 +776,7 @@ export function initConfig(themode: string, isInContent: boolean) {
 }
 
 export function globalApi(appData: AppData) {
+  // there is no setter on proxied-steward
   const Steward = getSteward();
 
   Steward.mode = appData.mode;
