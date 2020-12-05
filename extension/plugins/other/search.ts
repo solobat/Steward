@@ -11,6 +11,8 @@ import { browser } from 'webextension-polyfill-ts';
 import util from 'common/util';
 import { Command, Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -19,9 +21,9 @@ export default function(Steward: StewardApp): Plugin {
   const key = 'search';
   const version = 2;
   const type = 'other';
-  const icon = chrome.extension.getURL('iconfont/google.svg');
-  const title = chrome.i18n.getMessage(`${name}_title`);
-  const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
+  const icon = getURL('iconfont/google.svg');
+  const title = t(`${name}_title`);
+  const subtitle = t(`${name}_subtitle`);
   const commands: Command[] = [
     {
       key,
@@ -35,8 +37,8 @@ export default function(Steward: StewardApp): Plugin {
     {
       key: 'se',
       type: 'keyword',
-      title: chrome.i18n.getMessage(`${name}_se_title`),
-      subtitle: chrome.i18n.getMessage(`${name}_se_subtitle`),
+      title: t(`${name}_se_title`),
+      subtitle: t(`${name}_se_subtitle`),
       icon,
       editable: true,
     },
@@ -44,19 +46,19 @@ export default function(Steward: StewardApp): Plugin {
   const defaultSearchEngines = {
     Google: {
       url: 'https://www.google.com/search?q=%s',
-      icon: chrome.extension.getURL('iconfont/google.svg'),
+      icon: getURL('iconfont/google.svg'),
     },
     Baidu: {
       url: 'https://www.baidu.com/s?wd=%s',
-      icon: chrome.extension.getURL('iconfont/baidu.svg'),
+      icon: getURL('iconfont/baidu.svg'),
     },
     Bing: {
       url: 'https://bing.com/search?q=%s',
-      icon: chrome.extension.getURL('iconfont/bing.svg'),
+      icon: getURL('iconfont/bing.svg'),
     },
     'Stack Overflow': {
       url: 'https://stackoverflow.com/search?q=%s',
-      icon: chrome.extension.getURL('iconfont/stackoverflow.svg'),
+      icon: getURL('iconfont/stackoverflow.svg'),
     },
   };
 
@@ -131,7 +133,7 @@ export default function(Steward: StewardApp): Plugin {
   }
 
   function getSearchEngines() {
-    const desc = chrome.i18n.getMessage('search_removese_subtitle');
+    const desc = t('search_removese_subtitle');
 
     return getSyncEngines().then(engines => {
       return Object.keys(engines).map(engine => {
@@ -201,12 +203,12 @@ export default function(Steward: StewardApp): Plugin {
     const parts = str.split(/[|]/);
 
     if (parts.length !== 3) {
-      Toast.warning(chrome.i18n.getMessage('search_warning_format'));
+      Toast.warning(t('search_warning_format'));
     } else {
       const [ename, eurl, eicon] = parts;
 
       if (searchEngines[ename]) {
-        Toast.warning(chrome.i18n.getMessage('not_add_repeatedly'));
+        Toast.warning(t('not_add_repeatedly'));
       } else {
         searchEngines[ename] = {
           url: eurl,
@@ -215,19 +217,19 @@ export default function(Steward: StewardApp): Plugin {
       }
 
       return browser.storage.sync.set({ engines: searchEngines }).then(() => {
-        Toast.success(chrome.i18n.getMessage('add_ok'));
+        Toast.success(t('add_ok'));
         return `${command.key} `;
       });
     }
   }
 
   function deleteEngine(item) {
-    if (window.confirm(chrome.i18n.getMessage('search_warning_del'))) {
+    if (window.confirm(t('search_warning_del'))) {
       Reflect.deleteProperty(searchEngines, item.title);
       util.copyToClipboard(`${item.title}|${item.url}|${item.icon}`, true);
 
       return browser.storage.sync.set({ engines: searchEngines }).then(() => {
-        Toast.success(chrome.i18n.getMessage('delete_ok'));
+        Toast.success(t('delete_ok'));
         return '';
       });
     }

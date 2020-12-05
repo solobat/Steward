@@ -1,4 +1,4 @@
-import { StewardApp } from 'common/type';
+import { AppData, StewardApp } from 'common/type';
 import md5 from 'blueimp-md5';
 import $ from 'jquery';
 import Toast from 'toastr';
@@ -12,8 +12,8 @@ import Axios from 'axios';
 import PromisifyStorage from 'utils/storage';
 import dayjs from 'dayjs';
 
-export function installGlobalSteward() {
-  window.Steward = window.stewardApp = getGlobalStewardAPI();
+function installGlobalSteward() {
+  window.__Steward__ = window.stewardApp = getGlobalStewardAPI();
 }
 
 export function getGlobalStewardAPI() {
@@ -33,3 +33,15 @@ export function getGlobalStewardAPI() {
     constant: CONST,
   } as StewardApp;
 }
+
+const Steward = new Proxy<StewardApp>({} as StewardApp, {
+  get(_, path) {
+    if (!window.__Steward__) {
+      installGlobalSteward();
+    }
+
+    return window.__Steward__[path];
+  }
+});
+
+export default Steward;

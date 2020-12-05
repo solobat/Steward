@@ -1,5 +1,6 @@
 import { WorkflowList } from 'collection/workflow';
 import util from 'common/util';
+import Steward from 'main/Steward';
 
 const Workflows = new WorkflowList();
 
@@ -97,9 +98,9 @@ function parseNumbers(part: string) {
 }
 
 function resolveTemplate(text = '') {
-  const pageData = window.Steward.data?.page;
+  const pageData = Steward.data?.page;
 
-  if (text.indexOf('{{') !== -1 && window.Steward.inContent && pageData) {
+  if (text.indexOf('{{') !== -1 && Steward.inContent && pageData) {
     return util.simTemplate(text, pageData);
   } else {
     return text;

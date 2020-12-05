@@ -8,6 +8,8 @@ import { StewardApp } from 'common/type';
 import util from 'common/util';
 import { stewardPlusTabs, stewardTabs } from 'constant/base';
 import { Plugin } from 'plugins/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -15,9 +17,9 @@ export default function(Steward: StewardApp): Plugin {
   const version = 1;
   const name = 'steward';
   const type = 'search';
-  const icon = chrome.extension.getURL('img/icon.png');
-  const title = chrome.i18n.getMessage(`${name}_title`);
-  const baseUrl = chrome.extension.getURL('options.html');
+  const icon = getURL('img/icon.png');
+  const title = t(`${name}_title`);
+  const baseUrl = getURL('options.html');
 
   let optionTabs;
 

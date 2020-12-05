@@ -10,6 +10,8 @@ import { browser } from 'webextension-polyfill-ts';
 import util from 'common/util';
 import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -19,34 +21,34 @@ export default function(Steward: StewardApp): Plugin {
   const type = 'keyword';
   const keys = [{ key: 'nt' }, { key: 'ntm' }];
   const NOTES_KEY = 'titleNotes';
-  const icon = chrome.extension.getURL('iconfont/new-tab.svg');
-  const title = chrome.i18n.getMessage(`${name}_title`);
+  const icon = getURL('iconfont/new-tab.svg');
+  const title = t(`${name}_title`);
   const commands = util.genCommands(name, icon, keys, type);
   const allActions = [
     {
       icon,
       key: 'visibleOnlyFocued',
-      title: chrome.i18n.getMessage('newtab_visibleOnlyFocued_title'),
-      desc: chrome.i18n.getMessage('newtab_visibleOnlyFocued_subtitle'),
+      title: t('newtab_visibleOnlyFocued_title'),
+      desc: t('newtab_visibleOnlyFocued_subtitle'),
       type: 'boolean',
     },
     {
       icon,
       key: 'newTabTitle',
-      title: chrome.i18n.getMessage('newtab_newTabTitle_title'),
-      desc: chrome.i18n.getMessage('newtab_newTabTitle_subtitle'),
+      title: t('newtab_newTabTitle_title'),
+      desc: t('newtab_newTabTitle_subtitle'),
       type: 'string',
     },
     {
       icon,
       key: 'newTabUseFilter',
-      title: chrome.i18n.getMessage('newtab_newTabUseFilter_title'),
-      desc: chrome.i18n.getMessage('newtab_newTabUseFilter_subtitle'),
+      title: t('newtab_newTabUseFilter_title'),
+      desc: t('newtab_newTabUseFilter_subtitle'),
       type: 'boolean',
     },
   ];
 
-  const noteDesc = chrome.i18n.getMessage('newtab_ntm_subtitle');
+  const noteDesc = t('newtab_ntm_subtitle');
 
   function dataFormat(notes = []) {
     return notes.map(note => {
@@ -159,7 +161,7 @@ export default function(Steward: StewardApp): Plugin {
     window.localStorage.setItem(item.key, newValue);
 
     Toast.success(
-      util.simTemplate(chrome.i18n.getMessage('toggle_ok'), {
+      util.simTemplate(t('toggle_ok'), {
         text: item.title,
       }),
     );
@@ -172,7 +174,7 @@ export default function(Steward: StewardApp): Plugin {
 
     window.localStorage.setItem(item.key, result || 'New Tab');
     window.localStorage.setItem('titleType', 'fixed');
-    Toast.success(chrome.i18n.getMessage('set_ok'));
+    Toast.success(t('set_ok'));
   }
 
   return {

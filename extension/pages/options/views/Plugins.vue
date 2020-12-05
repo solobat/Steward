@@ -108,6 +108,7 @@ import util from "common/util";
 import CONST from "constant";
 import _ from "underscore";
 import JsonEditor from '@/components/jsoneditor/index.vue';
+import { t } from 'helper/i18n.helper';
 
 const pluginModules = _.sortBy(
   getStaticPlugins().filter(item => item.commands),
@@ -196,7 +197,7 @@ export default {
           if (silent) {
             console.log("save successfully");
           } else {
-            that.$message(chrome.i18n.getMessage("save_ok"));
+            that.$message(t("save_ok"));
           }
         }
       );

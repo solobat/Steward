@@ -35,6 +35,7 @@ import CONST from "constant";
 import storage from "utils/storage";
 import { saveWallpaperLink } from "helper/wallpaper.helper";
 import util from "common/util";
+import { t } from 'helper/i18n.helper';
 
 export default {
   name: 'Wallpapers',
@@ -98,7 +99,7 @@ export default {
         window.localStorage.setItem(KEY, wallpaper);
       }
 
-      this.$message(chrome.i18n.getMessage("set_ok"));
+      this.$message(t("set_ok"));
     },
 
     confirmDeleteWallpaper: function(wallpaper) {
@@ -131,7 +132,7 @@ export default {
         .then(() => {
           this.$message({
             type: "success",
-            message: chrome.i18n.getMessage("delete_ok")
+            message: t("delete_ok")
           });
         });
     }

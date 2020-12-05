@@ -6,6 +6,8 @@
 
 import { StewardApp } from 'common/type';
 import util from 'common/util';
+import { getURL } from 'helper/extension.helper';
+import { t } from 'helper/i18n.helper';
 import { JSONSchema4, JSONSchema4Object, JSONSchema4Type } from 'json-schema';
 import { Command, Plugin } from 'plugins/type';
 
@@ -33,9 +35,9 @@ function history(Steward: StewardApp, opt?: JSONSchema4Object): Plugin {
   const name = 'history';
   const key = 'his';
   const type = 'keyword';
-  const icon = chrome.extension.getURL('iconfont/history.svg');
-  const title = chrome.i18n.getMessage(`${name}_title`);
-  const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
+  const icon = getURL('iconfont/history.svg');
+  const title = t(`${name}_title`);
+  const subtitle = t(`${name}_subtitle`);
   const commands: Command[] = [
     {
       key,

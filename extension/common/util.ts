@@ -5,6 +5,8 @@ import Toast from 'toastr';
 
 import { QUOTA_BYTES_PER_ITEM } from 'constant/number';
 import { Command, KeyStatus, ResultItem, Type } from 'plugins/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 function getPinyin(name: string): string {
   return pinyin(name, {
@@ -62,8 +64,8 @@ function genCommands(name: string, icon: string, items: any[], type: Type) {
       key: item.key,
       type,
       orkey: item.key,
-      title: chrome.i18n.getMessage(`${name}_${keyname || key}_title`),
-      subtitle: chrome.i18n.getMessage(`${name}_${keyname || key}_subtitle`),
+      title: t(`${name}_${keyname || key}_title`),
+      subtitle: t(`${name}_${keyname || key}_subtitle`),
       icon,
       allowBatch,
       workflow,
@@ -85,13 +87,17 @@ function getDefaultResult(command) {
   ];
 }
 
-const loadingIcon = chrome.extension.getURL('iconfont/loading.svg');
+function getSteward() {
+  return window.__Steward__;
+}
+
+const loadingIcon = getURL('iconfont/loading.svg');
 
 function getLoadingResult(command) {
   let theCommand;
 
   if (!command) {
-    theCommand = window.Steward.app.getCurrentCommand();
+    theCommand = getSteward().app.getCurrentCommand();
   }
 
   if (theCommand) {
@@ -212,7 +218,7 @@ const batchExecutionIfNeeded = (
 };
 
 const createTab = (item: Partial<ResultItem>, keyStatus: Partial<KeyStatus> = {}) => {
-  const { mode, inContent } = window.Steward;
+  const { mode, inContent } = getSteward();
 
   if (mode === 'popup' && !inContent) {
     chrome.tabs.create({ url: item.url });
@@ -326,12 +332,12 @@ const getData = field => () => {
 };
 
 function getTplMsg(tplKey: string, data: TplData) {
-  return simTemplate(chrome.i18n.getMessage(tplKey), data);
+  return simTemplate(t(tplKey), data);
 }
 
 function getTextMsg(tplKey: string, textKey: string) {
   const data = {
-    text: chrome.i18n.getMessage(textKey),
+    text: t(textKey),
   };
 
   return getTplMsg(tplKey, data);

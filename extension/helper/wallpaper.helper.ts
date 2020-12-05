@@ -3,6 +3,7 @@ import { browser } from 'webextension-polyfill-ts';
 
 import util from 'common/util';
 import STORAGE from 'constant/storage';
+import { t } from './i18n.helper';
 
 export type ACTION_TYPE = 'save' | 'remove'
 export interface ACTION {
@@ -15,12 +16,12 @@ export const WALLPAPER_ACTIONS: {
 } = {
   save: {
     action: 'save',
-    msg: chrome.i18n.getMessage('wallpaper_save_done'),
+    msg: t('wallpaper_save_done'),
   },
 
   remove: {
     action: 'remove',
-    msg: chrome.i18n.getMessage('wallpaper_remove_done'),
+    msg: t('wallpaper_remove_done'),
   },
 };
 

@@ -11,6 +11,8 @@ import { browser } from 'webextension-polyfill-ts';
 import util from 'common/util';
 import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -25,8 +27,8 @@ export default function(Steward: StewardApp): Plugin {
     { key: 'mute' },
   ];
   const type = 'keyword';
-  const icon = chrome.extension.getURL('iconfont/tab.svg');
-  const title = chrome.i18n.getMessage(`${name}_title`);
+  const icon = getURL('iconfont/tab.svg');
+  const title = t(`${name}_title`);
   const commands = util.genCommands(name, icon, keys, type);
 
   function getAllTabs(query, callback) {
@@ -88,7 +90,7 @@ export default function(Steward: StewardApp): Plugin {
       return {
         key: command.key,
         id: item.id,
-        icon: item.favIconUrl || chrome.extension.getURL('img/icon.png'),
+        icon: item.favIconUrl || getURL('img/icon.png'),
         title: tabTitle,
         muted: item.mutedInfo.muted,
         desc,
@@ -133,7 +135,7 @@ export default function(Steward: StewardApp): Plugin {
         });
       });
     } else {
-      Toast.warning(chrome.i18n.getMessage('tab_warning_invalidindex'));
+      Toast.warning(t('tab_warning_invalidindex'));
       return Promise.resolve();
     }
   }

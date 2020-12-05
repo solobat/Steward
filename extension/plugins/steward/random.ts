@@ -7,6 +7,8 @@
 import { StewardApp } from 'common/type';
 import ItemsStorage from 'helper/storage.helper';
 import { Command, Plugin, ResultItem, StewardPlugin } from 'plugins/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -15,9 +17,9 @@ export default function(Steward: StewardApp): Plugin {
   const name = 'random';
   const key = 'random';
   const type = 'keyword';
-  const icon = chrome.extension.getURL('iconfont/random.svg');
-  const title = chrome.i18n.getMessage(`${name}_title`);
-  const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
+  const icon = getURL('iconfont/random.svg');
+  const title = t(`${name}_title`);
+  const subtitle = t(`${name}_subtitle`);
   const randomStorage = new ItemsStorage('Random Commands', 'randomCmds', true);
   const commands: Command[] = [
     {
@@ -75,7 +77,7 @@ export default function(Steward: StewardApp): Plugin {
   }
 
   function dataFormat(rawList = []) {
-    const desc = chrome.i18n.getMessage('random_remove_subtitle');
+    const desc = t('random_remove_subtitle');
 
     return rawList.map(function(item) {
       return {

@@ -10,6 +10,8 @@ import util from 'common/util';
 import constant from 'constant/index';
 import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -22,8 +24,8 @@ export default function(Steward: StewardApp): Plugin {
     { key: 'bkseturl' },
   ];
   const type = 'keyword';
-  const icon = chrome.extension.getURL('iconfont/urlblock.svg');
-  const title = chrome.i18n.getMessage(`${name}_title`);
+  const icon = getURL('iconfont/urlblock.svg');
+  const title = t(`${name}_title`);
   const BLOCK_EXPIRED = 8 * 60 * 60 * 1000;
   const commands = util.genCommands(name, icon, keys, type);
 
@@ -95,7 +97,7 @@ export default function(Steward: StewardApp): Plugin {
         }
       })
       .then(() => {
-        util.toast.success(chrome.i18n.getMessage('set_ok'));
+        util.toast.success(t('set_ok'));
 
         Steward.app.applyCommand('bkseturl ');
       });
@@ -238,7 +240,7 @@ export default function(Steward: StewardApp): Plugin {
   }
 
   function dataFormat(rawList, cmd) {
-    const desc = chrome.i18n.getMessage(`urlblock_un${cmd}_subtitle`);
+    const desc = t(`urlblock_un${cmd}_subtitle`);
 
     return rawList.map(function(item) {
       return {

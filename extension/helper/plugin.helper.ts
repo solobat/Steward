@@ -2,9 +2,6 @@
  * @desc pluginHelper
  */
 
-import axios from 'axios';
-import dayjs from 'dayjs';
-import $ from 'jquery';
 import { browser } from 'webextension-polyfill-ts';
 import { Plugin as PluginModel } from 'plugins/type';
 
@@ -12,14 +9,14 @@ import {
   CustomPlugin as CustomPluginModel,
   CustomPluginList,
 } from 'collection/plugin';
-import util from 'common/util';
 import constant from 'constant/index';
-import storage from 'utils/storage';
 
 import { replaceURL } from '../pages/content/pageService';
 import { StewardApp } from 'common/type';
+import { getURL } from './extension.helper';
+import Steward from 'main/Steward';
 
-const blockPageUrl = chrome.extension.getURL('urlblock.html');
+const blockPageUrl = getURL('urlblock.html');
 
 function PluginHelper() {
   this.mode = '';
@@ -166,7 +163,7 @@ class Plugin {
 
   createContext(): StewardApp {
     return {
-      ...window.Steward
+      ...Steward
     };
   }
 

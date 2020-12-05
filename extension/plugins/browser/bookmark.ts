@@ -6,6 +6,8 @@
 
 import { StewardApp } from 'common/type';
 import util from 'common/util';
+import { getURL } from 'helper/extension.helper';
+import { t } from 'helper/i18n.helper';
 import { Command, Plugin } from 'plugins/type';
 
 export default function(Steward: StewardApp): Plugin {
@@ -13,8 +15,8 @@ export default function(Steward: StewardApp): Plugin {
   const name = 'bookmark';
   const keys = [{ key: 'bm', shiftKey: true, allowBatch: true }, { key: 'bmd' }];
   const type = 'keyword';
-  const icon = Steward.chrome.extension.getURL('iconfont/bookmark.svg');
-  const title = Steward.chrome.i18n.getMessage(`${name}_title`);
+  const icon = getURL('iconfont/bookmark.svg');
+  const title = t(`${name}_title`);
   const commands = util.genCommands(name, icon, keys, type);
   
   let bookmarks: any[];

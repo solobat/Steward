@@ -271,6 +271,7 @@
 import websiteHelper from "helper/websites.helper";
 import util from "common/util";
 import { downloadAsJson } from "helper";
+import { t } from 'helper/i18n.helper';
 
 export default {
   name: 'Websites',
@@ -502,7 +503,7 @@ export default {
 
       return websiteHelper.save(data).then(website => {
         this.afterWebsiteSubmit(website.toJSON());
-        this.$message(chrome.i18n.getMessage("save_ok"));
+        this.$message(t("save_ok"));
       });
     },
 
@@ -519,7 +520,7 @@ export default {
     handleWebsiteSubmit() {
       this.$refs.websiteForm.validate(valid => {
         if (!valid) {
-          this.$message.error(chrome.i18n.getMessage("check_form"));
+          this.$message.error(t("check_form"));
         } else {
           this.submitWebsite();
         }
@@ -553,7 +554,7 @@ export default {
         }
       )
         .then(() => {
-          this.$message(chrome.i18n.getMessage("delete_ok"));
+          this.$message(t("delete_ok"));
           websiteHelper.remove(id);
           this.refreshWebsites();
           this.currentWebsite = null;

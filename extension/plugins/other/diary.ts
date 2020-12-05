@@ -11,6 +11,8 @@ import util from 'common/util';
 import diaryHelper from 'helper/diary.helper';
 import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 declare global {
   interface Window {
@@ -25,8 +27,8 @@ export default function(Steward: StewardApp): Plugin {
   const name = 'diary';
   const keys = [{ key: 'diary' }, { key: ':', keyname: 'say', shiftKey: true }];
   const type = 'keyword';
-  const icon = chrome.extension.getURL('iconfont/diary.svg');
-  const title = chrome.i18n.getMessage(`${name}_title`);
+  const icon = getURL('iconfont/diary.svg');
+  const title = t(`${name}_title`);
   const commands = util.genCommands(name, icon, keys, type);
   const messages = [];
   let isFirst = true;
@@ -106,7 +108,7 @@ export default function(Steward: StewardApp): Plugin {
     if (newMsg) {
       return updateMessages(newMsg);
     } else {
-      Toast.warning(chrome.i18n.getMessage('diary_warning_notempty'));
+      Toast.warning(t('diary_warning_notempty'));
 
       return Promise.reject('');
     }

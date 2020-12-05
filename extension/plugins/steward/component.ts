@@ -8,6 +8,8 @@ import { StewardApp } from 'common/type';
 import util from 'common/util';
 import { componentHelper, getComponentsConfig } from 'helper/component.helper';
 import { Plugin } from 'plugins/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -16,8 +18,8 @@ export default function(Steward: StewardApp): Plugin {
   const name = 'component';
   const keys = [{ key: 'show' }, { key: 'hide' }];
   const type = 'keyword';
-  const icon = chrome.extension.getURL('img/icon.png');
-  const title = chrome.i18n.getMessage(`${name}_title`);
+  const icon = getURL('img/icon.png');
+  const title = t(`${name}_title`);
   const commands = util.genCommands(name, icon, keys, type);
 
   function dataFormatter(item) {

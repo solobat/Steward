@@ -155,6 +155,7 @@ import previewHtml from "@/pages/options/preview.html";
 import { downloadAsJson, readFile } from "helper";
 import * as defaultThemems from "conf/themes";
 import storage from "utils/storage";
+import { t } from 'helper/i18n.helper';
 
 const appearanceItems = CONST.OPTIONS.APPEARANCE_ITEMS;
 
@@ -281,7 +282,7 @@ export default {
 
               return Promise.resolve(data);
             } catch (error) {
-              this.$message.error(chrome.i18n.getMessage("file_content_error"));
+              this.$message.error(t("file_content_error"));
 
               return Promise.reject("File content is wrong");
             }
@@ -293,7 +294,7 @@ export default {
             }
           });
       } else {
-        this.$message.error(chrome.i18n.getMessage("file_type_wrong"));
+        this.$message.error(t("file_type_wrong"));
       }
 
       return false;

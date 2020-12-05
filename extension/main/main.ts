@@ -21,10 +21,9 @@ import { AppConfig, PluginsData } from 'common/config';
 import { Website } from 'helper/websites.helper';
 import { AppState, CommandResultItem, StewardReadyEventDetail } from './type';
 import { fixNumber, fixNumbers, parseWorkflow } from 'helper/workflow.helper';
-import { installGlobalSteward } from './api';
+import Steward from './Steward';
 import { helpers } from 'helper/index';
-
-installGlobalSteward();
+import { getSteward } from 'common/steward';
 
 const commands: {
   [prop: string]: PluginCommand;
@@ -189,7 +188,7 @@ function alwaysStage() {
   if (alwaysCommand) {
     return callCommand(alwaysCommand, str).then(results => {
       if (results) {
-        window.Steward.app.emit('app:log', { key: 'calc', str });
+        Steward.app.emit('app:log', { key: 'calc', str });
         return Promise.reject(results);
       } else {
         return resetBox(lastKey, lastCommand);
@@ -208,7 +207,7 @@ function regexpStage() {
 
   // handle regexp commands
   if (spCommand) {
-    window.Steward.app.emit('app:log', { key: 'regexp', str });
+    Steward.app.emit('app:log', { key: 'regexp', str });
     return Promise.reject(callCommand(spCommand, str));
   } else {
     return Promise.resolve();
@@ -230,7 +229,7 @@ function searchStage(): Promise<any> {
       const searchRes = items;
 
       if (searchRes && searchRes.length) {
-        window.Steward.app.emit('app:log', { key: 'search', str });
+        Steward.app.emit('app:log', { key: 'search', str });
         setState({
           command: null,
         });
@@ -276,7 +275,7 @@ function commandStage(gothrough: boolean) {
 
     const command = commands[state.cmd];
 
-    window.Steward.app.emit('app:log', { key: cmd, str });
+    Steward.app.emit('app:log', { key: cmd, str });
 
     return Promise.reject(callCommand(command, key));
   } else {
@@ -288,7 +287,7 @@ function defaultStage() {
   if (otherCommands.length) {
     setState({ stage: 'default' });
 
-    window.Steward.app.emit('app:log', { key: 'other', str: state.str });
+    Steward.app.emit('app:log', { key: 'other', str: state.str });
     return callCommand(otherCommands[0], state.str);
   }
 }
@@ -302,7 +301,7 @@ function handleEnterResult(
     return result
       .then(data => {
         if (typeof data === 'string') {
-          window.Steward.app.emit('cmdbox:refresh', data);
+          Steward.app.emit('cmdbox:refresh', data);
         } else {
           const isRetain = data === true;
 
@@ -310,14 +309,14 @@ function handleEnterResult(
             const delay = typeof data === 'number' ? data : delay4close;
 
             setTimeout(() => {
-              window.Steward.app.emit('shouldCloseBox');
+              Steward.app.emit('shouldCloseBox');
             }, delay);
           }
         }
       })
       .catch(() => {});
   } else {
-    window.Steward.app.emit('shouldCloseBox');
+    Steward.app.emit('shouldCloseBox');
   }
 }
 
@@ -427,7 +426,7 @@ function handleNormalItem(
   if (type === ITEM_TYPE.PLUGINS) {
     const key = item.id;
 
-    window.Steward.app.applyCommand(`${key} `);
+    Steward.app.applyCommand(`${key} `);
     return Promise.resolve(true);
   } else if (type === ITEM_TYPE.URL) {
     if (state.command && state.command.shiftKey) {
@@ -445,16 +444,16 @@ function handleNormalItem(
 
     return Promise.resolve(true);
   } else if (type === ITEM_TYPE.ACTION) {
-    window.Steward.app.emit('action', {
+    Steward.app.emit('action', {
       action: 'command',
       info: item,
     });
   } else if (type === ITEM_TYPE.APP) {
-    window.Steward.app.emit('app:handle', item);
+    Steward.app.emit('app:handle', item);
   }
 
   if (type !== ITEM_TYPE.PLUGINS) {
-    window.Steward.app.emit('shouldCloseBox');
+    Steward.app.emit('shouldCloseBox');
   }
 }
 
@@ -481,7 +480,7 @@ function execCommand(
         const result = handleNormalItem(state, dataList, item, keyStatus);
         const ret = handleEnterResult(result);
 
-        window.Steward.app.emit(
+        Steward.app.emit(
           'afterExecCommand',
           item,
           dataList,
@@ -772,7 +771,7 @@ export function initConfig(themode: string, isInContent: boolean) {
     getCustomPlugins(),
     getComponentsConfig(),
   ]).then(([res, customPlugins, components]) => {
-    allPlugins = getPlugins(window.Steward, res.config.plugins).concat(customPlugins);
+    allPlugins = getPlugins(Steward, res.config.plugins).concat(customPlugins);
     classifyPlugins(res.config.plugins);
     initWebsites();
 
@@ -794,14 +793,16 @@ export function initConfig(themode: string, isInContent: boolean) {
 }
 
 export function globalApi(appData: AppData) {
-  window.Steward.mode = appData.mode;
-  window.Steward.inContent = appData.inContent;
-  window.Steward.config = appData.config;
-  window.Steward.data = appData.data;
+  const Steward = getSteward();
+
+  Steward.mode = appData.mode;
+  Steward.inContent = appData.inContent;
+  Steward.config = appData.config;
+  Steward.data = appData.data;
 }
 
 export function installApp(app) {
-  window.Steward.app = window.stewardApp.app = {
+  Steward.app = window.stewardApp.app = {
     helpers: helpers,
     on(eventName, fn) {
       app.$on(eventName, fn);
@@ -856,7 +857,7 @@ export function installApp(app) {
 
   const evt = new CustomEvent<StewardReadyEventDetail>('stewardReady', {
     detail: {
-      app: window.Steward,
+      app: Steward,
     },
   });
 

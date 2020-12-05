@@ -5,6 +5,8 @@ import { createWebsites } from 'helper/websites.helper'
 import axios from 'axios'
 import Vue from 'vue';
 import App from './App.vue';
+import Steward from 'main/Steward';
+
 Vue.config.productionTip = false;
 
 function initApp(mode, inContent, meta) {
@@ -94,7 +96,7 @@ window.addEventListener('message', function(event) {
 });
 
 function changeBoxStatus(disabled, cmd) {
-    window.Steward.app.emit('cmdbox:status', disabled, cmd);
+    Steward.app.emit('cmdbox:status', disabled, cmd);
 }
 
 function closeBox() {
@@ -120,8 +122,8 @@ function initForContentPage(parentWindow, lazy, parentHost, meta) {
         // if lazy, inputbox should get the focus when init
         changeBoxStatus(!lazy);
 
-        window.Steward.app.on('shouldCloseBox', closeBox);
-        window.Steward.app.on('action', handleAction);
+        Steward.app.on('shouldCloseBox', closeBox);
+        Steward.app.on('action', handleAction);
         keyboardJS.bind('esc', closeBox);
 
         parentWindow.postMessage({

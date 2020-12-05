@@ -11,6 +11,8 @@ import util from 'common/util';
 import STORAGE from 'constant/storage';
 import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -23,8 +25,8 @@ export default function(Steward: StewardApp): Plugin {
     { key: 'notes', shiftKey: true },
   ];
   const type = 'keyword';
-  const icon = chrome.extension.getURL('iconfont/note.svg');
-  const title = chrome.i18n.getMessage(`${name}_title`);
+  const icon = getURL('iconfont/note.svg');
+  const title = t(`${name}_title`);
   const tagReg = /#([a-zA-Z\u4e00-\u9fa5]+)/gi;
   const commands = util.genCommands(name, icon, keys, type);
 
@@ -221,7 +223,7 @@ export default function(Steward: StewardApp): Plugin {
           });
       })
       .catch(() => {
-        Toast.warning(chrome.i18n.getMessage('STORAGE_WARNING'));
+        Toast.warning(t('STORAGE_WARNING'));
 
         return Promise.reject();
       });

@@ -92,6 +92,7 @@
 <script>
 import CONST from "constant";
 import util from "common/util";
+import { t } from 'helper/i18n.helper';
 
 const getWorkflows = util.getData("getWorkflows");
 
@@ -166,7 +167,7 @@ export default {
             },
             () => {
               this.reloadWorkflows();
-              this.$message(chrome.i18n.getMessage("save_ok"));
+              this.$message(t("save_ok"));
             }
           );
         } else {
@@ -178,7 +179,7 @@ export default {
             resp => {
               this.reloadWorkflows();
               this.currentWorkflow = resp.data;
-              this.$message(chrome.i18n.getMessage("add_ok"));
+              this.$message(t("add_ok"));
             }
           );
         }

@@ -10,6 +10,7 @@
 </template>
 <script>
 import { MODE } from 'constant/base'
+import { getURL } from 'helper/extension.helper';
 
 export default {
     name: 'easycomplete-item',
@@ -31,8 +32,8 @@ export default {
 
     computed: {
         enterIconUrl() {
-            return this.mode === MODE.NEWTAB ? chrome.extension.getURL('iconfont/enter.svg') :
-            chrome.extension.getURL('iconfont/enter-white.svg')
+            return this.mode === MODE.NEWTAB ? getURL('iconfont/enter.svg') :
+            getURL('iconfont/enter-white.svg')
         },
         contentClass() {
             return {'ec-item-content': true, 'nodesc': !this.item.desc};

@@ -2,8 +2,9 @@ import { browser } from 'webextension-polyfill-ts';
 
 import util from 'common/util';
 import { ResultItem } from 'plugins/type';
+import { getURL } from './extension.helper';
 
-const icon = chrome.extension.getURL('iconfont/alias.svg');
+const icon = getURL('iconfont/alias.svg');
 
 function format(list) {
   return list.map(item => {

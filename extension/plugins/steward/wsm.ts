@@ -12,6 +12,8 @@ import constant from 'constant/index';
 import websitesHelper from 'helper/websites.helper';
 import { Command, Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -19,9 +21,9 @@ export default function(Steward: StewardApp): Plugin {
   const version = 1;
   const name = 'wsm';
   const type = 'keyword';
-  const icon = chrome.extension.getURL('img/icon.png');
-  const title = chrome.i18n.getMessage(`${name}_title`);
-  const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
+  const icon = getURL('img/icon.png');
+  const title = t(`${name}_title`);
+  const subtitle = t(`${name}_subtitle`);
   const commands: Command[] = [
     {
       key: 'wsm',
@@ -39,8 +41,8 @@ export default function(Steward: StewardApp): Plugin {
       universal: true,
       id: `wsm ${item}`,
       icon,
-      title: chrome.i18n.getMessage(`${name}_${item}_title`),
-      desc: chrome.i18n.getMessage(`${name}_${item}_subtitle`),
+      title: t(`${name}_${item}_title`),
+      desc: t(`${name}_${item}_subtitle`),
     };
   });
 
@@ -60,8 +62,8 @@ export default function(Steward: StewardApp): Plugin {
         subCommands.push({
           id: 'create',
           icon,
-          title: chrome.i18n.getMessage(`${name}_create_title`),
-          desc: chrome.i18n.getMessage(`${name}_create_subtitle`),
+          title: t(`${name}_create_title`),
+          desc: t(`${name}_create_subtitle`),
         });
       }
     }
@@ -197,7 +199,7 @@ export default function(Steward: StewardApp): Plugin {
           }),
         )
         .then(() => {
-          const baseURL = chrome.extension.getURL('options.html');
+          const baseURL = getURL('options.html');
 
           chrome.tabs.create({
             url: `${baseURL}?tab=websites`,

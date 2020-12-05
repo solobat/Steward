@@ -109,6 +109,7 @@
 import { componentHelper } from "helper/component.helper";
 import { getRemoteComponents } from 'helper/component.helper'
 import JsonEditor from '@/components/jsoneditor/index.vue';
+import { t } from 'helper/i18n.helper';
 
 export default {
   name: 'Newtabcomponents',
@@ -208,7 +209,7 @@ export default {
 
       return componentHelper.save(data).then(component => {
         this.afterComponentSubmit(component.toJSON());
-        this.$message(chrome.i18n.getMessage("save_ok"));
+        this.$message(t("save_ok"));
       });
     },
 
@@ -225,7 +226,7 @@ export default {
     handleComponentSubmit() {
       this.$refs.componentForm.validate(valid => {
         if (!valid) {
-          this.$message.error(chrome.i18n.getMessage("check_form"));
+          this.$message.error(t("check_form"));
         } else {
           this.submitComponent();
         }

@@ -16,7 +16,7 @@ declare global {
   var PLATFORM: string;
 
   interface Window {
-    Steward: StewardApp;
+    __Steward__: StewardApp;
     stewardApp: StewardApp;
     stewardCache: StewardCache;
     slogs: string[];
@@ -51,17 +51,17 @@ export interface AppMethods {
 } 
 
 export type StewardApp = AppData & {
-  chrome: typeof chrome;
-  dayjs: typeof dayjs;
-  $: JQueryStatic;
-  axios: AxiosStatic;
-  storage: typeof storage;
-  util: typeof util;
-  constant: typeof constant;
-  Toast: any;
-  md5: typeof md5;
+  readonly chrome: typeof chrome;
+  readonly dayjs: typeof dayjs;
+  readonly $: JQueryStatic;
+  readonly axios: AxiosStatic;
+  readonly storage: typeof storage;
+  readonly util: typeof util;
+  readonly constant: typeof constant;
+  readonly Toast: any;
+  readonly md5: typeof md5;
   state: AppState;
-  browser: Browser;
+  readonly browser: Browser;
   app?: AppMethods
 };
 

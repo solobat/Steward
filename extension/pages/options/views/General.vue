@@ -288,6 +288,7 @@
 
 <script>
 import CONST from "constant/index";
+import { t } from 'helper/i18n.helper';
 
 export default {
   name: "Home",
@@ -316,7 +317,7 @@ export default {
           if (silent) {
             console.log("save successfully");
           } else {
-            that.$message(chrome.i18n.getMessage("save_ok"));
+            that.$message(t("save_ok"));
           }
         }
       );

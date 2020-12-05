@@ -11,6 +11,8 @@ import { getGlobalActions } from './action.helper';
 import * as ResultHelper from './result.helper';
 import { StewardApp } from 'common/type';
 import { StewardReadyEvent } from 'main/type';
+import { getURL } from './extension.helper';
+import Steward from 'main/Steward'
 
 const websiteList = new WebsiteList();
 
@@ -255,7 +257,7 @@ export class Website {
         if (item.class.startsWith('http')) {
           icon = item.class;
         } else {
-          icon = chrome.extension.getURL(
+          icon = getURL(
             `iconfont/share-icons/${item.class}.svg`,
           );
         }
@@ -288,7 +290,7 @@ export class Website {
     if (this.config.websiteShareUrls) {
       this.generateShareUrls();
     }
-    window.Steward.data.page = rawMeta;
+    Steward.data.page = rawMeta;
   }
 
   getMeta() {

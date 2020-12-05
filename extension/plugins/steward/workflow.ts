@@ -8,6 +8,8 @@ import _ from 'underscore';
 import util from 'common/util';
 import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -19,8 +21,8 @@ export default function(Steward: StewardApp): Plugin {
     { key: 'wfe', shiftKey: true },
   ];
   const type = 'keyword';
-  const icon = chrome.extension.getURL('iconfont/workflow.svg');
-  const title = chrome.i18n.getMessage(`${name}_title`);
+  const icon = getURL('iconfont/workflow.svg');
+  const title = t(`${name}_title`);
   const commands = util.genCommands(name, icon, keys, type);
   let curWid;
 

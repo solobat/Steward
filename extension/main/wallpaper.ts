@@ -9,8 +9,10 @@ import { ACTION_TYPE, saveWallpaperLink, shouldShow, WALLPAPER_ACTIONS } from 'h
 import { getAllSources, getSources } from 'helper/wallpaperSource.helper';
 import * as api from 'service';
 import * as date from 'utils/date';
-import { StewardApp, StewardCache } from 'common/type';
-import { StewardReadyEvent, StewardReadyEventDetail } from './type';
+import { StewardCache } from 'common/type';
+import { StewardReadyEvent } from './type';
+import { t } from 'helper/i18n.helper';
+import Steward from 'main/Steward';
 
 const $body: any = $('body');
 const sourcesInfo = getAllSources();
@@ -28,14 +30,14 @@ function updateSaveStatus(actionType: ACTION_TYPE) {
       let isNew: boolean;
 
       if (actionType === 'save') {
-        window.Steward.app.emit('wallpaper:save');
+        Steward.app.emit('wallpaper:save');
         isNew = false;
       } else {
-        window.Steward.app.emit('wallpaper:remove');
+        Steward.app.emit('wallpaper:remove');
         isNew = true;
       }
 
-      window.Steward.app.emit('wallpaper:refreshed', isNew);
+      Steward.app.emit('wallpaper:refreshed', isNew);
     })
     .catch(msg => {
       Toast.warning(msg);
@@ -76,7 +78,7 @@ export async function update(url: string, toSave: boolean, isNew: boolean) {
   }
 
   $('html').css(styles);
-  window.Steward.app.emit('wallpaper:refreshed', isNew);
+  Steward.app.emit('wallpaper:refreshed', isNew);
   $body.waitForImages(true).done(function() {
     Toast.clear();
     state.loading = false;
@@ -93,7 +95,7 @@ export function refresh(today?: boolean, silent?: boolean) {
   const server = getSources(method);
 
   if (!silent) {
-    Toast.info(chrome.i18n.getMessage('wallpaper_update'), { timeOut: 20000 });
+    Toast.info(t('wallpaper_update'), { timeOut: 20000 });
   }
 
   state.loading = true;

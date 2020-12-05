@@ -7,6 +7,7 @@ import util from 'common/util';
 import * as i18n from 'info/i18n';
 import CONST from 'constant/index';
 import router from '@/pages/options/router';
+import { t } from 'helper/i18n.helper';
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -44,7 +45,7 @@ function getI18nTexts(obj, prefix) {
       }
       return ret;
     } else {
-      return chrome.i18n.getMessage(prefix);
+      return t(prefix);
     }
   } catch (e) {
     console.log(e);

@@ -6,6 +6,7 @@
 
 import axios from 'axios';
 import dayjs from 'dayjs';
+import { t } from 'helper/i18n.helper';
 
 import util from 'common/util';
 import constant from 'constant/index';
@@ -16,6 +17,7 @@ import {
 } from 'helper/plugin.helper';
 import { Command, Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -23,9 +25,9 @@ export default function(Steward: StewardApp): Plugin {
   const version = 1;
   const name = 'spm';
   const type = 'keyword';
-  const icon = chrome.extension.getURL('img/icon.png');
-  const title = chrome.i18n.getMessage(`${name}_title`);
-  const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
+  const icon = getURL('img/icon.png');
+  const title = t(`${name}_title`);
+  const subtitle = t(`${name}_subtitle`);
   const commands: Command[] = [
     {
       key: 'spm',
@@ -44,8 +46,8 @@ export default function(Steward: StewardApp): Plugin {
       universal: true,
       id: `spm ${item}`,
       icon,
-      title: chrome.i18n.getMessage(`${name}_${item}_title`),
-      desc: chrome.i18n.getMessage(`${name}_${item}_subtitle`),
+      title: t(`${name}_${item}_title`),
+      desc: t(`${name}_${item}_subtitle`),
     };
   });
   const LIST_URL =

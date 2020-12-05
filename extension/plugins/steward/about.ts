@@ -8,6 +8,8 @@ import { StewardApp } from 'common/type';
 import util from 'common/util';
 import { getAboutLinks, getUpLinks } from 'info/links';
 import { Plugin } from 'plugins/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -19,8 +21,8 @@ export default function(Steward: StewardApp): Plugin {
     { key: 'up', shiftKey: true, allowBatch: true, editable: false },
   ];
   const type = 'keyword';
-  const icon = chrome.extension.getURL('img/icon.png');
-  const title = chrome.i18n.getMessage(`${name}_title`);
+  const icon = getURL('img/icon.png');
+  const title = t(`${name}_title`);
   const commands = util.genCommands(name, icon, keys, type);
   const lang = chrome.i18n.getUILanguage().indexOf('zh') > -1 ? 'zh' : 'en';
   const aboutLinks = getAboutLinks(lang);

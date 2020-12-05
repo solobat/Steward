@@ -9,6 +9,8 @@ import _ from 'underscore';
 
 import { Command, Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -18,10 +20,10 @@ export default function(Steward: StewardApp): Plugin {
   const name = 'wordcard';
   const key = 'wd';
   const type = 'keyword';
-  const icon = chrome.extension.getURL('img/wordcard.png');
-  const tagIcon = chrome.extension.getURL('iconfont/exts/wordcard/tag.svg');
-  const title = chrome.i18n.getMessage(`${name}_title`);
-  const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
+  const icon = getURL('img/wordcard.png');
+  const tagIcon = getURL('iconfont/exts/wordcard/tag.svg');
+  const title = t(`${name}_title`);
+  const subtitle = t(`${name}_subtitle`);
   const commands: Command[] = [
     {
       key,
@@ -36,7 +38,7 @@ export default function(Steward: StewardApp): Plugin {
 
   let extID;
   const levelIcons = [0, 1, 2, 3, 4, 5].map(level =>
-    chrome.extension.getURL(`iconfont/exts/wordcard/level${level}.svg`),
+    getURL(`iconfont/exts/wordcard/level${level}.svg`),
   );
 
   const wordsFormat = item => {

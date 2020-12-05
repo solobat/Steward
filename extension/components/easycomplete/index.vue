@@ -22,6 +22,7 @@ import CONSTANT from 'constant'
 import easycompleteItem from './easycompleteItem.vue'
 import { dataList } from './mockData.js'
 import util from 'common/util'
+import Steward from 'main/Steward'
 
 Vue.component(easycompleteItem.name, easycompleteItem);
 
@@ -111,7 +112,7 @@ export default {
                 event.preventDefault();
                 if (this.isVisible()) {
                     if (event.metaKey) {
-                        window.Steward.app.notice('action:down:metakey');
+                        Steward.app.notice('action:down:metakey');
                     } else {
                         this.move('down');
                         this.$emit('move', 'down');
@@ -122,7 +123,7 @@ export default {
                 event.preventDefault();
                 if (this.isVisible()) {
                     if (event.metaKey) {
-                        window.Steward.app.notice('action:up:metakey');
+                        Steward.app.notice('action:up:metakey');
                     } else {
                         this.move('up');
                         this.$emit('move', 'up');
@@ -331,7 +332,7 @@ export default {
             }
         },
 
-        resizeUI(input) {
+        resizeUI() {
             // TODO
         }
     }

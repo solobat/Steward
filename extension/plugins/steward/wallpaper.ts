@@ -8,6 +8,7 @@
 import $ from 'jquery';
 import Toast from 'toastr';
 import { browser } from 'webextension-polyfill-ts';
+import { t } from 'helper/i18n.helper';
 
 import util from 'common/util';
 import { MODE } from 'constant/base';
@@ -20,6 +21,7 @@ import {
 import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
 import { StewardReadyEvent } from 'main/type';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -28,52 +30,52 @@ export default function(Steward: StewardApp): Plugin {
   const keys = [{ key: 'wp' }, { key: 'wps' }];
   const version = 3;
   const type = 'keyword';
-  const icon = chrome.extension.getURL('iconfont/wallpaper-icon.svg');
-  const title = chrome.i18n.getMessage(`${name}_title`);
+  const icon = getURL('iconfont/wallpaper-icon.svg');
+  const title = t(`${name}_title`);
   const commands = util.genCommands(name, icon, keys, type);
   const allActions = [
     {
-      icon: chrome.extension.getURL('iconfont/refresh-red.svg'),
-      title: chrome.i18n.getMessage('wallpaper_action_refresh_title'),
-      desc: chrome.i18n.getMessage('wallpaper_action_refresh_subtitle'),
+      icon: getURL('iconfont/refresh-red.svg'),
+      title: t('wallpaper_action_refresh_title'),
+      desc: t('wallpaper_action_refresh_subtitle'),
       selector: '#j-refresh-wp',
       type: 'refresh',
     },
     {
-      icon: chrome.extension.getURL('iconfont/weibo-red.svg'),
-      title: chrome.i18n.getMessage('wallpaper_action_upload_title'),
-      desc: chrome.i18n.getMessage('wallpaper_action_upload_subtitle'),
+      icon: getURL('iconfont/weibo-red.svg'),
+      title: t('wallpaper_action_upload_title'),
+      desc: t('wallpaper_action_upload_subtitle'),
       type: 'upload',
     },
     {
-      icon: chrome.extension.getURL('iconfont/save-red.svg'),
-      title: chrome.i18n.getMessage('wallpaper_action_save_title'),
-      desc: chrome.i18n.getMessage('wallpaper_action_save_subtitle'),
+      icon: getURL('iconfont/save-red.svg'),
+      title: t('wallpaper_action_save_title'),
+      desc: t('wallpaper_action_save_subtitle'),
       selector: '#j-save-wplink',
       type: 'save',
     },
     {
-      icon: chrome.extension.getURL('iconfont/save-red.svg'),
-      title: chrome.i18n.getMessage('wallpaper_action_remove_title'),
-      desc: chrome.i18n.getMessage('wallpaper_action_remove_subtitle'),
+      icon: getURL('iconfont/save-red.svg'),
+      title: t('wallpaper_action_remove_title'),
+      desc: t('wallpaper_action_remove_subtitle'),
       selector: '#j-save-wplink',
       type: 'remove',
     },
     {
-      icon: chrome.extension.getURL('iconfont/notshow.svg'),
-      title: chrome.i18n.getMessage('wallpaper_action_block_title'),
-      desc: chrome.i18n.getMessage('wallpaper_action_block_subtitle'),
+      icon: getURL('iconfont/notshow.svg'),
+      title: t('wallpaper_action_block_title'),
+      desc: t('wallpaper_action_block_subtitle'),
       type: 'block',
     },
     {
-      icon: chrome.extension.getURL('iconfont/download-red.svg'),
-      title: chrome.i18n.getMessage('wallpaper_action_download_title'),
-      desc: chrome.i18n.getMessage('wallpaper_action_download_subtitle'),
+      icon: getURL('iconfont/download-red.svg'),
+      title: t('wallpaper_action_download_title'),
+      desc: t('wallpaper_action_download_subtitle'),
       type: 'download',
     },
     {
-      icon: chrome.extension.getURL('iconfont/copy.svg'),
-      title: chrome.i18n.getMessage('wallpaper_action_copy_title'),
+      icon: getURL('iconfont/copy.svg'),
+      title: t('wallpaper_action_copy_title'),
       desc: '',
       url: '',
       universal: true,
@@ -361,7 +363,7 @@ export default function(Steward: StewardApp): Plugin {
           Toast.warning(msg);
         });
     } else {
-      Toast.warning(chrome.i18n.getMessage('wallpaper_warning_format'));
+      Toast.warning(t('wallpaper_warning_format'));
 
       return Promise.resolve(true);
     }

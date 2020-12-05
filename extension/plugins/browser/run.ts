@@ -6,6 +6,8 @@
 
 import { StewardApp } from 'common/type';
 import util from 'common/util';
+import { getURL } from 'helper/extension.helper';
+import { t } from 'helper/i18n.helper';
 import { Command, Plugin } from 'plugins/type';
 
 export default function(Steward: StewardApp): Plugin {
@@ -15,9 +17,9 @@ export default function(Steward: StewardApp): Plugin {
   const name = 'runapp';
   const key = 'run';
   const type = 'keyword';
-  const icon = chrome.extension.getURL('iconfont/app.svg');
-  const title = chrome.i18n.getMessage(`${name}_title`);
-  const subtitle = chrome.i18n.getMessage(`${name}_subtitle`);
+  const icon = getURL('iconfont/app.svg');
+  const title = t(`${name}_title`);
+  const subtitle = t(`${name}_subtitle`);
   const commands: Command[] = [
     {
       key,

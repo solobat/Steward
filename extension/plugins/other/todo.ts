@@ -11,6 +11,8 @@ import util from 'common/util';
 import STORAGE from 'constant/storage';
 import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -19,8 +21,8 @@ export default function(Steward: StewardApp): Plugin {
   const name = 'todolist';
   const keys = [{ key: 'todo' }, { key: 'done', shiftKey: true }];
   const type = 'keyword';
-  const icon = chrome.extension.getURL('iconfont/todo.svg');
-  const title = chrome.i18n.getMessage(`${name}_title`);
+  const icon = getURL('iconfont/todo.svg');
+  const title = t(`${name}_title`);
   const commands = util.genCommands(name, icon, keys, type);
 
   function handleTodoInput(query, command) {
@@ -83,7 +85,7 @@ export default function(Steward: StewardApp): Plugin {
       if (shiftKey) {
         return deleteDone(todo).then(() => {
           Toast.success(
-            util.simTemplate(chrome.i18n.getMessage('delete_ok_tpl'), {
+            util.simTemplate(t('delete_ok_tpl'), {
               text: todo.title,
             }),
           );
@@ -194,7 +196,7 @@ export default function(Steward: StewardApp): Plugin {
         });
       })
       .catch(() => {
-        Toast.warning(chrome.i18n.getMessage('STORAGE_WARNING'));
+        Toast.warning(t('STORAGE_WARNING'));
 
         return Promise.reject();
       });

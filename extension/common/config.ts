@@ -7,7 +7,7 @@ import { getPlugins } from 'plugins';
 import { Plugin } from 'plugins/type';
 
 import util, { SimpleCommand } from './util';
-import { installGlobalSteward } from 'main/api';
+import Steward from 'main/Steward';
 import { JSONSchema4Type } from 'json-schema';
 
 export type PartialPlugin = Pick<
@@ -18,14 +18,12 @@ export type PartialPlugin = Pick<
   options: JSONSchema4Type
 };
 
-installGlobalSteward();
-
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
 
 function getPluginModules() {
   const pluginModules: PartialPlugin[] = _.sortBy(
-    getPlugins(window.Steward).filter(item => item.commands),
+    getPlugins(Steward).filter(item => item.commands),
     'name',
   ).map(plugin => {
     const { name, icon, commands, title, canDisabled } = plugin;

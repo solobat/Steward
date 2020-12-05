@@ -152,6 +152,8 @@ import {
   setGlobalActions
 } from "helper/action.helper";
 import util from "common/util";
+import { t } from 'helper/i18n.helper';
+import { getURL } from 'helper/extension.helper';
 
 function readFile(file) {
   return new Promise((resolve, reject) => {
@@ -266,7 +268,7 @@ export default {
             try {
               data = JSON.parse(content);
             } catch (error) {
-              this.$message.error(chrome.i18n.getMessage("file_content_error"));
+              this.$message.error(t("file_content_error"));
 
               return Promise.reject("File content is wrong");
             }
@@ -275,29 +277,29 @@ export default {
           })
           .then(resp => {
             console.log(resp);
-            this.$message.success(chrome.i18n.getMessage("import_config_ok"));
+            this.$message.success(t("import_config_ok"));
             setTimeout(() => {
               window.location.reload();
             }, 500);
           })
           .catch(msg => {
             console.log(msg);
-            this.$message.error(chrome.i18n.getMessage("import_config_failed"));
+            this.$message.error(t("import_config_failed"));
           });
       } else {
-        this.$message.error(chrome.i18n.getMessage("file_type_wrong"));
+        this.$message.error(t("file_type_wrong"));
       }
 
       return false;
     },
 
     handleResetClick() {
-      this.$confirm(chrome.i18n.getMessage("reset_config_confirm"), "Prompt", {
+      this.$confirm(t("reset_config_confirm"), "Prompt", {
         type: "warning"
       })
         .then(() => {
           restoreConfig().then(() => {
-            this.$message(chrome.i18n.getMessage("reset_config_ok"));
+            this.$message(t("reset_config_ok"));
             setTimeout(function() {
               window.location.reload();
             }, 500);
@@ -312,14 +314,14 @@ export default {
       if (icon.startsWith("http")) {
         return icon;
       } else {
-        return chrome.extension.getURL(`iconfont/share-icons/${icon}.svg`);
+        return getURL(`iconfont/share-icons/${icon}.svg`);
       }
     },
 
     saveNetworks() {
       return saveNetworks(JSON.parse(JSON.stringify(this.socialNetworks))).then(
-        resp => {
-          this.$message.success(chrome.i18n.getMessage("save_ok"));
+        () => {
+          this.$message.success(t("save_ok"));
         }
       );
     },
@@ -368,7 +370,7 @@ export default {
     handleNetworkSaveClick() {
       this.$refs.networkForm.validate(valid => {
         if (!valid) {
-          this.$message.error(chrome.i18n.getMessage("check_form"));
+          this.$message.error(t("check_form"));
         } else {
           this.submitNetwork();
         }

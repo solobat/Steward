@@ -6,14 +6,16 @@
 
 import { StewardApp } from 'common/type';
 import util from 'common/util';
+import { getURL } from 'helper/extension.helper';
+import { t } from 'helper/i18n.helper';
 import { Plugin } from 'plugins/type';
 
 export default function(Steward: StewardApp): Plugin {
   const version = 1;
   const name = 'chrome';
   const type = 'search';
-  const icon = Steward.chrome.extension.getURL('iconfont/chrome.svg');
-  const title = Steward.chrome.i18n.getMessage(`${name}_title`);
+  const icon = getURL('iconfont/chrome.svg');
+  const title = t(`${name}_title`);
   const settingUrls = [
     'chrome://settings/people',
     'chrome://settings/appearance',

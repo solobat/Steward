@@ -9,6 +9,7 @@ import { MessageType, PageAction, PageCommand } from 'enum';
 import PluginHelper from 'helper/plugin.helper';
 
 import * as pageService from './pageService';
+import { getURL } from 'helper/extension.helper';
 
 const chrome = window.chrome;
 const pluginHelper = new PluginHelper();
@@ -18,7 +19,7 @@ function getHtml() {
 }
 
 function getMainHtml() {
-  const popupurl = chrome.extension.getURL('popup.html');
+  const popupurl = getURL('popup.html');
   const html = `
         <div id="steward-main" class="steward-main">
             <iframe style="display:none;" id="steward-iframe" src="${popupurl}" name="steward-box" width="530" height="480" frameborder="0"></iframe>
@@ -205,7 +206,7 @@ const App = {
       .map(node => {
         return {
           title: node.src,
-          icon: chrome.extension.getURL('iconfont/iframe.svg'),
+          icon: getURL('iconfont/iframe.svg'),
           url: node.src,
           key: ITEM_TYPE.URL,
         };
