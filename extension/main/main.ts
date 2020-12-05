@@ -33,7 +33,6 @@ const otherCommands: PluginCommand[] = [];
 const searchContexts: (Website | Plugin)[] = [];
 let allPlugins: Plugin[] = [];
 let alwaysCommand = null;
-let plugin4empty: Plugin;
 let randomPlugin: Plugin;
 let keys;
 let reg;
@@ -451,8 +450,6 @@ function execCommand(
 
     if (state.command) {
       plugin = state.command.plugin;
-    } else if (plugin4empty) {
-      plugin = plugin4empty;
     }
 
     if (!Array.isArray(item)) {
@@ -618,14 +615,12 @@ function execWorkflow(item: ResultItem) {
 }
 
 export function handleEmpty() {
-  if (plugin4empty) {
-    setState({
-      cmd: CONST.BASE.EMPTY_COMMAND,
-      command: null,
-      searchTimer: window.setTimeout(() => {
-        plugin4empty.onBoxEmpty();
-      }, state.delay),
-    });
+  const queryOnEmpty = stewardCache.config.general.emptyCommand
+
+  if (queryOnEmpty) {
+    queryByInput(queryOnEmpty, false).then(resp => {
+      Steward.app.updateList(resp.data)
+    })
   } else {
     setState({
       command: null,
@@ -645,6 +640,7 @@ function init() {
       }
     }
   });
+  handleEmpty();
 }
 
 function classifyPlugins(pluginsData: PluginsData) {
@@ -662,10 +658,6 @@ function classifyPlugins(pluginsData: PluginsData) {
 
   allPlugins.forEach(plugin => {
     if (!plugin.invalid && isEnabled(plugin)) {
-      if (typeof plugin.onBoxEmpty === 'function') {
-        plugin4empty = plugin;
-      }
-
       if (plugin.name === 'Random Commands') {
         randomPlugin = plugin;
       }

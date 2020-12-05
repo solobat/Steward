@@ -128,7 +128,9 @@ export default {
         },
 
         handleMove(dir) {
-            if (stewardCache.config.general.storeTypedQuery) {
+            const { storeTypedQuery, emptyCommand } = stewardCache.config.general;
+            
+            if (storeTypedQuery && !emptyCommand) {
                 this.$emit('viewHistory', dir, this.text);
             }
         },

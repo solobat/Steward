@@ -16,6 +16,7 @@ export default {
   websiteUrls: true,
   componentsMirror: 'github',
   websiteShareUrls: true,
+  emptyCommand: '',
   shortcuts: {
     'open-in-content-page': { cmd: '' },
     pageboxShortcut_0: { cmd: 'his ' },

@@ -53,6 +53,11 @@
           </el-row>
           <el-row>
             <el-col :span="12">
+              <el-form-item label="Query onEmtpy">
+                <el-input style="width: 200px;" v-model="config.general.emptyCommand" placeholder="such as: bm TODO" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
               <el-form-item :label="i18nTexts.general.storeTypedQuery">
                 <el-tooltip
                   class="item"
