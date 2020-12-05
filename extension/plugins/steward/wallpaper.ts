@@ -8,20 +8,17 @@
 import $ from 'jquery';
 import Toast from 'toastr';
 import { browser } from 'webextension-polyfill-ts';
-import { t } from 'helper/i18n.helper';
 
+import { StewardApp } from 'common/type';
 import util from 'common/util';
 import { MODE } from 'constant/base';
 import STORAGE from 'constant/storage';
-import {
-  addToBlackList,
-  getDataURI,
-  saveWallpaperLink,
-} from 'helper/wallpaper.helper';
-import { Plugin } from 'plugins/type';
-import { StewardApp } from 'common/type';
-import { StewardReadyEvent } from 'main/type';
 import { getURL } from 'helper/extension.helper';
+import { t } from 'helper/i18n.helper';
+import { addToBlackList, getDataURI, saveWallpaperLink } from 'helper/wallpaper.helper';
+import stewardCache from 'main/cache';
+import { StewardReadyEvent } from 'main/type';
+import { Plugin } from 'plugins/type';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -149,7 +146,7 @@ export default function(Steward: StewardApp): Plugin {
   }
 
   function isNewTab() {
-    return window.stewardCache.mode === MODE.NEWTAB;
+    return stewardCache.mode === MODE.NEWTAB;
   }
 
   function isInPage() {
@@ -321,7 +318,7 @@ export default function(Steward: StewardApp): Plugin {
   }
 
   function saveImage(actionType, command) {
-    if (!window.stewardCache.wallpaper.loading) {
+    if (!stewardCache.wallpaper.loading) {
       return getDataURI(window.localStorage.wallpaper)
         .then(result => {
           if (actionType === 'upload') {

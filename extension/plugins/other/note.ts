@@ -13,6 +13,7 @@ import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
 import { t } from 'helper/i18n.helper';
 import { getURL } from 'helper/extension.helper';
+import stewardCache from 'main/cache';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -42,7 +43,7 @@ export default function(Steward: StewardApp): Plugin {
     const { orkey } = command;
 
     if (orkey === '#') {
-      const { inContent } = window.stewardCache;
+      const { inContent } = stewardCache;
 
       if (inContent && key === '/') {
         return `# ${window.parentHost}`;
@@ -139,7 +140,7 @@ export default function(Steward: StewardApp): Plugin {
   }
 
   function handleNoteEnter(query, orkey) {
-    const { inContent } = window.stewardCache;
+    const { inContent } = stewardCache;
     const matches = query.match(tagReg) || [];
     const tags = matches.map(match => match.substr(1));
 

@@ -6,11 +6,12 @@
 
 import _ from 'underscore';
 
-import util from 'common/util';
-import { Command, Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
-import { t } from 'helper/i18n.helper';
+import util from 'common/util';
 import { getURL } from 'helper/extension.helper';
+import { t } from 'helper/i18n.helper';
+import stewardCache from 'main/cache';
+import { Command, Plugin } from 'plugins/type';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -37,7 +38,7 @@ export default function(Steward: StewardApp): Plugin {
   // NOTE: Only get the commands when needed, main.js has been immediately obtained
   // and then get the object will be empty
   function getPlugins(query) {
-    const allcommands = window.stewardCache.commands;
+    const allcommands = stewardCache.commands;
     const helpList = _.uniq(_.values(allcommands))
       .map(command => {
         return {

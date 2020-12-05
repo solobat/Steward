@@ -7,6 +7,7 @@ import { QUOTA_BYTES_PER_ITEM } from 'constant/number';
 import { Command, KeyStatus, ResultItem, Type } from 'plugins/type';
 import { t } from 'helper/i18n.helper';
 import { getURL } from 'helper/extension.helper';
+import stewardCache from 'main/cache';
 
 function getPinyin(name: string): string {
   return pinyin(name, {
@@ -183,7 +184,7 @@ const options2map = array2map('value', 'label');
 
 const wrapWithMaxNumIfNeeded = (
   field,
-  maxOperandsNum = window.stewardCache.config.general.maxOperandsNum,
+  maxOperandsNum = stewardCache.config.general.maxOperandsNum,
 ) => (item, index) => {
   let ret = field ? item[field] : item;
 
@@ -200,7 +201,7 @@ const batchExecutionIfNeeded = (
   actions: ((item: any, keyStatus?: KeyStatus) => void)[],
   listAndItem: ListAndItem,
   keyStatus?: KeyStatus,
-  maxOperandsNum = window.stewardCache.config.general.maxOperandsNum,
+  maxOperandsNum = stewardCache.config.general.maxOperandsNum,
 ) => {
   const results = [];
   const [exec4batch, exec] = actions;

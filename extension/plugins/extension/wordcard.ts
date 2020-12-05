@@ -11,6 +11,7 @@ import { Command, Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
 import { t } from 'helper/i18n.helper';
 import { getURL } from 'helper/extension.helper';
+import stewardCache from 'main/cache';
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome } = Steward;
@@ -201,9 +202,7 @@ export default function(Steward: StewardApp): Plugin {
 
   function setup(ext) {
     extID = ext.id;
-    if (window.stewardCache) {
-      window.stewardCache.wordcardExtId = extID;
-    }
+    stewardCache.wordcardExtId = extID;
   }
 
   return {

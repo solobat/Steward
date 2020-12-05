@@ -18,7 +18,7 @@ declare global {
   interface Window {
     __Steward__: StewardApp;
     stewardApp: StewardApp;
-    stewardCache: StewardCache;
+    __StewardCache__: StewardCache;
     slogs: string[];
     matchedSite: Website | null;
     parentHost?: string;

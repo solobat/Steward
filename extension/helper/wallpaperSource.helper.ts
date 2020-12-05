@@ -1,5 +1,6 @@
 import { WallpaperSource } from 'common/type';
 import CONST from 'constant/index';
+import stewardCache from 'main/cache';
 import bing from 'service/bing';
 import desktoppr from 'service/desktoppr';
 import nasa from 'service/nasa';
@@ -143,7 +144,7 @@ function randomIndex(sourceWeights: number[]) {
 }
 
 export function getSources(method) {
-  let sources = window.stewardCache.config.general.wallpaperSources.slice(0);
+  let sources = stewardCache.config.general.wallpaperSources.slice(0);
 
   // default
   if (!sources || !sources.length) {

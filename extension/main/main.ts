@@ -24,6 +24,7 @@ import { fixNumber, fixNumbers, parseWorkflow } from 'helper/workflow.helper';
 import Steward from './Steward';
 import { helpers } from 'helper/index';
 import { getSteward } from 'common/steward';
+import stewardCache from './cache';
 
 const commands: {
   [prop: string]: PluginCommand;
@@ -40,7 +41,6 @@ let reg;
 let mode: string;
 let inContent: boolean;
 let state: AppState = Steward.state;
-window.stewardCache = {} as StewardCache;
 window.slogs = [];
 
 function findMatchedPlugins(query: string) {
@@ -362,7 +362,7 @@ async function sortResults(results) {
 }
 
 export function getInitCmd() {
-  const config = window.stewardCache.config;
+  const config = stewardCache.config;
   const { cacheLastCmd, defaultPlugin, customCmd } = config.general;
   const paramCmd = util.getParameterByName('cmd');
 
@@ -746,8 +746,8 @@ export function getRandomPlugin() {
 export function initConfig(themode: string, isInContent: boolean) {
   inContent = isInContent;
   mode = themode;
-  window.stewardCache.inContent = isInContent;
-  window.stewardCache.mode = mode;
+  stewardCache.inContent = isInContent;
+  stewardCache.mode = mode;
 
   return Promise.all([
     restoreConfig(),
@@ -761,17 +761,17 @@ export function initConfig(themode: string, isInContent: boolean) {
     keys = Object.keys(commands).join('|');
     reg = new RegExp(`^((?:${keys}))\\s(.*)$`, 'i');
 
-    window.stewardCache.commands = commands;
-    window.stewardCache.config = res.config || {};
+    stewardCache.commands = commands;
+    stewardCache.config = res.config || {};
 
-    if (!window.stewardCache.config.general) {
-      window.stewardCache.config.general = defaultGeneral;
+    if (!stewardCache.config.general) {
+      stewardCache.config.general = defaultGeneral;
     }
-    window.stewardCache.config.components = components;
+    stewardCache.config.components = components;
 
     init();
 
-    return window.stewardCache.config;
+    return stewardCache.config;
   });
 }
 

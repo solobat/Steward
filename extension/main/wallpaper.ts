@@ -13,6 +13,7 @@ import { StewardCache } from 'common/type';
 import { StewardReadyEvent } from './type';
 import { t } from 'helper/i18n.helper';
 import Steward from 'main/Steward';
+import stewardCache from './cache';
 
 const $body: any = $('body');
 const sourcesInfo = getAllSources();
@@ -162,9 +163,9 @@ export function init() {
   );
   const defaultWallpaper = window.localStorage.getItem(CONST.STORAGE.WALLPAPER);
   const enableRandomWallpaper =
-    window.stewardCache.config.general.enableRandomWallpaper;
+    stewardCache.config.general.enableRandomWallpaper;
 
-  state = window.stewardCache.wallpaper = {
+  state = stewardCache.wallpaper = {
     loading: false,
   };
 

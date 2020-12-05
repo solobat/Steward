@@ -12,6 +12,7 @@
 import easycomplete from '../easycomplete/index.vue'
 import CONST from 'constant'
 import * as Core from '../../main/main'
+import stewardCache from 'main/cache'
 
 export default {
     name: 'cmdbox',
@@ -23,7 +24,7 @@ export default {
         inContent: Boolean
     },
     data() {
-        const { autoScrollToMiddle, autoResizeBoxFontSize, autoSelectByMouse } = window.stewardCache.config.general;
+        const { autoScrollToMiddle, autoResizeBoxFontSize, autoSelectByMouse } = stewardCache.config.general;
 
         return {
             autohide: false,
@@ -95,7 +96,7 @@ export default {
             }
 
             if (this.mode === CONST.BASE.MODE.NEWTAB &&
-                window.stewardCache.config.general.autoHideCmd) {
+                stewardCache.config.general.autoHideCmd) {
                     this.autohide = true;
             }
         },
@@ -127,7 +128,7 @@ export default {
         },
 
         handleMove(dir) {
-            if (window.stewardCache.config.general.storeTypedQuery) {
+            if (stewardCache.config.general.storeTypedQuery) {
                 this.$emit('viewHistory', dir, this.text);
             }
         },
