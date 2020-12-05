@@ -65,7 +65,14 @@ function findMatchedPlugins(query: string) {
 
 function findRegExpMatched(str: string) {
   return regExpCommands.find(item => {
-    return item.regExp && str.match(item.plugin.commands[0].regExp);
+    if (item.regExp) {
+      const reg = item.plugin.commands[0].regExp;
+      const text = reg.formatter!(str) ?? str
+
+      return text.match(reg)
+    } else {
+      return false;
+    }
   });
 }
 

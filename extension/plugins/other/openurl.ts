@@ -22,7 +22,10 @@ export default function(Steward: StewardApp): Plugin {
   const icon = getURL('iconfont/openurl.svg');
   const title = t(`${name}_title`);
   const subtitle = t(`${name}_subtitle`);
-  const regExp = urlRegex({ exact: true, strict: false });
+  const regExp: RegExp = urlRegex({ exact: true, strict: false });
+
+  regExp.formatter = (query: string) => query.replace(/。/g, '.')
+  
   const commands: Command[] = [
     {
       key,
@@ -41,7 +44,7 @@ export default function(Steward: StewardApp): Plugin {
         key: 'url',
         id: name,
         icon,
-        title: url,
+        title: regExp.formatter(url),
         desc: subtitle,
         url,
       },

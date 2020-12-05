@@ -25,6 +25,10 @@ declare global {
     matchedSite: Website | null;
     parentHost?: string;
   }
+
+  interface RegExp {
+    formatter?: (query: string) => string
+  }
 }
 
 interface Data {
