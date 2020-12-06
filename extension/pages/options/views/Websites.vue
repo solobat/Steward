@@ -35,7 +35,7 @@
               </div>
             </div>
             <div class="plugin-editor-config" style="overflow-y: auto;">
-              <el-tabs style="height: 100%;" type="border-card" @tab-click="handleWebsiteTabClick">
+              <el-tabs style="height: auto;" type="border-card" @tab-click="handleWebsiteTabClick">
                 <el-tab-pane label="Simple Editor">
                   <el-form
                     style="padding: 12px; min-height: 150px;"
