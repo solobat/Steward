@@ -148,9 +148,7 @@ class Plugin extends PluginClass {
   onLeave() {}
 
   createContext(): StewardApp {
-    return {
-      ...Steward
-    };
+    return Steward;
   }
 
   mergeMeta(meta) {
