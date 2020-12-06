@@ -111,6 +111,7 @@ export interface Plugin {
   optionsSchema?: JSONSchema4
   defaultOptions?: JSONSchema4Type
   options?: JSONSchema4Type
+  dataEditor?: DataEditor
 }
 
 export interface PluginFactory {
@@ -154,4 +155,10 @@ export abstract class WebsiteClass {
   shareUrls: any[];
   config: any;
   actions: any[];
+}
+
+export interface DataEditor {
+  schema: JSONSchema4;
+  getData: () => any;
+  saveData: (data: any) => void;
 }

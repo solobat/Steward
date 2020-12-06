@@ -81,6 +81,9 @@
                 <el-form-item label="Options" v-if="currentPlugin.optionsSchema">
                   <json-editor :schema="currentPlugin.optionsSchema" v-model="config.plugins[currentPlugin.name].options" />
                 </el-form-item>
+                <el-form-item label="Data Editor" v-if="currentPlugin.dataEditor">
+                  <el-button type="primary" size="mini" @click="onDataEditorClick">Edit Data</el-button>
+                </el-form-item>
                 <el-form-item v-if="currentPlugin.canDisabled" label="Disable">
                   <el-switch
                     v-model="config.plugins[currentPlugin.name].disabled"
@@ -99,6 +102,14 @@
         </div>
       </el-col>
     </el-row>
+    <el-dialog title="Data Editor" v-model="dataEditorVisible" size="large">
+      <div style="height: 400px;overflow: auto;">
+        <json-editor v-if="dataEditor"
+          :schema="dataEditor.schema" v-model="dataEditor.data"
+          layout="grid" class="data-editor"></json-editor>
+      </div>
+      <el-button type="primary" @click="onDataEditorSaveClick">Save</el-button>
+    </el-dialog>
   </div>
 </template>
 
@@ -110,43 +121,7 @@ import _ from "underscore";
 import JsonEditor from '@/components/jsoneditor/index.vue';
 import { t } from 'helper/i18n.helper';
 
-const pluginModules = _.sortBy(
-  getStaticPlugins().filter(item => item.commands),
-  "name"
-).map(plugin => {
-  const {
-    name,
-    icon,
-    commands,
-    title,
-    disabled,
-    canDisabled,
-    authenticate,
-    options,
-    optionsSchema,
-    defaultOptions
-  } = plugin;
-
-  const ret = {
-    name,
-    version: plugin.version,
-    category: plugin.category,
-    commands,
-    title,
-    icon,
-    canDisabled,
-    authenticate,
-    options,
-    optionsSchema,
-    defaultOptions
-  };
-
-  if (canDisabled) {
-    ret.disabled = disabled;
-  }
-
-  return ret;
-});
+const pluginModules = getPluginsModules();
 
 export default {
   name: 'Plugins',
@@ -157,7 +132,9 @@ export default {
     return {
       pluginSearchText: "",
       currentPlugin: null,
-      defaultPlugins: CONST.OPTIONS.DEFAULT_PLUGINS
+      defaultPlugins: CONST.OPTIONS.DEFAULT_PLUGINS,
+      dataEditorVisible: false,
+      dataEditor: null
     };
   },
 
@@ -185,6 +162,23 @@ export default {
   },
 
   methods: {
+    onDataEditorClick() {
+      const dataEditor = {...this.currentPlugin.dataEditor};
+
+      Promise.resolve(dataEditor.getData()).then(data => {
+        dataEditor.data = data;
+        this.dataEditorVisible = true;
+        this.dataEditor = dataEditor;
+      })
+    },
+
+    onDataEditorSaveClick() {
+      Promise.resolve(this.dataEditor.saveData(this.dataEditor.data)).then(() => {
+        this.$message(t("save_ok"));
+        this.dataEditor = null;
+        this.dataEditorVisible = false;
+      })
+    },
     saveConfig: function(silent) {
       const that = this;
       const newConfig = JSON.parse(JSON.stringify(this.config));
@@ -264,4 +258,46 @@ export default {
     }
   }
 };
+
+function getPluginsModules() {
+  return _.sortBy(
+    getStaticPlugins().filter(item => item.commands),
+    "name"
+  ).map(plugin => {
+    const {
+      name,
+      icon,
+      commands,
+      title,
+      disabled,
+      canDisabled,
+      authenticate,
+      options,
+      optionsSchema,
+      defaultOptions,
+      dataEditor,
+    } = plugin;
+
+    const ret = {
+      name,
+      version: plugin.version,
+      category: plugin.category,
+      commands,
+      title,
+      icon,
+      canDisabled,
+      authenticate,
+      options,
+      optionsSchema,
+      dataEditor,
+      defaultOptions
+    };
+
+    if (canDisabled) {
+      ret.disabled = disabled;
+    }
+
+    return ret;
+  });
+}
 </script>

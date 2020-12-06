@@ -13,8 +13,11 @@ export default {
       type: Object,
     },
     value: {
-      type: Object,
+      type: [Object, Array],
     },
+    layout: {
+      type: String
+    }
   },
 
   data() {
@@ -36,6 +39,9 @@ export default {
         disable_properties: true,
         theme: 'bootstrap4',
         startval: this.value,
+        object_layout: this.layout || 'normal',
+        remove_button_labels: true,
+        iconlib: 'spectre'
       });
       this.editor.on('change', () => {
         this.$emit('input', this.editor.getValue());

@@ -3,6 +3,7 @@ import ElementUI from 'element-ui';
 import App from './App.vue';
 import 'element-ui/lib/theme-default/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'spectre.css/dist/spectre-icons.min.css'
 import util from 'common/util';
 import * as i18n from 'info/i18n';
 import CONST from 'constant/index';

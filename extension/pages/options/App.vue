@@ -87,8 +87,16 @@ body {
 }
 .json-editor {
   width: 400px;
-  .je-object__title, .je-object__controls {
+  .je-object__title, .je-object__controls, .card-title {
     display: none!important;
+  }
+
+  &.data-editor {
+      width: 100%;
+
+      .je-object__container {
+          margin-bottom: 10px;
+      }
   }
 }
 

@@ -45,6 +45,7 @@
     "normalize.css": "^7.0.0",
     "pinyin": "^2.8.3",
     "qrcode": "^1.2.0",
+    "spectre.css": "^0.5.9",
     "toastr": "^2.1.2",
     "translation.js": "^0.7.5",
     "underscore": "^1.8.3",

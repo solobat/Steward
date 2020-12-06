@@ -7,10 +7,51 @@
 import Toast from 'toastr';
 import _ from 'underscore';
 
-import { Command, Plugin } from 'plugins/type';
+import { Command, DataEditor, Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
 import { t } from 'helper/i18n.helper';
 import { getURL } from 'helper/extension.helper';
+import { JSONSchema4 } from 'json-schema';
+
+const dataSchema: JSONSchema4 = {
+  type: 'array',
+  items: {
+    type: 'object',
+    properties: {
+      name: {
+        type: 'string',
+        "options": {
+          "grid_columns": 2
+        }
+      },
+      url: {
+        type: 'string',
+        "options": {
+          "grid_columns": 5
+        }
+      },
+      icon: {
+        type: 'string',
+        "options": {
+          "grid_columns": 4
+        }
+      },
+      count: {
+        type: 'number',
+        "options": {
+          "grid_columns": 1
+        }
+      }
+    }
+  }
+}
+
+interface DataItem {
+  name: string;
+  url: string;
+  icon: string;
+  count: number;
+}
 
 export default function(Steward: StewardApp): Plugin {
   const { chrome, util, browser } = Steward;
@@ -61,6 +102,38 @@ export default function(Steward: StewardApp): Plugin {
   };
 
   let searchEngines;
+
+  const dataEditor: DataEditor = {
+    schema: dataSchema,
+    getData() {
+      return getSyncEngines().then(resp => {
+        const list = Object.keys(resp).map(key => {
+          const item = resp[key];
+
+          return {
+            name: key,
+            url: item.url,
+            icon: item.icon,
+            count: item.count || 0
+          }
+        })
+
+        return _.sortBy(list, 'count').reverse();
+      })
+    },
+    saveData(searchEngines: DataItem[]) {
+      const data = searchEngines.reduce((memo, item, index) => {
+        memo[item.name] = {
+          url: item.url,
+          icon: item.icon,
+          count: item.count
+        }
+
+        return memo;
+      }, {})
+      return browser.storage.sync.set({ engines: data });
+    }
+  }
 
   function getSyncEngines() {
     if (searchEngines) {
@@ -263,6 +336,7 @@ export default function(Steward: StewardApp): Plugin {
     onInput,
     onEnter,
     commands,
+    dataEditor,
     canDisabled: false,
   };
 }
