@@ -4,18 +4,15 @@
  * @email solopea@gmail.com
  */
 
-import Toast from 'toastr';
 import _ from 'underscore';
-import { browser } from 'webextension-polyfill-ts';
 
-import util from 'common/util';
 import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
 import { t } from 'helper/i18n.helper';
 import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
+  const { chrome, util, Toast, browser } = Steward;
 
   const version = 7;
   const name = 'tabs';

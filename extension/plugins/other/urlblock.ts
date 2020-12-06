@@ -4,17 +4,13 @@
  * @email solopea@gmail.com
  */
 
-import { browser } from 'webextension-polyfill-ts';
-
-import util from 'common/util';
-import constant from 'constant/index';
 import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
 import { t } from 'helper/i18n.helper';
 import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
+  const { chrome, browser, constant, util } = Steward;
 
   const version = 5;
   const name = 'urlblock';

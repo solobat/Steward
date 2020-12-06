@@ -7,14 +7,13 @@
 import _ from 'underscore';
 
 import { StewardApp } from 'common/type';
-import util from 'common/util';
 import { getURL } from 'helper/extension.helper';
 import { t } from 'helper/i18n.helper';
 import stewardCache from 'main/cache';
 import { Command, Plugin } from 'plugins/type';
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
+  const { chrome, util } = Steward;
 
   const version = 3;
   const name = 'help';

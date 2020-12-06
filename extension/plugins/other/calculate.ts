@@ -6,14 +6,13 @@
 
 import mathexp from 'math-expression-evaluator';
 
-import util from 'common/util';
 import { Command, Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
 import { t } from 'helper/i18n.helper';
 import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
+  const { chrome, util } = Steward;
 
   const name = 'calculate';
   const version = 4;

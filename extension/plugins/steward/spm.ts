@@ -4,19 +4,14 @@
  * @mail solopea@gmail.com
  */
 
-import axios from 'axios';
-import dayjs from 'dayjs';
-
 import { StewardApp } from 'common/type';
-import util from 'common/util';
-import constant from 'constant/index';
 import { getURL } from 'helper/extension.helper';
 import { t } from 'helper/i18n.helper';
 import { customPluginHelper, getCustomPlugins, pluginFactory } from 'helper/plugin.helper';
 import { Command, Plugin } from 'plugins/type';
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
+  const { chrome, axios, dayjs, util, constant } = Steward;
 
   const version = 1;
   const name = 'spm';

@@ -6,10 +6,8 @@
 
 import $ from 'jquery';
 import _ from 'underscore';
-import { browser } from 'webextension-polyfill-ts';
 
 import Auth from 'common/auth';
-import util from 'common/util';
 import conf from 'conf/pocket_conf';
 import { Command, Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
@@ -17,7 +15,7 @@ import { t } from 'helper/i18n.helper';
 import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
+  const { chrome, util, constant, browser } = Steward;
 
   const auth = new Auth(conf);
   const version = 4;
@@ -55,12 +53,13 @@ export default function(Steward: StewardApp): Plugin {
       const itemTitle = item.given_title || item.resolved_title || item.excerpt;
 
       return {
-        key: key,
+        key: constant.BASE.ITEM_TYPE.URL,
         id: item.id,
         icon: icon,
         title: itemTitle,
         desc: subtitle,
-        resolved_url: item.resolved_url,
+        universal: true,
+        url: item.resolved_url,
       };
     });
   }

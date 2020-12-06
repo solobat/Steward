@@ -5,14 +5,13 @@
  */
 
 import { StewardApp } from 'common/type';
-import util from 'common/util';
 import { componentHelper, getComponentsConfig } from 'helper/component.helper';
 import { Plugin } from 'plugins/type';
 import { t } from 'helper/i18n.helper';
 import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
+  const { chrome, util } = Steward;
 
   const version = 1;
   const name = 'component';

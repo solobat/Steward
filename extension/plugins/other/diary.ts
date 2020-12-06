@@ -4,10 +4,6 @@
  * @email solopea@gmail.com
  */
 
-import dayjs from 'dayjs';
-import Toast from 'toastr';
-
-import util from 'common/util';
 import diaryHelper from 'helper/diary.helper';
 import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
@@ -21,7 +17,7 @@ declare global {
 }
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
+  const { chrome, util, dayjs, Toast } = Steward;
 
   const version = 1;
   const name = 'diary';

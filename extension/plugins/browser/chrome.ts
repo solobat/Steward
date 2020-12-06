@@ -5,12 +5,12 @@
  */
 
 import { StewardApp } from 'common/type';
-import util from 'common/util';
 import { getURL } from 'helper/extension.helper';
 import { t } from 'helper/i18n.helper';
 import { Plugin } from 'plugins/type';
 
 export default function(Steward: StewardApp): Plugin {
+  const { util } = Steward;
   const version = 1;
   const name = 'chrome';
   const type = 'search';

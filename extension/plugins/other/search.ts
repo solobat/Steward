@@ -6,16 +6,14 @@
 
 import Toast from 'toastr';
 import _ from 'underscore';
-import { browser } from 'webextension-polyfill-ts';
 
-import util from 'common/util';
 import { Command, Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
 import { t } from 'helper/i18n.helper';
 import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
+  const { chrome, util, browser } = Steward;
 
   const name = 'search';
   const key = 'search';

@@ -6,14 +6,13 @@
 
 import urlRegex from 'url-regex';
 
-import util from 'common/util';
 import { Command, Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
 import { t } from 'helper/i18n.helper';
 import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
+  const { chrome, util } = Steward;
 
   const version = 3;
   const name = 'openurl';

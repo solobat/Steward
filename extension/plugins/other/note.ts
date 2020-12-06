@@ -4,11 +4,6 @@
  * @email solopea@gmail.com
  */
 
-import Toast from 'toastr';
-import { browser } from 'webextension-polyfill-ts';
-
-import util from 'common/util';
-import STORAGE from 'constant/storage';
 import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
 import { t } from 'helper/i18n.helper';
@@ -16,7 +11,7 @@ import { getURL } from 'helper/extension.helper';
 import stewardCache from 'main/cache';
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
+  const { chrome, util, browser, Toast, constant } = Steward;
 
   const version = 3;
   const name = 'note';
@@ -192,7 +187,7 @@ export default function(Steward: StewardApp): Plugin {
     }
 
     return util
-      .isStorageSafe(STORAGE.NOTES)
+      .isStorageSafe(constant.STORAGE.NOTES)
       .then(() => {
         return Promise.all([getNotes(), getTags()])
           .then(function(res) {
@@ -237,7 +232,7 @@ export default function(Steward: StewardApp): Plugin {
       })
       .then(newNotes => {
         browser.storage.sync.set({
-          [STORAGE.NOTES]: newNotes,
+          [constant.STORAGE.NOTES]: newNotes,
         });
       })
       .then(() => {
@@ -262,19 +257,19 @@ export default function(Steward: StewardApp): Plugin {
       })
       .then(newTags => {
         browser.storage.sync.set({
-          [STORAGE.TAGS]: newTags,
+          [constant.STORAGE.TAGS]: newTags,
         });
       });
   }
 
   function getNotes() {
     return browser.storage.sync
-      .get(STORAGE.NOTES)
+      .get(constant.STORAGE.NOTES)
       .then(results => results.notes);
   }
 
   function getTags() {
-    return browser.storage.sync.get(STORAGE.TAGS).then(results => results.tags);
+    return browser.storage.sync.get(constant.STORAGE.TAGS).then(results => results.tags);
   }
 
   return {

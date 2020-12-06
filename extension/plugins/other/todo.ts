@@ -4,10 +4,6 @@
  * @email solopea@gmail.com
  */
 
-import Toast from 'toastr';
-import { browser } from 'webextension-polyfill-ts';
-
-import util from 'common/util';
 import STORAGE from 'constant/storage';
 import { Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
@@ -15,7 +11,7 @@ import { t } from 'helper/i18n.helper';
 import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
+  const { chrome, Toast, util, browser } = Steward;
 
   const version = 5;
   const name = 'todolist';

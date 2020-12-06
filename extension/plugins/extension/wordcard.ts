@@ -4,7 +4,6 @@
  * @email solopea@gmail.com
  */
 
-import Toast from 'toastr';
 import _ from 'underscore';
 
 import { Command, Plugin } from 'plugins/type';
@@ -14,7 +13,7 @@ import { getURL } from 'helper/extension.helper';
 import stewardCache from 'main/cache';
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
+  const { chrome, Toast } = Steward;
 
   const extName = '庖丁解语: 查词句/收集/背单词/造句';
   const version = 3;

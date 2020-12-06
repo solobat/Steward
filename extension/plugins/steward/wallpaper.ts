@@ -5,14 +5,8 @@
  */
 
 /*global EXT_TYPE */
-import $ from 'jquery';
-import Toast from 'toastr';
-import { browser } from 'webextension-polyfill-ts';
 
 import { StewardApp } from 'common/type';
-import util from 'common/util';
-import { MODE } from 'constant/base';
-import STORAGE from 'constant/storage';
 import { getURL } from 'helper/extension.helper';
 import { t } from 'helper/i18n.helper';
 import { addToBlackList, getDataURI, saveWallpaperLink } from 'helper/wallpaper.helper';
@@ -21,8 +15,9 @@ import { StewardReadyEvent } from 'main/type';
 import { Plugin } from 'plugins/type';
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
-
+  const { chrome, $, Toast, browser, util, constant } = Steward;
+  const { MODE } = constant.BASE;
+  const STORAGE = constant.STORAGE;
   const name = 'wallpaper';
   const keys = [{ key: 'wp' }, { key: 'wps' }];
   const version = 3;

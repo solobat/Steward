@@ -4,15 +4,13 @@
  * @mail solopea@gmail.com
  */
 
-import Toast from 'toastr';
-
 import { Command, Plugin } from 'plugins/type';
 import { StewardApp } from 'common/type';
 import { t } from 'helper/i18n.helper';
 import { getURL } from 'helper/extension.helper';
 
 export default function(Steward: StewardApp): Plugin {
-  const { chrome } = Steward;
+  const { chrome, Toast } = Steward;
 
   const version = 1;
   const name = 'custom';
