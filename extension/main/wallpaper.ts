@@ -8,7 +8,7 @@ import { StewardCache } from 'common/type';
 import CONST from 'constant';
 import { t } from 'helper/i18n.helper';
 import {
-    ACTION_TYPE, saveWallpaperLink, shouldShow, WALLPAPER_ACTIONS
+    saveWallpaperLink, shouldShow, WALLPAPER_ACTIONS
 } from 'helper/wallpaper.helper';
 import { getAllSources, getSources } from 'helper/wallpaperSource.helper';
 import Steward from 'main/Steward';
@@ -16,7 +16,7 @@ import * as api from 'service';
 import * as date from 'utils/date';
 
 import stewardCache from './cache';
-import { StewardReadyEvent } from './type';
+import { StewardReadyEvent, WALLPAPER_ACTION_TYPE } from './type';
 
 const $body: any = $('body');
 const sourcesInfo = getAllSources();
@@ -25,7 +25,7 @@ let curUrl = '';
 let state: StewardCache['wallpaper'];
 let timer = 0;
 
-function updateSaveStatus(actionType: ACTION_TYPE) {
+function updateSaveStatus(actionType: WALLPAPER_ACTION_TYPE) {
   const conf = WALLPAPER_ACTIONS[actionType];
 
   saveWallpaperLink(curUrl, conf.action)

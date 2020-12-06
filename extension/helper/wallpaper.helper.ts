@@ -5,15 +5,10 @@ import util from 'common/util';
 import STORAGE from 'constant/storage';
 
 import { t } from './i18n.helper';
-
-export type ACTION_TYPE = 'save' | 'remove'
-export interface ACTION {
-  action: ACTION_TYPE;
-  msg: string
-}
+import { WALLPAPER_ACTION, WALLPAPER_ACTION_TYPE } from 'main/type';
 
 export const WALLPAPER_ACTIONS: {
-  [props: string]: ACTION
+  [props: string]: WALLPAPER_ACTION
 } = {
   save: {
     action: 'save',
@@ -26,7 +21,7 @@ export const WALLPAPER_ACTIONS: {
   },
 };
 
-export function saveWallpaperLink(url: string, action: ACTION_TYPE = 'save') {
+export function saveWallpaperLink(url: string, action: WALLPAPER_ACTION_TYPE = 'save') {
   return util.isStorageSafe(STORAGE.WALLPAPERS).then(() => {
     return browser.storage.sync
       .get(STORAGE.WALLPAPERS)

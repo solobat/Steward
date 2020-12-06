@@ -1,22 +1,13 @@
 import $ from 'jquery';
-import { JSONSchema4Type } from 'json-schema';
 import _ from 'underscore';
 import { browser } from 'webextension-polyfill-ts';
 
 import defaultGeneral from 'conf/general';
 import Steward from 'main/Steward';
 import { getPlugins } from 'plugins';
-import { Plugin } from 'plugins/type';
 
-import util, { SimpleCommand } from './util';
-
-export type PartialPlugin = Pick<
-  Plugin,
-  'name' | 'version' | 'canDisabled' | 'icon' | 'disabled' | 'optionsSchema' | 'defaultOptions'
-> & {
-  commands: SimpleCommand[];
-  options: JSONSchema4Type
-};
+import util from './util';
+import { AppConfig, PartialPlugin, PluginsData, SimpleCommand } from './type';
 
 const manifest = chrome.runtime.getManifest();
 const version = manifest.version;
@@ -59,10 +50,6 @@ function getPluginData() {
   return plugins;
 }
 
-export interface PluginsData {
-  [prop: string]: PartialPlugin;
-}
-
 function mergePluginData(plugin: PartialPlugin, cachePlugins: PluginsData) {
   const name = plugin.name;
   let cachePlugin = cachePlugins[name];
@@ -101,12 +88,6 @@ function mergePluginData(plugin: PartialPlugin, cachePlugins: PluginsData) {
   if (cachePlugin && cachePlugin.commands) {
     cachePlugin.commands = cachePlugin.commands.map(util.simpleCommand);
   }
-}
-
-export interface AppConfig {
-  general: typeof defaultGeneral;
-  plugins: PluginsData;
-  version: string;
 }
 
 function getDefaultConfig() {

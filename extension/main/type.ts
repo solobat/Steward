@@ -30,3 +30,9 @@ export interface StewardReadyEventDetail {
 }
 
 export type StewardReadyEvent = CustomEvent<StewardReadyEventDetail>
+
+export type WALLPAPER_ACTION_TYPE = 'save' | 'remove'
+export interface WALLPAPER_ACTION {
+  action: WALLPAPER_ACTION_TYPE;
+  msg: string
+}

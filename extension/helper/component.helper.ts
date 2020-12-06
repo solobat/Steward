@@ -213,12 +213,6 @@ export const componentHelper = {
   },
 };
 
-declare global {
-  interface Window {
-    componentHelper: any;
-  }
-}
-
 window.componentHelper = componentHelper;
 
 export function registerComponents(Vue, components = []) {

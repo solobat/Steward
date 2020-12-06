@@ -8,7 +8,7 @@ import { CustomPlugin as CustomPluginModel, CustomPluginList } from 'collection/
 import { StewardApp } from 'common/type';
 import constant from 'constant/index';
 import Steward from 'main/Steward';
-import { Plugin as PluginModel } from 'plugins/type';
+import { Plugin as PluginModel, PluginClass } from 'plugins/type';
 
 import { replaceURL } from '../pages/content/pageService';
 import { getURL } from './extension.helper';
@@ -116,20 +116,9 @@ PluginHelper.prototype = {
 
 export default PluginHelper;
 
-class Plugin {
-  errors = [];
-  commands = [];
-  _id: string;
-  valid: boolean;
-  uid?: string;
-  version?: string;
-  name: string;
-  category?: string;
-  icon?: string;
-  title?: string;
-  source?: string;
-  author?: string;
+class Plugin extends PluginClass {
   constructor(options = {}) {
+    super()
     this.errors = [];
     this.commands = [];
     this.init(options);

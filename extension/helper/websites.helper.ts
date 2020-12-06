@@ -12,6 +12,7 @@ import { addNetworkRecord, generateSocialUrls } from '../lib/social-share-urls';
 import { getGlobalActions } from './action.helper';
 import { getURL } from './extension.helper';
 import * as ResultHelper from './result.helper';
+import { WebsiteClass } from 'plugins/type';
 
 const websiteList = new WebsiteList();
 
@@ -113,28 +114,9 @@ function handlePaths(paths, vars) {
   });
 }
 
-export class Website {
-  name: string;
-  type: string;
-  icon: string;
-  host: string;
-  parentWindow: any;
-  navs: string;
-  outlineScope: string;
-  paths: any[];
-  customPaths: any[];
-  anchors: any[];
-  anchorsConfig: any[];
-  isDefault: boolean;
-  meta: any[];
-  urls: any[];
-  outline: any[];
-  iframes: any[];
-  pageMeta: any;
-  shareUrls: any[];
-  config: any;
-  actions: any[];
+export class Website extends WebsiteClass {
   constructor(options, parentWindow, pageMeta, generalConfig) {
+    super();
     this.name = options.name;
     this.type = 'search';
     this.icon = options.icon;

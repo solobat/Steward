@@ -1,17 +1,7 @@
+import { Action } from 'plugins/type';
 import { browser } from 'webextension-polyfill-ts';
 
 import { PageCommand } from '../enum';
-
-export interface Action {
-  title: string;
-  actionType: string;
-  desc?: string;
-  extend?: {
-    template?: string;
-    protected?: boolean;
-  };
-  enable: boolean;
-}
 
 const defaultActions: Action[] = [
   {

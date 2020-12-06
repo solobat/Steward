@@ -1,7 +1,7 @@
 import { browser } from 'webextension-polyfill-ts';
 
 import util from 'common/util';
-import { ResultItem } from 'plugins/type';
+import { ResultItem, TextAliasType } from 'plugins/type';
 
 import { getURL } from './extension.helper';
 
@@ -45,7 +45,7 @@ function parseLine(line) {
 
 const STORAGE_KEY = 'text_alias';
 
-export const TextAlias = {
+export const TextAlias: TextAliasType = {
   items: null,
 
   resolveItems(text) {
@@ -86,8 +86,6 @@ export const TextAlias = {
     });
   },
 };
-
-export type TextAliasType = typeof TextAlias;
 
 export function getTextAlias() {
   return browser.storage.sync.get(STORAGE_KEY).then(resp => {

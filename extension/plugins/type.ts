@@ -37,6 +37,24 @@ export interface ResultItem {
   [prop: string]: any;
 }
 
+export interface Action {
+  title: string;
+  actionType: string;
+  desc?: string;
+  extend?: {
+    template?: string;
+    protected?: boolean;
+  };
+  enable: boolean;
+}
+
+export interface TextAliasType {
+  items: any;
+  resolveItems(text: any): any;
+  getItems(): Promise<any>;
+  onInput(query: any): Promise<ResultItem[]> | ResultItem[];
+}
+
 export interface KeyStatus {
   shiftKey: boolean;
   ctrlKey: boolean;
@@ -98,4 +116,42 @@ export interface Plugin {
 export interface PluginFactory {
   (Steward: StewardApp, options?: {[prop: string]: any}): Plugin;
   displayName?: string;
+}
+
+export abstract class PluginClass {
+  errors: any[];
+  commands: any[];
+  _id: string;
+  valid: boolean;
+  uid?: string;
+  version?: string;
+  name: string;
+  category?: string;
+  icon?: string;
+  title?: string;
+  source?: string;
+  author?: string
+}
+
+export abstract class WebsiteClass {
+  name: string;
+  type: string;
+  icon: string;
+  host: string;
+  parentWindow: any;
+  navs: string;
+  outlineScope: string;
+  paths: any[];
+  customPaths: any[];
+  anchors: any[];
+  anchorsConfig: any[];
+  isDefault: boolean;
+  meta: any[];
+  urls: any[];
+  outline: any[];
+  iframes: any[];
+  pageMeta: any;
+  shareUrls: any[];
+  config: any;
+  actions: any[];
 }

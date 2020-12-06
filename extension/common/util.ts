@@ -8,6 +8,7 @@ import { getURL } from 'helper/extension.helper';
 import { t } from 'helper/i18n.helper';
 import stewardCache from 'main/cache';
 import { Command, KeyStatus, ResultItem, Type } from 'plugins/type';
+import { SimpleCommand } from './type';
 
 function getPinyin(name: string): string {
   return pinyin(name, {
@@ -39,8 +40,6 @@ function guid(): string {
   }
   return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
 }
-
-export type SimpleCommand = Pick<Command, 'key' | 'orkey'>;
 
 const simpleCommand = (command: Command) => {
   return {

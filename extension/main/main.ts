@@ -5,19 +5,18 @@ import orderBy from 'lodash.orderby';
 import Toast from 'toastr';
 import _ from 'underscore';
 
-import { AppConfig, PluginsData } from 'common/config';
 import storage from 'common/storage';
-import { AppData, PluginCommand, StewardCache } from 'common/type';
+import { AppConfig, AppData, PluginCommand, PluginsData, StewardCache } from 'common/type';
 import util from 'common/util';
 import defaultGeneral from 'conf/general';
 import CONST from 'constant';
-import { TextAlias, TextAliasType } from 'helper/alias.helper';
+import { TextAlias } from 'helper/alias.helper';
 import { getComponentsConfig } from 'helper/component.helper';
 import { helpers } from 'helper/index';
 import { getCustomPlugins } from 'helper/plugin.helper';
 import { Website } from 'helper/websites.helper';
 import { fixNumber, fixNumbers, parseWorkflow } from 'helper/workflow.helper';
-import { KeyStatus, Plugin, ResultItem, SearchOnInputFunc } from 'plugins/type';
+import { KeyStatus, Plugin, ResultItem, SearchOnInputFunc, TextAliasType } from 'plugins/type';
 
 import { getPlugins } from '../plugins';
 import * as recordsController from '../server/controller/recordsController';

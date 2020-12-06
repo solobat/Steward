@@ -10,8 +10,9 @@ import { AppState } from 'main/type';
 import { Command, Plugin } from 'plugins/type';
 import storage from 'utils/storage';
 
-import { AppConfig } from './config';
+import defaultGeneral from 'conf/general';
 import util from './util';
+import { JSONSchema4Type } from 'json-schema';
 
 declare global {
   var EXT_TYPE: string;
@@ -24,6 +25,7 @@ declare global {
     slogs: string[];
     matchedSite: Website | null;
     parentHost?: string;
+    componentHelper: any;
   }
 
   interface RegExp {
@@ -98,4 +100,24 @@ export interface WallpaperSource {
   api: (...args: any[]) => any;
   handle: (result: any) => any;
   weight: number;
+}
+
+export type PartialPlugin = Pick<
+  Plugin,
+  'name' | 'version' | 'canDisabled' | 'icon' | 'disabled' | 'optionsSchema' | 'defaultOptions'
+> & {
+  commands: SimpleCommand[];
+  options: JSONSchema4Type
+};
+
+export type SimpleCommand = Pick<Command, 'key' | 'orkey'>;
+
+export interface PluginsData {
+  [prop: string]: PartialPlugin;
+}
+
+export interface AppConfig {
+  general: typeof defaultGeneral;
+  plugins: PluginsData;
+  version: string;
 }
