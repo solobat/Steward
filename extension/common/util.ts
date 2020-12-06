@@ -217,6 +217,14 @@ const batchExecutionIfNeeded = (
   return Promise.all(results);
 };
 
+function isPlatform(plat?: string) {
+  if (plat) {
+    return plat.toLowerCase() === PLATFORM
+  } else {
+    return true
+  }
+}
+
 const createTab = (item: Partial<ResultItem>, keyStatus: Partial<KeyStatus> = {}) => {
   const { mode, inContent } = getSteward();
 
@@ -380,4 +388,5 @@ export default {
   createTab,
   toast: Toast,
   getURLParams,
+  isPlatform,
 };

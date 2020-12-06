@@ -70,7 +70,7 @@ export default function(Steward: StewardApp): Plugin {
           const items = results.data.plugins;
 
           plugins = items.filter(
-            item => !item.platform || item.platform === platform,
+            item => util.isPlatform(item.platform),
           );
 
           return filterPlugins(plugins, query);
