@@ -56,6 +56,8 @@ export interface AppMethods {
   helpers: typeof helpers
 } 
 
+// TODO: it makes the relationship of modules too weired,
+// and some strange bugs will come in
 export type StewardApp = AppData & {
   readonly chrome: typeof chrome;
   readonly dayjs: typeof dayjs;
@@ -68,6 +70,8 @@ export type StewardApp = AppData & {
   readonly md5: typeof md5;
   state: AppState;
   readonly browser: Browser;
+  // NOTE: only exsit after Steward UI initialized
+  //       so it cannot be used in builtin plugins
   app?: AppMethods
 };
 
