@@ -72,6 +72,7 @@ export default function(Steward: StewardApp): Plugin {
       url: '',
       universal: true,
       key: 'copy',
+      type: 'copy',
     },
   ];
   let actions = allActions;
@@ -136,7 +137,7 @@ export default function(Steward: StewardApp): Plugin {
     }
   }
 
-  if (EXT_TYPE === 'steward') {
+  if (EXT_TYPE === 'stewardplus') {
     setup();
   }
 
