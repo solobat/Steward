@@ -22,7 +22,7 @@ function init() {
 
     config.lastVersion = config.version || version;
     // only used for options page
-    window.Steward = {
+    window.optionsPage = {
       config,
     };
 

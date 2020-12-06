@@ -21,6 +21,9 @@ declare global {
   interface Window {
     __Steward__: StewardApp;
     stewardApp: StewardApp;
+    optionsPage: {
+      config: AppConfig
+    };
     __StewardCache__: StewardCache;
     slogs: string[];
     matchedSite: Website | null;
