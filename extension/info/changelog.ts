@@ -1,5 +1,9 @@
 const langZh = [
   {
+    version: 'v4.1.0',
+    detail: '整体重构；新增plugin/组件的参数支持；新增命令框空查询；支持plugin级别的使用频次排序；移除无效的plugins。'
+  },
+  {
     version: 'v4.0.6',
     detail: '移除一些失效的内置 chrome 页面，以及小优化',
   },
@@ -31,6 +35,10 @@ const langZh = [
 ];
 
 const langEn = [
+  {
+    version: 'v4.1.0',
+    detail: 'Refactor; Plugin/Component args supportted; Query onEmpty setting; Plugin level results sorted; Remove some invalid plugins.'
+  },
   {
     version: 'v4.0.6',
     detail: 'remove some invalid chrome pages && optimization',
