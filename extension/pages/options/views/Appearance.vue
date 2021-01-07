@@ -139,6 +139,29 @@
                       spellcheck="false"
                     ></el-input>
                   </el-form-item>
+
+                  <div class="theme-field-type">Height</div>
+                  <el-form-item label="Search Input:">
+                    <el-input
+                      type="text"
+                      v-model="theme['--search-input-height']"
+                      spellcheck="false"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="Search Results:">
+                    <el-input
+                      type="text"
+                      v-model="theme['--search-results-height']"
+                      spellcheck="false"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="Suggestion:">
+                    <el-input
+                      type="text"
+                      v-model="theme['--suggestion-height']"
+                      spellcheck="false"
+                    ></el-input>
+                  </el-form-item>
                 </el-form>
               </div>
             </div>
