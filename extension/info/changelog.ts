@@ -1,5 +1,9 @@
 const langZh = [
   {
+    version: 'v4.1.1',
+    detail: '修复: 计算结果不能复制的问题；外观: 新增各种 height 的可配置。'
+  },
+  {
     version: 'v4.1.0',
     detail: '整体重构；新增plugin/组件的参数支持；新增命令框空查询；支持plugin级别的使用频次排序；移除无效的plugins。'
   },
@@ -35,6 +39,10 @@ const langZh = [
 ];
 
 const langEn = [
+  {
+    version: 'v4.1.1',
+    detail: 'fix: calc result copy issue; appearance: height of box configurable',
+  },
   {
     version: 'v4.1.0',
     detail: 'Refactor; Plugin/Component args supportted; Query onEmpty setting; Plugin level results sorted; Remove some invalid plugins.'
