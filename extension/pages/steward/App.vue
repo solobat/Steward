@@ -261,10 +261,6 @@ a {
     opacity: .7;
 }
 
-#main {
-    margin-top: 40px;
-}
-
 .size-large {
     #main {
         width: 60%;
