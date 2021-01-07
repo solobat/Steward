@@ -431,7 +431,7 @@ function handleNormalItem(
       util.createTab(item, keyStatus);
     }
   } else if (type === ITEM_TYPE.COPY) {
-    util.copyToClipboard(item.url || item.desc || item.title, true);
+    util.copyToClipboard(item.content || item.url || item.desc || item.title, true);
 
     return Promise.resolve(true);
   } else if (type === ITEM_TYPE.ACTION) {

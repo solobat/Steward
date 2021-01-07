@@ -41,10 +41,12 @@ export default function(Steward: StewardApp): Plugin {
       const result = mathexp.eval(Steward.state.str);
       data = [
         {
-          key: title,
+          key: 'copy',
           icon: icon,
           title: result,
           desc: subtitle,
+          content: result,
+          universal: true
         },
       ];
     } catch (e) {
