@@ -97,7 +97,7 @@ npm run prod
     <h4>BTC: </h4>1EY57mUdurFnjCfLfcNxFyxnC36iMKYh8
 </div>
 <div>
-    <h4>ETH: </h4>0xafBE53c0f9BEC80cc615d43B011497F316C039B5
+    <h4>ETH: </h4>tomasy.eth
 </div>
 
 ---
