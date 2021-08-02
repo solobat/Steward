@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "__MSG_extName__",
     "short_name": "Steward",
-    "version": "4.1.1",
+    "version": "4.1.2",
     "description": "__MSG_extDesc__",
     "default_locale": "en",
     "background": {
@@ -39,7 +39,6 @@
     "permissions": [
         "history",
         "bookmarks",
-        "tabs",
         "storage",
         "downloads",
         "management",
