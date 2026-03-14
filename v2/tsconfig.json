@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./extension",
+    "moduleResolution": "node",
+    "outDir": "./dist/",
+    "lib": [
+      "es5", "es6", "dom", "dom.iterable"
+    ],
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "module": "es2015",
+    "target": "es6",
+    "allowJs": true,
+    "paths": {
+      "enum/*": ["enum/*"],
+      "constant/*": ["constant/*"],
+      "common/*": ["common/*"],
+      "utils/*": ["utils/*"],
+      "service/*": ["service/*"],
+      "conf/*": ["conf/*"],
+      "helper/*": ["helper/*"],
+      "collection/*": ["collection/*"],
+      "info/*": ["info/*"],
+      "plugins/*": ["plugins/*"],
+      "main/*": ["main/*"]
+    }
+  }
+}

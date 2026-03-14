@@ -154,6 +154,8 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
   const bookmarksPendingRef = useRef(false);
   const itemsRef = useRef<ResultItem[]>(items);
   const selectedIndexRef = useRef(selectedIndex);
+  const queryRef = useRef(query);
+  queryRef.current = query;
   const workflowRunRef = useRef<{
     lines: ParsedWorkflowLine[];
     lineIndex: number;
@@ -604,10 +606,21 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
     }
   }, [items, query, filter, subList, handleSelect, notifyClose]);
 
+  // Esc 对齐旧版：有输入时先清空（可配合 emptyCommand），输入已空时才关框
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         e.preventDefault();
+        const q = queryRef.current.trim();
+        if (q) {
+          request<{ config?: { general?: { emptyCommand?: string } } }>({ action: "getData" }).then(
+            (data) => {
+              const emptyCmd = data?.config?.general?.emptyCommand?.trim();
+              setQuery(emptyCmd || "");
+            }
+          );
+          return;
+        }
         saveLastQueryOnClose();
         notifyClose();
       }

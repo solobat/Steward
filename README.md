@@ -1,115 +1,50 @@
-<p align="center"><img src="https://user-images.githubusercontent.com/1894203/50375271-c898c800-0635-11e9-9b48-6e87191cab7f.png" /></p>
-<h1 align="center">Steward</h1>
-<p align="center">A command launcher for Chrome</p>
-<p align="center">
-   <a href="https://github.com/solobat/Steward/releases"><img src="https://img.shields.io/badge/lastest_version-4.1.1-blue.svg"></a>
-   <a target="_blank" href="https://chrome.google.com/webstore/detail/jglmompgeddkbcdamdknmebaimldkkbl"><img src="https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg"></a>
+# Steward v3
 
-</p>
+Manifest V3 版本，独立在 `v3/` 目录开发。技术栈：**Vite + React + TypeScript + Tailwind + DaisyUI**。**不含 newtab 功能**。
 
-***
+## 开发
 
-### Install：
-- [Chrome WebStore](https://chrome.google.com/webstore/detail/jglmompgeddkbcdamdknmebaimldkkbl)
-- [Chrome WebStore -- Steward Plus](https://chrome.google.com/webstore/detail/dnkhdiodfglfckibnfcjbgddcgjgkacd)
-
-### Usage
-> Use the commands to complete most of the operation in the browser
-
-- [Documentation](http://oksteward.com/steward-documents/)
-- [中文版文档](http://oksteward.com/steward-documents/zh/)
-- [论坛](http://bbs.oksteward.com)
----
-#### Screenshots:
-![content box](https://i.imgur.com/pWDNBEV.png)
-page mode
-
-![workflows](https://i.imgur.com/JefFHhT.png)
-workflows
-
-![plugins](https://i.imgur.com/QfOJ2oD.png)
-install plugins
-
-#### Videos:
-- [youtube](https://www.youtube.com/watch?v=SJ8T_Mbiyes)
-- [优酷](http://list.youku.com/albumlist/show/id_51350050)
-
-#### Shortcut keys:
-- By default to open Steward in New Tab or you can use :
-  - in popup
-    - Mac: <kbd>Command ⌘</kbd> + <kbd>K</kbd>
-    - Windows and Linux: <kbd>Ctrl</kbd> + <kbd>K</kbd>
-  - in websites
-    - Mac: <kbd>Command ⌘</kbd> + <kbd>J</kbd>
-    - Windows and Linux: <kbd>Ctrl</kbd> + <kbd>J</kbd>
-- Alternatively, in Google Chrome, you can go to the URL `chrome://extensions` and scroll to the bottom and click **Keyboard shortcuts**
-
-#### Install plugins
-[plugins repo](https://github.com/Steward-launcher/steward-plugins)
-
-```
-## install
-spm install
-
-## uninstall
-spm uninstall
-```
-
-#### Development
-##### Plugins
-[plugin api](http://oksteward.com/steward-documents/plugins/plugins.html#plugin-development)
-
-##### Steward
-Please start with the develop branch
-````
-# node >= v7.5
+```bash
+cd v3
 npm install
+# 图标：从旧版复制到 public/img（否则扩展会缺图标）
+cp ../v2/extension/img/icon16.png ../v2/extension/img/icon48.png ../v2/extension/img/icon128.png public/img/
+npm run build
+```
 
-# dev for steward plus
-npm run dev:plus
+在 Chrome 打开 `chrome://extensions` → 加载已解压的扩展程序 → 选择 `v3/dist`。
 
-# dev for Steward
+监听文件变化并重新构建：
+
+```bash
 npm run dev
+```
 
-# build for steward plus(MacOS)
-npm run prod:plus
+## 目录说明
 
-# build for Steward(MacOS)
-npm run prod
-````
+- `src/background.ts` - Service Worker
+- `src/popup/` - 弹出层（React）
+- `src/options/` - 设置页（React）
+- `src/content/` - 注入页面的脚本与样式
+- `manifest.json` - MV3 配置（无 newtab、无 chrome_url_overrides）
+- `public/img/` - 扩展图标，需从 `../v2/extension/img` 复制
 
-#### Sponsor:
+## 当前功能
 
-<div style="display: flex;justify-content: space-around;">
-    <div>
-        <h4>WeChat</h4>
-        <img src="http://static.oksteward.com/IMG_2180.jpg" width="250" alt="WeChat" />
-    </div>
-    <div>
-        <h4>Alipay</h4>
-        <img src="http://static.oksteward.com/alipay3.jpg" width="250" alt="Alipay" />
-    </div>
-</div>
-<div>
-    <h4>PayPal:</h4> Please click <a href="https://paypal.me/tomasy/5" target="_blank">Payment Link</a>
-</div>
-<div>
-    <h4>BTC: </h4>1EY57mUdurFnjCfLfcNxFyxnC36iMKYh8
-</div>
-<div>
-    <h4>ETH: </h4>tomasy.eth
-</div>
+- **Command+J** / **Ctrl+J**：在当前页面打开命令框（iframe），输入过滤、↑↓ 选择、Enter 执行。
+- **Command+K** / **Ctrl+K**：打开扩展图标弹窗（小窗，含「打开设置」）。
+- **命令框内置命令**：
+  - **当前页信息**：展示标题、URL、Host、Path、Search、Hash、选中文本；选某项 Enter 复制并关闭。
+  - **页面链接**：当前页内链接（`a[href]`，最多 80 条），选某项在当前页点击该链接并关闭。
+  - **页面大纲**：当前页 h1–h6 标题，选某项滚动到该标题并关闭。
+  - **历史记录**：最近访问的页面，选某项在新标签页打开。
+  - **书签**：最近添加的书签，选某项在新标签页打开。
+  - **打开设置** / **关闭**。
+- **设置页**：通用（**速度优先**、**记忆上次命令**）+ 关于；保存后写入 storage。
+- **速度优先**：开启后页面加载即注入命令框（打开更快），关闭则首次按快捷键再注入。
+- **记忆上次命令**：开启后再次打开命令框会预填上次输入；输入会防抖写入 storage。
 
----
-#### License:
-[![license-badge]][license-link]
+## 与旧版关系
 
-<!-- Link -->
-[version-badge]:    https://img.shields.io/badge/lastest_version-4.1.1-blue.svg
-[version-link]:     https://github.com/solobat/Steward
-[chrome-badge]:     https://img.shields.io/badge/download-_chrome_webstore-brightgreen.svg
-[chrome-link]:      https://chrome.google.com/webstore/detail/jglmompgeddkbcdamdknmebaimldkkbl
-[offline-badge]:    https://img.shields.io/badge/download-_crx-brightgreen.svg
-[offline-link]:     http://static.oksteward.com/steward-4.1.1.crx
-[license-badge]:    https://img.shields.io/github/license/mashape/apistatus.svg
-[license-link]:     https://opensource.org/licenses/MIT
+- 新功能与 MV3 迁移均在 `v3/` 下进行，不修改 `v2/` 下的旧版代码。
+- 后续从 `v2/extension/` 迁移逻辑时，只把需要的部分移植到 v3，并改为 React + 无 eval、无自定义插件执行。

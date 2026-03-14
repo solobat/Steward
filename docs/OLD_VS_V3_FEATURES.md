@@ -1,6 +1,6 @@
 # 旧版有、v3 暂无的架构/功能（非插件能力）
 
-对比 `extension/` 与 `v3/`，以下为**架构或产品级**差异（不含「某个具体插件」本身，如 calculate、pocket）。
+对比 `v2/`（旧版）与 `v3/`，以下为**架构或产品级**差异（不含「某个具体插件」本身，如 calculate、pocket）。
 
 ---
 
@@ -65,12 +65,30 @@
 - **旧版**：Options 内有 Help、Update（Changelog/更新说明）等 Tab。
 - **v3**：无。
 
+### 11. 命令框交互（仅交互层）
+
+| 项目 | 旧版 | v3 |
+|------|------|-----|
+| **上下键 / Tab** | ↑↓、Shift+Tab、**Ctrl+P / Ctrl+N** 均可移动选中 | 仅 ↑↓、Tab/Shift+Tab，**无 Ctrl+P / Ctrl+N** |
+| **Enter 传修饰键** | 传 `shiftKey/ctrlKey/metaKey/altKey`，插件可区分「当前 tab 打开」等 | 传 `altKey`（当前标签）、`shiftKey`（批量），**无 ctrlKey 透传** |
+| **空命令 + Enter** | `general.emptyCommand` 可配置（如 `bm `），执行该命令 | 已支持（空命令执行） |
+| **清空输入** | Esc 清空并关框；子模式清空输入会回主列表 | Esc 关框；子模式清空输入会回主模式列表 ✓ |
+| **主模式前缀匹配** | 输入 b 可能直接进默认搜索 | 输入 b 先显示 bm/bk/bks 等前缀匹配命令 ✓ |
+| **选中命令补全** | 选中「插件」类结果会 `applyCommand(key + " ")` 补全并刷新列表 | 选中主模式下列表会补全为 `key + " "` 并进入该命令 ✓ |
+| **Shift + Enter 批量** | 支持：从首项到当前项批量执行（多 tab 打开等） | 支持：当前项及之前带 url 的项批量打开 ✓ |
+| **⌥ + Enter 当前标签** | metaKey 时 `chrome.tabs.update` 当前标签 | altKey 时当前标签打开 ✓ |
+| **使用频率排序** | `recordsController` 记录并参与 `sortResults`，常用项排前 | **无**使用记录与频率排序 |
+| **storeTypedQuery + 上下键** | 在命令阶段移动时可按「查看历史」展示与当前输入相关的历史 | **无**「移动时查历史」 |
+| **autoScrollToMiddle** | 可配置列表是否滚动到中间 | **无** |
+| **autoSelectByMouse** | 可配置是否随鼠标悬停切换选中 | v3 有 `onMouseEnter` 同步选中 ✓ |
+
 ---
 
 ## 三、小结（可做优先级参考）
 
-- **与「打开方式/效率」强相关**：可配置快捷键（2）、Shift 批量执行（7）、双模式下的「当前 tab 更新」（1）。
+- **与「打开方式/效率」相关**：可配置快捷键（2）、Shift 批量执行（7）、双模式下的「当前 tab 更新」（1）。
+- **与「命令框交互」相关**：Ctrl+P/Ctrl+N 上下移动（11）、使用频率排序（11）、storeTypedQuery+移动查历史（11）、autoScrollToMiddle（11）。
 - **与「可扩展配置」相关**：Workflows（3）、Websites（4）、插件级开关与选项（6）、Options 多 Tab（5）。
 - **与「展示/体验」相关**：Newtab（已明确不做）、Appearance（8）、多语言（9）、Help/Update（10）。
 
-若 v3 要逐步对齐旧版体验，可优先考虑：**可配置快捷键**、**Shift 批量执行**、**Options 多 Tab（至少 General 增强 + Help）**，再视需要做 Workflows/Websites/插件开关等。
+若 v3 要逐步对齐旧版体验，可优先考虑：**可配置快捷键**、**Shift 批量执行**、**命令框 Ctrl+P/N 与频率排序**、**Options 多 Tab（至少 General 增强 + Help）**，再视需要做 Workflows/Websites/插件开关等。

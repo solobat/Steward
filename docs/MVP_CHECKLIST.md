@@ -10,7 +10,7 @@
 
 | 要求 | 状态 | 说明 |
 |------|------|------|
-| 代码在 `v3/` 独立开发 | ✅ | 全部在 v3/，不修改 extension/ |
+| 代码在 `v3/` 独立开发 | ✅ | 全部在 v3/，不修改 v2/ |
 | MV3 | ✅ | manifest_version: 3，Service Worker |
 | 无 newtab | ✅ | 无 chrome_url_overrides |
 | 无 eval / 无自定义插件执行 | ✅ | 无 unsafe-eval，无 new Function |
@@ -62,7 +62,7 @@
 ## 五、建议发布前自测
 
 1. `cd v3 && npm install && npm run build`，在 Chrome 加载 `dist`。
-2. 复制 `extension/img` 图标到 `v3/public/img`，否则图标缺失。
+2. 复制 `v2/extension/img` 图标到 `v3/public/img`，否则图标缺失。
 3. 在任意网页：Command+J 打开框 → 依次试「当前页信息」「页面链接」「页面大纲」「历史」「书签」→ 设置页改「速度优先」「记忆上次命令」并保存 → 关闭再打开看预填。
 
 若以上通过，可视为 **MVP 完成**，可打包提交审核或继续迭代功能。
