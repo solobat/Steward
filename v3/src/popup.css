@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+/* 外观：字号（命令框整体缩放） */
+html.steward-fs-small {
+  font-size: 13px;
+}
+html.steward-fs-medium {
+  font-size: 14px;
+}
+html.steward-fs-large {
+  font-size: 16px;
+}
+
+/* 外观：列表密度 */
+html[data-density="compact"] .menu li a {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  min-height: auto;
+}
+html[data-density="relaxed"] .menu li a {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+/* 在页面内 iframe 中打开时：整页填满、不透明，避免露出下层黑色遮罩 */
+html.steward-in-iframe,
+html.steward-in-iframe body {
+  background: #e8e8e8 !important;
+  min-height: 100% !important;
+  height: 100% !important;
+}

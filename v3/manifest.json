@@ -1,0 +1,61 @@
+{
+  "manifest_version": 3,
+  "name": "Steward",
+  "short_name": "Steward",
+  "version": "5.0.0",
+  "description": "Command launcher and quick search",
+  "background": {
+    "service_worker": "src/background.ts"
+  },
+  "action": {
+    "default_icon": {
+      "16": "img/icon16.png",
+      "48": "img/icon48.png",
+      "128": "img/icon128.png"
+    },
+    "default_title": "Steward",
+    "default_popup": "src/popup/index.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/content/content.ts"],
+      "css": ["src/content/style.css"],
+      "run_at": "document_start"
+    }
+  ],
+  "icons": {
+    "16": "img/icon16.png",
+    "48": "img/icon48.png",
+    "128": "img/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["img/*", "src/popup/index.html", "src/urlblock.html"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "options_ui": {
+    "page": "src/options/index.html",
+    "open_in_tab": true
+  },
+  "permissions": ["storage", "activeTab", "clipboardWrite", "tabs", "history", "bookmarks", "management", "downloads", "topSites"],
+  "host_permissions": ["<all_urls>"],
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "windows": "Ctrl+K",
+        "mac": "Command+K",
+        "linux": "Ctrl+K"
+      }
+    },
+    "open-in-content-page": {
+      "suggested_key": {
+        "windows": "Ctrl+J",
+        "mac": "Command+J",
+        "linux": "Ctrl+J"
+      },
+      "description": "Open command box in page"
+    }
+  }
+}
