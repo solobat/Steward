@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 dist
+steward-v3-*.zip
 
 # pnpm
 pnpm-debug.log*

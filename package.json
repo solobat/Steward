@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite build --watch",
     "build": "tsc && vite build",
+    "prod": "npm run build && node scripts/pack.mjs",
     "preview": "vite preview",
     "docs:dev": "pnpm exec vitepress dev docs-website",
     "docs:build": "pnpm exec vitepress build docs-website",
