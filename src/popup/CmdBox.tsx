@@ -3,8 +3,9 @@ import { TRIGGERS, type Command, type DataMode, type ResultItem } from "../comma
 import { isCalculableExpression } from "../commands/calculate";
 import { isUrlLike } from "../commands/openurl";
 import { request } from "@/lib/portBridge";
+import { customCommandsToCommands } from "@/lib/customCommands";
 import { t as i18nT } from "@/lib/i18n";
-import { DEFAULT_CONFIG, type AppearanceConfig, type SearchConfig } from "@/types/config";
+import { DEFAULT_CONFIG, type AppearanceConfig, type CustomCommand, type SearchConfig } from "@/types/config";
 import { parseWorkflow, fixNumber } from "@/lib/workflow";
 import { CHROME_PAGES, filterChromePages } from "@/lib/chromePages";
 import type { ParsedWorkflowLine } from "@/types/workflow";
@@ -148,13 +149,13 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
   const selectedItemRef = useRef<HTMLAnchorElement | null>(null);
   const [effectiveTriggers, setEffectiveTriggers] = useState<Command[]>(TRIGGERS);
   const [query, setQuery] = useState("");
-  const [items, setItems] = useState<ResultItem[]>(() =>
-    TRIGGERS.map((cmd) => ({
-      id: cmd.id,
-      title: `${cmd.key}  ${i18nT(`cmd_${cmd.id}_title`) || cmd.title}`,
-      desc: (i18nT(`cmd_${cmd.id}_desc`) || cmd.desc) ?? "",
-    }))
-  );
+  const commandToItem = useCallback((cmd: Command): ResultItem => {
+    const isCustom = cmd.id.startsWith("custom-");
+    const title = isCustom ? `${cmd.key}  ${cmd.title}` : `${cmd.key}  ${i18nT(`cmd_${cmd.id}_title`) || cmd.title}`;
+    const desc = isCustom ? (cmd.desc ?? "") : (i18nT(`cmd_${cmd.id}_desc`) || cmd.desc) ?? "";
+    return { id: cmd.id, title, desc };
+  }, []);
+  const [items, setItems] = useState<ResultItem[]>(() => TRIGGERS.map(commandToItem));
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [loadingMeta, setLoadingMeta] = useState(false);
   const [mode, setMode] = useState<"main" | DataMode>("main");
@@ -197,7 +198,7 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
 
   useEffect(() => {
     Promise.all([
-      request<{ config?: { general?: { cacheLastCmd?: boolean }; plugins?: Record<string, { disabled?: boolean; triggerKey?: string }>; search?: SearchConfig } }>({ action: "getData" }),
+      request<{ config?: { general?: { cacheLastCmd?: boolean }; plugins?: Record<string, { disabled?: boolean; triggerKey?: string }>; search?: SearchConfig; customCommands?: { list?: CustomCommand[] } } }>({ action: "getData" }),
       request<string>({ action: "getLastQuery" }),
     ])
       .then(([data, lastQuery]) => {
@@ -206,13 +207,13 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
           setQuery(lastQuery);
         }
         const plugins = config?.plugins ?? {};
-        setEffectiveTriggers(
-          TRIGGERS.filter((t) => !plugins[t.id]?.disabled).map((t) => {
-            const custom = plugins[t.id]?.triggerKey?.trim();
-            const key = custom && custom.length > 0 ? custom : t.key;
-            return { ...t, key };
-          })
-        );
+        const builtin = TRIGGERS.filter((t) => !plugins[t.id]?.disabled).map((t) => {
+          const custom = plugins[t.id]?.triggerKey?.trim();
+          const key = custom && custom.length > 0 ? custom : t.key;
+          return { ...t, key };
+        });
+        const customList = config?.customCommands?.list ?? [];
+        setEffectiveTriggers([...builtin, ...customCommandsToCommands(customList)]);
         const base = DEFAULT_CONFIG.search;
         setSearchConfig(base ? { ...base, ...config?.search } : (config?.search ?? null));
       })
@@ -233,15 +234,15 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
           if (triggerIdRef.current === "wf") setSubList([]);
         }
         if (changes.config) {
-          request<{ config?: { plugins?: Record<string, { disabled?: boolean; triggerKey?: string }>; search?: SearchConfig } }>({ action: "getData" }).then((data) => {
+          request<{ config?: { plugins?: Record<string, { disabled?: boolean; triggerKey?: string }>; search?: SearchConfig; customCommands?: { list?: CustomCommand[] } } }>({ action: "getData" }).then((data) => {
             const plugins = data?.config?.plugins ?? {};
-            setEffectiveTriggers(
-              TRIGGERS.filter((t) => !plugins[t.id]?.disabled).map((t) => {
-                const custom = plugins[t.id]?.triggerKey?.trim();
-                const key = custom && custom.length > 0 ? custom : t.key;
-                return { ...t, key };
-              })
-            );
+            const builtin = TRIGGERS.filter((t) => !plugins[t.id]?.disabled).map((t) => {
+              const custom = plugins[t.id]?.triggerKey?.trim();
+              const key = custom && custom.length > 0 ? custom : t.key;
+              return { ...t, key };
+            });
+            const customList = data?.config?.customCommands?.list ?? [];
+            setEffectiveTriggers([...builtin, ...customCommandsToCommands(customList)]);
             const base = DEFAULT_CONFIG.search;
             setSearchConfig(base ? { ...base, ...data?.config?.search } : (data?.config?.search ?? null));
           }).catch(() => {});
@@ -327,8 +328,14 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
       const doClose = () => {
         if (!fromWorkflow) notifyClose();
       };
-      if (item.workflowId && item.workflowContent) {
-        runWorkflow(item);
+      if (item.workflowId) {
+        if (item.workflowContent) {
+          runWorkflow(item);
+          return;
+        }
+        request<{ id: string; content?: string } | null>({ action: "getWorkflow", data: item.workflowId }).then((w) => {
+          if (w?.content) runWorkflow({ ...item, workflowContent: w.content });
+        });
         return;
       }
       // ⇧ 批量：从列表首项到当前选中项（含）中所有带 url 的项，依次在新标签打开，最后一项为当前标签
@@ -474,13 +481,7 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
       const filtered = q
         ? effectiveTriggers.filter((t) => t.key.toLowerCase().startsWith(q))
         : effectiveTriggers;
-      const commandItems = filtered.length
-        ? filtered.map((cmd) => ({
-            id: cmd.id,
-            title: `${cmd.key}  ${i18nT(`cmd_${cmd.id}_title`) || cmd.title}`,
-            desc: (i18nT(`cmd_${cmd.id}_desc`) || cmd.desc) ?? "",
-          }))
-        : [];
+      const commandItems = filtered.length ? filtered.map(commandToItem) : [];
       const chromeItems = q
         ? filterChromePages(CHROME_PAGES, q, i18nT).map((p) => ({
             id: p.id,

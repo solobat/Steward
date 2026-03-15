@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { t } from "@/lib/i18n";
 import type { AppConfig, SearchConfig, SearchEngine } from "@/types/config";
-import { DEFAULT_CONFIG } from "@/types/config";
+import { DEFAULT_CONFIG, DEFAULT_CUSTOM_COMMANDS } from "@/types/config";
 import { request } from "@/lib/portBridge";
 
 function mergeConfig(loaded: Partial<AppConfig> | null): AppConfig {
@@ -18,6 +18,7 @@ function mergeConfig(loaded: Partial<AppConfig> | null): AppConfig {
     appearance: loaded.appearance
       ? { ...DEFAULT_CONFIG.appearance, ...loaded.appearance }
       : DEFAULT_CONFIG.appearance,
+    customCommands: loaded.customCommands ?? DEFAULT_CUSTOM_COMMANDS,
   };
 }
 

@@ -4,16 +4,18 @@ import General from "./General";
 import Plugins from "./Plugins";
 import Search from "./Search";
 import Workflows from "./Workflows";
+import CustomCommands from "./CustomCommands";
 import Appearance from "./Appearance";
 
-type TabId = "general" | "plugins" | "search" | "workflows" | "appearance" | "about";
+type TabId = "general" | "plugins" | "search" | "workflows" | "customCommands" | "appearance" | "about";
 
-const TAB_IDS: TabId[] = ["general", "plugins", "search", "workflows", "appearance", "about"];
+const TAB_IDS: TabId[] = ["general", "plugins", "search", "workflows", "customCommands", "appearance", "about"];
 const TAB_LABEL_KEYS: Record<TabId, string> = {
   general: "tab_general",
   plugins: "tab_plugins",
   search: "tab_search",
   workflows: "tab_workflows",
+  customCommands: "tab_custom_commands",
   appearance: "tab_appearance",
   about: "tab_about",
 };
@@ -56,6 +58,7 @@ export default function App() {
               {tab === "plugins" && <Plugins />}
               {tab === "search" && <Search />}
               {tab === "workflows" && <Workflows />}
+              {tab === "customCommands" && <CustomCommands />}
               {tab === "appearance" && <Appearance />}
               {tab === "about" && (
                 <div className="space-y-4">

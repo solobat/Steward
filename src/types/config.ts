@@ -24,6 +24,54 @@ export interface SearchConfig {
   defaultSearchKeyword: string;
 }
 
+/** 方案 A：配置型自定义命令（Alfred 式触发词 + 数据源 + 动作），不执行用户代码 */
+export interface CustomCommandItem {
+  id?: string;
+  title: string;
+  desc?: string;
+  url?: string;
+}
+
+/**
+ * URL 数据源：API 返回结构不固定时，用「数组路径」+「模板字符串」从每条记录取标题/描述/链接
+ * 模板中 {字段名} 会被替换为该条目的对应字段值，仅做安全读取（无用户代码）
+ */
+export interface UrlResponseMap {
+  /** 取数组的路径，点号分隔，如 "data.items"；空表示根即数组 */
+  arrayPath?: string;
+  /** 标题模板，如 "{title}" 或 "{name} v{version}"，默认 "{title}" */
+  titleTemplate?: string;
+  /** 描述模板，如 "{desc}" 或 "{subtitle}"，默认 "{desc}" */
+  descTemplate?: string;
+  /** 链接模板，如 "{url}" 或 "{arg}"（Alfred），默认 "{url}" */
+  urlTemplate?: string;
+}
+
+/** 结果来源：静态列表 或 URL 拉取 JSON（仅解析数据，不执行脚本） */
+export type CustomCommandSource =
+  | { type: "static"; items: CustomCommandItem[] }
+  | { type: "url"; urlTemplate: string; responseMap?: UrlResponseMap };
+
+/** 选中后的动作 */
+export type CustomCommandAction =
+  | { type: "openUrl"; urlTemplate?: string }
+  | { type: "copy"; template?: string }
+  | { type: "workflow"; workflowId: string };
+
+export interface CustomCommand {
+  id: string;
+  key: string;
+  title: string;
+  desc?: string;
+  icon?: string;
+  source: CustomCommandSource;
+  action: CustomCommandAction;
+}
+
+export interface CustomCommandsConfig {
+  list: CustomCommand[];
+}
+
 /** 外观：命令框主题、字号、强调色、布局（参考旧版 / Alfred） */
 export type AppearanceTheme = "light" | "dark" | "system";
 export type AppearanceFontSize = "small" | "medium" | "large";
@@ -55,6 +103,7 @@ export interface AppConfig {
   plugins?: PluginsConfig;
   search?: SearchConfig;
   appearance?: AppearanceConfig;
+  customCommands?: CustomCommandsConfig;
 }
 
 export const DEFAULT_GENERAL: GeneralConfig = {
@@ -85,9 +134,12 @@ export const DEFAULT_APPEARANCE: AppearanceConfig = {
   subtitleSize: "medium",
 };
 
+export const DEFAULT_CUSTOM_COMMANDS: CustomCommandsConfig = { list: [] };
+
 export const DEFAULT_CONFIG: AppConfig = {
   general: DEFAULT_GENERAL,
   plugins: {},
   search: DEFAULT_SEARCH,
   appearance: DEFAULT_APPEARANCE,
+  customCommands: DEFAULT_CUSTOM_COMMANDS,
 };
