@@ -81,7 +81,7 @@
   "custom_commands_url_template_hint": { "message": "URL template, e.g. {url} or {arg} (Alfred)" },
 
   "workflows_title": { "message": "Workflows" },
-  "workflows_hint": { "message": "Bash-like: command -- choice, choice is 1, 1-5, all/*. Use ; for multiple steps per line. # for comment. Use wf to run." },
+  "workflows_hint": { "message": "Bash-like: command -- choice (1, 1-5, all/*). ; for multiple steps. # comment. wait 500 / window 2 for delay and focus. wf to run." },
   "workflows_search_placeholder": { "message": "Search workflows" },
   "workflows_new": { "message": "New workflow" },
   "workflows_new_btn": { "message": "New workflow" },
@@ -90,7 +90,7 @@
   "workflows_label_content": { "message": "Content (one command per line)" },
   "workflows_placeholder_title": { "message": "Workflow name" },
   "workflows_placeholder_desc": { "message": "Short description" },
-  "workflows_placeholder_content": { "message": "# Bash-like: command -- choice\nhis -- 1\nbm star -- 2\nhis -- 1 ; bm -- 1" },
+  "workflows_placeholder_content": { "message": "# command -- choice; wait 500 (ms); window 2 (focus 2nd)\nhis -- 1\nwait 500\nbm -- 1\nwindow 1" },
   "workflows_select_hint": { "message": "Select or create a workflow from the list" },
   "workflows_confirm_delete": { "message": "Delete workflow \"$1\"?" },
   "workflows_save_failed": { "message": "Save failed, please retry." },

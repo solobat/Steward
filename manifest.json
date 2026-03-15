@@ -40,7 +40,7 @@
     "page": "src/options/index.html",
     "open_in_tab": true
   },
-  "permissions": ["storage", "activeTab", "clipboardWrite", "tabs", "history", "bookmarks", "management", "downloads", "topSites"],
+  "permissions": ["storage", "alarms", "activeTab", "clipboardWrite", "tabs", "history", "bookmarks", "management", "downloads", "topSites"],
   "host_permissions": ["<all_urls>"],
   "commands": {
     "_execute_action": {

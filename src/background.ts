@@ -1,11 +1,30 @@
 /**
  * Steward v3 - Service Worker (MV3)
  * 不持久内存状态，按需从 storage 读取；getHistory/getBookmarks 委托给 commands 实现。
- * 同时监听 onConnect：options/iframe 通过 Port 请求可稳定拿到响应，避免 sendMessage 响应丢失。
+ * 工作流 wait 后由 alarm 触发，可在 background 直接执行 URL 打开、聚焦窗口、下一轮 wait，无需 popup。
  */
 import type { Workflow } from "./types/workflow";
 import { handleGetHistory } from "./commands/his/background";
 import { handleGetBookmarks } from "./commands/bm/background";
+import { isWaitStep, parseWaitMs, isFocusWindowStep, parseFocusWindowIndex } from "./lib/workflow";
+
+const WORKFLOW_ADVANCE_KEY = "workflowAdvanceState";
+
+function isUrlLike(s: string): boolean {
+  const t = s.replace(/。/g, ".").trim();
+  if (!t || t.length < 4) return false;
+  if (/^https?:\/\//i.test(t)) return true;
+  if (/^[\w.-]+\.[a-z]{2,}(\/.*)?$/i.test(t)) return true;
+  if (/^localhost(:\d+)?(\/.*)?$/i.test(t)) return true;
+  if (/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d+)?(\/.*)?$/.test(t)) return true;
+  return false;
+}
+
+function toUrl(s: string): string {
+  const t = s.replace(/。/g, ".").trim();
+  if (/^https?:\/\//i.test(t)) return t;
+  return `http://${t}`;
+}
 
 const WORKFLOWS_KEY = "workflows";
 /** 与旧版 extension 一致：屏蔽列表用 url，替换页用 urlblock_replace_page */
@@ -291,6 +310,13 @@ export async function handleRequest(msg: RequestMessage): Promise<unknown> {
       await chrome.storage.sync.set({ [URL_BLOCK_REPLACE_PAGE_KEY]: next });
       return { ok: true };
     }
+    case "scheduleWorkflowAdvance": {
+      const { delayMs, lines, lineIndex } = msg.data as { delayMs: number; lines: unknown[]; lineIndex: number };
+      const when = Date.now() + Math.min(Math.max(delayMs, 100), 60_000);
+      await chrome.storage.local.set({ [WORKFLOW_ADVANCE_KEY]: { lines: lines ?? [], lineIndex: lineIndex ?? 0 } });
+      await chrome.alarms.create("workflowAdvance", { when });
+      return { ok: true };
+    }
     default:
       return undefined;
   }
@@ -311,6 +337,60 @@ chrome.runtime.onConnect.addListener((port) => {
       .then((result) => port.postMessage({ id, result }))
       .catch(() => port.postMessage({ id, result: undefined }));
   });
+});
+
+// TODO(popup): Popup 模式下工作流仍有诸多限制（关窗后步骤不执行、需列表步骤无法在 background 完成等），后续可考虑：引导用 options/页面模式执行工作流，或在 background 实现「取第一条并打开」等降级逻辑
+chrome.alarms.onAlarm.addListener(async (alarm) => {
+  if (alarm.name !== "workflowAdvance") return;
+  const r = await chrome.storage.local.get(WORKFLOW_ADVANCE_KEY);
+  const state = r[WORKFLOW_ADVANCE_KEY] as { lines: { input: string }[]; lineIndex: number } | undefined;
+  await chrome.storage.local.remove(WORKFLOW_ADVANCE_KEY);
+  if (!state?.lines || !Array.isArray(state.lines) || typeof state.lineIndex !== "number") return;
+
+  let { lines, lineIndex } = state;
+  const len = lines.length;
+
+  while (lineIndex < len) {
+    const line = lines[lineIndex];
+    const input = (line && typeof line === "object" && typeof (line as { input?: string }).input === "string")
+      ? (line as { input: string }).input
+      : String(line ?? "").trim();
+    const trimmed = input.trim();
+
+    if (isWaitStep(trimmed)) {
+      const delayMs = parseWaitMs(trimmed);
+      const nextIndex = lineIndex + 1;
+      const when = Date.now() + Math.min(Math.max(delayMs, 100), 60_000);
+      await chrome.storage.local.set({ [WORKFLOW_ADVANCE_KEY]: { lines, lineIndex: nextIndex } });
+      await chrome.alarms.create("workflowAdvance", { when });
+      return;
+    }
+
+    if (isFocusWindowStep(trimmed)) {
+      const oneBased = parseFocusWindowIndex(trimmed);
+      const windows = await chrome.windows.getAll({ windowTypes: ["normal"] });
+      const win = windows[oneBased - 1];
+      if (win?.id != null) {
+        await chrome.windows.update(win.id, { focused: true });
+      }
+      lineIndex++;
+      continue;
+    }
+
+    if (isUrlLike(trimmed)) {
+      await chrome.tabs.create({ url: toUrl(trimmed) });
+      lineIndex++;
+      continue;
+    }
+
+    // 需要 popup 的步骤（his、bm、tab 等）：保存状态并通知，popup 打开时会继续
+    await chrome.storage.local.set({ [WORKFLOW_ADVANCE_KEY]: { lines, lineIndex } });
+    chrome.runtime.sendMessage({ action: "workflowAdvance", state: { lines, lineIndex } }).catch(() => {});
+    return;
+  }
+
+  // 全部在 background 执行完毕，通知 popup 清理状态（若仍打开）
+  chrome.runtime.sendMessage({ action: "workflowFinished" }).catch(() => {});
 });
 
 chrome.commands.onCommand.addListener((command: string) => {

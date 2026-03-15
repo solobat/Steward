@@ -6,7 +6,7 @@ import { request } from "@/lib/portBridge";
 import { customCommandsToCommands } from "@/lib/customCommands";
 import { t as i18nT } from "@/lib/i18n";
 import { DEFAULT_CONFIG, type AppearanceConfig, type CustomCommand, type SearchConfig } from "@/types/config";
-import { parseWorkflow, fixNumber } from "@/lib/workflow";
+import { parseWorkflow, fixNumber, isWaitStep, parseWaitMs, isFocusWindowStep, parseFocusWindowIndex } from "@/lib/workflow";
 import { CHROME_PAGES, filterChromePages } from "@/lib/chromePages";
 import type { ParsedWorkflowLine } from "@/types/workflow";
 
@@ -312,20 +312,97 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
     cmd.load(ctx);
   }, [triggersForDisplay]);
 
+  /** 聚焦第 index 个窗口（1-based），用于工作流步骤 window N / focus N */
+  const focusWindowByIndex = useCallback((index1Based: number) => {
+    chrome.windows.getAll({ populate: false }).then((wins) => {
+      const i = Math.min(index1Based, wins.length) - 1;
+      if (i >= 0 && wins[i]?.id != null) {
+        chrome.windows.update(wins[i].id!, { focused: true }).catch(() => {});
+      }
+    });
+  }, []);
+
+  /** 推进工作流到下一行；处理 wait / window 等无选择步骤后，再 setQuery 或结束。wait 由 background 定时，避免 popup 关闭后不执行 */
+  const advanceWorkflow = useCallback(() => {
+    const wf = workflowRunRef.current;
+    if (!wf) return;
+    while (wf.lineIndex < wf.lines.length) {
+      const next = wf.lines[wf.lineIndex];
+      if (isWaitStep(next.input)) {
+        const ms = Math.min(parseWaitMs(next.input), 60_000);
+        wf.lineIndex += 1;
+        request({ action: "scheduleWorkflowAdvance", data: { delayMs: ms, lines: wf.lines, lineIndex: wf.lineIndex } }).catch(() => {});
+        return;
+      }
+      if (isFocusWindowStep(next.input)) {
+        focusWindowByIndex(parseFocusWindowIndex(next.input));
+        wf.lineIndex += 1;
+        continue;
+      }
+      break;
+    }
+    if (wf.lineIndex >= wf.lines.length) {
+      workflowRunRef.current = null;
+      executedLineRef.current = -1;
+      notifyClose();
+      return;
+    }
+    wf.inputForCurrentLine = wf.lines[wf.lineIndex].input;
+    executedLineRef.current = -1;
+    // 必须带空格，parseQuery 才识别为「命令+过滤」并加载数据；否则只显示命令列表，不会拉 his/bm 等结果
+    const nextInput = wf.inputForCurrentLine.trim();
+    const queryForLoad = nextInput.endsWith(" ") ? nextInput : nextInput + " ";
+    setQuery(queryForLoad);
+    setSubList([]);
+    setItems([]);
+  }, [notifyClose, focusWindowByIndex]);
+
+  const advanceWorkflowRef = useRef(advanceWorkflow);
+  advanceWorkflowRef.current = advanceWorkflow;
+
+  useEffect(() => {
+    const onMessage = (msg: { action?: string; state?: { lines: ParsedWorkflowLine[]; lineIndex: number } }) => {
+      if (msg.action === "workflowFinished") {
+        workflowRunRef.current = null;
+        executedLineRef.current = -1;
+        return;
+      }
+      if (msg.action !== "workflowAdvance" || !msg.state) return;
+      const { lines, lineIndex } = msg.state;
+      if (!Array.isArray(lines) || typeof lineIndex !== "number" || lineIndex < 0 || lineIndex >= lines.length) return;
+      workflowRunRef.current = {
+        lines,
+        lineIndex,
+        inputForCurrentLine: lines[lineIndex]?.input ?? "",
+      };
+      executedLineRef.current = -1;
+      advanceWorkflowRef.current?.();
+    };
+    chrome.runtime.onMessage.addListener(onMessage);
+    return () => chrome.runtime.onMessage.removeListener(onMessage);
+  }, []);
+
   const runWorkflow = useCallback((item: ResultItem) => {
     const content = item.workflowContent ?? "";
     const lines = parseWorkflow(content);
     if (lines.length === 0) return;
+    const firstInput = lines[0].input;
+    if (isWaitStep(firstInput) || isFocusWindowStep(firstInput)) {
+      workflowRunRef.current = { lines, lineIndex: 0, inputForCurrentLine: "" };
+      advanceWorkflow();
+      return;
+    }
     workflowRunRef.current = {
       lines,
       lineIndex: 0,
-      inputForCurrentLine: lines[0].input,
+      inputForCurrentLine: firstInput,
     };
     executedLineRef.current = -1;
-    setQuery(lines[0].input);
+    const q = firstInput.trim();
+    setQuery(q.endsWith(" ") ? q : q + " ");
     setSubList([]);
     setItems([]);
-  }, []);
+  }, [advanceWorkflow]);
 
   const handleSelect = useCallback(
     (item: ResultItem, opts?: { fromWorkflow?: boolean; altKey?: boolean; shiftKey?: boolean }) => {
@@ -627,7 +704,8 @@ const searchItems = filtered.length ? filtered : [{ id: "none", title: i18nT("cm
     if (!wf || items.length === 0 || items[0]?.id === "none" || items[0]?.id?.startsWith("wf-")) return;
     if (query.trim() !== wf.inputForCurrentLine.trim()) return;
     if (executedLineRef.current === wf.lineIndex) return;
-    if (filter.trim() && subList.length > 0 && items.length === subList.length) {
+    // 非工作流时：等用户过滤完再执行；工作流中不等待，有结果即执行（如 openurl 单条、his 等）
+    if (!wf && filter.trim() && subList.length > 0 && items.length === subList.length) {
       return;
     }
     const line = wf.lines[wf.lineIndex];
@@ -657,19 +735,8 @@ const searchItems = filtered.length ? filtered : [{ id: "none", title: i18nT("cm
       indices.forEach((i) => handleSelect(items[i], { fromWorkflow: true }));
     }
     wf.lineIndex += 1;
-    if (wf.lineIndex < wf.lines.length) {
-      const nextInput = wf.lines[wf.lineIndex].input;
-      wf.inputForCurrentLine = nextInput;
-      executedLineRef.current = -1;
-      setQuery(nextInput);
-      setSubList([]);
-      setItems([]);
-    } else {
-      workflowRunRef.current = null;
-      executedLineRef.current = -1;
-      notifyClose();
-    }
-  }, [items, query, filter, subList, handleSelect, notifyClose]);
+    advanceWorkflow();
+  }, [items, query, filter, subList, handleSelect, advanceWorkflow]);
 
   // Esc 对齐旧版：有输入时先清空（可配合 emptyCommand），输入已空时才关框
   useEffect(() => {

@@ -70,3 +70,31 @@ export function fixNumber(str: string | number): number {
   if (n <= 0 || !Number.isFinite(n)) return 0;
   return n - 1;
 }
+
+// ---------- 预定义步骤类型：等待、聚焦窗口（无选择，直接推进） ----------
+
+/** 是否「等待」步骤：wait 500（毫秒）或 wait 0.5（秒） */
+export function isWaitStep(input: string): boolean {
+  return /^wait\s+/i.test(input.trim());
+}
+
+/** 解析等待时长，返回毫秒。支持 "wait 5"（秒）、"wait 500"（毫秒）、"wait 0.5"、"wait 1s" */
+export function parseWaitMs(input: string): number {
+  const s = input.trim().replace(/^wait\s+/i, "").trim();
+  const num = Number(s.replace(/s$/i, ""));
+  if (!Number.isFinite(num) || num < 0) return 0;
+  if (/s$/i.test(s)) return Math.round(num * 1000);
+  if (num !== Math.floor(num)) return Math.round(num * 1000);
+  return num >= 100 ? Math.round(num) : Math.round(num) * 1000;
+}
+
+/** 是否「聚焦窗口」步骤：window 2 或 focus 2（1-based 窗口序号） */
+export function isFocusWindowStep(input: string): boolean {
+  return /^(window|focus)\s+\d+/i.test(input.trim());
+}
+
+/** 解析聚焦窗口序号（1-based） */
+export function parseFocusWindowIndex(input: string): number {
+  const m = input.trim().match(/^(?:window|focus)\s+(\d+)/i);
+  return m ? Math.max(1, parseInt(m[1], 10)) : 1;
+}

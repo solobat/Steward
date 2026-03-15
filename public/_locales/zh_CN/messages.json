@@ -81,7 +81,7 @@
   "custom_commands_url_template_hint": { "message": "链接模板，如 {url} 或 {arg}（Alfred）" },
 
   "workflows_title": { "message": "工作流" },
-  "workflows_hint": { "message": "类 bash：命令 -- 选择，选择为 1、1-5、all/*。同行多步用 ;。行末 # 注释。wf 搜索执行。" },
+  "workflows_hint": { "message": "类 bash：命令 -- 选择（1、1-5、all/*）。; 多步。# 注释。wait 500 / window 2 表示等待与聚焦窗口。wf 执行。" },
   "workflows_search_placeholder": { "message": "搜索工作流" },
   "workflows_new": { "message": "新工作流" },
   "workflows_new_btn": { "message": "新建工作流" },
@@ -90,7 +90,7 @@
   "workflows_label_content": { "message": "内容（每行一条命令）" },
   "workflows_placeholder_title": { "message": "工作流名称" },
   "workflows_placeholder_desc": { "message": "简短描述" },
-  "workflows_placeholder_content": { "message": "# 类 bash：命令 -- 选择\nhis -- 1\nbm star -- 2\nhis -- 1 ; bm -- 1" },
+  "workflows_placeholder_content": { "message": "# 命令 -- 选择；wait 500（毫秒）；window 2（聚焦第2个窗口）\nhis -- 1\nwait 500\nbm -- 1\nwindow 1" },
   "workflows_select_hint": { "message": "从左侧选择或新建工作流" },
   "workflows_confirm_delete": { "message": "确定删除工作流「$1」？" },
   "workflows_save_failed": { "message": "保存失败，请重试。" },
