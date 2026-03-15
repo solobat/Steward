@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo } from "react";
 import { TRIGGERS, type Command, type DataMode, type ResultItem } from "../commands";
 import { isCalculableExpression } from "../commands/calculate";
 import { isUrlLike } from "../commands/openurl";
@@ -147,6 +147,7 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
   const titleSizePx = appearanceSizeToPx(appearance?.titleSize, "title");
   const subtitleSizePx = appearanceSizeToPx(appearance?.subtitleSize, "subtitle");
   const selectedItemRef = useRef<HTMLAnchorElement | null>(null);
+  const inPage = isInIframe();
   const [effectiveTriggers, setEffectiveTriggers] = useState<Command[]>(TRIGGERS);
   const [query, setQuery] = useState("");
   const commandToItem = useCallback((cmd: Command): ResultItem => {
@@ -155,7 +156,13 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
     const desc = isCustom ? (cmd.desc ?? "") : (i18nT(`cmd_${cmd.id}_desc`) || cmd.desc) ?? "";
     return { id: cmd.id, title, desc };
   }, []);
-  const [items, setItems] = useState<ResultItem[]>(() => TRIGGERS.map(commandToItem));
+  const triggersForDisplay = useMemo(
+    () => (inPage ? effectiveTriggers : effectiveTriggers.filter((t) => !t.pageOnly)),
+    [effectiveTriggers, inPage]
+  );
+  const [items, setItems] = useState<ResultItem[]>(() =>
+    (inPage ? TRIGGERS : TRIGGERS.filter((t) => !t.pageOnly)).map(commandToItem)
+  );
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [loadingMeta, setLoadingMeta] = useState(false);
   const [mode, setMode] = useState<"main" | DataMode>("main");
@@ -188,7 +195,7 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
   );
   const { inSearchMode, filter, trigger, searchKeyword } = parseQuery(
     query,
-    effectiveTriggers,
+    triggersForDisplay,
     searchConfig,
     hasMainModeExtraMatches
   );
@@ -286,7 +293,7 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
   }, []);
 
   const loadForMode = useCallback((dataMode: DataMode) => {
-    const cmd = effectiveTriggers.find((t) => t.mode === dataMode);
+    const cmd = triggersForDisplay.find((t) => t.mode === dataMode);
     if (!cmd?.load) return;
     const pendingRef =
       dataMode === "history"
@@ -303,7 +310,7 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
       pendingRef,
     };
     cmd.load(ctx);
-  }, [effectiveTriggers]);
+  }, [triggersForDisplay]);
 
   const runWorkflow = useCallback((item: ResultItem) => {
     const content = item.workflowContent ?? "";
@@ -352,7 +359,7 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
           return;
         }
       }
-      const t: Command | undefined = effectiveTriggers.find((x) => x.id === item.id);
+      const t: Command | undefined = triggersForDisplay.find((x) => x.id === item.id);
       if (t) {
         if (t.execute) {
           t.execute({
@@ -407,7 +414,7 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
         }
       }
     },
-    [notifyClose, copyToClipboard, loadForMode, effectiveTriggers, runWorkflow]
+    [notifyClose, copyToClipboard, loadForMode, triggersForDisplay, runWorkflow]
   );
 
   const saveLastQueryOnClose = useCallback(() => {
@@ -479,8 +486,8 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
       const q = query.trim().toLowerCase();
       // 有输入时：只显示 key 以输入为前缀的命令（如 b → bm/bks）；命令下列出后再追加匹配的 Chrome 内置页
       const filtered = q
-        ? effectiveTriggers.filter((t) => t.key.toLowerCase().startsWith(q))
-        : effectiveTriggers;
+        ? triggersForDisplay.filter((t) => t.key.toLowerCase().startsWith(q))
+        : triggersForDisplay;
       const commandItems = filtered.length ? filtered.map(commandToItem) : [];
       const chromeItems = q
         ? filterChromePages(CHROME_PAGES, q, i18nT).map((p) => ({
@@ -612,7 +619,7 @@ const searchItems = filtered.length ? filtered : [{ id: "none", title: i18nT("cm
       setItems(searchItems);
       setSelectedIndex((prev) => (prev < searchItems.length ? prev : 0));
     }
-  }, [query, inSearchMode, triggerId, triggerKey, filter, subList, effectiveTriggers, loadForMode]);
+  }, [query, inSearchMode, triggerId, triggerKey, filter, subList, triggersForDisplay, loadForMode]);
 
   // 工作流逐步执行：当前行对应的数据加载完后，执行选中项并推进到下一行
   useEffect(() => {

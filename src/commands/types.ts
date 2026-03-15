@@ -47,6 +47,8 @@ export interface Command {
   key: string;
   title: string;
   desc: string;
+  /** 为 true 时仅在「页面内命令框」显示，popup 中隐藏（依赖当前页 context，如 meta/nav/outline） */
+  pageOnly?: boolean;
   mode?: DataMode;
   action?: ActionType;
   /** 有 mode 时由 loadForMode 调用；无 mode 时由 CmdBox 在 search 模式下调用，可带 filter */
