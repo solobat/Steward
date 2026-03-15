@@ -30,6 +30,17 @@ When the user opens the command box by clicking the extension icon or shortcut (
 Used for core features: list and switch/close/mute/pin tabs from the command box; open history, bookmarks, and page links in a new tab or the current tab; and inject the command box into the current tab when the user triggers the shortcut. All use happens when the user actively uses the command box; we do not collect or upload tab data in the background.
 ```
 
+### alarms
+
+```
+用于工作流（Workflow）中的「等待」步骤：用户在工作流里设置“等待 N 秒后执行下一步”（如先打开 A 页、等待 5 秒、再打开 B 页）时，扩展需要在到点后执行下一步。弹窗关闭后无法用普通定时器，因此使用 Chrome 的 alarms API 在后台到点触发，仅按用户配置的延迟执行后续步骤，不收集、不上传任何数据。
+```
+
+**英文（若需）：**
+```
+Used for the “wait” step in Workflows: when the user sets a delay in a workflow (e.g. open page A, wait 5 seconds, then open page B), the extension needs to run the next step at the scheduled time. The popup may be closed by then, so we use the Chrome alarms API to trigger in the background at the right time. Only used to run the user’s chosen next step after their configured delay; no data is collected or uploaded.
+```
+
 ---
 
 ## 二、未选择语言
@@ -121,6 +132,7 @@ Settings are stored in Chrome sync or locally. Bookmarks, history, and tabs are 
 |----|------|
 | activeTab 理由 | 在隐私权规范中粘贴上文「activeTab」说明 |
 | tabs 理由 | 在隐私权规范中粘贴上文「tabs」说明 |
+| alarms 理由 | 在隐私权规范中粘贴上文「alarms」说明（工作流等待步骤） |
 | 语言 | 至少选一种语言并填写对应商店说明 |
 | 简短说明 / 详细说明 | 复制上面对应语言的文案到商品信息 |
 | 隐私政策 URL | 部署文档站后填 `https://<域名>/privacy`，确保公网可访问 |
