@@ -47,10 +47,31 @@ export interface UrlResponseMap {
   urlTemplate?: string;
 }
 
-/** 结果来源：静态列表 或 URL 拉取 JSON（仅解析数据，不执行脚本） */
+/** 内置数据源类型（复用扩展已有 API，无需 URL） */
+export type BuiltinSourceKind =
+  | "tabs"
+  | "history"
+  | "bookmarks_recent"
+  | "bookmarks_folder"
+  | "topSites"
+  | "downloads"
+  | "extensions";
+
+/** 内置数据源可选参数 */
+export interface BuiltinSourceParams {
+  /** 书签文件夹 id，如 "1" 书签栏、"2" 其他 */
+  folderId?: string;
+  /** 条数上限（downloads 等） */
+  limit?: number;
+  /** 扩展列表是否只含已启用 */
+  enabled?: boolean;
+}
+
+/** 结果来源：静态列表 / URL JSON / 内置数据源 */
 export type CustomCommandSource =
   | { type: "static"; items: CustomCommandItem[] }
-  | { type: "url"; urlTemplate: string; responseMap?: UrlResponseMap };
+  | { type: "url"; urlTemplate: string; responseMap?: UrlResponseMap }
+  | { type: "builtin"; builtin: BuiltinSourceKind; params?: BuiltinSourceParams };
 
 /** 选中后的动作 */
 export type CustomCommandAction =

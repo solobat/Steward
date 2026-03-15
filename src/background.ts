@@ -19,6 +19,22 @@ async function getWorkflowsFromStorage(): Promise<Workflow[]> {
   return Array.isArray(raw) ? raw : [];
 }
 
+/** 递归取某书签文件夹下所有书签（叶子节点），用于自定义命令内置数据源 */
+async function getBookmarkFolderLeaves(
+  folderId: string
+): Promise<{ id: string; title: string; url: string }[]> {
+  const out: { id: string; title: string; url: string }[] = [];
+  const children = await chrome.bookmarks.getChildren(folderId);
+  for (const node of children ?? []) {
+    if (node.url) {
+      out.push({ id: node.id, title: node.title || node.url || "", url: node.url });
+    } else {
+      out.push(...(await getBookmarkFolderLeaves(node.id)));
+    }
+  }
+  return out;
+}
+
 export type RequestMessage = { action: string; data?: unknown; id?: number };
 
 export async function handleRequest(msg: RequestMessage): Promise<unknown> {
@@ -33,6 +49,10 @@ export async function handleRequest(msg: RequestMessage): Promise<unknown> {
       return handleGetHistory();
     case "getBookmarks":
       return handleGetBookmarks();
+    case "getBookmarkFolder": {
+      const folderId = (msg.data as string) ?? "1";
+      return getBookmarkFolderLeaves(folderId).catch(() => []);
+    }
     case "saveLastQuery":
       return chrome.storage.local.set({ lastQuery: msg.data }).then(() => ({ ok: true }));
     case "getLastQuery":

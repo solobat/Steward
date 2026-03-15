@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { t } from "@/lib/i18n";
 import type {
   AppConfig,
+  BuiltinSourceKind,
   CustomCommand,
   CustomCommandAction,
   CustomCommandItem,
@@ -243,15 +244,64 @@ function CustomCommandForm({
           className="select select-bordered select-sm w-full max-w-xs"
           value={source.type}
           onChange={(e) => {
-            const type = e.target.value as "static" | "url";
-            onChange({
-              source: type === "url" ? { type: "url", urlTemplate: "https://api.example.com?q={query}" } : { type: "static", items: [] },
-            });
+            const type = e.target.value as "static" | "url" | "builtin";
+            if (type === "url") onChange({ source: { type: "url", urlTemplate: "https://api.example.com?q={query}" } });
+            else if (type === "builtin") onChange({ source: { type: "builtin", builtin: "tabs" } });
+            else onChange({ source: { type: "static", items: [] } });
           }}
         >
           <option value="static">{t("custom_commands_source_static")}</option>
           <option value="url">{t("custom_commands_source_url")}</option>
+          <option value="builtin">{t("custom_commands_source_builtin")}</option>
         </select>
+        {source.type === "builtin" && (
+          <div className="mt-2 space-y-2">
+            <select
+              className="select select-bordered select-sm w-full max-w-xs"
+              value={source.builtin ?? "tabs"}
+              onChange={(e) => onChange({ source: { ...source, type: "builtin", builtin: e.target.value as BuiltinSourceKind } })}
+            >
+              <option value="tabs">{t("custom_commands_builtin_tabs")}</option>
+              <option value="history">{t("custom_commands_builtin_history")}</option>
+              <option value="bookmarks_recent">{t("custom_commands_builtin_bookmarks_recent")}</option>
+              <option value="bookmarks_folder">{t("custom_commands_builtin_bookmarks_folder")}</option>
+              <option value="topSites">{t("custom_commands_builtin_topSites")}</option>
+              <option value="downloads">{t("custom_commands_builtin_downloads")}</option>
+              <option value="extensions">{t("custom_commands_builtin_extensions")}</option>
+            </select>
+            {source.builtin === "bookmarks_folder" && (
+              <input
+                type="text"
+                className="input input-bordered input-sm w-full max-w-xs font-mono"
+                placeholder="1 / 2"
+                value={source.params?.folderId ?? ""}
+                onChange={(e) => onChange({ source: { ...source, type: "builtin", params: { ...source.params, folderId: e.target.value || undefined } } })}
+              />
+            )}
+            {source.builtin === "downloads" && (
+              <input
+                type="number"
+                className="input input-bordered input-sm w-24"
+                placeholder="30"
+                min={1}
+                max={100}
+                value={source.params?.limit ?? ""}
+                onChange={(e) => onChange({ source: { ...source, type: "builtin", params: { ...source.params, limit: e.target.value ? Number(e.target.value) : undefined } } })}
+              />
+            )}
+            {source.builtin === "extensions" && (
+              <label className="label cursor-pointer gap-2 py-0">
+                <input
+                  type="checkbox"
+                  className="checkbox checkbox-sm"
+                  checked={source.params?.enabled ?? false}
+                  onChange={(e) => onChange({ source: { ...source, type: "builtin", params: { ...source.params, enabled: e.target.checked ? true : undefined } } })}
+                />
+                <span className="label-text text-sm">{t("custom_commands_builtin_extensions_enabled_only")}</span>
+              </label>
+            )}
+          </div>
+        )}
         {source.type === "url" && (
           <>
             <input

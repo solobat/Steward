@@ -1,15 +1,18 @@
 /**
  * 方案 A：将配置型自定义命令转为可纳入命令列表的 Command 形态
- * 借鉴 Alfred：触发词 → 数据源（静态/URL JSON）→ 选中后动作（打开 URL/复制/工作流）
- * 仅解析 JSON，不执行任何用户代码。URL 源支持 responseMap 适配各异 API 结构。
+ * 借鉴 Alfred：触发词 → 数据源（静态/URL/内置）→ 选中后动作（打开 URL/复制/工作流）
+ * 仅解析 JSON 或调用扩展 API，不执行任何用户代码。
  */
 import type { Command, ResultItem } from "@/commands/types";
+import { request } from "@/lib/portBridge";
 import type {
   CustomCommand,
   CustomCommandItem,
   CustomCommandSource,
   CustomCommandAction,
   UrlResponseMap,
+  BuiltinSourceKind,
+  BuiltinSourceParams,
 } from "@/types/config";
 
 /** 按点号路径取对象属性，如 "data.items" => obj?.data?.items */
@@ -87,6 +90,109 @@ function mapRawToItem(raw: unknown, map: Required<UrlResponseMap>): CustomComman
   return { title, desc, url };
 }
 
+function filterItemsByQuery(items: CustomCommandItem[], q: string): CustomCommandItem[] {
+  if (!q) return items;
+  const lower = q.toLowerCase();
+  return items.filter(
+    (i) =>
+      (i.title ?? "").toLowerCase().includes(lower) ||
+      (i.desc ?? "").toLowerCase().includes(lower) ||
+      (i.url ?? "").toLowerCase().includes(lower)
+  );
+}
+
+async function fetchBuiltinItems(
+  builtin: BuiltinSourceKind,
+  params: BuiltinSourceParams | undefined,
+  filter: string
+): Promise<CustomCommandItem[]> {
+  const p = params ?? {};
+  try {
+    switch (builtin) {
+      case "tabs": {
+        const tabs = await request<{ id: number; title: string; url: string }[]>({
+          action: "getTabs",
+          data: { query: filter },
+        });
+        const list = Array.isArray(tabs) ? tabs : [];
+        return list.map((t) => ({
+          title: t.title || t.url || "",
+          desc: t.url,
+          url: t.url,
+        }));
+      }
+      case "history": {
+        const list = await request<{ id: string; title: string; url: string }[]>({ action: "getHistory" });
+        const arr = Array.isArray(list) ? list : [];
+        return filterItemsByQuery(
+          arr.map((h) => ({ title: h.title || h.url || "", url: h.url })),
+          filter
+        );
+      }
+      case "bookmarks_recent": {
+        const list = await request<{ id: string; title: string; url: string }[]>({ action: "getBookmarks" });
+        const arr = Array.isArray(list) ? list : [];
+        return filterItemsByQuery(
+          arr.map((b) => ({ title: b.title || b.url || "", url: b.url })),
+          filter
+        );
+      }
+      case "bookmarks_folder": {
+        const folderId = p.folderId ?? "1";
+        const list = await request<{ id: string; title: string; url: string }[]>({
+          action: "getBookmarkFolder",
+          data: folderId,
+        });
+        const arr = Array.isArray(list) ? list : [];
+        return filterItemsByQuery(
+          arr.map((b) => ({ title: b.title || b.url || "", url: b.url })),
+          filter
+        );
+      }
+      case "topSites": {
+        const list = await request<{ title?: string; url: string }[]>({ action: "getTopSites" });
+        const arr = Array.isArray(list) ? list : [];
+        return filterItemsByQuery(
+          arr.map((s) => ({ title: (s.title || s.url || "").trim() || s.url, url: s.url })),
+          filter
+        );
+      }
+      case "downloads": {
+        const list = await request<{ id: number; url: string; filename: string; state?: string }[]>({
+          action: "getDownloads",
+          data: { query: [] },
+        });
+        const arr = Array.isArray(list) ? list : [];
+        const limit = p.limit ?? 30;
+        return filterItemsByQuery(
+          arr.slice(0, limit).map((d) => ({
+            title: d.filename || d.url || "",
+            desc: d.state,
+            url: d.url,
+          })),
+          filter
+        );
+      }
+      case "extensions": {
+        const list = await request<{ id: string; name: string; description?: string; optionsUrl?: string; homepageUrl?: string }[]>({
+          action: "getExtensions",
+          data: { enabled: p.enabled, query: filter },
+        });
+        const arr = Array.isArray(list) ? list : [];
+        return arr.map((e) => ({
+          title: e.name || e.id,
+          desc: e.description,
+          url: e.optionsUrl || e.homepageUrl || "",
+        }));
+      }
+      default:
+        return [];
+    }
+  } catch {
+    return [];
+  }
+}
+
 async function getItemsFromSource(
   source: CustomCommandSource,
   filter: string
@@ -99,6 +205,9 @@ async function getItemsFromSource(
         (i.title ?? "").toLowerCase().includes(q) ||
         (i.desc ?? "").toLowerCase().includes(q)
     );
+  }
+  if (source.type === "builtin") {
+    return fetchBuiltinItems(source.builtin, source.params, filter);
   }
   const url = source.urlTemplate.replace(/\{query\}/g, encodeURIComponent(filter));
   const res = await fetch(url);
