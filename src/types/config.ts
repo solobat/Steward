@@ -6,9 +6,9 @@ export interface GeneralConfig {
   cacheLastCmd?: boolean;
 }
 
-/** 插件级配置：commandId -> { disabled }，不写或 false 表示启用 */
+/** 插件级配置：commandId -> { disabled?, triggerKey? }，triggerKey 为空则用命令默认 key */
 export interface PluginsConfig {
-  [commandId: string]: { disabled?: boolean };
+  [commandId: string]: { disabled?: boolean; triggerKey?: string };
 }
 
 /** 自定义搜索引擎：关键词 + 名称 + URL 模板（{query} 会被替换） */

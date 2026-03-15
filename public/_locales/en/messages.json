@@ -26,6 +26,8 @@
 
   "plugins_title": { "message": "Plugin management" },
   "plugins_hint": { "message": "Disabled plugins will not appear in the command box or respond to keywords." },
+  "plugins_trigger_key": { "message": "Trigger key" },
+  "plugins_trigger_key_placeholder": { "message": "default" },
   "plugin_on": { "message": "On" },
   "plugin_off": { "message": "Off" },
 

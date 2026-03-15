@@ -182,7 +182,7 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
 
   useEffect(() => {
     Promise.all([
-      request<{ config?: { general?: { cacheLastCmd?: boolean }; plugins?: Record<string, { disabled?: boolean }>; search?: SearchConfig } }>({ action: "getData" }),
+      request<{ config?: { general?: { cacheLastCmd?: boolean }; plugins?: Record<string, { disabled?: boolean; triggerKey?: string }>; search?: SearchConfig } }>({ action: "getData" }),
       request<string>({ action: "getLastQuery" }),
     ])
       .then(([data, lastQuery]) => {
@@ -191,7 +191,13 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
           setQuery(lastQuery);
         }
         const plugins = config?.plugins ?? {};
-        setEffectiveTriggers(TRIGGERS.filter((t) => !plugins[t.id]?.disabled));
+        setEffectiveTriggers(
+          TRIGGERS.filter((t) => !plugins[t.id]?.disabled).map((t) => {
+            const custom = plugins[t.id]?.triggerKey?.trim();
+            const key = custom && custom.length > 0 ? custom : t.key;
+            return { ...t, key };
+          })
+        );
         const base = DEFAULT_CONFIG.search;
         setSearchConfig(base ? { ...base, ...config?.search } : (config?.search ?? null));
       })
@@ -206,9 +212,25 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
       areaName: string
     ) => {
       if (areaName === "local" && changes.stewardFocus) focusInput();
-      if (areaName === "sync" && changes.workflows) {
-        loadedWorkflowsRef.current = false;
-        if (triggerIdRef.current === "wf") setSubList([]);
+      if (areaName === "sync") {
+        if (changes.workflows) {
+          loadedWorkflowsRef.current = false;
+          if (triggerIdRef.current === "wf") setSubList([]);
+        }
+        if (changes.config) {
+          request<{ config?: { plugins?: Record<string, { disabled?: boolean; triggerKey?: string }>; search?: SearchConfig } }>({ action: "getData" }).then((data) => {
+            const plugins = data?.config?.plugins ?? {};
+            setEffectiveTriggers(
+              TRIGGERS.filter((t) => !plugins[t.id]?.disabled).map((t) => {
+                const custom = plugins[t.id]?.triggerKey?.trim();
+                const key = custom && custom.length > 0 ? custom : t.key;
+                return { ...t, key };
+              })
+            );
+            const base = DEFAULT_CONFIG.search;
+            setSearchConfig(base ? { ...base, ...data?.config?.search } : (data?.config?.search ?? null));
+          }).catch(() => {});
+        }
       }
     };
     chrome.storage.onChanged.addListener(listener);

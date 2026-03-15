@@ -26,6 +26,8 @@
 
   "plugins_title": { "message": "插件管理" },
   "plugins_hint": { "message": "关闭的插件不会在命令框中出现，也不会响应对应关键词。" },
+  "plugins_trigger_key": { "message": "触发词" },
+  "plugins_trigger_key_placeholder": { "message": "默认" },
   "plugin_on": { "message": "开启" },
   "plugin_off": { "message": "关闭" },
 
