@@ -6,6 +6,7 @@ import { request } from "@/lib/portBridge";
 import { t as i18nT } from "@/lib/i18n";
 import { DEFAULT_CONFIG, type AppearanceConfig, type SearchConfig } from "@/types/config";
 import { parseWorkflow, fixNumber } from "@/lib/workflow";
+import { CHROME_PAGES, filterChromePages } from "@/lib/chromePages";
 import type { ParsedWorkflowLine } from "@/types/workflow";
 
 const isInIframe = (): boolean => {
@@ -19,11 +20,13 @@ const isInIframe = (): boolean => {
 /**
  * 解析命令：Alfred 式 "trigger + 空格 + 过滤词"
  * 支持自定义搜索：关键词 + 空格 + 搜索词；无匹配时用默认搜索引擎兜底。
+ * hasMainModeExtraMatches(trimmed)：当主模式除命令外还有匹配项（如 Chrome 内置页）时返回 true，避免被默认搜索抢走。
  */
 function parseQuery(
   query: string,
   triggers: Command[],
-  searchConfig?: SearchConfig | null
+  searchConfig?: SearchConfig | null,
+  hasMainModeExtraMatches?: (trimmed: string) => boolean
 ): {
   inSearchMode: boolean;
   triggerKey: string;
@@ -57,8 +60,11 @@ function parseQuery(
           if (rest) return { inSearchMode: true, triggerKey: "", filter: rest, trigger: searchCmd, searchKeyword: e.keyword };
         }
       }
-      if (searchConfig.defaultSearchKeyword && trimmed)
+      // 有输入且无关键词匹配时走默认搜索；若主模式有其它匹配（如 Chrome 内置页），则留在主模式
+      if (searchConfig.defaultSearchKeyword && trimmed) {
+        if (hasMainModeExtraMatches?.(trimmed)) return { inSearchMode: false, triggerKey: "", filter: "", trigger: null };
         return { inSearchMode: true, triggerKey: "", filter: trimmed, trigger: searchCmd, searchKeyword: searchConfig.defaultSearchKeyword };
+      }
     }
     return { inSearchMode: false, triggerKey: "", filter: "", trigger: null };
   }
@@ -175,7 +181,16 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
   itemsRef.current = items;
   selectedIndexRef.current = selectedIndex;
 
-  const { inSearchMode, filter, trigger, searchKeyword } = parseQuery(query, effectiveTriggers, searchConfig);
+  const hasMainModeExtraMatches = useCallback(
+    (trimmed: string) => filterChromePages(CHROME_PAGES, trimmed, i18nT).length > 0,
+    []
+  );
+  const { inSearchMode, filter, trigger, searchKeyword } = parseQuery(
+    query,
+    effectiveTriggers,
+    searchConfig,
+    hasMainModeExtraMatches
+  );
   const triggerId = trigger?.id ?? null;
   const triggerKey = trigger?.key ?? null;
   triggerIdRef.current = triggerId;
@@ -455,17 +470,28 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
       setMode("main");
       setSubList([]);
       const q = query.trim().toLowerCase();
-      // 有输入时：只显示 key 以输入为前缀的命令（如 b → bm/bks；提示搜索前先选命令）
+      // 有输入时：只显示 key 以输入为前缀的命令（如 b → bm/bks）；命令下列出后再追加匹配的 Chrome 内置页
       const filtered = q
         ? effectiveTriggers.filter((t) => t.key.toLowerCase().startsWith(q))
         : effectiveTriggers;
+      const commandItems = filtered.length
+        ? filtered.map((cmd) => ({
+            id: cmd.id,
+            title: `${cmd.key}  ${i18nT(`cmd_${cmd.id}_title`) || cmd.title}`,
+            desc: (i18nT(`cmd_${cmd.id}_desc`) || cmd.desc) ?? "",
+          }))
+        : [];
+      const chromeItems = q
+        ? filterChromePages(CHROME_PAGES, q, i18nT).map((p) => ({
+            id: p.id,
+            title: p.title,
+            desc: p.desc,
+            url: p.url,
+          }))
+        : [];
       const mainItems =
-        filtered.length
-          ? filtered.map((cmd) => ({
-              id: cmd.id,
-              title: `${cmd.key}  ${i18nT(`cmd_${cmd.id}_title`) || cmd.title}`,
-              desc: (i18nT(`cmd_${cmd.id}_desc`) || cmd.desc) ?? "",
-            }))
+        commandItems.length || chromeItems.length
+          ? [...commandItems, ...chromeItems]
           : [{ id: "none", title: i18nT("cmdbox_no_match"), desc: "" }];
       setItems(mainItems);
       setSelectedIndex((prev) => (prev < mainItems.length ? prev : 0));
