@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t } from "@/lib/i18n";
 import type { AppConfig, SearchConfig, SearchEngine } from "@/types/config";
 import { DEFAULT_CONFIG } from "@/types/config";
 import { request } from "@/lib/portBridge";
@@ -71,13 +72,11 @@ export default function Search() {
 
   return (
     <div className="space-y-6">
-      <h2 className="options-section-title">自定义搜索</h2>
-      <p className="text-sm text-base-content/70">
-        在命令框输入 <strong>关键词 搜索词</strong>（如 <kbd className="kbd kbd-sm">g hello</kbd>）使用对应引擎；未匹配任何命令时使用默认引擎搜索。
-      </p>
+      <h2 className="options-section-title">{t("search_title")}</h2>
+      <p className="text-sm text-base-content/70">{t("search_hint")}</p>
       <div className="form-control">
         <label className="label">
-          <span className="label-text">默认搜索引擎（无匹配时的兜底）</span>
+          <span className="label-text">{t("search_default_label")}</span>
         </label>
         <select
           className="select select-bordered w-full max-w-xs"
@@ -86,16 +85,16 @@ export default function Search() {
         >
           {engines.map((e) => (
             <option key={e.id} value={e.keyword}>
-              {e.keyword} - {e.name || "(未填名称)"}
+              {e.keyword} - {e.name || t("search_unnamed")}
             </option>
           ))}
         </select>
       </div>
       <div>
         <div className="flex items-center justify-between mb-2">
-          <span className="label-text font-medium">搜索引擎列表</span>
+          <span className="label-text font-medium">{t("search_engines_label")}</span>
           <button type="button" className="btn btn-sm btn-outline" onClick={addEngine}>
-            添加
+            {t("search_add")}
           </button>
         </div>
         <ul className="space-y-3">
@@ -104,21 +103,21 @@ export default function Search() {
               <input
                 type="text"
                 className="input input-bordered input-sm w-16"
-                placeholder="关键词"
+                placeholder={t("search_placeholder_keyword")}
                 value={e.keyword}
                 onChange={(ev) => updateEngine(e.id, { keyword: ev.target.value })}
               />
               <input
                 type="text"
                 className="input input-bordered input-sm w-24"
-                placeholder="名称"
+                placeholder={t("search_placeholder_name")}
                 value={e.name}
                 onChange={(ev) => updateEngine(e.id, { name: ev.target.value })}
               />
               <input
                 type="text"
                 className="input input-bordered input-sm flex-1 min-w-[200px] font-mono text-sm"
-                placeholder="URL，用 {query} 表示搜索词"
+                placeholder={t("search_placeholder_url")}
                 value={e.urlTemplate}
                 onChange={(ev) => updateEngine(e.id, { urlTemplate: ev.target.value })}
               />
@@ -127,7 +126,7 @@ export default function Search() {
                 className="btn btn-ghost btn-sm text-error"
                 onClick={() => removeEngine(e.id)}
               >
-                删除
+                {t("btn_delete")}
               </button>
             </li>
           ))}
@@ -135,9 +134,9 @@ export default function Search() {
       </div>
       <div className="flex items-center gap-2">
         <button type="button" className="btn btn-primary" onClick={save}>
-          保存
+          {t("btn_save")}
         </button>
-        {saved && <span className="text-sm text-success">已保存</span>}
+        {saved && <span className="text-sm text-success">{t("saved_hint")}</span>}
       </div>
     </div>
   );

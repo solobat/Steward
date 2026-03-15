@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { t } from "@/lib/i18n";
 import type {
   AppConfig,
   AppearanceConfig,
@@ -30,34 +31,34 @@ function mergeConfig(loaded: Partial<AppConfig> | null): AppConfig {
   };
 }
 
-const THEME_OPTIONS: { value: AppearanceTheme; label: string }[] = [
-  { value: "light", label: "浅色" },
-  { value: "dark", label: "深色" },
-  { value: "system", label: "跟随系统" },
+const THEME_OPTIONS: { value: AppearanceTheme; labelKey: string }[] = [
+  { value: "light", labelKey: "appearance_theme_light" },
+  { value: "dark", labelKey: "appearance_theme_dark" },
+  { value: "system", labelKey: "appearance_theme_system" },
 ];
 
-const FONT_SIZE_OPTIONS: { value: AppearanceFontSize; label: string }[] = [
-  { value: "small", label: "小" },
-  { value: "medium", label: "中" },
-  { value: "large", label: "大" },
+const FONT_SIZE_OPTIONS: { value: AppearanceFontSize; labelKey: string }[] = [
+  { value: "small", labelKey: "appearance_size_small" },
+  { value: "medium", labelKey: "appearance_size_medium" },
+  { value: "large", labelKey: "appearance_size_large" },
 ];
 
-const DENSITY_OPTIONS: { value: AppearanceDensity; label: string }[] = [
-  { value: "compact", label: "紧凑" },
-  { value: "default", label: "默认" },
-  { value: "relaxed", label: "宽松" },
+const DENSITY_OPTIONS: { value: AppearanceDensity; labelKey: string }[] = [
+  { value: "compact", labelKey: "appearance_density_compact" },
+  { value: "default", labelKey: "appearance_density_default" },
+  { value: "relaxed", labelKey: "appearance_density_relaxed" },
 ];
 
-const RADIUS_OPTIONS: { value: AppearanceRadius; label: string }[] = [
-  { value: "sharp", label: "直角" },
-  { value: "default", label: "默认圆角" },
-  { value: "round", label: "大圆角" },
+const RADIUS_OPTIONS: { value: AppearanceRadius; labelKey: string }[] = [
+  { value: "sharp", labelKey: "appearance_radius_sharp" },
+  { value: "default", labelKey: "appearance_radius_default" },
+  { value: "round", labelKey: "appearance_radius_round" },
 ];
 
-const SIZE_OPTIONS: { value: AppearanceSize; label: string }[] = [
-  { value: "small", label: "小" },
-  { value: "medium", label: "中" },
-  { value: "large", label: "大" },
+const SIZE_OPTIONS: { value: AppearanceSize; labelKey: string }[] = [
+  { value: "small", labelKey: "appearance_size_small" },
+  { value: "medium", labelKey: "appearance_size_medium" },
+  { value: "large", labelKey: "appearance_size_large" },
 ];
 
 const PRESET_COLORS = [
@@ -221,16 +222,14 @@ export default function Appearance() {
 
   return (
     <div className="space-y-8">
-      <h2 className="options-section-title">外观</h2>
-      <p className="text-sm text-base-content/70">
-        命令框（弹窗与页面内）的视觉与布局，保存后重新打开命令框生效。
-      </p>
+      <h2 className="options-section-title">{t("appearance_title")}</h2>
+      <p className="text-sm text-base-content/70">{t("appearance_hint")}</p>
 
       <section className="space-y-2">
         <h3 className="text-sm font-semibold text-base-content/80 border-b border-base-content/10 pb-1">
-          预览
+          {t("appearance_preview_title")}
         </h3>
-        <p className="text-xs text-base-content/50">修改下方选项后预览会实时更新，保存后命令框生效。</p>
+        <p className="text-xs text-base-content/50">{t("appearance_preview_hint")}</p>
         <div
           ref={previewRef}
           className="steward-appearance-preview"
@@ -251,7 +250,7 @@ export default function Appearance() {
             <div className="steward-preview-input-row p-3 border-b border-base-300 flex items-center">
               <input
                 type="text"
-                placeholder="Type trigger: bm, his, meta…"
+                placeholder={t("appearance_placeholder_trigger")}
                 className="input input-bordered input-sm w-full bg-base-100 font-mono text-base-content"
                 readOnly
               />
@@ -260,24 +259,24 @@ export default function Appearance() {
               <li>
                 <a className="active">
                   <span className="font-medium">bm</span>
-                  <span className="text-sm opacity-70 block truncate">Bookmarks</span>
+                  <span className="text-sm opacity-70 block truncate">{t("cmd_bm_title")}</span>
                 </a>
               </li>
               <li>
                 <a>
                   <span className="font-medium">his</span>
-                  <span className="text-sm opacity-70 block truncate">History</span>
+                  <span className="text-sm opacity-70 block truncate">{t("cmd_his_title")}</span>
                 </a>
               </li>
               <li>
                 <a>
                   <span className="font-medium">tab</span>
-                  <span className="text-sm opacity-70 block truncate">Tabs</span>
+                  <span className="text-sm opacity-70 block truncate">{t("cmd_tab_title")}</span>
                 </a>
               </li>
             </ul>
             <div className="p-2 text-xs opacity-60 border-t border-base-300 font-mono">
-              ↑↓ Select · Enter Run · Esc Close
+              {t("appearance_preview_hint_keys")}
             </div>
           </div>
         </div>
@@ -285,11 +284,11 @@ export default function Appearance() {
 
       <section className="space-y-4">
         <h3 className="text-sm font-semibold text-base-content/80 border-b border-base-content/10 pb-1">
-          主题与色彩
+          {t("appearance_theme_label")} / {t("appearance_accent_label")}
         </h3>
         <div className="form-control max-w-xs">
           <label className="label">
-            <span className="label-text">主题</span>
+            <span className="label-text">{t("appearance_theme_label")}</span>
           </label>
           <select
             className="select select-bordered w-full"
@@ -298,15 +297,15 @@ export default function Appearance() {
           >
             {THEME_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
-                {o.label}
+                {t(o.labelKey)}
               </option>
             ))}
           </select>
         </div>
         <div className="form-control">
           <label className="label">
-            <span className="label-text">强调色</span>
-            <span className="label-text-alt">按钮、选中项等</span>
+            <span className="label-text">{t("appearance_accent_label")}</span>
+            <span className="label-text-alt">{t("appearance_accent_alt")}</span>
           </label>
           <div className="flex flex-wrap items-center gap-2">
             {PRESET_COLORS.map((hex) => (
@@ -317,7 +316,7 @@ export default function Appearance() {
                   primaryColor === hex ? "ring-2 ring-primary ring-offset-2 ring-offset-base-100" : ""
                 } ${!hex ? "bg-base-300" : ""}`}
                 style={hex ? { backgroundColor: hex } : undefined}
-                title={hex || "主题默认"}
+                title={hex ? undefined : t("appearance_default_color")}
                 onClick={() => setAppearance({ primaryColor: hex })}
               >
                 {!hex && <span className="text-xs">默认</span>}
@@ -328,7 +327,7 @@ export default function Appearance() {
               className="w-8 h-8 cursor-pointer rounded border border-base-content/20"
               value={primaryColor && /^#[0-9A-Fa-f]{6}$/.test(primaryColor) ? primaryColor : "#570df8"}
               onChange={(e) => setAppearance({ primaryColor: e.target.value })}
-              title="自定义颜色"
+              title={t("appearance_custom_color")}
             />
             {primaryColor && (
               <button
@@ -349,7 +348,7 @@ export default function Appearance() {
         </h3>
         <div className="form-control max-w-xs">
           <label className="label">
-            <span className="label-text">整体字号</span>
+            <span className="label-text">{t("appearance_font_size_label")}</span>
           </label>
           <select
             className="select select-bordered w-full"
@@ -358,7 +357,7 @@ export default function Appearance() {
           >
             {FONT_SIZE_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
-                {o.label}
+                {t(o.labelKey)}
               </option>
             ))}
           </select>
@@ -371,8 +370,8 @@ export default function Appearance() {
         </h3>
         <div className="form-control max-w-xs">
           <label className="label">
-            <span className="label-text">输入框高度</span>
-            <span className="label-text-alt">顶部输入行</span>
+            <span className="label-text">{t("appearance_input_height_label")}</span>
+            <span className="label-text-alt">{t("appearance_input_height_alt")}</span>
           </label>
           <select
             className="select select-bordered w-full"
@@ -381,15 +380,15 @@ export default function Appearance() {
           >
             {SIZE_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
-                {o.label}
+                {t(o.labelKey)}
               </option>
             ))}
           </select>
         </div>
         <div className="form-control max-w-xs">
           <label className="label">
-            <span className="label-text">列表密度</span>
-            <span className="label-text-alt">结果行间距</span>
+            <span className="label-text">{t("appearance_density_label")}</span>
+            <span className="label-text-alt">{t("appearance_density_alt")}</span>
           </label>
           <select
             className="select select-bordered w-full"
@@ -398,15 +397,15 @@ export default function Appearance() {
           >
             {DENSITY_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
-                {o.label}
+                {t(o.labelKey)}
               </option>
             ))}
           </select>
         </div>
         <div className="form-control max-w-xs">
           <label className="label">
-            <span className="label-text">圆角</span>
-            <span className="label-text-alt">命令框外框</span>
+            <span className="label-text">{t("appearance_radius_label")}</span>
+            <span className="label-text-alt">{t("appearance_radius_alt")}</span>
           </label>
           <select
             className="select select-bordered w-full"
@@ -415,7 +414,7 @@ export default function Appearance() {
           >
             {RADIUS_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
-                {o.label}
+                {t(o.labelKey)}
               </option>
             ))}
           </select>
@@ -428,7 +427,7 @@ export default function Appearance() {
         </h3>
         <div className="form-control max-w-xs">
           <label className="label">
-            <span className="label-text">列表标题字号</span>
+            <span className="label-text">{t("appearance_title_size_label")}</span>
           </label>
           <select
             className="select select-bordered w-full"
@@ -437,14 +436,14 @@ export default function Appearance() {
           >
             {SIZE_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
-                {o.label}
+                {t(o.labelKey)}
               </option>
             ))}
           </select>
         </div>
         <div className="form-control max-w-xs">
           <label className="label">
-            <span className="label-text">列表描述字号</span>
+            <span className="label-text">{t("appearance_subtitle_size_label")}</span>
           </label>
           <select
             className="select select-bordered w-full"
@@ -453,15 +452,15 @@ export default function Appearance() {
           >
             {SIZE_OPTIONS.map((o) => (
               <option key={o.value} value={o.value}>
-                {o.label}
+                {t(o.labelKey)}
               </option>
             ))}
           </select>
         </div>
         <div className="form-control max-w-md">
           <label className="label">
-            <span className="label-text">命令框背景色</span>
-            <span className="label-text-alt">留空用主题色</span>
+            <span className="label-text">{t("appearance_box_bg_label")}</span>
+            <span className="label-text-alt">{t("appearance_box_bg_alt")}</span>
           </label>
           <div className="flex flex-wrap items-center gap-2">
             <input
@@ -473,7 +472,7 @@ export default function Appearance() {
                   : "#e5e7eb"
               }
               onChange={(e) => setAppearance({ boxBackground: e.target.value })}
-              title="自定义框背景"
+              title={t("appearance_custom_color")}
             />
             <input
               type="text"
@@ -484,7 +483,7 @@ export default function Appearance() {
             />
             {appearance.boxBackground && (
               <button type="button" className="btn btn-ghost btn-sm" onClick={() => setAppearance({ boxBackground: "" })}>
-                清除
+                {t("appearance_clear_bg")}
               </button>
             )}
           </div>
@@ -493,12 +492,12 @@ export default function Appearance() {
 
       <div className="flex items-center gap-2 pt-2">
         <button type="button" className="btn btn-primary" onClick={save}>
-          保存
+          {t("btn_save")}
         </button>
         <button type="button" className="btn btn-ghost btn-sm" onClick={resetToDefaultAppearance}>
-          恢复默认主题
+          {t("appearance_reset_theme")}
         </button>
-        {saved && <span className="text-sm text-success">已保存</span>}
+        {saved && <span className="text-sm text-success">{t("saved_hint")}</span>}
       </div>
     </div>
   );

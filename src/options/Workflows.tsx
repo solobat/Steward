@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t } from "@/lib/i18n";
 import type { Workflow } from "@/types/workflow";
 import { request } from "@/lib/portBridge";
 
@@ -74,7 +75,7 @@ export default function Workflows() {
         })
         .catch((err) => {
           console.error("updateWorkflow failed", err);
-          setError("保存失败，请重试");
+          setError(t("workflows_save_failed"));
         });
     } else {
       request<{ list?: Workflow[]; workflow?: Workflow }>({ action: "createWorkflow", data: current })
@@ -96,14 +97,14 @@ export default function Workflows() {
         })
         .catch((err) => {
           console.error("createWorkflow failed", err);
-          setError("保存失败，可能是存储已满或扩展未就绪，请重试");
+          setError(t("workflows_save_failed_storage"));
         });
     }
   };
 
   const deleteCurrent = () => {
     if (!current.id) return;
-    if (!confirm(`确定删除工作流「${current.title}」？`)) return;
+    if (!confirm(t("workflows_confirm_delete", current.title))) return;
     const deletedId = current.id;
     clearCurrent();
     request({ action: "removeWorkflow", data: deletedId })
@@ -119,7 +120,7 @@ export default function Workflows() {
   const createNew = () => {
     setCurrent({
       ...EMPTY,
-      title: "新工作流",
+      title: t("workflows_new"),
       desc: "",
       content: "",
     });
@@ -127,15 +128,15 @@ export default function Workflows() {
 
   return (
     <div className="space-y-4">
-      <h2 className="options-section-title">工作流</h2>
+      <h2 className="options-section-title">{t("workflows_title")}</h2>
       <p className="text-sm text-base-content/70 max-w-xl">
-        类 bash：<code className="bg-base-200 px-1 rounded">命令 -- 选择</code>，选择为 <code className="bg-base-200 px-1 rounded">1</code>、<code className="bg-base-200 px-1 rounded">1-5</code>、<code className="bg-base-200 px-1 rounded">all</code>/<code className="bg-base-200 px-1 rounded">*</code>。同行多步用 <code className="bg-base-200 px-1 rounded">;</code>。行末 <code className="bg-base-200 px-1 rounded">#</code> 注释。<kbd className="kbd kbd-sm">wf</kbd> 搜索执行。
+        {t("workflows_hint")}
       </p>
       <div className="flex gap-4 flex-col lg:flex-row">
         <div className="w-full lg:w-56 xl:w-64 shrink-0 space-y-2">
           <input
             type="text"
-            placeholder="搜索工作流"
+            placeholder={t("workflows_search_placeholder")}
             className="input input-bordered input-sm w-full"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -154,7 +155,7 @@ export default function Workflows() {
             ))}
           </ul>
           <button type="button" className="btn btn-sm btn-outline w-full" onClick={createNew}>
-            新建工作流
+            {t("workflows_new_btn")}
           </button>
         </div>
         <div className="flex-1 min-w-0 space-y-3">
@@ -162,55 +163,55 @@ export default function Workflows() {
             <>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">标题</span>
+                  <span className="label-text">{t("workflows_label_title")}</span>
                 </label>
                 <input
                   type="text"
                   className="input input-bordered"
                   value={current.title}
                   onChange={(e) => setCurrent((c) => ({ ...c, title: e.target.value }))}
-                  placeholder="工作流名称"
+                  placeholder={t("workflows_placeholder_title")}
                 />
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">说明（可选）</span>
+                  <span className="label-text">{t("workflows_label_desc")}</span>
                 </label>
                 <input
                   type="text"
                   className="input input-bordered"
                   value={current.desc ?? ""}
                   onChange={(e) => setCurrent((c) => ({ ...c, desc: e.target.value }))}
-                  placeholder="简短描述"
+                  placeholder={t("workflows_placeholder_desc")}
                 />
               </div>
               <div className="form-control">
                 <label className="label">
-                  <span className="label-text">内容（每行一条命令）</span>
+                  <span className="label-text">{t("workflows_label_content")}</span>
                 </label>
                 <textarea
                   className="textarea textarea-bordered font-mono text-sm min-h-40 lg:min-h-56"
                   value={current.content}
                   onChange={(e) => setCurrent((c) => ({ ...c, content: e.target.value }))}
-                  placeholder={"# 类 bash：命令 -- 选择\nhis -- 1\nbm star -- 2\nhis -- 1 ; bm -- 1"}
+                  placeholder={t("workflows_placeholder_content")}
                   spellCheck={false}
                 />
               </div>
               <div className="flex items-center gap-2 flex-wrap">
                 <button type="button" className="btn btn-primary" onClick={saveCurrent}>
-                  保存
+                  {t("btn_save")}
                 </button>
                 {current.id && (
                   <button type="button" className="btn btn-ghost btn-sm text-error" onClick={deleteCurrent}>
-                    删除
+                    {t("btn_delete")}
                   </button>
                 )}
-                {saved && <span className="text-sm text-success">已保存</span>}
+                {saved && <span className="text-sm text-success">{t("saved_hint")}</span>}
                 {error && <span className="text-sm text-error">{error}</span>}
               </div>
             </>
           ) : (
-            <p className="text-base-content/60 text-sm">从左侧选择或新建工作流</p>
+            <p className="text-base-content/60 text-sm">{t("workflows_select_hint")}</p>
           )}
         </div>
       </div>

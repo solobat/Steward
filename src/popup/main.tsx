@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { t } from "@/lib/i18n";
 import App from "./App";
 import "../popup.css";
 
@@ -14,7 +15,7 @@ class ErrorFallback extends React.Component<
     if (this.state.hasError)
       return (
         <div style={{ padding: 16, background: "#fff", minHeight: "100%", fontSize: 14 }}>
-          <p style={{ margin: 0 }}>Steward 加载异常，请关闭后重试或刷新页面。</p>
+          <p style={{ margin: 0 }}>{t("popup_error")}</p>
         </div>
       );
     return this.props.children;

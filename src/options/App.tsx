@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { t } from "@/lib/i18n";
 import General from "./General";
 import Plugins from "./Plugins";
 import Search from "./Search";
@@ -7,14 +8,15 @@ import Appearance from "./Appearance";
 
 type TabId = "general" | "plugins" | "search" | "workflows" | "appearance" | "about";
 
-const TABS: { id: TabId; label: string }[] = [
-  { id: "general", label: "通用" },
-  { id: "plugins", label: "插件" },
-  { id: "search", label: "搜索" },
-  { id: "workflows", label: "工作流" },
-  { id: "appearance", label: "外观" },
-  { id: "about", label: "关于" },
-];
+const TAB_IDS: TabId[] = ["general", "plugins", "search", "workflows", "appearance", "about"];
+const TAB_LABEL_KEYS: Record<TabId, string> = {
+  general: "tab_general",
+  plugins: "tab_plugins",
+  search: "tab_search",
+  workflows: "tab_workflows",
+  appearance: "tab_appearance",
+  about: "tab_about",
+};
 
 export default function App() {
   const [tab, setTab] = useState<TabId>("general");
@@ -30,19 +32,19 @@ export default function App() {
             <div className="hidden md:block mt-1 h-px w-8 bg-primary/60 rounded-full" aria-hidden />
           </div>
           <nav className="flex md:flex-col flex-1 md:flex-none overflow-x-auto md:overflow-visible gap-0.5 md:gap-0 py-2 md:py-2 md:px-2 min-w-0" role="tablist">
-            {TABS.map((t) => (
+            {TAB_IDS.map((tabId) => (
               <button
-                key={t.id}
+                key={tabId}
                 role="tab"
-                aria-selected={tab === t.id}
+                aria-selected={tab === tabId}
                 className={`options-nav-item shrink-0 md:w-full text-center md:text-left px-3 py-2 rounded-lg text-sm font-medium transition-colors whitespace-nowrap ${
-                  tab === t.id
+                  tab === tabId
                     ? "bg-primary/10 text-primary border-b-2 md:border-b-0 md:border-l-2 border-primary md:-ml-px md:pl-[11px]"
                     : "text-base-content/70 hover:bg-base-content/5 hover:text-base-content"
                 }`}
-                onClick={() => setTab(t.id)}
+                onClick={() => setTab(tabId)}
               >
-                {t.label}
+                {t(TAB_LABEL_KEYS[tabId])}
               </button>
             ))}
           </nav>
@@ -57,12 +59,9 @@ export default function App() {
               {tab === "appearance" && <Appearance />}
               {tab === "about" && (
                 <div className="space-y-4">
-                  <h2 className="options-section-title">关于</h2>
-                  <p className="font-mono text-sm text-base-content/80">Steward v3</p>
-                  <p className="text-sm text-base-content/70">
-                    <kbd className="kbd kbd-sm">Command+J</kbd> 在页面内打开命令框，
-                    <kbd className="kbd kbd-sm">Command+K</kbd> 打开弹窗。
-                  </p>
+                  <h2 className="options-section-title">{t("about_title")}</h2>
+                  <p className="font-mono text-sm text-base-content/80">{t("about_version")}</p>
+                  <p className="text-sm text-base-content/70">{t("about_shortcuts")}</p>
                 </div>
               )}
             </div>

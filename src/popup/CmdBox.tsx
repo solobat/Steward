@@ -3,6 +3,7 @@ import { TRIGGERS, type Command, type DataMode, type ResultItem } from "../comma
 import { isCalculableExpression } from "../commands/calculate";
 import { isUrlLike } from "../commands/openurl";
 import { request } from "@/lib/portBridge";
+import { t as i18nT } from "@/lib/i18n";
 import { DEFAULT_CONFIG, type AppearanceConfig, type SearchConfig } from "@/types/config";
 import { parseWorkflow, fixNumber } from "@/lib/workflow";
 import type { ParsedWorkflowLine } from "@/types/workflow";
@@ -142,7 +143,11 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
   const [effectiveTriggers, setEffectiveTriggers] = useState<Command[]>(TRIGGERS);
   const [query, setQuery] = useState("");
   const [items, setItems] = useState<ResultItem[]>(() =>
-    TRIGGERS.map((t) => ({ id: t.id, title: `${t.key}  ${t.title}`, desc: t.desc }))
+    TRIGGERS.map((cmd) => ({
+      id: cmd.id,
+      title: `${cmd.key}  ${i18nT(`cmd_${cmd.id}_title`) || cmd.title}`,
+      desc: (i18nT(`cmd_${cmd.id}_desc`) || cmd.desc) ?? "",
+    }))
   );
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [loadingMeta, setLoadingMeta] = useState(false);
@@ -434,8 +439,12 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
         : effectiveTriggers;
       const mainItems =
         filtered.length
-          ? filtered.map((t) => ({ id: t.id, title: `${t.key}  ${t.title}`, desc: t.desc }))
-          : [{ id: "none", title: "No match", desc: "" }];
+          ? filtered.map((cmd) => ({
+              id: cmd.id,
+              title: `${cmd.key}  ${i18nT(`cmd_${cmd.id}_title`) || cmd.title}`,
+              desc: (i18nT(`cmd_${cmd.id}_desc`) || cmd.desc) ?? "",
+            }))
+          : [{ id: "none", title: i18nT("cmdbox_no_match"), desc: "" }];
       setItems(mainItems);
       setSelectedIndex((prev) => (prev < mainItems.length ? prev : 0));
       return;
@@ -461,12 +470,12 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
         p.then((result) => {
           const list = Array.isArray(result) ? result : [];
           setSubList(list);
-          setItems(list.length ? list : [{ id: "none", title: "No result", desc: "" }]);
+          setItems(list.length ? list : [{ id: "none", title: i18nT("cmdbox_no_result"), desc: "" }]);
           setSelectedIndex(0);
         }).catch(() => {
           lastGetResultFromFilterRef.current = null;
           setSubList([]);
-          setItems([{ id: "none", title: "Error", desc: "" }]);
+          setItems([{ id: "none", title: i18nT("cmdbox_error"), desc: "" }]);
           setSelectedIndex(0);
         });
       };
@@ -497,7 +506,7 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
                 i.title.toLowerCase().includes(f) || (i.desc && i.desc.toLowerCase().includes(f))
             )
           : subList;
-      const searchItems = filtered.length ? filtered : [{ id: "none", title: "No match", desc: "" }];
+      const searchItems = filtered.length ? filtered : [{ id: "none", title: i18nT("cmdbox_no_match"), desc: "" }];
       const same =
         itemsRef.current.length === searchItems.length &&
         itemsRef.current[0]?.id === searchItems[0]?.id;
@@ -546,9 +555,9 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
               i.title.toLowerCase().includes(f) || (i.desc && i.desc.toLowerCase().includes(f))
           )
         : subList;
-    const searchItems = filtered.length ? filtered : [{ id: "none", title: "No match", desc: "" }];
-    const same =
-      itemsRef.current.length === searchItems.length &&
+const searchItems = filtered.length ? filtered : [{ id: "none", title: i18nT("cmdbox_no_match"), desc: "" }];
+      const same =
+        itemsRef.current.length === searchItems.length &&
       itemsRef.current[0]?.id === searchItems[0]?.id;
     if (!same) {
       setItems(searchItems);
@@ -667,8 +676,8 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
 
   const placeholder =
     mode === "main"
-      ? "Type trigger: bm, his, meta, nav, outline…"
-      : "Type to filter, clear to go back";
+      ? i18nT("cmdbox_placeholder_main")
+      : i18nT("cmdbox_placeholder_filter");
 
   return (
     <div
@@ -689,7 +698,7 @@ export default function CmdBox({ appearance }: { appearance?: AppearanceConfig }
         />
       </div>
       {loadingMeta && (
-        <div className="p-4 text-center text-sm opacity-70">Loading…</div>
+        <div className="p-4 text-center text-sm opacity-70">{i18nT("cmdbox_loading")}</div>
       )}
       <ul className="menu flex-1 overflow-auto min-h-[280px] p-2 bg-base-200/50">
         {items.map((item, i) => (

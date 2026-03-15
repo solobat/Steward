@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t } from "@/lib/i18n";
 import type { AppConfig, PluginsConfig } from "@/types/config";
 import { DEFAULT_CONFIG } from "@/types/config";
 import { TRIGGERS } from "@/commands";
@@ -58,13 +59,13 @@ export default function Plugins() {
 
   return (
     <div className="space-y-6">
-      <h2 className="options-section-title">插件管理</h2>
-      <p className="text-sm text-base-content/70">
-        关闭的插件不会在命令框中出现，也不会响应对应关键词。
-      </p>
+      <h2 className="options-section-title">{t("plugins_title")}</h2>
+      <p className="text-sm text-base-content/70">{t("plugins_hint")}</p>
       <ul className="space-y-1.5">
         {TRIGGERS.map((cmd) => {
           const disabled = !!config.plugins?.[cmd.id]?.disabled;
+          const title = t(`cmd_${cmd.id}_title`) || cmd.title;
+          const desc = t(`cmd_${cmd.id}_desc`) || cmd.desc;
           return (
             <li
               key={cmd.id}
@@ -72,13 +73,13 @@ export default function Plugins() {
             >
               <div className="min-w-0">
                 <span className="font-mono text-xs text-primary font-medium">{cmd.key}</span>
-                <span className="ml-2 text-base-content/90">{cmd.title}</span>
-                {cmd.desc && (
-                  <p className="text-sm text-base-content/55 truncate mt-0.5">{cmd.desc}</p>
+                <span className="ml-2 text-base-content/90">{title}</span>
+                {desc && (
+                  <p className="text-sm text-base-content/55 truncate mt-0.5">{desc}</p>
                 )}
               </div>
               <label className="label cursor-pointer gap-2 shrink-0">
-                <span className="label-text text-sm text-base-content/70">{disabled ? "关闭" : "开启"}</span>
+                <span className="label-text text-sm text-base-content/70">{disabled ? t("plugin_off") : t("plugin_on")}</span>
                 <input
                   type="checkbox"
                   className="toggle toggle-primary toggle-sm"
@@ -92,9 +93,9 @@ export default function Plugins() {
       </ul>
       <div className="flex items-center gap-2">
         <button type="button" className="btn btn-primary" onClick={save}>
-          保存
+          {t("btn_save")}
         </button>
-        {saved && <span className="text-sm text-success">已保存</span>}
+        {saved && <span className="text-sm text-success">{t("saved_hint")}</span>}
       </div>
     </div>
   );

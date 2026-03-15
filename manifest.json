@@ -1,9 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "Steward",
+  "name": "__MSG_extName__",
   "short_name": "Steward",
   "version": "5.0.0",
-  "description": "Command launcher and quick search",
+  "description": "__MSG_extDesc__",
+  "default_locale": "en",
   "background": {
     "service_worker": "src/background.ts"
   },
@@ -55,7 +56,7 @@
         "mac": "Command+J",
         "linux": "Ctrl+J"
       },
-      "description": "Open command box in page"
+      "description": "__MSG_pageboxDesc__"
     }
   }
 }

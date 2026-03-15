@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { t } from "@/lib/i18n";
 import type { AppConfig, GeneralConfig } from "@/types/config";
 import { DEFAULT_CONFIG } from "@/types/config";
 import { request } from "@/lib/portBridge";
@@ -48,7 +49,7 @@ export default function General() {
 
   return (
     <div className="space-y-6">
-      <h2 className="options-section-title">通用</h2>
+      <h2 className="options-section-title">{t("options_section_general")}</h2>
       <div className="form-control">
         <label className="label cursor-pointer justify-start gap-3">
           <input
@@ -57,11 +58,9 @@ export default function General() {
             checked={!!config.general.speedFirst}
             onChange={(e) => updateGeneral({ speedFirst: e.target.checked })}
           />
-          <span className="label-text">速度优先</span>
+          <span className="label-text">{t("speedFirst_label")}</span>
         </label>
-        <p className="text-sm opacity-70 ml-8">
-          开启后扩展在页面加载时即注入命令框，打开更快；关闭则首次按快捷键再注入以节省内存。
-        </p>
+        <p className="text-sm opacity-70 ml-8">{t("speedFirst_hint")}</p>
       </div>
       <div className="form-control">
         <label className="label cursor-pointer justify-start gap-3">
@@ -71,15 +70,15 @@ export default function General() {
             checked={!!config.general.cacheLastCmd}
             onChange={(e) => updateGeneral({ cacheLastCmd: e.target.checked })}
           />
-          <span className="label-text">记忆上次命令</span>
+          <span className="label-text">{t("cacheLastCmd_label")}</span>
         </label>
-        <p className="text-sm opacity-70 ml-8">下次打开命令框时预填上次使用的命令。</p>
+        <p className="text-sm opacity-70 ml-8">{t("cacheLastCmd_hint")}</p>
       </div>
       <div className="flex items-center gap-2">
         <button type="button" className="btn btn-primary" onClick={save}>
-          保存
+          {t("btn_save")}
         </button>
-        {saved && <span className="text-sm text-success">已保存</span>}
+        {saved && <span className="text-sm text-success">{t("saved_hint")}</span>}
       </div>
     </div>
   );
