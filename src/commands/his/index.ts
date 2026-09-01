@@ -1,5 +1,7 @@
 import type { Command, LoadContext, ResultItem } from "../types";
 import { request } from "@/lib/portBridge";
+import { createStateItem } from "@/lib/resultState";
+import { siteIcon } from "@/lib/favicon";
 
 type HistoryItem = { id: string; title?: string; url?: string };
 
@@ -22,17 +24,18 @@ export const his: Command = {
             title: (h.title || h.url || "").slice(0, 50),
             desc: h.url || "",
             url: h.url || "",
+            icon: siteIcon(h.url),
           }));
           ctx.setSubList(next);
           ctx.setItems(next);
           ctx.setSelectedIndex(0);
         } else {
-          ctx.setItems([{ id: "none", title: "No history", desc: "" }]);
+          ctx.setItems([createStateItem("empty", { title: "No history" })]);
         }
       })
       .catch(() => {
         ctx.setLoading(false);
-        ctx.setItems([{ id: "none", title: "No history", desc: "" }]);
+        ctx.setItems([createStateItem("error", { title: "Failed to load history" })]);
       });
   },
 };

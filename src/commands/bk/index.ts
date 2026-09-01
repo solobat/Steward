@@ -1,5 +1,6 @@
 import type { Command, LoadContext, ResultItem } from "../types";
 import { request } from "@/lib/portBridge";
+import { createStateItem } from "@/lib/resultState";
 
 type BlockItem = { id: string; type?: string; title: string };
 
@@ -36,12 +37,12 @@ export const bk: Command = {
           runPayload: x.id,
         }));
         ctx.setSubList(items);
-        ctx.setItems(items.length ? items : [{ id: "none", title: "No blocked URLs", desc: "" }]);
+        ctx.setItems(items.length ? items : [createStateItem("empty", { title: "No blocked URLs" })]);
         ctx.setSelectedIndex(0);
       })
       .catch(() => {
         ctx.setLoading(false);
-        ctx.setItems([{ id: "none", title: "No blocked URLs", desc: "" }]);
+        ctx.setItems([createStateItem("error", { title: "Failed to load blocked URLs" })]);
       });
   },
 };

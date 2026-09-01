@@ -1,10 +1,12 @@
 import type { Command, LoadContext, ResultItem } from "../types";
 import { request } from "@/lib/portBridge";
+import { createStateItem } from "@/lib/resultState";
+import { fuzzyRank } from "@/lib/fuzzy";
 
 function finishLoading(ctx: LoadContext, items: ResultItem[]) {
   ctx.setLoading(false);
   ctx.setSubList(items);
-  ctx.setItems(items.length ? items : [{ id: "none", title: "No match", desc: "" }]);
+  ctx.setItems(items.length ? items : [createStateItem("empty", { title: "No match" })]);
   ctx.setSelectedIndex(0);
 }
 
@@ -25,11 +27,7 @@ export const wf: Command = {
         const arr = Array.isArray(list) ? list : [];
         const f = filter.trim().toLowerCase();
         const filtered = f
-          ? arr.filter(
-              (w) =>
-                (w.title && w.title.toLowerCase().includes(f)) ||
-                (w.desc && w.desc.toLowerCase().includes(f))
-            )
+          ? fuzzyRank(arr, f, (w) => `${w.title ?? ""} ${w.desc ?? ""}`)
           : arr;
         const items: ResultItem[] = filtered.map((w) => ({
           id: `wf-${w.id}`,
@@ -43,7 +41,7 @@ export const wf: Command = {
       .catch(() => {
         ctx.setLoading(false);
         ctx.setSubList([]);
-        ctx.setItems([{ id: "none", title: "No workflows or request failed", desc: "" }]);
+        ctx.setItems([createStateItem("error", { title: "No workflows or request failed" })]);
         ctx.setSelectedIndex(0);
       });
   },

@@ -1,5 +1,6 @@
 import type { Command, LoadContext, ResultItem } from "../types";
 import { request } from "@/lib/portBridge";
+import { createStateItem } from "@/lib/resultState";
 
 type ExtItem = {
   id: string;
@@ -27,12 +28,12 @@ export const on: Command = {
           runPayload: e.id,
         }));
         ctx.setSubList(items);
-        ctx.setItems(items.length ? items : [{ id: "none", title: "No disabled extensions", desc: "" }]);
+        ctx.setItems(items.length ? items : [createStateItem("empty", { title: "No disabled extensions" })]);
         ctx.setSelectedIndex(0);
       })
       .catch(() => {
         ctx.setLoading(false);
-        ctx.setItems([{ id: "none", title: "No disabled extensions", desc: "" }]);
+        ctx.setItems([createStateItem("error", { title: "Failed to load disabled extensions" })]);
       });
   },
 };

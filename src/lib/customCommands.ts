@@ -10,9 +10,11 @@ import type {
   CustomCommandItem,
   CustomCommandSource,
   CustomCommandAction,
+  CustomCommandResultTemplate,
   UrlResponseMap,
   BuiltinSourceKind,
   BuiltinSourceParams,
+  CustomCommandVariable,
 } from "@/types/config";
 
 /** 按点号路径取对象属性，如 "data.items" => obj?.data?.items */
@@ -21,25 +23,93 @@ function getAtPath(obj: unknown, path: string): unknown {
   return path.split(".").reduce((acc: unknown, key) => (acc != null && typeof acc === "object" && key in acc ? (acc as Record<string, unknown>)[key] : undefined), obj);
 }
 
-function applyPlaceholders(tpl: string, ctx: { query?: string; title?: string; desc?: string; url?: string }): string {
-  return tpl
-    .replace(/\{query\}/g, ctx.query ?? "")
-    .replace(/\{title\}/g, ctx.title ?? "")
-    .replace(/\{desc\}/g, ctx.desc ?? "")
-    .replace(/\{url\}/g, ctx.url ?? "");
+type TemplateContext = {
+  query?: string;
+  lastQuery?: string;
+  title?: string;
+  desc?: string;
+  url?: string;
+  values?: Record<string, unknown>;
+  variables?: Record<string, string>;
+};
+
+function variablesToRecord(list: CustomCommandVariable[] | undefined): Record<string, string> {
+  if (!Array.isArray(list)) return {};
+  return Object.fromEntries(
+    list
+      .filter((item) => item.key.trim())
+      .map((item) => [item.key.trim(), item.value ?? ""])
+  );
+}
+
+function applyTemplate(tpl: string, ctx: TemplateContext, opts?: { encodeQuery?: boolean }): string {
+  return tpl.replace(/\{([^}]+)\}/g, (_, rawKey) => {
+    const key = String(rawKey ?? "").trim();
+    if (!key) return "";
+    if (key.startsWith("var:")) {
+      const variableKey = key.slice(4).trim();
+      return ctx.variables?.[variableKey] ?? "";
+    }
+    if (key === "query") {
+      const value = ctx.query ?? "";
+      return opts?.encodeQuery ? encodeURIComponent(value) : value;
+    }
+    if (key === "lastQuery") {
+      const value = ctx.lastQuery ?? "";
+      return opts?.encodeQuery ? encodeURIComponent(value) : value;
+    }
+    if (key === "title") return ctx.title ?? "";
+    if (key === "desc") return ctx.desc ?? "";
+    if (key === "url") return ctx.url ?? "";
+    const value = ctx.values?.[key];
+    return value == null ? "" : String(value);
+  });
+}
+
+function renderSourceItem(raw: CustomCommandItem, ctx: TemplateContext): CustomCommandItem {
+  return {
+    id: raw.id,
+    title: applyTemplate(raw.title ?? "", ctx),
+    desc: raw.desc ? applyTemplate(raw.desc, ctx) : undefined,
+    url: raw.url ? applyTemplate(raw.url, ctx) : undefined,
+  };
+}
+
+function applyResultTemplate(
+  raw: CustomCommandItem,
+  resultTemplate: CustomCommandResultTemplate | undefined,
+  ctx: TemplateContext
+): CustomCommandItem {
+  const rendered = renderSourceItem(raw, ctx);
+  if (!resultTemplate) return rendered;
+  const nextCtx = {
+    ...ctx,
+    title: rendered.title,
+    desc: rendered.desc,
+    url: rendered.url,
+  };
+  return {
+    ...rendered,
+    title: resultTemplate.titleTemplate ? applyTemplate(resultTemplate.titleTemplate, nextCtx) : rendered.title,
+    desc: resultTemplate.descTemplate ? applyTemplate(resultTemplate.descTemplate, nextCtx) : rendered.desc,
+    url: resultTemplate.urlTemplate ? applyTemplate(resultTemplate.urlTemplate, nextCtx) : rendered.url,
+  };
 }
 
 function itemToResultItem(
   raw: CustomCommandItem,
   index: number,
-  filter: string,
+  ctx: TemplateContext,
   action: CustomCommandAction,
-  commandId: string
+  commandId: string,
+  resultTemplate: CustomCommandResultTemplate | undefined,
+  rememberLastQuery: boolean
 ): ResultItem {
-  const title = raw.title ?? "";
-  const desc = raw.desc ?? "";
-  const url = raw.url ?? "";
-  const ctx = { query: filter, title, desc, url };
+  const rendered = applyResultTemplate(raw, resultTemplate, ctx);
+  const title = rendered.title ?? "";
+  const desc = rendered.desc ?? "";
+  const url = rendered.url ?? "";
+  const nextCtx = { ...ctx, title, desc, url };
 
   const item: ResultItem = {
     id: `custom-${commandId}-${index}`,
@@ -47,16 +117,21 @@ function itemToResultItem(
     desc: desc || undefined,
   };
 
+  if (rememberLastQuery && (nextCtx.query ?? "").trim()) {
+    item.customCommandId = commandId;
+    item.customCommandQuery = nextCtx.query ?? "";
+  }
+
   switch (action.type) {
     case "openUrl":
       if (action.urlTemplate) {
-        item.url = applyPlaceholders(action.urlTemplate, ctx);
+        item.url = applyTemplate(action.urlTemplate, nextCtx);
       } else {
         if (url) item.url = url;
       }
       break;
     case "copy":
-      item.copyValue = action.template ? applyPlaceholders(action.template, ctx) : title;
+      item.copyValue = action.template ? applyTemplate(action.template, nextCtx) : title;
       break;
     case "workflow":
       item.workflowId = action.workflowId;
@@ -72,21 +147,14 @@ const DEFAULT_RESPONSE_MAP: Required<UrlResponseMap> = {
   urlTemplate: "{url}",
 };
 
-/** 用条目对象插值模板，{字段名} 替换为 obj[字段名]，支持中文等任意键名 */
-function applyItemTemplate(tpl: string, obj: Record<string, unknown>): string {
-  return tpl.replace(/\{([^}]+)\}/g, (_, key) => {
-    const v = obj[key.trim()];
-    return v != null ? String(v) : "";
-  });
-}
-
-function mapRawToItem(raw: unknown, map: Required<UrlResponseMap>): CustomCommandItem | null {
+function mapRawToItem(raw: unknown, map: Required<UrlResponseMap>, ctx: TemplateContext): CustomCommandItem | null {
   if (raw == null || typeof raw !== "object") return null;
   const o = raw as Record<string, unknown>;
-  const title = applyItemTemplate(map.titleTemplate, o).trim();
+  const templateCtx = { ...ctx, values: o };
+  const title = applyTemplate(map.titleTemplate, templateCtx).trim();
   if (!title) return null;
-  const desc = applyItemTemplate(map.descTemplate, o).trim() || undefined;
-  const url = applyItemTemplate(map.urlTemplate, o).trim() || undefined;
+  const desc = applyTemplate(map.descTemplate, templateCtx).trim() || undefined;
+  const url = applyTemplate(map.urlTemplate, templateCtx).trim() || undefined;
   return { title, desc, url };
 }
 
@@ -195,21 +263,24 @@ async function fetchBuiltinItems(
 
 async function getItemsFromSource(
   source: CustomCommandSource,
-  filter: string
+  ctx: TemplateContext
 ): Promise<CustomCommandItem[]> {
+  const filter = ctx.query ?? "";
   if (source.type === "static") {
+    const renderedItems = source.items.map((item) => renderSourceItem(item, ctx));
     const q = filter.trim().toLowerCase();
-    if (!q) return source.items;
-    return source.items.filter(
+    if (!q) return renderedItems;
+    return renderedItems.filter(
       (i) =>
         (i.title ?? "").toLowerCase().includes(q) ||
-        (i.desc ?? "").toLowerCase().includes(q)
+        (i.desc ?? "").toLowerCase().includes(q) ||
+        (i.url ?? "").toLowerCase().includes(q)
     );
   }
   if (source.type === "builtin") {
     return fetchBuiltinItems(source.builtin, source.params, filter);
   }
-  const url = source.urlTemplate.replace(/\{query\}/g, encodeURIComponent(filter));
+  const url = applyTemplate(source.urlTemplate, ctx, { encodeQuery: true });
   const res = await fetch(url);
   if (!res.ok) return [];
   const data = await res.json();
@@ -218,7 +289,7 @@ async function getItemsFromSource(
   if (!Array.isArray(arr)) return [];
   const items: CustomCommandItem[] = [];
   for (const raw of arr) {
-    const item = mapRawToItem(raw, map);
+    const item = mapRawToItem(raw, map, ctx);
     if (item) items.push(item);
   }
   return items;
@@ -231,8 +302,19 @@ export function customCommandToCommand(c: CustomCommand): Command {
     title: c.title,
     desc: c.desc ?? "",
     getResultFromFilter: async (filter: string): Promise<ResultItem[]> => {
-      const rawItems = await getItemsFromSource(c.source, filter);
-      return rawItems.map((raw, i) => itemToResultItem(raw, i, filter, c.action, c.id));
+      const lastQuery = c.rememberLastQuery
+        ? (await request<string>({ action: "getCustomCommandMemory", data: c.id })) ?? ""
+        : "";
+      const query = filter.trim() || !c.rememberLastQuery ? filter : lastQuery;
+      const ctx: TemplateContext = {
+        query,
+        lastQuery,
+        variables: variablesToRecord(c.variables),
+      };
+      const rawItems = await getItemsFromSource(c.source, ctx);
+      return rawItems.map((raw, i) =>
+        itemToResultItem(raw, i, ctx, c.action, c.id, c.resultTemplate, c.rememberLastQuery === true)
+      );
     },
   };
 }

@@ -7,11 +7,22 @@ import * as metaContent from "../commands/meta/content";
 import * as navContent from "../commands/nav/content";
 import * as outlineContent from "../commands/outline/content";
 import { request } from "@/lib/portBridge";
+import { LAST_COPY_KEY } from "@/lib/clipboardCapture";
 
 const POPUP_PATH = "src/popup/index.html";
 const URL_BLOCK_LIST_KEY = "url";
 const URL_BLOCK_REPLACE_PAGE_KEY = "urlblock_replace_page";
 const BK8_EXPIRE_MS = 8 * 60 * 60 * 1000;
+
+// 捕获页面上复制/剪切的内容，供 txt 文本工具与工作流 {{clipboard}} 使用
+function captureCopy(): void {
+  const sel = window.getSelection()?.toString();
+  if (sel && sel.trim()) {
+    chrome.storage.local.set({ [LAST_COPY_KEY]: sel.slice(0, 20000) }).catch(() => {});
+  }
+}
+document.addEventListener("copy", captureCopy, true);
+document.addEventListener("cut", captureCopy, true);
 
 type BlockItem = { id: string | number; type?: string; title: string };
 
@@ -179,7 +190,7 @@ function init(): void {
 }
 
 chrome.runtime.onMessage.addListener(
-  (msg: { action: string }, _sender: chrome.runtime.MessageSender, sendResponse: (r?: unknown) => void) => {
+  (msg: { action: string; query?: string }, _sender: chrome.runtime.MessageSender, sendResponse: (r?: unknown) => void) => {
     if (msg.action === "openBox") {
       if (!state.inited) {
         init();
@@ -191,6 +202,29 @@ chrome.runtime.onMessage.addListener(
         toggleBox();
         sendResponse({ ok: true });
       }
+      return true;
+    }
+    if (msg.action === "openBoxWithQuery" && typeof msg.query === "string") {
+      // 深链：打开命令框并填入查询词（iframe 可能未就绪，重试几次）
+      if (!state.inited) {
+        init();
+        setTimeout(() => openBox(), 50);
+      } else if (!state.isOpen) {
+        openBox();
+      }
+      let tries = 0;
+      const tryPost = () => {
+        const win = state.iframe?.contentWindow;
+        if (win) {
+          win.postMessage({ action: "SET_QUERY", query: msg.query }, "*");
+        } else if (tries < 8) {
+          tries++;
+          setTimeout(tryPost, 200);
+          return;
+        }
+      };
+      setTimeout(tryPost, 250);
+      sendResponse({ ok: true });
       return true;
     }
     return false;

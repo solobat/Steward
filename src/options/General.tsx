@@ -1,28 +1,9 @@
 import { useEffect, useState } from "react";
 import { t } from "@/lib/i18n";
 import type { AppConfig, GeneralConfig } from "@/types/config";
-import { DEFAULT_CONFIG, DEFAULT_CUSTOM_COMMANDS } from "@/types/config";
+import { DEFAULT_CONFIG } from "@/types/config";
+import { normalizeAppConfig } from "@/lib/configRuntime";
 import { request } from "@/lib/portBridge";
-
-function mergeConfig(loaded: Partial<AppConfig> | null): AppConfig {
-  if (!loaded?.general) return DEFAULT_CONFIG;
-  return {
-    general: { ...DEFAULT_CONFIG.general, ...loaded.general },
-    plugins: { ...(DEFAULT_CONFIG.plugins ?? {}), ...(loaded.plugins ?? {}) },
-    search: loaded.search
-      ? {
-          searchEngines: loaded.search.searchEngines?.length
-            ? loaded.search.searchEngines
-            : DEFAULT_CONFIG.search!.searchEngines,
-          defaultSearchKeyword: loaded.search.defaultSearchKeyword ?? DEFAULT_CONFIG.search!.defaultSearchKeyword,
-        }
-      : DEFAULT_CONFIG.search,
-    appearance: loaded.appearance
-      ? { ...DEFAULT_CONFIG.appearance, ...loaded.appearance }
-      : DEFAULT_CONFIG.appearance,
-    customCommands: loaded.customCommands ?? DEFAULT_CUSTOM_COMMANDS,
-  };
-}
 
 export default function General() {
   const [config, setConfig] = useState<AppConfig>(DEFAULT_CONFIG);
@@ -30,8 +11,8 @@ export default function General() {
 
   useEffect(() => {
     request<Partial<AppConfig>>({ action: "getConfig" })
-      .then((c) => setConfig(mergeConfig(c ?? null)))
-      .catch(() => setConfig(DEFAULT_CONFIG));
+      .then((c) => setConfig(normalizeAppConfig(c ?? null)))
+      .catch(() => setConfig(normalizeAppConfig(null)));
   }, []);
 
   const updateGeneral = (patch: Partial<GeneralConfig>) => {
@@ -75,6 +56,70 @@ export default function General() {
         </label>
         <p className="text-sm opacity-70 ml-8">{t("cacheLastCmd_hint")}</p>
       </div>
+      <div className="form-control">
+        <label className="label">
+          <span className="label-text">{t("emptyCommand_label")}</span>
+        </label>
+        <input
+          type="text"
+          className="input input-bordered font-mono w-full max-w-md"
+          placeholder={t("emptyCommand_placeholder")}
+          value={config.general.emptyCommand ?? ""}
+          onChange={(e) => updateGeneral({ emptyCommand: e.target.value })}
+        />
+        <p className="text-sm opacity-70 mt-2">{t("emptyCommand_hint")}</p>
+      </div>
+
+      {/* AI 助手配置（OpenAI 兼容接口） */}
+      <div className="pt-2 border-t border-base-content/10">
+        <h3 className="text-sm font-semibold text-base-content/80 mb-3">{t("ai_section_label")}</h3>
+        <div className="form-control max-w-md">
+          <label className="label">
+            <span className="label-text">{t("ai_base_url_label")}</span>
+          </label>
+          <input
+            type="text"
+            className="input input-bordered font-mono w-full"
+            placeholder="https://api.openai.com/v1"
+            value={config.general.ai?.baseUrl ?? ""}
+            onChange={(e) =>
+              updateGeneral({ ai: { ...(config.general.ai ?? {}), baseUrl: e.target.value } })
+            }
+          />
+          <p className="text-sm opacity-70 mt-1">{t("ai_base_url_hint")}</p>
+        </div>
+        <div className="form-control max-w-md">
+          <label className="label">
+            <span className="label-text">{t("ai_api_key_label")}</span>
+          </label>
+          <input
+            type="password"
+            className="input input-bordered font-mono w-full"
+            placeholder="sk-..."
+            value={config.general.ai?.apiKey ?? ""}
+            onChange={(e) =>
+              updateGeneral({ ai: { ...(config.general.ai ?? {}), apiKey: e.target.value } })
+            }
+          />
+          <p className="text-sm opacity-70 mt-1">{t("ai_api_key_hint")}</p>
+        </div>
+        <div className="form-control max-w-md">
+          <label className="label">
+            <span className="label-text">{t("ai_model_label")}</span>
+          </label>
+          <input
+            type="text"
+            className="input input-bordered font-mono w-full"
+            placeholder="gpt-4o-mini"
+            value={config.general.ai?.model ?? ""}
+            onChange={(e) =>
+              updateGeneral({ ai: { ...(config.general.ai ?? {}), model: e.target.value } })
+            }
+          />
+          <p className="text-sm opacity-70 mt-1">{t("ai_model_hint")}</p>
+        </div>
+      </div>
+
       <div className="flex items-center gap-2">
         <button type="button" className="btn btn-primary" onClick={save}>
           {t("btn_save")}

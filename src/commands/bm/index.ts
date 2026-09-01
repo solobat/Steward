@@ -1,5 +1,6 @@
 import type { Command, LoadContext, ResultItem } from "../types";
 import { request } from "@/lib/portBridge";
+import { createStateItem } from "@/lib/resultState";
 
 type BookmarkItem = { id: string; title?: string; url?: string };
 
@@ -27,12 +28,12 @@ export const bm: Command = {
           ctx.setItems(next);
           ctx.setSelectedIndex(0);
         } else {
-          ctx.setItems([{ id: "none", title: "No bookmarks", desc: "" }]);
+          ctx.setItems([createStateItem("empty", { title: "No bookmarks" })]);
         }
       })
       .catch(() => {
         ctx.setLoading(false);
-        ctx.setItems([{ id: "none", title: "No bookmarks", desc: "" }]);
+        ctx.setItems([createStateItem("error", { title: "Failed to load bookmarks" })]);
       });
   },
 };

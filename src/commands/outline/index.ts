@@ -7,6 +7,7 @@ export const outline: Command = {
   title: "Outline",
   desc: "h1–h6 headings",
   pageOnly: true,
+  capabilityRequirements: ["pageContext"],
   mode: "pageOutline",
   load(ctx: LoadContext) {
     ctx.setLoading(true);

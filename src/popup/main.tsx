@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { t } from "@/lib/i18n";
 import App from "./App";
 import "../popup.css";
+import "../shared/appearance.css";
 
 class ErrorFallback extends React.Component<
   { children: React.ReactNode },

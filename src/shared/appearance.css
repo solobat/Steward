@@ -1,0 +1,185 @@
+/* ==========================================================================
+ * Steward 外观样式（共享）
+ * 弹窗 / 页面内 iframe / 选项页预览共用。
+ * 默认主题：macOS 深色玻璃（Dark Glass）风格 —— 深色 macOS 壁纸 + 深色毛玻璃命令框。
+ * ========================================================================== */
+
+/* ---------- 主题变量：深色（默认，:root 即默认深色，避免首帧闪白） ---------- */
+:root,
+html[data-theme="dark"],
+.steward-appearance-preview[data-theme="dark"] {
+  /* 壁纸：深蓝/紫的暗色 macOS 壁纸，克制、安静 */
+  --steward-wall:
+    radial-gradient(130% 95% at 12% 4%, rgba(70, 96, 214, 0.5) 0%, rgba(70, 96, 214, 0) 55%),
+    radial-gradient(110% 85% at 92% 10%, rgba(122, 78, 216, 0.38) 0%, rgba(122, 78, 216, 0) 52%),
+    radial-gradient(120% 90% at 86% 96%, rgba(170, 66, 158, 0.22) 0%, rgba(170, 66, 158, 0) 55%),
+    radial-gradient(100% 80% at 8% 94%, rgba(132, 76, 168, 0.2) 0%, rgba(132, 76, 168, 0) 55%),
+    linear-gradient(150deg, #0a1022 0%, #120e2e 45%, #191040 75%, #120b2c 100%);
+  /* 深色毛玻璃面板 */
+  --steward-glass: rgba(26, 26, 34, 0.62);
+  --steward-glass-border: rgba(255, 255, 255, 0.12);
+  /* 分隔线与文字 */
+  --steward-sep: rgba(255, 255, 255, 0.08);
+  --steward-text: #f5f5f7;
+  --steward-text-dim: rgba(245, 245, 247, 0.55);
+  --steward-input-hint: rgba(245, 245, 247, 0.38);
+  --steward-hover: rgba(255, 255, 255, 0.07);
+  color-scheme: dark;
+}
+
+/* ---------- 主题变量：浅色 ---------- */
+html[data-theme="light"],
+.steward-appearance-preview[data-theme="light"] {
+  /* 壁纸：柔和的浅色 macOS 渐变，低饱和、干净 */
+  --steward-wall:
+    radial-gradient(130% 95% at 12% 4%, rgba(168, 186, 255, 0.55) 0%, rgba(168, 186, 255, 0) 55%),
+    radial-gradient(110% 85% at 92% 10%, rgba(198, 162, 255, 0.42) 0%, rgba(198, 162, 255, 0) 52%),
+    radial-gradient(120% 90% at 86% 96%, rgba(255, 178, 224, 0.28) 0%, rgba(255, 178, 224, 0) 55%),
+    radial-gradient(100% 80% at 8% 94%, rgba(255, 206, 168, 0.24) 0%, rgba(255, 206, 168, 0) 55%),
+    linear-gradient(150deg, #eef1f9 0%, #eef0f8 45%, #f1eef9 75%, #f6f2f8 100%);
+  /* 毛玻璃面板 */
+  --steward-glass: rgba(255, 255, 255, 0.72);
+  --steward-glass-border: rgba(255, 255, 255, 0.95);
+  /* 分隔线与文字 */
+  --steward-sep: rgba(20, 20, 36, 0.08);
+  --steward-text: #1d1d1f;
+  --steward-text-dim: rgba(29, 29, 31, 0.55);
+  --steward-input-hint: rgba(29, 29, 31, 0.38);
+  --steward-hover: rgba(29, 29, 31, 0.06);
+  color-scheme: light;
+}
+
+/* ---------- 壁纸背景 ---------- */
+.steward-wall {
+  background-image: var(--steward-wall);
+  background-attachment: fixed;
+}
+
+/* ---------- 毛玻璃命令框 ---------- */
+.steward-glass {
+  background-color: var(--steward-glass);
+  -webkit-backdrop-filter: blur(36px) saturate(1.6);
+  backdrop-filter: blur(36px) saturate(1.6);
+  border: 1px solid var(--steward-glass-border);
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.45),
+    0 6px 20px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+}
+
+/* ---------- 搜索行与输入框 ---------- */
+.steward-search-row {
+  border-bottom-color: var(--steward-sep);
+  color: var(--steward-text-dim);
+}
+.steward-search-icon {
+  color: var(--steward-text-dim);
+}
+.steward-glass .steward-search-input {
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  color: var(--steward-text);
+}
+.steward-glass .steward-search-input::placeholder {
+  color: var(--steward-input-hint);
+}
+.steward-glass .steward-search-input:focus,
+.steward-glass .steward-search-input:focus-within {
+  outline: none;
+  border-color: transparent;
+  box-shadow: none;
+}
+
+/* ---------- 结果列表 ---------- */
+.steward-glass .menu {
+  background: transparent;
+  /* daisyUI 默认 wrap：命令框高度确定时会折成多列，这里强制单列纵向滚动 */
+  flex-wrap: nowrap;
+}
+.steward-glass .menu li > a {
+  color: var(--steward-text);
+  gap: 0.5rem;
+}
+.steward-glass .menu li > a:hover {
+  background-color: var(--steward-hover);
+}
+/* 行分隔线（细线） */
+.steward-glass .menu li + li {
+  border-top: 1px solid var(--steward-sep);
+}
+/* 选中项：Apple 蓝（--steward-accent，由 JS 保证为合法颜色值）着色 */
+.steward-glass .menu li > a.active,
+.steward-glass .menu li > a.active:hover {
+  background-color: color-mix(in srgb, var(--steward-accent, #007aff) 28%, transparent);
+  color: var(--steward-text);
+}
+
+/* ---------- 底部提示 ---------- */
+.steward-foot {
+  border-top-color: var(--steward-sep);
+  color: var(--steward-text-dim);
+}
+
+/* ---------- 选项页预览：宿主环境模拟 ----------
+ * 弹窗模式：命令框贴满（无边框无边距），圆角由浏览器窗口提供；
+ * 页面内模式：悬浮面板（10px 边距 + 描边 + 20px 外圆角），背后是带暗色遮罩的宿主页面。 */
+.steward-appearance-preview {
+  position: relative;
+}
+.steward-preview-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+.steward-appearance-preview.steward-preview-iframe .steward-preview-backdrop {
+  opacity: 1;
+}
+.steward-appearance-preview .steward-preview-box {
+  position: relative;
+  z-index: 1;
+  border: none;
+  margin: 0;
+}
+.steward-appearance-preview.steward-preview-iframe .steward-preview-box {
+  margin: 10px;
+  border: 1px solid var(--steward-glass-border);
+}
+
+/* ---------- 命令框尺寸适配 ----------
+ * 弹窗模式：贴合浏览器 popup 外框（外框自带小圆角与描边）；
+ * 页面内 iframe 模式：命令框贴满 iframe，与容器外框零空隙，整体即一块命令框（外圆角由 iframe 提供）。 */
+.steward-box {
+  margin: 0;
+  border: none;
+}
+html.steward-in-iframe .steward-box {
+  border: 1px solid var(--steward-glass-border);
+}
+
+/* ---------- 外观：字号（命令框整体缩放） ---------- */
+html.steward-fs-small {
+  font-size: 13px;
+}
+html.steward-fs-medium {
+  font-size: 14px;
+}
+html.steward-fs-large {
+  font-size: 16px;
+}
+
+/* ---------- 外观：列表密度 ---------- */
+html[data-density="compact"] .steward-box .menu li a,
+.steward-appearance-preview[data-density="compact"] .menu li a {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  min-height: auto;
+}
+html[data-density="relaxed"] .steward-box .menu li a,
+.steward-appearance-preview[data-density="relaxed"] .menu li a {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}

@@ -1,5 +1,6 @@
 import type { Command, LoadContext, ResultItem } from "../types";
 import { request } from "@/lib/portBridge";
+import { createStateItem } from "@/lib/resultState";
 
 type TabItem = {
   id: number;
@@ -35,12 +36,12 @@ export const tabc: Command = {
         ctx.setLoading(false);
         const items = buildTabItems(tabs);
         ctx.setSubList(items);
-        ctx.setItems(items);
+        ctx.setItems(items.length ? items : [createStateItem("empty", { title: "No tabs" })]);
         ctx.setSelectedIndex(0);
       })
       .catch(() => {
         ctx.setLoading(false);
-        ctx.setItems([{ id: "none", title: "No tabs", desc: "" }]);
+        ctx.setItems([createStateItem("error", { title: "Failed to load tabs" })]);
       });
   },
 };

@@ -6,34 +6,18 @@ import type {
   CustomCommand,
   CustomCommandAction,
   CustomCommandItem,
+  CustomCommandResultTemplate,
   CustomCommandSource,
+  CustomCommandVariable,
 } from "@/types/config";
-import { DEFAULT_CONFIG, DEFAULT_CUSTOM_COMMANDS } from "@/types/config";
+import { DEFAULT_CONFIG } from "@/types/config";
+import { normalizeAppConfig } from "@/lib/configRuntime";
 import { request } from "@/lib/portBridge";
 import type { Workflow } from "@/types/workflow";
 
-function mergeConfig(loaded: Partial<AppConfig> | null): AppConfig {
-  if (!loaded?.general) return DEFAULT_CONFIG;
-  return {
-    general: { ...DEFAULT_CONFIG.general, ...loaded.general },
-    plugins: { ...(DEFAULT_CONFIG.plugins ?? {}), ...(loaded.plugins ?? {}) },
-    search: loaded.search
-      ? {
-          searchEngines: loaded.search.searchEngines?.length ? loaded.search.searchEngines : DEFAULT_CONFIG.search!.searchEngines,
-          defaultSearchKeyword: loaded.search.defaultSearchKeyword ?? DEFAULT_CONFIG.search!.defaultSearchKeyword,
-        }
-      : DEFAULT_CONFIG.search,
-    appearance: loaded.appearance
-      ? { ...DEFAULT_CONFIG.appearance, ...loaded.appearance }
-      : DEFAULT_CONFIG.appearance,
-    customCommands: loaded.customCommands?.list
-      ? { list: loaded.customCommands.list }
-      : DEFAULT_CUSTOM_COMMANDS,
-  };
-}
-
 const defaultSource: CustomCommandSource = { type: "static", items: [] };
 const defaultAction: CustomCommandAction = { type: "openUrl" };
+const defaultResultTemplate: CustomCommandResultTemplate = {};
 
 export default function CustomCommands() {
   const [config, setConfig] = useState<AppConfig>(DEFAULT_CONFIG);
@@ -46,8 +30,8 @@ export default function CustomCommands() {
 
   useEffect(() => {
     request<Partial<AppConfig>>({ action: "getConfig" })
-      .then((c) => setConfig(mergeConfig(c ?? null)))
-      .catch(() => setConfig(DEFAULT_CONFIG));
+      .then((c) => setConfig(normalizeAppConfig(c ?? null)))
+      .catch(() => setConfig(normalizeAppConfig(null)));
     request<Workflow[]>({ action: "getWorkflows" })
       .then((r) => setWorkflows(Array.isArray(r) ? r : []))
       .catch(() => setWorkflows([]));
@@ -68,6 +52,9 @@ export default function CustomCommands() {
       key: "",
       title: "",
       desc: "",
+      variables: [],
+      rememberLastQuery: false,
+      resultTemplate: defaultResultTemplate,
       source: defaultSource,
       action: defaultAction,
     });
@@ -75,7 +62,17 @@ export default function CustomCommands() {
 
   const edit = (c: CustomCommand) => {
     setIsNew(false);
-    setEditing({ ...c, source: { ...c.source }, action: { ...c.action } });
+    setEditing({
+      ...c,
+      variables: [...(c.variables ?? [])],
+      resultTemplate: { ...(c.resultTemplate ?? {}) },
+      source: c.source.type === "static"
+        ? { ...c.source, items: c.source.items.map((item) => ({ ...item })) }
+        : c.source.type === "url"
+          ? { ...c.source, responseMap: { ...(c.source.responseMap ?? {}) } }
+          : { ...c.source, params: { ...(c.source.params ?? {}) } },
+      action: { ...c.action },
+    });
   };
 
   const remove = (id: string) => {
@@ -236,6 +233,79 @@ function CustomCommandForm({
         />
       </div>
 
+      <div className="rounded-lg border border-base-content/10 bg-base-200/30 p-3 space-y-3">
+        <div>
+          <span className="label-text font-medium">{t("custom_commands_templates_title")}</span>
+          <p className="text-xs text-base-content/55 mt-1">{t("custom_commands_templates_hint")}</p>
+        </div>
+
+        <CommandVariablesEditor
+          variables={cmd.variables ?? []}
+          onChange={(variables) => onChange({ variables })}
+        />
+
+        <label className="label cursor-pointer justify-start gap-3 py-0">
+          <input
+            type="checkbox"
+            className="checkbox checkbox-sm"
+            checked={cmd.rememberLastQuery === true}
+            onChange={(e) => onChange({ rememberLastQuery: e.target.checked })}
+          />
+          <div>
+            <span className="label-text">{t("custom_commands_remember_last_query")}</span>
+            <p className="text-xs text-base-content/55">{t("custom_commands_remember_last_query_hint")}</p>
+          </div>
+        </label>
+
+        <div className="grid grid-cols-1 gap-2">
+          <input
+            type="text"
+            className="input input-bordered input-sm font-mono"
+            placeholder={t("custom_commands_result_title_placeholder")}
+            value={cmd.resultTemplate?.titleTemplate ?? ""}
+            onChange={(e) =>
+              onChange({
+                resultTemplate: {
+                  ...(cmd.resultTemplate ?? defaultResultTemplate),
+                  titleTemplate: e.target.value || undefined,
+                },
+              })
+            }
+          />
+          <span className="text-xs text-base-content/50">{t("custom_commands_result_title_hint")}</span>
+          <input
+            type="text"
+            className="input input-bordered input-sm font-mono"
+            placeholder={t("custom_commands_result_desc_placeholder")}
+            value={cmd.resultTemplate?.descTemplate ?? ""}
+            onChange={(e) =>
+              onChange({
+                resultTemplate: {
+                  ...(cmd.resultTemplate ?? defaultResultTemplate),
+                  descTemplate: e.target.value || undefined,
+                },
+              })
+            }
+          />
+          <span className="text-xs text-base-content/50">{t("custom_commands_result_desc_hint")}</span>
+          <input
+            type="text"
+            className="input input-bordered input-sm font-mono"
+            placeholder={t("custom_commands_result_url_placeholder")}
+            value={cmd.resultTemplate?.urlTemplate ?? ""}
+            onChange={(e) =>
+              onChange({
+                resultTemplate: {
+                  ...(cmd.resultTemplate ?? defaultResultTemplate),
+                  urlTemplate: e.target.value || undefined,
+                },
+              })
+            }
+          />
+          <span className="text-xs text-base-content/50">{t("custom_commands_result_url_hint")}</span>
+        </div>
+      </div>
+
       <div>
         <label className="label py-0">
           <span className="label-text">{t("custom_commands_source")}</span>
@@ -378,22 +448,28 @@ function CustomCommandForm({
           <option value="workflow">{t("custom_commands_action_workflow")}</option>
         </select>
         {action.type === "openUrl" && (
-          <input
-            type="text"
-            className="input input-bordered input-sm w-full mt-2 font-mono text-sm"
-            placeholder="{url} or https://...?q={query}&title={title}"
-            value={action.urlTemplate ?? ""}
-            onChange={(e) => onChange({ action: { type: "openUrl", urlTemplate: e.target.value || undefined } })}
-          />
+          <>
+            <input
+              type="text"
+              className="input input-bordered input-sm w-full mt-2 font-mono text-sm"
+              placeholder="{url} or https://...?q={query}&title={title}"
+              value={action.urlTemplate ?? ""}
+              onChange={(e) => onChange({ action: { type: "openUrl", urlTemplate: e.target.value || undefined } })}
+            />
+            <p className="text-xs text-base-content/50 mt-1">{t("custom_commands_action_template_hint")}</p>
+          </>
         )}
         {action.type === "copy" && (
-          <input
-            type="text"
-            className="input input-bordered input-sm w-full mt-2 font-mono text-sm"
-            placeholder="{title} or custom text"
-            value={action.template ?? ""}
-            onChange={(e) => onChange({ action: { type: "copy", template: e.target.value || undefined } })}
-          />
+          <>
+            <input
+              type="text"
+              className="input input-bordered input-sm w-full mt-2 font-mono text-sm"
+              placeholder="{title} or custom text"
+              value={action.template ?? ""}
+              onChange={(e) => onChange({ action: { type: "copy", template: e.target.value || undefined } })}
+            />
+            <p className="text-xs text-base-content/50 mt-1">{t("custom_commands_action_template_hint")}</p>
+          </>
         )}
         {action.type === "workflow" && (
           <select
@@ -478,6 +554,57 @@ function StaticItemsEditor({
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+function CommandVariablesEditor({
+  variables,
+  onChange,
+}: {
+  variables: CustomCommandVariable[];
+  onChange: (variables: CustomCommandVariable[]) => void;
+}) {
+  const add = () => onChange([...variables, { key: "", value: "" }]);
+  const update = (index: number, patch: Partial<CustomCommandVariable>) => {
+    onChange(variables.map((item, i) => (i === index ? { ...item, ...patch } : item)));
+  };
+  const remove = (index: number) => onChange(variables.filter((_, i) => i !== index));
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-base-content/60">{t("custom_commands_variables_title")}</span>
+        <button type="button" className="btn btn-ghost btn-xs" onClick={add}>
+          + {t("custom_commands_add_item")}
+        </button>
+      </div>
+      <p className="text-xs text-base-content/50">{t("custom_commands_variables_hint")}</p>
+      {variables.length > 0 && (
+        <ul className="space-y-2">
+          {variables.map((item, index) => (
+            <li key={index} className="flex flex-wrap items-center gap-2">
+              <input
+                type="text"
+                className="input input-bordered input-sm w-36 font-mono"
+                placeholder={t("custom_commands_variable_key")}
+                value={item.key}
+                onChange={(e) => update(index, { key: e.target.value })}
+              />
+              <input
+                type="text"
+                className="input input-bordered input-sm flex-1 min-w-[160px] font-mono"
+                placeholder={t("custom_commands_variable_value")}
+                value={item.value}
+                onChange={(e) => update(index, { value: e.target.value })}
+              />
+              <button type="button" className="btn btn-ghost btn-xs text-error" onClick={() => remove(index)}>
+                ×
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

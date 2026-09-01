@@ -9,28 +9,10 @@ import type {
   AppearanceRadius,
   AppearanceSize,
 } from "@/types/config";
-import { DEFAULT_CONFIG, DEFAULT_CUSTOM_COMMANDS } from "@/types/config";
+import { DEFAULT_CONFIG } from "@/types/config";
+import { normalizeAppConfig } from "@/lib/configRuntime";
 import { request } from "@/lib/portBridge";
-
-function mergeConfig(loaded: Partial<AppConfig> | null): AppConfig {
-  if (!loaded?.general) return DEFAULT_CONFIG;
-  return {
-    general: { ...DEFAULT_CONFIG.general, ...loaded.general },
-    plugins: { ...(DEFAULT_CONFIG.plugins ?? {}), ...(loaded.plugins ?? {}) },
-    search: loaded.search
-      ? {
-          searchEngines: loaded.search.searchEngines?.length
-            ? loaded.search.searchEngines
-            : DEFAULT_CONFIG.search!.searchEngines,
-          defaultSearchKeyword: loaded.search.defaultSearchKeyword ?? DEFAULT_CONFIG.search!.defaultSearchKeyword,
-        }
-      : DEFAULT_CONFIG.search,
-    appearance: loaded.appearance
-      ? { ...DEFAULT_CONFIG.appearance, ...loaded.appearance }
-      : DEFAULT_CONFIG.appearance,
-    customCommands: loaded.customCommands ?? DEFAULT_CUSTOM_COMMANDS,
-  };
-}
+import { THEME_PRESETS, DEFAULT_PRESET_ID, getPreset, presetVarOverrides, applyPresetVars } from "@/lib/presets";
 
 const THEME_OPTIONS: { value: AppearanceTheme; labelKey: string }[] = [
   { value: "light", labelKey: "appearance_theme_light" },
@@ -64,6 +46,7 @@ const SIZE_OPTIONS: { value: AppearanceSize; labelKey: string }[] = [
 
 const PRESET_COLORS = [
   "",
+  "#007AFF",
   "#570df8",
   "#65c3c8",
   "#f87272",
@@ -72,6 +55,24 @@ const PRESET_COLORS = [
   "#a78bfa",
   "#f472b6",
 ];
+
+function resolveTheme(theme: AppearanceTheme): "light" | "dark" {
+  if (theme === "system") {
+    return typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  }
+  return theme;
+}
+
+/** 弹窗模式圆角（贴合浏览器外框） */
+const RADIUS_PX: Record<AppearanceRadius, string> = {
+  sharp: "0",
+  default: "0.375rem",
+  round: "0.625rem",
+};
+/** 页面内模式：外圆角由 iframe 容器（20px）提供 */
+const PAGE_RADIUS = "1.25rem";
 
 // 字号/高度映射（预览与命令框共用）
 function sizeToPx(size: AppearanceSize | undefined, kind: "font" | "title" | "subtitle" | "inputHeight"): string {
@@ -98,6 +99,7 @@ function sizeToPx(size: AppearanceSize | undefined, kind: "font" | "title" | "su
 export default function Appearance() {
   const [config, setConfig] = useState<AppConfig>(DEFAULT_CONFIG);
   const [saved, setSaved] = useState(false);
+  const [previewHost, setPreviewHost] = useState<"popup" | "page">("popup");
   const previewRef = useRef<HTMLDivElement>(null);
   const previewBoxRef = useRef<HTMLDivElement>(null);
   const userEditedAppearanceRef = useRef(false);
@@ -105,25 +107,52 @@ export default function Appearance() {
   useEffect(() => {
     request<Partial<AppConfig>>({ action: "getConfig" })
       .then((c) => {
-        const loaded = mergeConfig(c ?? null);
+        const loaded = normalizeAppConfig(c ?? null);
         setConfig((prev) =>
           userEditedAppearanceRef.current
             ? { ...loaded, appearance: prev.appearance ?? loaded.appearance }
             : loaded
         );
       })
-      .catch(() => setConfig(DEFAULT_CONFIG));
+      .catch(() => setConfig(normalizeAppConfig(null)));
   }, []);
 
   const appearance: AppearanceConfig = config.appearance ?? DEFAULT_CONFIG.appearance!;
+  const primaryColor = (appearance.primaryColor ?? "").trim();
+  const resolvedTheme = resolveTheme(appearance.theme ?? "system");
+  const preset = getPreset(appearance.preset);
+  /** 有效强调色：用户自定义优先，否则预设强调色 */
+  const effectiveAccent = primaryColor && /^#[0-9A-Fa-f]{6}$/.test(primaryColor) ? primaryColor : preset.accent;
+
+  /** 让整个选项页即时跟随主题 + 预设（色板/强调色） */
+  const applyPageAppearance = (theme: AppearanceTheme, presetId?: string) => {
+    const p = getPreset(presetId ?? appearance.preset);
+    const resolved = resolveTheme(theme);
+    const el = document.documentElement;
+    el.setAttribute("data-theme", resolved);
+    applyPresetVars(el, p.id, resolved);
+    const accent = primaryColor && /^#[0-9A-Fa-f]{6}$/.test(primaryColor) ? primaryColor : p.accent;
+    el.style.setProperty("--steward-accent", accent);
+    el.style.setProperty("--p", accent);
+    el.style.setProperty("--pc", "oklch(0.99 0 0)");
+  };
 
   const setAppearance = (patch: Partial<AppearanceConfig>) => {
     userEditedAppearanceRef.current = true;
+    if (patch.theme || patch.preset || patch.primaryColor !== undefined) {
+      applyPageAppearance(patch.theme ?? appearance.theme ?? "system", patch.preset);
+    }
     setConfig((prev) => ({
       ...prev,
       appearance: { ...(prev.appearance ?? DEFAULT_CONFIG.appearance), ...patch },
     }));
     setSaved(false);
+  };
+
+  /** 一键切换设计风格预设 */
+  const selectPreset = (id: string) => {
+    const p = getPreset(id);
+    setAppearance({ preset: p.id, theme: p.defaultTheme, primaryColor: p.accent });
   };
 
   const resetToDefaultAppearance = () => {
@@ -132,6 +161,7 @@ export default function Appearance() {
       ...prev,
       appearance: { ...DEFAULT_CONFIG.appearance },
     }));
+    applyPageAppearance(DEFAULT_CONFIG.appearance!.theme ?? "system", DEFAULT_PRESET_ID);
     setSaved(false);
   };
 
@@ -141,30 +171,19 @@ export default function Appearance() {
       .catch(() => {});
   };
 
-  const primaryColor = (appearance.primaryColor ?? "").trim();
-  const resolvedTheme =
-    (appearance.theme ?? "system") === "system"
-      ? (typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")
-      : (appearance.theme as "light" | "dark");
-  const radiusClass =
-    appearance.cornerRadius === "sharp"
-      ? "rounded-none"
-      : appearance.cornerRadius === "round"
-        ? "rounded-2xl"
-        : "rounded-lg";
   const previewFontSize =
     appearance.fontSize === "small" ? "13px" : appearance.fontSize === "large" ? "16px" : "14px";
-  const previewStyle: Record<string, string> = { fontSize: previewFontSize };
-  if (primaryColor && /^#[0-9A-Fa-f]{6}$/.test(primaryColor)) {
-    const r = parseInt(primaryColor.slice(1, 3), 16) / 255;
-    const g = parseInt(primaryColor.slice(3, 5), 16) / 255;
-    const b = parseInt(primaryColor.slice(5, 7), 16) / 255;
-    const luma = 0.299 * r + 0.587 * g + 0.114 * b;
-    previewStyle["--p"] = primaryColor;
-    previewStyle["--pc"] = luma > 0.5 ? "oklch(0.15 0.02 260)" : "oklch(0.99 0 0)";
-  }
+  // 预览容器：预设色板（按当前明暗）+ 有效强调色 + 字号
+  const previewStyle: Record<string, string> = {
+    fontSize: previewFontSize,
+    ...presetVarOverrides(preset, resolvedTheme),
+    "--steward-accent": effectiveAccent,
+    "--p": effectiveAccent,
+    "--pc": "oklch(0.99 0 0)",
+  };
+  const boxRadius = previewHost === "page" ? PAGE_RADIUS : RADIUS_PX[appearance.cornerRadius ?? "default"];
 
-  // 强制同步预览 DOM：避免 React 或 CSS 未生效时预览不更新
+  // 同步预览 DOM：字号、密度、圆角、背景色、输入行高度（与命令框一致）
   useEffect(() => {
     const wrap = previewRef.current;
     const box = previewBoxRef.current;
@@ -172,36 +191,14 @@ export default function Appearance() {
     wrap.setAttribute("data-theme", resolvedTheme);
     wrap.setAttribute("data-density", appearance.listDensity ?? "default");
     wrap.style.fontSize = previewFontSize;
-    // 主题背景：确保切换浅/深色时预览区明显变化（不依赖 DaisyUI 嵌套）
-    if (resolvedTheme === "dark") {
-      wrap.style.backgroundColor = "oklch(0.165 0.005 260)";
-      wrap.style.color = "oklch(0.95 0 0)";
-    } else {
-      wrap.style.backgroundColor = "oklch(0.97 0.005 260)";
-      wrap.style.color = "oklch(0.15 0.02 260)";
-    }
-    wrap.style.padding = "1rem";
-    wrap.style.borderRadius = "0.5rem";
-    if (primaryColor && /^#[0-9A-Fa-f]{6}$/.test(primaryColor)) {
-      wrap.style.setProperty("--p", primaryColor);
-      const r = parseInt(primaryColor.slice(1, 3), 16) / 255;
-      const g = parseInt(primaryColor.slice(3, 5), 16) / 255;
-      const b = parseInt(primaryColor.slice(5, 7), 16) / 255;
-      const luma = 0.299 * r + 0.587 * g + 0.114 * b;
-      wrap.style.setProperty("--pc", luma > 0.5 ? "oklch(0.15 0.02 260)" : "oklch(0.99 0 0)");
-    } else {
-      wrap.style.removeProperty("--p");
-      wrap.style.removeProperty("--pc");
-    }
     if (box) {
-      box.style.borderRadius =
-        appearance.cornerRadius === "sharp" ? "0" : appearance.cornerRadius === "round" ? "1rem" : "0.5rem";
+      box.style.borderRadius = boxRadius;
       if (appearance.boxBackground && /^#[0-9A-Fa-f]{6}$/.test(appearance.boxBackground))
         box.style.backgroundColor = appearance.boxBackground;
       else
         box.style.removeProperty("backgroundColor");
     }
-    const inputRow = wrap.querySelector(".steward-preview-input-row") as HTMLElement | null;
+    const inputRow = wrap.querySelector(".steward-search-row") as HTMLElement | null;
     if (inputRow)
       inputRow.style.minHeight = sizeToPx(appearance.inputHeight ?? "medium", "inputHeight");
     wrap.querySelectorAll(".steward-preview-box .menu li a").forEach((a) => {
@@ -218,7 +215,7 @@ export default function Appearance() {
     appearance.titleSize,
     appearance.subtitleSize,
     previewFontSize,
-    primaryColor,
+    boxRadius,
   ]);
 
   return (
@@ -226,37 +223,106 @@ export default function Appearance() {
       <h2 className="options-section-title">{t("appearance_title")}</h2>
       <p className="text-sm text-base-content/70">{t("appearance_hint")}</p>
 
+      {/* 设计风格预设：一键切换 */}
+      <section className="space-y-3">
+        <h3 className="text-sm font-semibold text-base-content/80 border-b border-base-content/10 pb-1">
+          {t("appearance_preset_label")}
+        </h3>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          {THEME_PRESETS.map((p) => {
+            const active = (appearance.preset ?? DEFAULT_PRESET_ID) === p.id;
+            return (
+              <button
+                key={p.id}
+                type="button"
+                className={`text-left rounded-xl border p-2 transition-colors ${
+                  active
+                    ? "border-primary ring-1 ring-primary"
+                    : "border-base-content/10 hover:border-base-content/30"
+                }`}
+                onClick={() => selectPreset(p.id)}
+              >
+                <span
+                  className="block h-12 rounded-lg border border-base-content/10 overflow-hidden"
+                  style={{ backgroundImage: p[p.defaultTheme].wall, backgroundSize: "cover" }}
+                />
+                <span className="mt-1.5 flex items-center justify-between gap-1">
+                  <span className="text-xs font-medium truncate">{t(p.labelKey)}</span>
+                  <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: p.accent }} />
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
       <section className="space-y-2">
         <h3 className="text-sm font-semibold text-base-content/80 border-b border-base-content/10 pb-1">
           {t("appearance_preview_title")}
         </h3>
         <p className="text-xs text-base-content/50">{t("appearance_preview_hint")}</p>
+        {/* 宿主环境切换：弹窗 / 页面内，预览尽可能还原真实效果 */}
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-base-content/60">{t("appearance_preview_host_label")}</span>
+          <div className="join join-sm">
+            <button
+              type="button"
+              className={`btn btn-sm join-item ${previewHost === "popup" ? "btn-primary" : "btn-ghost"}`}
+              onClick={() => setPreviewHost("popup")}
+            >
+              {t("appearance_preview_host_popup")}
+            </button>
+            <button
+              type="button"
+              className={`btn btn-sm join-item ${previewHost === "page" ? "btn-primary" : "btn-ghost"}`}
+              onClick={() => setPreviewHost("page")}
+            >
+              {t("appearance_preview_host_page")}
+            </button>
+          </div>
+        </div>
         <div
           ref={previewRef}
-          className="steward-appearance-preview"
+          className={`steward-wall steward-appearance-preview rounded-xl overflow-hidden ${
+            previewHost === "page" ? "steward-preview-iframe" : ""
+          }`}
           data-theme={resolvedTheme}
           data-density={appearance.listDensity ?? "default"}
           style={previewStyle}
         >
+          {/* 页面内模式：页面暗色遮罩（模拟真实宿主页面） */}
+          <div className="steward-preview-backdrop" aria-hidden />
           <div
             ref={previewBoxRef}
-            className={`steward-preview-box flex flex-col bg-base-200 shadow-xl min-h-[200px] w-full max-w-sm ${radiusClass}`}
+            className="steward-glass steward-preview-box flex flex-col min-h-[280px] w-full"
             style={{
-              borderRadius: appearance.cornerRadius === "sharp" ? "0" : appearance.cornerRadius === "round" ? "1rem" : "0.5rem",
+              borderRadius: boxRadius,
               ...(appearance.boxBackground && /^#[0-9A-Fa-f]{6}$/.test(appearance.boxBackground)
                 ? { backgroundColor: appearance.boxBackground }
                 : {}),
             }}
           >
-            <div className="steward-preview-input-row p-3 border-b border-base-300 flex items-center">
+            <div className="steward-search-row p-3 border-b flex items-center gap-2">
+              <svg
+                className="steward-search-icon w-4 h-4 shrink-0"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                aria-hidden="true"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <line x1="16.5" y1="16.5" x2="21" y2="21" />
+              </svg>
               <input
                 type="text"
                 placeholder={t("appearance_placeholder_trigger")}
-                className="input input-bordered input-sm w-full bg-base-100 font-mono text-base-content"
+                className="steward-search-input input input-sm w-full"
                 readOnly
               />
             </div>
-            <ul className="menu flex-1 p-2 bg-base-200 min-h-[120px]">
+            <ul className="menu flex-1 p-2 min-h-[120px]">
               <li>
                 <a className="active">
                   <span className="font-medium">bm</span>
@@ -276,7 +342,7 @@ export default function Appearance() {
                 </a>
               </li>
             </ul>
-            <div className="p-2 text-xs opacity-60 border-t border-base-300 font-mono">
+            <div className="steward-foot p-2 text-xs border-t">
               {t("appearance_preview_hint_keys")}
             </div>
           </div>
@@ -326,7 +392,7 @@ export default function Appearance() {
             <input
               type="color"
               className="w-8 h-8 cursor-pointer rounded border border-base-content/20"
-              value={primaryColor && /^#[0-9A-Fa-f]{6}$/.test(primaryColor) ? primaryColor : "#570df8"}
+              value={effectiveAccent}
               onChange={(e) => setAppearance({ primaryColor: e.target.value })}
               title={t("appearance_custom_color")}
             />

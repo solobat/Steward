@@ -1,5 +1,6 @@
 import type { Command, LoadContext, ResultItem } from "../types";
 import { request } from "@/lib/portBridge";
+import { createStateItem } from "@/lib/resultState";
 
 export const bkseturl: Command = {
   id: "bkseturl",
@@ -34,12 +35,12 @@ export const bkseturl: Command = {
           runPayload: url,
         }));
         ctx.setSubList(items);
-        ctx.setItems(items.length ? items : [{ id: "none", title: "No replace URLs", desc: "" }]);
+        ctx.setItems(items.length ? items : [createStateItem("empty", { title: "No replace URLs" })]);
         ctx.setSelectedIndex(0);
       })
       .catch(() => {
         ctx.setLoading(false);
-        ctx.setItems([{ id: "none", title: "No replace URLs", desc: "" }]);
+        ctx.setItems([createStateItem("error", { title: "Failed to load replace URLs" })]);
       });
   },
 };

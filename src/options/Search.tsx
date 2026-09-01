@@ -1,26 +1,9 @@
 import { useEffect, useState } from "react";
 import { t } from "@/lib/i18n";
 import type { AppConfig, SearchConfig, SearchEngine } from "@/types/config";
-import { DEFAULT_CONFIG, DEFAULT_CUSTOM_COMMANDS } from "@/types/config";
+import { DEFAULT_CONFIG } from "@/types/config";
+import { normalizeAppConfig } from "@/lib/configRuntime";
 import { request } from "@/lib/portBridge";
-
-function mergeConfig(loaded: Partial<AppConfig> | null): AppConfig {
-  if (!loaded?.general) return DEFAULT_CONFIG;
-  return {
-    general: { ...DEFAULT_CONFIG.general, ...loaded.general },
-    plugins: { ...(DEFAULT_CONFIG.plugins ?? {}), ...(loaded.plugins ?? {}) },
-    search: loaded.search
-      ? {
-          searchEngines: loaded.search.searchEngines?.length ? loaded.search.searchEngines : DEFAULT_CONFIG.search!.searchEngines,
-          defaultSearchKeyword: loaded.search.defaultSearchKeyword ?? DEFAULT_CONFIG.search!.defaultSearchKeyword,
-        }
-      : DEFAULT_CONFIG.search,
-    appearance: loaded.appearance
-      ? { ...DEFAULT_CONFIG.appearance, ...loaded.appearance }
-      : DEFAULT_CONFIG.appearance,
-    customCommands: loaded.customCommands ?? DEFAULT_CUSTOM_COMMANDS,
-  };
-}
 
 export default function Search() {
   const [config, setConfig] = useState<AppConfig>(DEFAULT_CONFIG);
@@ -28,8 +11,8 @@ export default function Search() {
 
   useEffect(() => {
     request<Partial<AppConfig>>({ action: "getConfig" })
-      .then((c) => setConfig(mergeConfig(c ?? null)))
-      .catch(() => setConfig(DEFAULT_CONFIG));
+      .then((c) => setConfig(normalizeAppConfig(c ?? null)))
+      .catch(() => setConfig(normalizeAppConfig(null)));
   }, []);
 
   const searchConfig: SearchConfig = config.search ?? DEFAULT_CONFIG.search!;

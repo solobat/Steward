@@ -7,6 +7,7 @@ export const meta: Command = {
   title: "Page Info",
   desc: "Title, URL, selection",
   pageOnly: true,
+  capabilityRequirements: ["pageContext"],
   mode: "pageMeta",
   load(ctx: LoadContext) {
     ctx.setLoading(true);

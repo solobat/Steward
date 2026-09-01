@@ -10,12 +10,19 @@ export type DataMode =
   | "bookmarks";
 
 export type ActionType = "settings" | "close";
+export type ResultStateType = "empty" | "error" | "timeout" | "unavailable";
 
 export interface ResultItem {
   id: string;
   title: string;
   desc?: string;
   icon?: string;
+  /** 分组标题（如「最近使用」），连续同组只显示一次 */
+  section?: string;
+  disabled?: boolean;
+  disabledReason?: string;
+  stateType?: ResultStateType;
+  stateCode?: string;
   copyValue?: string;
   url?: string;
   navIndex?: number;
@@ -23,6 +30,8 @@ export interface ResultItem {
   /** 工作流项：选中后执行该工作流 */
   workflowId?: string;
   workflowContent?: string;
+  customCommandId?: string;
+  customCommandQuery?: string;
   /** 由 background 执行的动作（tab 切换、扩展开关、下载操作等） */
   runAction?: string;
   runPayload?: unknown;
@@ -42,6 +51,8 @@ export interface ExecuteContext {
   close: () => void;
 }
 
+export type CommandCapability = "pageContext";
+
 export interface Command {
   id: string;
   key: string;
@@ -49,6 +60,7 @@ export interface Command {
   desc: string;
   /** 为 true 时仅在「页面内命令框」显示，popup 中隐藏（依赖当前页 context，如 meta/nav/outline） */
   pageOnly?: boolean;
+  capabilityRequirements?: CommandCapability[];
   mode?: DataMode;
   action?: ActionType;
   /** 有 mode 时由 loadForMode 调用；无 mode 时由 CmdBox 在 search 模式下调用，可带 filter */

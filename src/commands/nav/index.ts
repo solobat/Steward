@@ -7,6 +7,7 @@ export const nav: Command = {
   title: "Page Links",
   desc: "Links on current page",
   pageOnly: true,
+  capabilityRequirements: ["pageContext"],
   mode: "pageNavs",
   load(ctx: LoadContext) {
     ctx.setLoading(true);

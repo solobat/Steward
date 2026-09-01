@@ -1,9 +1,18 @@
 /**
  * 与旧版 conf/general 兼容的配置结构（精简）
  */
+/** AI 助手配置（OpenAI 兼容接口） */
+export interface AiConfig {
+  baseUrl?: string;
+  apiKey?: string;
+  model?: string;
+}
+
 export interface GeneralConfig {
   speedFirst?: boolean;
   cacheLastCmd?: boolean;
+  emptyCommand?: string;
+  ai?: AiConfig;
 }
 
 /** 插件级配置：commandId -> { disabled?, triggerKey? }，triggerKey 为空则用命令默认 key */
@@ -30,6 +39,17 @@ export interface CustomCommandItem {
   title: string;
   desc?: string;
   url?: string;
+}
+
+export interface CustomCommandVariable {
+  key: string;
+  value: string;
+}
+
+export interface CustomCommandResultTemplate {
+  titleTemplate?: string;
+  descTemplate?: string;
+  urlTemplate?: string;
 }
 
 /**
@@ -85,6 +105,9 @@ export interface CustomCommand {
   title: string;
   desc?: string;
   icon?: string;
+  variables?: CustomCommandVariable[];
+  rememberLastQuery?: boolean;
+  resultTemplate?: CustomCommandResultTemplate;
   source: CustomCommandSource;
   action: CustomCommandAction;
 }
@@ -102,6 +125,8 @@ export type AppearanceSize = "small" | "medium" | "large";
 
 export interface AppearanceConfig {
   theme?: AppearanceTheme;
+  /** 设计风格预设 id（见 lib/presets.ts），空则用默认「深色玻璃」 */
+  preset?: string;
   fontSize?: AppearanceFontSize;
   /** 强调色（按钮、选中态等），hex 如 #570df8，空则用主题默认 */
   primaryColor?: string;
@@ -120,6 +145,7 @@ export interface AppearanceConfig {
 }
 
 export interface AppConfig {
+  schemaVersion: number;
   general: GeneralConfig;
   plugins?: PluginsConfig;
   search?: SearchConfig;
@@ -127,9 +153,12 @@ export interface AppConfig {
   customCommands?: CustomCommandsConfig;
 }
 
+export const CURRENT_CONFIG_SCHEMA_VERSION = 2;
+
 export const DEFAULT_GENERAL: GeneralConfig = {
   speedFirst: false,
   cacheLastCmd: true,
+  emptyCommand: "",
 };
 
 export const DEFAULT_SEARCH_ENGINES: SearchEngine[] = [
@@ -144,7 +173,8 @@ export const DEFAULT_SEARCH: SearchConfig = {
 };
 
 export const DEFAULT_APPEARANCE: AppearanceConfig = {
-  theme: "system",
+  /** 默认主题：深色玻璃（macOS 深色模式风格） */
+  theme: "dark",
   fontSize: "medium",
   primaryColor: "",
   listDensity: "default",
@@ -158,6 +188,7 @@ export const DEFAULT_APPEARANCE: AppearanceConfig = {
 export const DEFAULT_CUSTOM_COMMANDS: CustomCommandsConfig = { list: [] };
 
 export const DEFAULT_CONFIG: AppConfig = {
+  schemaVersion: CURRENT_CONFIG_SCHEMA_VERSION,
   general: DEFAULT_GENERAL,
   plugins: {},
   search: DEFAULT_SEARCH,

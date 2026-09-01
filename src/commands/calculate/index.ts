@@ -1,4 +1,7 @@
 import type { Command, ResultItem } from "../types";
+import { convertUnit, isConversionExpression } from "./conversions";
+
+export { convertUnit, isConversionExpression };
 
 /** 安全计算：仅允许数字与 + - * / ( ) 及空白，解析并求值 */
 function safeEval(expr: string): number | null {
@@ -80,12 +83,24 @@ export const calculate: Command = {
   key: "calc",
   title: "Calculator",
   desc: "Evaluate math expression",
-  getResultFromFilter(filter: string): ResultItem[] {
+  async getResultFromFilter(filter: string): Promise<ResultItem[]> {
     const trimmed = filter.trim();
-    if (!trimmed) return [{ id: "calc-none", title: "Enter expression", desc: "e.g. 1+2*3" }];
+    if (!trimmed) return [{ id: "calc-none", title: "Enter expression", desc: "e.g. 1+2*3 · 5ft in cm · 100 usd to cny (实时汇率)" }];
+    // 单位/货币换算优先（5ft in cm / 100 usd to cny / 32 c in f），货币走实时汇率
+    const converted = await convertUnit(trimmed);
+    if (converted) {
+      return [
+        {
+          id: "calc-convert",
+          title: converted.value,
+          desc: converted.desc,
+          copyValue: converted.value,
+        },
+      ];
+    }
     const result = safeEval(trimmed);
     if (result === null)
-      return [{ id: "calc-err", title: "Invalid expression", desc: "Only numbers and + - * / ( )" }];
+      return [{ id: "calc-err", title: "Invalid expression", desc: "Only numbers and + - * / ( ), or units: 5ft in cm" }];
     const str = Number.isInteger(result) ? String(result) : result.toFixed(10).replace(/0+$/, "").replace(/\.$/, "");
     return [
       {

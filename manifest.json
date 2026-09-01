@@ -40,7 +40,7 @@
     "page": "src/options/index.html",
     "open_in_tab": true
   },
-  "permissions": ["storage", "alarms", "activeTab", "clipboardWrite", "tabs", "history", "bookmarks", "management", "downloads", "topSites"],
+  "permissions": ["storage", "alarms", "activeTab", "clipboardWrite", "tabs", "history", "bookmarks", "management", "downloads", "topSites", "sessions", "favicon"],
   "host_permissions": ["<all_urls>"],
   "commands": {
     "_execute_action": {
@@ -52,9 +52,9 @@
     },
     "open-in-content-page": {
       "suggested_key": {
-        "windows": "Ctrl+J",
-        "mac": "Command+J",
-        "linux": "Ctrl+J"
+        "windows": "Ctrl+Shift+K",
+        "mac": "Command+Shift+K",
+        "linux": "Ctrl+Shift+K"
       },
       "description": "__MSG_pageboxDesc__"
     }

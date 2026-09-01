@@ -29,6 +29,12 @@ import { search } from "./search";
 import { bk } from "./bk";
 import { bk8 } from "./bk8";
 import { bkseturl } from "./bkseturl";
+import { cur } from "./cur";
+import { undo } from "./undo";
+import { note } from "./note";
+import { txt } from "./txt";
+import { tr } from "./tr";
+import { ai } from "./ai";
 
 export type { Command, DataMode, ActionType, ResultItem, LoadContext, ExecuteContext } from "./types";
 
@@ -59,4 +65,10 @@ export const TRIGGERS: Command[] = [
   bk,
   bk8,
   bkseturl,
+  cur,
+  undo,
+  note,
+  txt,
+  tr,
+  ai,
 ];

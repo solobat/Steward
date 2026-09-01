@@ -1,5 +1,6 @@
 import type { Command, LoadContext, ResultItem } from "../types";
 import { request } from "@/lib/portBridge";
+import { createStateItem } from "@/lib/resultState";
 
 type ExtItem = {
   id: string;
@@ -29,12 +30,12 @@ export const set: Command = {
             url: e.optionsUrl,
           }));
         ctx.setSubList(items);
-        ctx.setItems(items.length ? items : [{ id: "none", title: "No extensions with options", desc: "" }]);
+        ctx.setItems(items.length ? items : [createStateItem("empty", { title: "No extensions with options" })]);
         ctx.setSelectedIndex(0);
       })
       .catch(() => {
         ctx.setLoading(false);
-        ctx.setItems([{ id: "none", title: "No extensions with options", desc: "" }]);
+        ctx.setItems([createStateItem("error", { title: "Failed to load extension options" })]);
       });
   },
 };

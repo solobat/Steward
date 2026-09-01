@@ -1,5 +1,7 @@
 import type { Command, LoadContext, ResultItem } from "../types";
 import { request } from "@/lib/portBridge";
+import { createStateItem } from "@/lib/resultState";
+import { siteIcon } from "@/lib/favicon";
 
 type DownloadItem = {
   id: number;
@@ -49,6 +51,7 @@ export const download: Command = {
               id: `dl-${d.id}`,
               title: formatTitle(d),
               desc: formatDesc(d),
+              icon: siteIcon(d.url),
               url: inProgress ? undefined : undefined,
               runAction: inProgress ? (d.paused ? "downloadResume" : "downloadPause") : "downloadShow",
               runPayload: d.id,
@@ -56,13 +59,13 @@ export const download: Command = {
           });
         ctx.setSubList(items);
         ctx.setItems(
-          items.length ? items : [{ id: "none", title: "No downloads", desc: "" }]
+          items.length ? items : [createStateItem("empty", { title: "No downloads" })]
         );
         ctx.setSelectedIndex(0);
       })
       .catch(() => {
         ctx.setLoading(false);
-        ctx.setItems([{ id: "none", title: "No downloads", desc: "" }]);
+        ctx.setItems([createStateItem("error", { title: "Failed to load downloads" })]);
       });
   },
 };

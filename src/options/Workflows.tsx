@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { t } from "@/lib/i18n";
 import type { Workflow } from "@/types/workflow";
 import { request } from "@/lib/portBridge";
+import WorkflowEditor from "./WorkflowEditor";
 
 const EMPTY: Workflow = {
   id: "",
@@ -189,12 +190,9 @@ export default function Workflows() {
                 <label className="label">
                   <span className="label-text">{t("workflows_label_content")}</span>
                 </label>
-                <textarea
-                  className="textarea textarea-bordered font-mono text-sm min-h-40 lg:min-h-56"
-                  value={current.content}
-                  onChange={(e) => setCurrent((c) => ({ ...c, content: e.target.value }))}
-                  placeholder={t("workflows_placeholder_content")}
-                  spellCheck={false}
+                <WorkflowEditor
+                  content={current.content}
+                  onChange={(content) => setCurrent((c) => ({ ...c, content }))}
                 />
               </div>
               <div className="flex items-center gap-2 flex-wrap">

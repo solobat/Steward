@@ -13,23 +13,3 @@ body {
 .options-nav-item {
   border-left: 2px solid transparent;
 }
-
-/* 外观预览：字号与列表密度（与 popup 一致） */
-.steward-appearance-preview.steward-fs-small {
-  font-size: 13px;
-}
-.steward-appearance-preview.steward-fs-medium {
-  font-size: 14px;
-}
-.steward-appearance-preview.steward-fs-large {
-  font-size: 16px;
-}
-.steward-appearance-preview[data-density="compact"] .menu li a {
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
-  min-height: auto;
-}
-.steward-appearance-preview[data-density="relaxed"] .menu li a {
-  padding-top: 0.75rem;
-  padding-bottom: 0.75rem;
-}
